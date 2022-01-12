@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61ca2ed964176aa41b7b57cb5821522a, type: 3}
+  m_Name: RandomSacredScroll
+  m_EditorClassIdentifier: 
+  name: Random Sacred Scroll
+  broken: 0
+  value: 0
+  known: 1
+  clean: 1
+  index: 0
+  randomizeOnCopy: 1
