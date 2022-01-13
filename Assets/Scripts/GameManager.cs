@@ -22,7 +22,6 @@ public class GameManager : MonoBehaviour
     {
         return Mathf.Max(1, UnityEngine.Random.Range(1, dieSize+1));
     }
-
     static public int RollDice(int number, int dieSize)
     {
         int result = 0;
@@ -32,7 +31,6 @@ public class GameManager : MonoBehaviour
         }
         return result;
     }
-
     public static bool Error(string message)
     {
         Debug.Log(message);
@@ -42,16 +40,21 @@ public class GameManager : MonoBehaviour
 
 public class d20
 {
-    public bool fumble;
-    public bool critical;
-    public int value;
+    public int difficultyRating;
+    public int roll;
 
-    public d20()
+    public d20(int difficultyRating, CharacterSheet actor, Stat actorStat, CharacterSheet target, Stat targetStat)
     {
-        value = GameManager.RollDie(20);
-        if (value == 1) fumble = true;
-        else if (value == 20) critical = true;
+        int bonus = (actor) ? actor.GetStat(actorStat) : 0;
+        int penalty = (target) ? target.GetStat(targetStat) : 0;
+
+        difficultyRating += penalty - bonus;
+
+        roll = GameManager.RollDie(20);
     }
 
-    public bool Normal() { return !fumble && !critical; }
+    public bool Critical() { return roll == 20; }
+    public bool Fumble() { return roll == 1; }
+    public bool Success() {return roll > difficultyRating || Critical(); }
+    public bool Failure() { return roll <= difficultyRating || Fumble(); }
 }

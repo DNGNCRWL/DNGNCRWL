@@ -9,14 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fb4b6db08b7c1d48b4691997b66a6eb, type: 3}
-  m_Name: Bow
+  m_Script: {fileID: 11500000, guid: 0eaf4d05ca32e9147bcc1a4b2ad90283, type: 3}
+  m_Name: Fight
   m_EditorClassIdentifier: 
-  name: Bow
-  broken: 0
-  value: 0
-  dieCount: 1
-  damage: 6
-  twoHanded: 1
-  abilityToUse: 2
-  ammoName: Arrow

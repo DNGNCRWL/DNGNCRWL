@@ -35,8 +35,8 @@ public class ItemManager : MonoBehaviour
         else { Destroy(gameObject); return; }
 
         STARTING_WEAPON_PAIRS = new Dictionary<string, Item>();
-        STARTING_WEAPON_PAIRS.Add("Bow", new Stackable("Bundle of Arrows", "Arrow", 10));
-        STARTING_WEAPON_PAIRS.Add("Crossbow", new Stackable("Stack of Bolts", "Bolt", 10));
+        STARTING_WEAPON_PAIRS.Add("Bow", new Stackable("Bundle of Arrows", "Arrow", 10, false, 0));
+        STARTING_WEAPON_PAIRS.Add("Crossbow", new Stackable("Stack of Bolts", "Bolt", 10, false, 0));
 
         BAGS = bags;
         ADVENTURE_TOOLS = adventureTools;

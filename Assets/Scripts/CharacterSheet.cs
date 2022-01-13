@@ -2,33 +2,54 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterSheet : MonoBehaviour
+public enum Stat { Strength, Agility, Presence, Toughness, Defense };
+
+public class CharacterSheet : MonoBehaviour //can probably remove this as a monobehavior if we get rid of the unity calls at the bottom
 {
     public bool randomizeClassless;
 
-    public string
+    [SerializeField] string
         characterName, description, characterClass;
-    public int
+    [SerializeField] int
         hitPoints, maxHitPoints,
         strength, agility, presence, toughness,
         powers, omens, silver, food;
     static int abilityMin = -3;
-    static int abilityMax = 3;
-    public bool waterskin;
+    static int abilityMax = 6; //this is 3 in the book
+    [SerializeField] bool waterskin; //make this an item?
 
-    public Weapon
+    [SerializeField] Weapon
         mainhand, offhand, unequippedWeapon;
-    public Bag bag;
-    public Armor armor, unequippedArmor;
-    public List<Item> inventory;
+    [SerializeField] Bag bag;
+    [SerializeField] Armor armor, unequippedArmor;
+    [SerializeField] List<Item> inventory;
 
-    public enum State { Active, Inactive, Unconscious, Hemorrhaging, Dead };
-    public State currentState;
-    public bool brokenMainhand, brokenOffhand, brokenLeftLeg, brokenRightLeg, blindedLeft, blindedRight = false;
-    public bool canMove, canSee = false;
-    public int reviveCounter = 0;
-    public float hemorrhageTimer = 0;
+    public enum State{ Active, Inactive, Unconscious, Hemorrhaging, Dead };
+    [SerializeField] State currentState;
+    bool
+        infected,
+        brokenMainhand, brokenOffhand, brokenLeftLeg, brokenRightLeg, blindedLeft, blindedRight,
+        canMove, canSee = false;
+    int reviveCounter = 0;
+    float hemorrhageTimer = 0;
 
+    //getters setters
+    public string GetCharacterName() { return characterName; }
+    public string GetDescription() { return description; }
+    public string GetCharacterClass() { return characterClass; }
+    public int GetHitPoints() { return hitPoints; }
+    public int GetMaxHitPoints() { return maxHitPoints + maxHitPointsShift; }
+    public int GetPowers() { return powers; }
+    public int GetOmens() { return omens; }
+    
+
+    //Battle Effects
+    public int
+        maxHitPointsShift, strengthShift, agilityShift, presenceShift, toughnessShift;
+    public bool
+        tempDisabledHands, tempDisabledLegs, tempBlinded;
+
+    //On with the show
     void InitializeCharacter()
     {
         characterName = "Unnamed";
@@ -44,71 +65,6 @@ public class CharacterSheet : MonoBehaviour
         bag = null;
         armor = null;
         inventory = new List<Item>();
-    }
-
-    string DebugString()
-    {
-        char lb = '\n';
-
-        string state;
-        switch (currentState)
-        {
-            case State.Active: state = "Active"; break;
-            case State.Dead: state = "Dead"; break;
-            case State.Hemorrhaging: state = "Hemorrhaging"; break;
-            case State.Inactive: state = "Inactive"; break;
-            case State.Unconscious: state = "Unconscious"; break;
-            default: state = "Unknown"; break;
-        }
-
-        string injuries = " ";
-        //    public bool brokenMainhand, brokenOffhand, brokenLeftLeg, brokenRightLeg, blindedLeft, blindedRight = false;
-        if (!brokenMainhand && !brokenOffhand && !brokenLeftLeg && !brokenRightLeg && !blindedLeft && !blindedRight)
-        {
-            injuries = " No injuries. ";
-        }
-        else
-        {
-            if (brokenMainhand && brokenOffhand) injuries += "Hands are useless. ";
-            else if (brokenMainhand) injuries += "Mainhand is broken. ";
-            else if (brokenOffhand) injuries += "Offhand is broken. ";
-
-            if (!canMove) injuries += "Legs are useless. ";
-            else if (brokenLeftLeg || brokenRightLeg) injuries += "One leg is broken. ";
-
-            if (!canSee) injuries += "Completely blind. ";
-            else if (blindedLeft || blindedRight) injuries += "One eye is blinded. ";
-        }
-
-        string toReturn =
-            "Name:        " + ((characterName != null) ? characterName : "No name") + lb +
-            "State:       " + state + lb +
-            "Description: " + ((description != null) ? description : "No known history.") + injuries + lb +
-            "Class:       " + ((characterClass != null) ? characterClass : "No description") + lb +
-            "HP:          " + hitPoints + "/" + maxHitPoints + lb +
-            "Strength:    " + strength + lb +
-            "Agility:     " + agility + lb +
-            "Presence:    " + presence + lb +
-            "Toughness:   " + toughness + lb +
-            "Powers:      " + powers + lb +
-            "Omens:       " + omens + lb +
-            "Silver:      " + silver + lb +
-            "Food:        " + food + lb +
-            "Waterskin:   " + waterskin + lb +
-            "Mainhand:    " + ((mainhand != null) ? mainhand.GetExplicitString() : "d2 Fist") + lb +
-            "Offhand:     " + GetOffHandExplicit() + lb +
-            "Armor:       " + ((armor != null) ? armor.GetExplicitString() : "Tier 0/0 Naked") + lb +
-            "Bag:         " + GetBagExplicitString() + lb;
-
-        if (inventory.Count == 0) toReturn += "Equipment:   No Equipment";
-        else
-        {
-            toReturn += "Inventory:   ";
-            toReturn += ItemManager.ItemListToExplicitString(inventory);
-        }
-
-        return toReturn;
-
     }
 
     void RandomClassless()
@@ -201,6 +157,138 @@ public class CharacterSheet : MonoBehaviour
         Debug.Log(DebugString());
     }
 
+    string RandomName()
+    {
+        string[] names = {
+            //"Aerg-Tval", "Agn", "Arvant", "Belsum", "Belum", "Brint", "Börda", "Daeru",
+            //"Eldar", "Felban", "Gotven", "Graft", "Grin", "Grittr", "Haerü", "Hargha",
+            //"Harmug", "Jotna", "Karg", "Karva", "Katla", "Keftar", "Klort", "Kratar",
+            //"Kutz", "Kvetin", "Lygan", "Margar", "Merkari", "Nagl", "Niduk", "Nifehl",
+            //"Prügl", "Qillnach", "Risten", "Svind", "Theras", "Therg", "Torvul", "Törn",
+            //"Urm", "Urvarg", "Vagal", "Von", "Vrakh", "Vresi", "Wemut",
+            //"Connor", "Isaiah", "James", "Raphael", "Tomasz"
+
+            "Aerg-Tval", "Agn", "Arvant", "Belsum", "Belum", "Brint", "Borda", "Daeru",
+            "Eldar", "Felban", "Gotven", "Graft", "Grin", "Grittr", "Haeru", "Hargha",
+            "Harmug", "Jotna", "Karg", "Karva", "Katla", "Keftar", "Klort", "Kratar",
+            "Kutz", "Kvetin", "Lygan", "Margar", "Merkari", "Nagl", "Niduk", "Nifehl",
+            "Prugl", "Qillnach", "Risten", "Svind", "Theras", "Therg", "Torvul", "Torn",
+            "Urm", "Urvarg", "Vagal", "Von", "Vrakh", "Vresi", "Wemut",
+
+            "Connor", "Isaiah", "James", "Raphael", "Tomasz",
+
+            "Gilt", "Hastings", "Subar", "Osgar", "Beauner", "Edill", "Karth", "Rosse", "Kathe",
+            "Arash", "Bthil", "Coln", "Django", "Etrick", "Fong", "Gozzler", "Henk", "Iglis",
+            "Jeronimo", "Kong", "Loop", "Menthis", "Nort", "Orcrun", "Penelope", "Quisling",
+            "Rik", "Somner", "Tzands", "Uruth", "Vader", "Wander", "Xoco", "Ygg", "Zyphon",
+            "Terra", "Lucky", "Edwin", "Sabre", "Acele", "Gao", "Istrago", "Ganun", "Cyan",
+            "Magenta", "Yellow", "Kblack", "Lute", "Assel", "Robo", "Mono", "Ziegfried",
+            "Demos", "Riku", "Bluto", "Rhelm", "Cecil", "Kayn", "Risse", "Jane", "Mal",
+            "Ashe", "Ventok", "Figaro", "Ushtar", "Quinns",
+            "Shadow", "Rock", "Heavy", "Jrue", "Yan", "Portus", "Kris",
+            "Baltur", "Vera", "Scorpo", "Mazer", "Raydn",
+            "Herschil", "Peow", "Pao", "Qobo", "Wenth", "Erskin", "Remmy",
+            "Thistle", "Ygrinth", "Ursul", "Ivank", "Owenis", "Pisto"
+        };
+
+        int randomIndex = UnityEngine.Random.Range(0, names.Length);
+        return names[randomIndex];
+    }
+    int RollAbilityScore(int howMany, int shift)
+    {
+        int diceResult = GameManager.RollDice(howMany, 6) + shift;
+
+        if (diceResult > 16) return 3;
+        else if (diceResult > 14) return 2;
+        else if (diceResult > 12) return 1;
+        else if (diceResult > 8) return 0;
+        else if (diceResult > 6) return -1;
+        else if (diceResult > 4) return -2;
+        else return -3;
+    }
+
+    string BagToString()
+    {
+        if (bag == null) return "No Bag";
+
+        string s = "";
+        s += bag.name + " with ";
+        s += ItemManager.NumberOfItems(inventory) + "/" + bag.carryingCapacity + " capacity";
+        return s;
+    }
+    string OffhandToString()
+    {
+        if (mainhand.twoHanded) return "None";
+        else return ((offhand != null) ? offhand.GetExplicitString() : "d2 Fist");
+    }
+    string DebugString()
+    {
+        char lb = '\n';
+
+        string state;
+        switch (currentState)
+        {
+            case State.Active: state = "Active"; break;
+            case State.Dead: state = "Dead"; break;
+            case State.Hemorrhaging: state = "Hemorrhaging"; break;
+            case State.Inactive: state = "Inactive"; break;
+            case State.Unconscious: state = "Unconscious"; break;
+            default: state = "Unknown"; break;
+        }
+
+        string injuries = " ";
+        //    public bool brokenMainhand, brokenOffhand, brokenLeftLeg, brokenRightLeg, blindedLeft, blindedRight = false;
+        if (!brokenMainhand && !brokenOffhand && !brokenLeftLeg && !brokenRightLeg && !blindedLeft && !blindedRight)
+        {
+            injuries = " No injuries. ";
+        }
+        else
+        {
+            if (brokenMainhand && brokenOffhand) injuries += "Hands are useless. ";
+            else if (brokenMainhand) injuries += "Mainhand is broken. ";
+            else if (brokenOffhand) injuries += "Offhand is broken. ";
+
+            if (!canMove) injuries += "Legs are useless. ";
+            else if (brokenLeftLeg || brokenRightLeg) injuries += "One leg is broken. ";
+
+            if (!canSee) injuries += "Completely blind. ";
+            else if (blindedLeft || blindedRight) injuries += "One eye is blinded. ";
+        }
+
+        string toReturn =
+            "Name:        " + ((characterName != null) ? characterName : "No name") + lb +
+            "State:       " + state + lb +
+            "Description: " + ((description != null) ? description : "No known history.") + injuries + lb +
+            "Class:       " + ((characterClass != null) ? characterClass : "No description") + lb +
+            "HP:          " + hitPoints + "/" + maxHitPoints + lb +
+            "Strength:    " + strength + lb +
+            "Agility:     " + agility + lb +
+            "Presence:    " + presence + lb +
+            "Toughness:   " + toughness + lb +
+            "Powers:      " + powers + lb +
+            "Omens:       " + omens + lb +
+            "Silver:      " + silver + lb +
+            "Food:        " + food + lb +
+            "Waterskin:   " + waterskin + lb +
+            "Mainhand:    " + ((mainhand != null) ? mainhand.GetExplicitString() : "d2 Fist") + lb +
+            "Offhand:     " + OffhandToString() + lb +
+            "Armor:       " + ((armor != null) ? armor.GetExplicitString() : "Tier 0/0 Naked") + lb +
+            "Bag:         " + BagToString() + lb;
+
+        if (inventory.Count == 0) toReturn += "Equipment:   No Equipment";
+        else
+        {
+            toReturn += "Inventory:   ";
+            toReturn += ItemManager.ItemListToExplicitString(inventory);
+        }
+
+        return toReturn;
+
+    }
+
+
+
+    //EQUIP STUFF
     bool EquipBag(Bag newBag)
     {
         if (newBag == null)
@@ -211,17 +299,6 @@ public class CharacterSheet : MonoBehaviour
         if (oldBag == null) return true;
         return PickupItem(oldBag);
     }
-
-    string GetBagExplicitString()
-    {
-        if (bag == null) return "No Bag";
-
-        string s = "";
-        s += bag.name + " with ";
-        s += ItemManager.NumberOfItems(inventory) + "/" + bag.carryingCapacity + " capacity";
-        return s;
-    }
-
     bool EquipMainhand(Weapon newWeapon)
     {
         if (newWeapon!= null &&
@@ -235,7 +312,6 @@ public class CharacterSheet : MonoBehaviour
         if (oldWeapon == null) return false;
         return PickupItem(oldWeapon);
     }
-
     bool EquipOffhand(Weapon newWeapon)
     {
         if (newWeapon!= null &&
@@ -249,7 +325,6 @@ public class CharacterSheet : MonoBehaviour
         if (oldWeapon == null) return false;
         return PickupItem(oldWeapon);
     }
-
     bool EquipTwohanded(Weapon newWeapon)
     {
         EquipMainhand(null);
@@ -258,13 +333,6 @@ public class CharacterSheet : MonoBehaviour
         mainhand = newWeapon;
         return true;//?? unsure if this is correct
     }
-
-    string GetOffHandExplicit()
-    {
-        if (mainhand.twoHanded) return "None";
-        else return ((offhand != null) ? offhand.GetExplicitString() : "d2 Fist");
-    }
-
     bool EquipArmor(Armor newArmor)
     {
         Armor oldArmor = armor;
@@ -272,7 +340,6 @@ public class CharacterSheet : MonoBehaviour
         if (oldArmor == null) return false;
         return PickupItem(oldArmor);
     }
-
     bool PickupItem(Item item)
     {
         if (item == null) return GameManager.Error("No item to pickup");
@@ -316,57 +383,9 @@ public class CharacterSheet : MonoBehaviour
         return true;
     }
 
-    int RollAbilityScore(int howMany, int shift)
-    {
-        int diceResult = GameManager.RollDice(howMany, 6) + shift;
 
-        if (diceResult > 16) return 3;
-        else if (diceResult > 14) return 2;
-        else if (diceResult > 12) return 1;
-        else if (diceResult > 8) return 0;
-        else if (diceResult > 6) return -1;
-        else if (diceResult > 4) return -2;
-        else return -3;
-    }
 
-    string RandomName()
-    {
-        string[] names = {
-            //"Aerg-Tval", "Agn", "Arvant", "Belsum", "Belum", "Brint", "Börda", "Daeru",
-            //"Eldar", "Felban", "Gotven", "Graft", "Grin", "Grittr", "Haerü", "Hargha",
-            //"Harmug", "Jotna", "Karg", "Karva", "Katla", "Keftar", "Klort", "Kratar",
-            //"Kutz", "Kvetin", "Lygan", "Margar", "Merkari", "Nagl", "Niduk", "Nifehl",
-            //"Prügl", "Qillnach", "Risten", "Svind", "Theras", "Therg", "Torvul", "Törn",
-            //"Urm", "Urvarg", "Vagal", "Von", "Vrakh", "Vresi", "Wemut",
-            //"Connor", "Isaiah", "James", "Raphael", "Tomasz"
-
-            "Aerg-Tval", "Agn", "Arvant", "Belsum", "Belum", "Brint", "Borda", "Daeru",
-            "Eldar", "Felban", "Gotven", "Graft", "Grin", "Grittr", "Haeru", "Hargha",
-            "Harmug", "Jotna", "Karg", "Karva", "Katla", "Keftar", "Klort", "Kratar",
-            "Kutz", "Kvetin", "Lygan", "Margar", "Merkari", "Nagl", "Niduk", "Nifehl",
-            "Prugl", "Qillnach", "Risten", "Svind", "Theras", "Therg", "Torvul", "Torn",
-            "Urm", "Urvarg", "Vagal", "Von", "Vrakh", "Vresi", "Wemut",
-
-            "Connor", "Isaiah", "James", "Raphael", "Tomasz",
-
-            "Gilt", "Hastings", "Subar", "Osgar", "Beauner", "Edill", "Karth", "Rosse", "Kathe",
-            "Arash", "Bthil", "Coln", "Django", "Etrick", "Fong", "Gozzler", "Henk", "Iglis",
-            "Jeronimo", "Kong", "Loop", "Menthis", "Nort", "Orcrun", "Penelope", "Quisling",
-            "Rik", "Somner", "Tzands", "Uruth", "Vader", "Wander", "Xoco", "Ygg", "Zyphon",
-            "Terra", "Lucky", "Edwin", "Sabre", "Acele", "Gao", "Istrago", "Ganun", "Cyan",
-            "Magenta", "Yellow", "Kblack", "Lute", "Assel", "Robo", "Mono", "Ziegfried",
-            "Demos", "Riku", "Bluto", "Rhelm", "Cecil", "Kayn", "Risse", "Jane", "Mal",
-            "Ashe", "Ventok", "Figaro", "Ushtar", "Quinns",
-            "Shadow", "Rock", "Heavy", "Jrue", "Yan", "Portus", "Kris",
-            "Baltur", "Vera", "Scorpo", "Mazer", "Raydn",
-            "Herschil", "Peow", "Pao", "Qobo", "Wenth", "Erskin", "Remmy",
-            "Thistle", "Ygrinth", "Ursul", "Ivank", "Owenis", "Pisto"
-        };
-
-        int randomIndex = UnityEngine.Random.Range(0, names.Length);
-        return names[randomIndex];
-    }
-
+    //ABILITY & STAT GETTERS
     public int GetStrength()
     {
         int toReturn = strength;
@@ -378,29 +397,7 @@ public class CharacterSheet : MonoBehaviour
     {
         int toReturn = agility;
         toReturn -= HemorrhagePenalty();
-
-        int armorTier = 0;
-        if(armor != null)
-            armorTier = armor.armorTier;
-
-        if (armorTier == 2)
-            toReturn -= 2;
-        else if (armorTier == 3)
-            toReturn -= 4;
-
-        return toReturn;
-    }
-    public int GetDefense()
-    {
-        int toReturn = agility;
-        toReturn -= HemorrhagePenalty();
-
-        int armorTier = 0;
-        if (armor != null)
-            armorTier = armor.armorTier;
-
-        if (armorTier > 1)
-            toReturn -= 2;
+        toReturn = GetArmor().AgilityPenalty();
 
         return toReturn;
     }
@@ -419,9 +416,48 @@ public class CharacterSheet : MonoBehaviour
         return toReturn;
     }
 
-    public void TakeDamage(int damage)
+    public int GetDefense()
     {
-        hitPoints -= damage;
+        int toReturn = agility;
+        toReturn -= HemorrhagePenalty();
+        toReturn = GetArmor().DefensePenalty();
+
+        return toReturn;
+    }
+
+    public int GetStat(Stat stat)
+    {
+        switch (stat)
+        {
+            case Stat.Agility: return GetAgility();
+            case Stat.Presence: return GetPresence();
+            case Stat.Strength: return GetStrength();
+            case Stat.Toughness: return GetToughness();
+            case Stat.Defense: return GetDefense();
+            default: return 0;
+        }
+    }
+
+
+    public Weapon GetWeapon()
+    {
+        if (mainhand != null) return mainhand;
+        else return unequippedWeapon;
+    }
+    public Armor GetArmor()
+    {
+        if (armor != null) return armor;
+        else return unequippedArmor;
+    }
+
+
+
+    //ACTION FUNCTIONS
+    //equip item
+    public void CheckHPBounds()
+    {
+        if (hitPoints > maxHitPoints)
+            hitPoints = maxHitPoints;
 
         if (hitPoints < 0)
             currentState = State.Dead;
@@ -429,7 +465,6 @@ public class CharacterSheet : MonoBehaviour
         if (hitPoints == 0)
             DeathRoll();
     }
-
     public void DeathRoll()
     {
         if (currentState == State.Dead) return;
@@ -475,7 +510,22 @@ public class CharacterSheet : MonoBehaviour
                 break;
         }
     }
+    public void RecoverDamage(int damage)
+    {
+        hitPoints += damage;
 
+        CheckHPBounds();
+    }
+    public void TakeDamage(int damage)
+    {
+        hitPoints -= damage;
+
+        CheckHPBounds();
+    }
+
+
+
+    //PENALTIES
     public int HemorrhagePenalty()
     {
         int i = 0;

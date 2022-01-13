@@ -276,7 +276,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Use Environ
+  m_text: Option 6
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9063fbb18178af34f9f0d202bb3f31f0, type: 2}
   m_sharedMaterial: {fileID: 5738050820562297703, guid: 9063fbb18178af34f9f0d202bb3f31f0, type: 2}
@@ -442,7 +442,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Offhand Attack
+  m_text: Option 5
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9063fbb18178af34f9f0d202bb3f31f0, type: 2}
   m_sharedMaterial: {fileID: 5738050820562297703, guid: 9063fbb18178af34f9f0d202bb3f31f0, type: 2}
@@ -900,7 +900,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Perfume 40
+  m_text: Option 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9063fbb18178af34f9f0d202bb3f31f0, type: 2}
   m_sharedMaterial: {fileID: 5738050820562297703, guid: 9063fbb18178af34f9f0d202bb3f31f0, type: 2}
@@ -2104,7 +2104,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 60 silver
+  m_text: Option 2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9063fbb18178af34f9f0d202bb3f31f0, type: 2}
   m_sharedMaterial: {fileID: 5738050820562297703, guid: 9063fbb18178af34f9f0d202bb3f31f0, type: 2}
@@ -2233,16 +2233,14 @@ MonoBehaviour:
   unequippedArmor: {fileID: 0}
   inventory: []
   currentState: 0
-  brokenMainhand: 0
-  brokenOffhand: 0
-  brokenLeftLeg: 0
-  brokenRightLeg: 0
-  blindedLeft: 0
-  blindedRight: 0
-  canMove: 0
-  canSee: 0
-  reviveCounter: 0
-  hemorrhageTimer: 0
+  maxHitPointsShift: 0
+  strengthShift: 0
+  agilityShift: 0
+  presenceShift: 0
+  toughnessShift: 0
+  tempDisabledHands: 0
+  tempDisabledLegs: 0
+  tempBlinded: 0
 --- !u!4 &539683949
 Transform:
   m_ObjectHideFlags: 0
@@ -2455,7 +2453,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Edgar
+  m_text: Option 4
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9063fbb18178af34f9f0d202bb3f31f0, type: 2}
   m_sharedMaterial: {fileID: 5738050820562297703, guid: 9063fbb18178af34f9f0d202bb3f31f0, type: 2}
@@ -2846,7 +2844,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &846310395
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3350,7 +3348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f864b19878f05c49a191f06f82d35a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  randomizeClassless: 0
+  randomizeClassless: 1
   characterName: Goblin
   description: 
   characterClass: 
@@ -3373,16 +3371,14 @@ MonoBehaviour:
   unequippedArmor: {fileID: 11400000, guid: e325cfabe55fa974b8d80a4b24a5bc1b, type: 2}
   inventory: []
   currentState: 0
-  brokenMainhand: 0
-  brokenOffhand: 0
-  brokenLeftLeg: 0
-  brokenRightLeg: 0
-  blindedLeft: 0
-  blindedRight: 0
-  canMove: 0
-  canSee: 0
-  reviveCounter: 0
-  hemorrhageTimer: 0
+  maxHitPointsShift: 0
+  strengthShift: 0
+  agilityShift: 0
+  presenceShift: 0
+  toughnessShift: 0
+  tempDisabledHands: 0
+  tempDisabledLegs: 0
+  tempBlinded: 0
 --- !u!4 &927576513
 Transform:
   m_ObjectHideFlags: 0
@@ -3684,7 +3680,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Sabin
+  m_text: Option 3
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9063fbb18178af34f9f0d202bb3f31f0, type: 2}
   m_sharedMaterial: {fileID: 5738050820562297703, guid: 9063fbb18178af34f9f0d202bb3f31f0, type: 2}
@@ -3818,7 +3814,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A new battle!!
+  m_text: 'Pick An Item:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 57d95fbad2695674a8a60daa44f56d4f, type: 2}
   m_sharedMaterial: {fileID: 7319932621566770728, guid: 57d95fbad2695674a8a60daa44f56d4f, type: 2}
@@ -5225,16 +5221,14 @@ MonoBehaviour:
   unequippedArmor: {fileID: 0}
   inventory: []
   currentState: 0
-  brokenMainhand: 0
-  brokenOffhand: 0
-  brokenLeftLeg: 0
-  brokenRightLeg: 0
-  blindedLeft: 0
-  blindedRight: 0
-  canMove: 0
-  canSee: 0
-  reviveCounter: 0
-  hemorrhageTimer: 0
+  maxHitPointsShift: 0
+  strengthShift: 0
+  agilityShift: 0
+  presenceShift: 0
+  toughnessShift: 0
+  tempDisabledHands: 0
+  tempDisabledLegs: 0
+  tempBlinded: 0
 --- !u!4 &1446046362
 Transform:
   m_ObjectHideFlags: 0
@@ -5494,16 +5488,14 @@ MonoBehaviour:
   unequippedArmor: {fileID: 0}
   inventory: []
   currentState: 0
-  brokenMainhand: 0
-  brokenOffhand: 0
-  brokenLeftLeg: 0
-  brokenRightLeg: 0
-  blindedLeft: 0
-  blindedRight: 0
-  canMove: 0
-  canSee: 0
-  reviveCounter: 0
-  hemorrhageTimer: 0
+  maxHitPointsShift: 0
+  strengthShift: 0
+  agilityShift: 0
+  presenceShift: 0
+  toughnessShift: 0
+  tempDisabledHands: 0
+  tempDisabledLegs: 0
+  tempBlinded: 0
 --- !u!4 &1484241083
 Transform:
   m_ObjectHideFlags: 0
@@ -5668,16 +5660,14 @@ MonoBehaviour:
   unequippedArmor: {fileID: 0}
   inventory: []
   currentState: 0
-  brokenMainhand: 0
-  brokenOffhand: 0
-  brokenLeftLeg: 0
-  brokenRightLeg: 0
-  blindedLeft: 0
-  blindedRight: 0
-  canMove: 0
-  canSee: 0
-  reviveCounter: 0
-  hemorrhageTimer: 0
+  maxHitPointsShift: 0
+  strengthShift: 0
+  agilityShift: 0
+  presenceShift: 0
+  toughnessShift: 0
+  tempDisabledHands: 0
+  tempDisabledLegs: 0
+  tempBlinded: 0
 --- !u!4 &1619461193
 Transform:
   m_ObjectHideFlags: 0
@@ -5745,16 +5735,14 @@ MonoBehaviour:
   unequippedArmor: {fileID: 0}
   inventory: []
   currentState: 0
-  brokenMainhand: 0
-  brokenOffhand: 0
-  brokenLeftLeg: 0
-  brokenRightLeg: 0
-  blindedLeft: 0
-  blindedRight: 0
-  canMove: 0
-  canSee: 0
-  reviveCounter: 0
-  hemorrhageTimer: 0
+  maxHitPointsShift: 0
+  strengthShift: 0
+  agilityShift: 0
+  presenceShift: 0
+  toughnessShift: 0
+  tempDisabledHands: 0
+  tempDisabledLegs: 0
+  tempBlinded: 0
 --- !u!4 &1644708603
 Transform:
   m_ObjectHideFlags: 0
@@ -5943,16 +5931,14 @@ MonoBehaviour:
   unequippedArmor: {fileID: 0}
   inventory: []
   currentState: 0
-  brokenMainhand: 0
-  brokenOffhand: 0
-  brokenLeftLeg: 0
-  brokenRightLeg: 0
-  blindedLeft: 0
-  blindedRight: 0
-  canMove: 0
-  canSee: 0
-  reviveCounter: 0
-  hemorrhageTimer: 0
+  maxHitPointsShift: 0
+  strengthShift: 0
+  agilityShift: 0
+  presenceShift: 0
+  toughnessShift: 0
+  tempDisabledHands: 0
+  tempDisabledLegs: 0
+  tempBlinded: 0
 --- !u!4 &1654140946
 Transform:
   m_ObjectHideFlags: 0
@@ -6846,7 +6832,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1836405720
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7041,16 +7027,14 @@ MonoBehaviour:
   unequippedArmor: {fileID: 0}
   inventory: []
   currentState: 0
-  brokenMainhand: 0
-  brokenOffhand: 0
-  brokenLeftLeg: 0
-  brokenRightLeg: 0
-  blindedLeft: 0
-  blindedRight: 0
-  canMove: 0
-  canSee: 0
-  reviveCounter: 0
-  hemorrhageTimer: 0
+  maxHitPointsShift: 0
+  strengthShift: 0
+  agilityShift: 0
+  presenceShift: 0
+  toughnessShift: 0
+  tempDisabledHands: 0
+  tempDisabledLegs: 0
+  tempBlinded: 0
 --- !u!4 &1909781600
 Transform:
   m_ObjectHideFlags: 0

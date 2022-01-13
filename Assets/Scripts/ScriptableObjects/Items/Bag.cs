@@ -13,9 +13,6 @@ public class Bag : Item
         this.carryingCapacity = carryingCapacity;
     }
 
-    public Bag(string itemName, int carryingCapacity) : this(itemName, false, carryingCapacity, 0) { }
-    public Bag(string itemName) : this(itemName, false, MINIMUM_CARRYING_CAPACITY, 0) { }
-
     public override Item Copy()
     {
         return new Bag(name, broken, carryingCapacity, value);

@@ -7,7 +7,7 @@ public class ItemPack : Item
 {
     public Item[] items;
 
-    public ItemPack(Item[] items) : base(items.Length.ToString() + " Item Pack")
+    public ItemPack(Item[] items, bool broken, int value) : base(items.Length.ToString() + " Item Pack", broken, value)
     {
         this.items = items;
     }

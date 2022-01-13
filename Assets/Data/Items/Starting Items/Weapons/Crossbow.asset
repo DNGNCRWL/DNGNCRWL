@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0fb4b6db08b7c1d48b4691997b66a6eb, type: 3}
-  m_Name: Projectile Weapon
+  m_Name: Crossbow
   m_EditorClassIdentifier: 
   name: Crossbow
   broken: 0
@@ -18,4 +18,5 @@ MonoBehaviour:
   dieCount: 1
   damage: 8
   twoHanded: 1
+  abilityToUse: 2
   ammoName: Bolt
