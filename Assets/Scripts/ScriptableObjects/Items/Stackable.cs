@@ -14,8 +14,6 @@ public class Stackable : Item
         this.amount = amount;
     }
 
-    public Stackable(string itemName, string unit, int amount) : this(itemName, unit, amount, false, 0) { }
-
     public override string GetExplicitString()
     {
         return base.GetExplicitString() + " with " + amount + " " + unit + ((amount > 1) ? "s" : "");

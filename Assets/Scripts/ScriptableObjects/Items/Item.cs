@@ -16,10 +16,6 @@ public class Item : ScriptableObject
         this.value = value;
     }
 
-    public Item(string itemName, bool broken) : this(itemName, broken, 0) { }
-    public Item(string itemName, int value) : this(itemName, false, value) { }
-    public Item(string itemName) : this(itemName, false, 0) { }
-
     public virtual string GetExplicitString()
     {
         return ((broken) ? "Broken" : "") + name;

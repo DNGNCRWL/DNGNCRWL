@@ -14,12 +14,25 @@ public class Armor : Item
         this.maxArmorTier = maxArmorTier;
     }
 
-    public Armor(string itemName, int armorTier, int maxArmorTier) : this(itemName, armorTier, maxArmorTier, false, 0) { }
-    public Armor(string itemName, int armorTier) : this(itemName, armorTier, armorTier) { }
-
     public override string GetExplicitString()
     {
         return "Tier " + armorTier + "/" + maxArmorTier + " " + name;
+    }
+
+    public int AgilityPenalty()
+    {
+        if (maxArmorTier >= 3)
+            return 4;
+        if (maxArmorTier >= 2)
+            return 2;
+        return 0;
+    }
+
+    public int DefensePenalty()
+    {
+        if (maxArmorTier >= 2)
+            return 2;
+        return 0;
     }
 
     public override Item Copy()
