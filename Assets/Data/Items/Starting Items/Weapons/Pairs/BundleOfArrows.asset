@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ba3e2d1f32d90144a175283e2c89634, type: 3}
-  m_Name: Backpack
+  m_Script: {fileID: 11500000, guid: e06c0768d80cde741a0693385f4ad72d, type: 3}
+  m_Name: BundleOfArrows
   m_EditorClassIdentifier: 
-  itemName: Backpack
+  itemName: Bundle Of Arrows
   broken: 0
   value: 0
   actions: []
-  carryingCapacity: 7
+  unit: Arrow
+  amount: 10

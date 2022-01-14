@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         if (GM == null) GM = this;
-        else Destroy(gameObject);
+        else { Destroy(gameObject); return; }
 
         playerCharacters = new List<GameObject>();
         foreach (GameObject go in characters) playerCharacters.Add(go);
@@ -53,8 +53,10 @@ public class d20
         roll = GameManager.RollDie(20);
     }
 
-    public bool Critical() { return roll == 20; }
-    public bool Fumble() { return roll == 1; }
-    public bool Success() {return roll > difficultyRating || Critical(); }
-    public bool Failure() { return roll <= difficultyRating || Fumble(); }
+    public bool IsSuccess() {return roll > difficultyRating || IsCritical(); }
+    public bool IsCritical() { return roll == 20; }
+    public bool IsSuccessOnly() { return roll > difficultyRating && !IsCritical(); }
+    public bool IsFailure() { return roll <= difficultyRating || IsFumble(); }
+    public bool IsFumble() { return roll == 1; }
+    public bool IsFailureOnly() { return roll <= difficultyRating && !IsFumble(); }
 }

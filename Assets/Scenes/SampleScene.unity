@@ -368,7 +368,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &36480579
 Transform:
   m_ObjectHideFlags: 0
@@ -2016,6 +2016,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 00551fbeb5c163748a3ed91d09512104, type: 2}
   unequippedHumanWeapon: {fileID: 11400000, guid: 2f057fd4fd57dd442b717efe99d4fb10, type: 2}
   unequippedHumanArmor: {fileID: 11400000, guid: 1b55636a5bf97b24f82d271cf48741ce, type: 2}
+  weaponPairs:
+  - weapon: {fileID: 11400000, guid: 3800ad9e4ab82ef44a1d12ee211f5cb0, type: 2}
+    item: {fileID: 11400000, guid: f52dfd8668bc4ca4eb64ea5c66f00356, type: 2}
+  - weapon: {fileID: 11400000, guid: 913e3529bd3c64144b4ef7393ab31303, type: 2}
+    item: {fileID: 11400000, guid: 583063e250f65b24f984b8a8a9986037, type: 2}
 --- !u!4 &527566022
 Transform:
   m_ObjectHideFlags: 0
@@ -2233,14 +2238,16 @@ MonoBehaviour:
   unequippedArmor: {fileID: 0}
   inventory: []
   currentState: 0
-  maxHitPointsShift: 0
-  strengthShift: 0
-  agilityShift: 0
-  presenceShift: 0
-  toughnessShift: 0
+  maxHitPointsTempIncrease: 0
+  strengthTemp: 0
+  agilityTemp: 0
+  presenceTemp: 0
+  toughnessTemp: 0
+  defenseTemp: 0
   tempDisabledHands: 0
   tempDisabledLegs: 0
   tempBlinded: 0
+  tempDistracted: 0
 --- !u!4 &539683949
 Transform:
   m_ObjectHideFlags: 0
@@ -2844,7 +2851,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &846310395
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3371,14 +3378,16 @@ MonoBehaviour:
   unequippedArmor: {fileID: 11400000, guid: e325cfabe55fa974b8d80a4b24a5bc1b, type: 2}
   inventory: []
   currentState: 0
-  maxHitPointsShift: 0
-  strengthShift: 0
-  agilityShift: 0
-  presenceShift: 0
-  toughnessShift: 0
+  maxHitPointsTempIncrease: 0
+  strengthTemp: 0
+  agilityTemp: 0
+  presenceTemp: 0
+  toughnessTemp: 0
+  defenseTemp: 0
   tempDisabledHands: 0
   tempDisabledLegs: 0
   tempBlinded: 0
+  tempDistracted: 0
 --- !u!4 &927576513
 Transform:
   m_ObjectHideFlags: 0
@@ -3814,7 +3823,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Pick An Item:'
+  m_text: Combat Narrative Goes Here
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 57d95fbad2695674a8a60daa44f56d4f, type: 2}
   m_sharedMaterial: {fileID: 7319932621566770728, guid: 57d95fbad2695674a8a60daa44f56d4f, type: 2}
@@ -5221,14 +5230,16 @@ MonoBehaviour:
   unequippedArmor: {fileID: 0}
   inventory: []
   currentState: 0
-  maxHitPointsShift: 0
-  strengthShift: 0
-  agilityShift: 0
-  presenceShift: 0
-  toughnessShift: 0
+  maxHitPointsTempIncrease: 0
+  strengthTemp: 0
+  agilityTemp: 0
+  presenceTemp: 0
+  toughnessTemp: 0
+  defenseTemp: 0
   tempDisabledHands: 0
   tempDisabledLegs: 0
   tempBlinded: 0
+  tempDistracted: 0
 --- !u!4 &1446046362
 Transform:
   m_ObjectHideFlags: 0
@@ -5488,14 +5499,16 @@ MonoBehaviour:
   unequippedArmor: {fileID: 0}
   inventory: []
   currentState: 0
-  maxHitPointsShift: 0
-  strengthShift: 0
-  agilityShift: 0
-  presenceShift: 0
-  toughnessShift: 0
+  maxHitPointsTempIncrease: 0
+  strengthTemp: 0
+  agilityTemp: 0
+  presenceTemp: 0
+  toughnessTemp: 0
+  defenseTemp: 0
   tempDisabledHands: 0
   tempDisabledLegs: 0
   tempBlinded: 0
+  tempDistracted: 0
 --- !u!4 &1484241083
 Transform:
   m_ObjectHideFlags: 0
@@ -5660,14 +5673,16 @@ MonoBehaviour:
   unequippedArmor: {fileID: 0}
   inventory: []
   currentState: 0
-  maxHitPointsShift: 0
-  strengthShift: 0
-  agilityShift: 0
-  presenceShift: 0
-  toughnessShift: 0
+  maxHitPointsTempIncrease: 0
+  strengthTemp: 0
+  agilityTemp: 0
+  presenceTemp: 0
+  toughnessTemp: 0
+  defenseTemp: 0
   tempDisabledHands: 0
   tempDisabledLegs: 0
   tempBlinded: 0
+  tempDistracted: 0
 --- !u!4 &1619461193
 Transform:
   m_ObjectHideFlags: 0
@@ -5735,14 +5750,16 @@ MonoBehaviour:
   unequippedArmor: {fileID: 0}
   inventory: []
   currentState: 0
-  maxHitPointsShift: 0
-  strengthShift: 0
-  agilityShift: 0
-  presenceShift: 0
-  toughnessShift: 0
+  maxHitPointsTempIncrease: 0
+  strengthTemp: 0
+  agilityTemp: 0
+  presenceTemp: 0
+  toughnessTemp: 0
+  defenseTemp: 0
   tempDisabledHands: 0
   tempDisabledLegs: 0
   tempBlinded: 0
+  tempDistracted: 0
 --- !u!4 &1644708603
 Transform:
   m_ObjectHideFlags: 0
@@ -5931,14 +5948,16 @@ MonoBehaviour:
   unequippedArmor: {fileID: 0}
   inventory: []
   currentState: 0
-  maxHitPointsShift: 0
-  strengthShift: 0
-  agilityShift: 0
-  presenceShift: 0
-  toughnessShift: 0
+  maxHitPointsTempIncrease: 0
+  strengthTemp: 0
+  agilityTemp: 0
+  presenceTemp: 0
+  toughnessTemp: 0
+  defenseTemp: 0
   tempDisabledHands: 0
   tempDisabledLegs: 0
   tempBlinded: 0
+  tempDistracted: 0
 --- !u!4 &1654140946
 Transform:
   m_ObjectHideFlags: 0
@@ -6832,7 +6851,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1836405720
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7027,14 +7046,16 @@ MonoBehaviour:
   unequippedArmor: {fileID: 0}
   inventory: []
   currentState: 0
-  maxHitPointsShift: 0
-  strengthShift: 0
-  agilityShift: 0
-  presenceShift: 0
-  toughnessShift: 0
+  maxHitPointsTempIncrease: 0
+  strengthTemp: 0
+  agilityTemp: 0
+  presenceTemp: 0
+  toughnessTemp: 0
+  defenseTemp: 0
   tempDisabledHands: 0
   tempDisabledLegs: 0
   tempBlinded: 0
+  tempDistracted: 0
 --- !u!4 &1909781600
 Transform:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ using DG.Tweening;
 
 public class BattleManager : MonoBehaviour
 {
+    public static BattleManager BM;
     public GameObject[] characters, enemies;
     public Transform[] playerSidePositions, enemySidePositions;
     public GameObject[] playerObjects, enemyObjects;
@@ -43,6 +44,9 @@ public class BattleManager : MonoBehaviour
 
     private void Awake()
     {
+        if (!BM) { BM = this; }
+        else { Destroy(gameObject); return; }
+
         DOTween.Init(null, null, null);
 
         snapWait = new WaitForSeconds(snapTime);
@@ -215,7 +219,7 @@ public class BattleManager : MonoBehaviour
         yield return null;
     }
 
-
+    public void Push(CharacterSheet cs) { }
 
     ////**** MOVEMENT ****//
     //IEnumerator SwapPositionsMOVE(GameObject active, int i)

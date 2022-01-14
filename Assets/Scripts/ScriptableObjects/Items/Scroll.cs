@@ -37,9 +37,12 @@ public class Scroll : Item
     public int index;
     public bool randomizeOnCopy;
 
-    public Scroll(bool known, bool clean, int index, bool randomizeOnCopy, bool broken, int value) :
-        base("Unknown Scroll", broken, value)
+    public Scroll Set(bool known, bool clean, int index, bool randomizeOnCopy, bool broken, int value)
     {
+        this.itemName = "Unknown Scroll";
+        this.broken = broken;
+        this.value = value;
+
         this.known = known;
         this.clean = clean;
         if (randomizeOnCopy)
@@ -50,15 +53,14 @@ public class Scroll : Item
 
         if (known)
         {
-            if (clean) this.name = SACRED_SCROLLS[index];
-            else this.name = UNCLEAN_SCROLLS[index];
+            if (clean) this.itemName = SACRED_SCROLLS[index];
+            else this.itemName = UNCLEAN_SCROLLS[index];
         }
         else
-            this.name = "Unknown " + ((clean) ? "Sacred" : "Unclean") + " Power";
+            this.itemName = "Unknown " + ((clean) ? "Sacred" : "Unclean") + " Power";
 
+        return this;
     }
-
-    public Scroll(bool clean) : this(false, clean, 0, true, false, 0) { }
 
     int RandomIndex()
     {
@@ -73,6 +75,6 @@ public class Scroll : Item
 
     public override Item Copy()
     {
-        return new Scroll(known, clean, index, randomizeOnCopy, broken, value);
+        return ScriptableObject.CreateInstance<Scroll>().Set(known, clean, index, randomizeOnCopy, broken, value);
     }
 }

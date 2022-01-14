@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ba3e2d1f32d90144a175283e2c89634, type: 3}
-  m_Name: Backpack
+  m_Script: {fileID: 11500000, guid: b69ab4697d02f72469d5f17d830a64d7, type: 3}
+  m_Name: HeavyCarapace
   m_EditorClassIdentifier: 
-  itemName: Backpack
+  itemName: Heavy Carapace
   broken: 0
   value: 0
   actions: []
-  carryingCapacity: 7
+  armorTier: 3
+  maxArmorTier: 3

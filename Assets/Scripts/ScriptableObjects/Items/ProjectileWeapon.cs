@@ -7,10 +7,19 @@ public class ProjectileWeapon : Weapon
 {
     public string ammoName;
 
-    public ProjectileWeapon(string itemName, int dieCount, int damage, string ammoName, bool twoHanded, Stat abilityToUse, bool broken, int value)
-        : base(itemName, dieCount, damage, twoHanded, abilityToUse, broken, value)
+    public ProjectileWeapon
+        Set(string itemName, int dieCount, int damage, string ammoName, bool twoHanded, Stat abilityToUse, bool broken, int value)
     {
+        this.itemName = itemName;
+        this.dieCount = dieCount;
+        this.damage = damage;
         this.ammoName = ammoName;
+        this.twoHanded = twoHanded;
+        this.abilityToUse = abilityToUse;
+        this.broken = broken;
+        this.value = value;
+
+        return this;
     }
 
     public override string GetExplicitString()
@@ -20,6 +29,6 @@ public class ProjectileWeapon : Weapon
 
     public override Item Copy()
     {
-        return new ProjectileWeapon(name, dieCount, damage, ammoName, twoHanded, abilityToUse, broken, value);
+        return ScriptableObject.CreateInstance<ProjectileWeapon>().Set(itemName, dieCount, damage, ammoName, twoHanded, abilityToUse, broken, value);
     }
 }

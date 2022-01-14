@@ -5,110 +5,81 @@ using UnityEngine;
 
 public class ActionManager
 {
-    //public static d20 TestGeneric(
-    //    int difficulty, CharacterSheet actor, Stat actorAbility, CharacterSheet target, Stat targetAbility, 
-    //    Func<CharacterSheet, CharacterSheet, d20> SuccessMethod,
-    //    Func<CharacterSheet, CharacterSheet, d20> CriticalMethod,
-    //    Func<CharacterSheet, CharacterSheet, d20> SuccessOnlyMethod,
-    //    Func<CharacterSheet, CharacterSheet, d20> FailMethod,
-    //    Func<CharacterSheet, CharacterSheet, d20> FumbleMethod,
-    //    Func<CharacterSheet, CharacterSheet, d20> FailOnlyMethod)
-    //{
-    //    d20 roll = new d20(difficulty, actor, actorAbility, target, targetAbility);
+    public static void Fight(CharacterSheet actor, CharacterSheet target)
+    {
+        d20 roll = new d20(10, actor, actor.GetWeapon().abilityToUse, target, Stat.Defense);
 
-    //    if (roll.Success())
-    //    {
-    //        SuccessMethod?.Invoke(actor, target);
-    //        if (roll.Critical())
-    //            CriticalMethod?.Invoke(actor, target);
-    //        else
-    //            SuccessOnlyMethod?.Invoke(actor, target);
-    //    }
-    //    else
-    //    {
-    //        FailMethod?.Invoke(actor, target);
-    //        if (roll.Fumble())
-    //            FumbleMethod?.Invoke(actor, target);
-    //        else
-    //            FailOnlyMethod?.Invoke(actor, target);
-    //    }
+        if (roll.IsSuccess())
+        {
+            int damage =
+                (roll.IsCritical()) ?
+                    actor.GetWeapon().CalculateCriticalDamage() :
+                    actor.GetWeapon().CalculateDamage();
+            target.TakeDamage(damage);
+        }
+        else
+        {
+            if (roll.IsFumble())
+            {
+                CounterAttack(target, actor);
+            }
+        }
+    }
+    
+    public static void Push(CharacterSheet actor, CharacterSheet target)
+    {
+        d20 roll = new d20(10, actor, Stat.Strength, target, Stat.Strength);
 
-    //    return roll;
-    //}
+        if (roll.IsSuccess())
+        {
+            target.Push();
+            int damage =
+                (roll.IsCritical()) ?
+                    actor.GetDefaultWeapon().CalculateCriticalDamage() :
+                    actor.GetDefaultWeapon().CalculateDamage();
+            target.TakeDamage(damage);
+        }
+        else
+        {
+            if (roll.IsFumble())
+            {
+                CounterAttack(target, actor);
+            }
+        }
+    }
 
-    //public static void Fight(CharacterSheet actor, CharacterSheet target)
-    //{
-    //    d20 roll = new d20(10, actor, actor.GetWeapon().abilityToUse, target, Stat.Defense);
+    public static void CounterAttack(CharacterSheet actor, CharacterSheet target)
+    {
+        d20 roll = new d20(10, actor, actor.GetWeapon().abilityToUse, target, Stat.Defense);
 
-    //    if (roll.Success())
-    //    {
-    //        int damage =
-    //            (roll.Critical()) ?
-    //                actor.GetWeapon().CalculateCriticalDamage() :
-    //                actor.GetWeapon().CalculateDamage();
-    //        target.TakeDamage(damage);
-    //    }
-    //    else
-    //    {
-    //        if (roll.Fumble())
-    //        {
-    //            CounterAttack(target, actor);
-    //        }
-    //    }
-    //}
+        if (roll.IsSuccess())
+        {
+            int damage =
+                (roll.IsCritical()) ?
+                    actor.GetWeapon().CalculateCriticalDamage() :
+                    actor.GetWeapon().CalculateDamage();
+            target.TakeDamage(damage);
+        }
+    }
 
-    //public static d20 TestGeneric(CharacterSheet actor, CharacterSheet target, Action action)
-    //{
-    //    return TestGeneric(action.difficulty, actor, action.actorAbility, target, action.targetAbility,
-    //        Action.FuncFinder(action.SuccessMethod), Action.FuncFinder(action.CriticalMethod), Action.FuncFinder(action.SuccessOnlyMethod),
-    //        Action.FuncFinder(action.FailMethod), Action.FuncFinder(action.FumbleMethod), Action.FuncFinder(action.FailOnlyMethod)
-    //        );
-    //}
+    public static void DrinkLifeElixir(CharacterSheet actor)
+    {
+        actor.RecoverDamage(GameManager.RollDie(6));
+        actor.SetInfected(false);
+        //consume item?
+    }
 
-    //public static void FightGeneric(CharacterSheet actor, CharacterSheet target)
-    //{
-    //    TestGeneric(10, actor, actor.GetWeapon().abilityToUse, target, Stat.Defense,
-    //        null,
-    //        ApplyCriticalDamage,
-    //        ApplyDamage,
-    //        null,
-    //        CounterAttack,
-    //        null);
-    //}
-
-    ////Possible Methods
-
-    //public static d20 ApplyCriticalDamage(CharacterSheet actor, CharacterSheet target)
-    //{
-    //    int damage = actor.GetWeapon().CalculateCriticalDamage();
-    //    target.TakeDamage(damage);
-
-    //    return null;
-    //}
-
-    //public static d20 ApplyDamage(CharacterSheet actor, CharacterSheet target)
-    //{
-    //    int damage = actor.GetWeapon().CalculateDamage();
-    //    target.TakeDamage(damage);
-
-    //    return null;
-    //}
-
-    //public static d20 CounterAttack(CharacterSheet previousAttacker, CharacterSheet counterAttacker)
-    //{
-    //    d20 roll = new d20(10, counterAttacker, counterAttacker.GetWeapon().abilityToUse, previousAttacker, Stat.Defense);
-
-    //    if (roll.Success())
-    //    {
-    //        int damage =
-    //            (roll.Critical()) ?
-    //                counterAttacker.GetWeapon().CalculateCriticalDamage() :
-    //                counterAttacker.GetWeapon().CalculateDamage();
-    //        previousAttacker.TakeDamage(damage);
-    //    }
-
-    //    return roll;
-    //}
-
-
+    public static void SprayPerfume(int difficultyRating, CharacterSheet actor, CharacterSheet[] targets)
+    {
+        foreach(CharacterSheet target in targets)
+        {
+            d20 roll = new d20(difficultyRating, target, Stat.Toughness, null, 0);
+            if (roll.IsFailure())
+            {
+                target.SetTempDistracted(true);
+                target.TempIncreasePresence(-GameManager.RollDie(4));
+            }
+        }
+        //consume item
+    }
 }

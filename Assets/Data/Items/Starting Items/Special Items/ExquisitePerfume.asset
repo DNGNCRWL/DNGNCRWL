@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e06c0768d80cde741a0693385f4ad72d, type: 3}
   m_Name: ExquisitePerfume
   m_EditorClassIdentifier: 
-  name: Exquisite Perfume
+  itemName: Exquisite Perfume
   broken: 0
   value: 0
+  actions: []
   unit: Spray
   amount: 30

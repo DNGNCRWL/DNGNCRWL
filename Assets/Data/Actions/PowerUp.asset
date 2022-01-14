@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b69ab4697d02f72469d5f17d830a64d7, type: 3}
-  m_Name: Carapace
+  m_Script: {fileID: 11500000, guid: 0eaf4d05ca32e9147bcc1a4b2ad90283, type: 3}
+  m_Name: PowerUp
   m_EditorClassIdentifier: 
-  name: Carapace
-  broken: 0
-  value: 0
-  armorTier: 3
-  maxArmorTier: 3
+  actionName: 
+  needsTarget: 0
+  difficultyRating: 0
+  numberOfDice: 0
+  dieSize: 0

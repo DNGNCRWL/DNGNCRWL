@@ -29,14 +29,23 @@ public class ItemManager : MonoBehaviour
 
     static public Dictionary<string, Item> STARTING_WEAPON_PAIRS;
 
+    [System.Serializable]
+    public struct WeaponPair{
+        public Weapon weapon;
+        public Item item;
+    }
+
+    public WeaponPair[] weaponPairs;
+
     private void Awake()
     {
         if (IM == null) IM = this;
         else { Destroy(gameObject); return; }
 
         STARTING_WEAPON_PAIRS = new Dictionary<string, Item>();
-        STARTING_WEAPON_PAIRS.Add("Bow", new Stackable("Bundle of Arrows", "Arrow", 10, false, 0));
-        STARTING_WEAPON_PAIRS.Add("Crossbow", new Stackable("Stack of Bolts", "Bolt", 10, false, 0));
+
+        foreach(WeaponPair pair in weaponPairs)
+            STARTING_WEAPON_PAIRS.Add(pair.weapon.itemName, pair.item);
 
         BAGS = bags;
         ADVENTURE_TOOLS = adventureTools;
@@ -94,7 +103,7 @@ public class ItemManager : MonoBehaviour
         {
             if (items[i] == null) return s;
             if (i > 0) s += ", ";
-            s += items[i].name;
+            s += items[i].itemName;
         }
         return s;
     }

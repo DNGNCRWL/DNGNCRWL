@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 184aec5129def42449da03fa5b693483, type: 3}
   m_Name: GrapplingHook
   m_EditorClassIdentifier: 
-  name: Grappling Hook
+  itemName: Grappling Hook
   broken: 0
   value: 0
+  actions: []

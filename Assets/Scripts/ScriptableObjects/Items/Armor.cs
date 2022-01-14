@@ -8,15 +8,20 @@ public class Armor : Item
     public int armorTier;
     public int maxArmorTier;
 
-    public Armor(string itemName, int armorTier, int maxArmorTier, bool broken, int value) : base(itemName, broken, value)
+    public Armor Set(string itemName, int armorTier, int maxArmorTier, bool broken, int value)
     {
+        this.itemName = itemName;
         this.armorTier = armorTier;
         this.maxArmorTier = maxArmorTier;
+        this.broken = broken;
+        this.value = value;
+
+        return this;
     }
 
     public override string GetExplicitString()
     {
-        return "Tier " + armorTier + "/" + maxArmorTier + " " + name;
+        return "Tier " + armorTier + "/" + maxArmorTier + " " + itemName;
     }
 
     public int AgilityPenalty()
@@ -37,6 +42,6 @@ public class Armor : Item
 
     public override Item Copy()
     {
-        return new Armor(name, armorTier, maxArmorTier, broken, value);
+        return ScriptableObject.CreateInstance<Armor>().Set(itemName, armorTier, maxArmorTier, broken, value);
     }
 }

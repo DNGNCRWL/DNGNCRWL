@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 730087284eaaaf345bcf1009c6b546bd, type: 3}
   m_Name: Crowbar
   m_EditorClassIdentifier: 
-  name: Crowbar
+  itemName: Crowbar
   broken: 0
   value: 0
+  actions: []
   dieCount: 1
   damage: 4
   twoHanded: 0
+  abilityToUse: 0

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ba3e2d1f32d90144a175283e2c89634, type: 3}
   m_Name: TatteredBag
   m_EditorClassIdentifier: 
-  name: Tattered Bag
+  itemName: Tattered Bag
   broken: 0
   value: 0
+  actions: []
   carryingCapacity: 3

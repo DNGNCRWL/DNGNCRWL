@@ -8,10 +8,15 @@ public class Stackable : Item
     public string unit;
     public int amount;
 
-    public Stackable(string itemName, string unit, int amount, bool broken, int value) : base(itemName, broken, value)
+    public Stackable Set(string itemName, string unit, int amount, bool broken, int value)
     {
+        this.itemName = itemName;
         this.unit = unit;
         this.amount = amount;
+        this.broken = broken;
+        this.value = value;
+
+        return this;
     }
 
     public override string GetExplicitString()
@@ -21,6 +26,6 @@ public class Stackable : Item
 
     public override Item Copy()
     {
-        return new Stackable(name, unit, amount, broken, value);
+        return ScriptableObject.CreateInstance<Stackable>().Set(itemName, unit, amount, broken, value);
     }
 }

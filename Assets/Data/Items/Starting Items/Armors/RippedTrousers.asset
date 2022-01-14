@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b69ab4697d02f72469d5f17d830a64d7, type: 3}
   m_Name: RippedTrousers
   m_EditorClassIdentifier: 
-  name: Ripped Trousers
+  itemName: Ripped Trousers
   broken: 0
   value: 0
+  actions: []
   armorTier: 0
   maxArmorTier: 0

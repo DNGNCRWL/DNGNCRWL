@@ -27,7 +27,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     public enum State{ Active, Inactive, Unconscious, Hemorrhaging, Dead };
     [SerializeField] State currentState;
     bool
-        infected,
+        infected, bleeding,
         brokenMainhand, brokenOffhand, brokenLeftLeg, brokenRightLeg, blindedLeft, blindedRight,
         canMove, canSee = false;
     int reviveCounter = 0;
@@ -38,16 +38,16 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     public string GetDescription() { return description; }
     public string GetCharacterClass() { return characterClass; }
     public int GetHitPoints() { return hitPoints; }
-    public int GetMaxHitPoints() { return maxHitPoints + maxHitPointsShift; }
+    public int GetMaxHitPoints() { return maxHitPoints + maxHitPointsTempIncrease; }
     public int GetPowers() { return powers; }
     public int GetOmens() { return omens; }
     
 
     //Battle Effects
     public int
-        maxHitPointsShift, strengthShift, agilityShift, presenceShift, toughnessShift;
+        maxHitPointsTempIncrease, strengthTemp, agilityTemp, presenceTemp, toughnessTemp, defenseTemp;
     public bool
-        tempDisabledHands, tempDisabledLegs, tempBlinded;
+        tempDisabledHands, tempDisabledLegs, tempBlinded, tempDistracted;
 
     //On with the show
     void InitializeCharacter()
@@ -139,8 +139,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         bool isMagical = ItemManager.IsMagical(inventory);
 
         EquipMainhand((Weapon) (ItemManager.RANDOM_ITEM(ItemManager.STARTING_WEAPONS).Copy()));
-        if (ItemManager.STARTING_WEAPON_PAIRS.ContainsKey(mainhand.name))
-            PickupItem(ItemManager.STARTING_WEAPON_PAIRS[mainhand.name]);
+        if (ItemManager.STARTING_WEAPON_PAIRS.ContainsKey(mainhand.itemName))
+            PickupItem(ItemManager.STARTING_WEAPON_PAIRS[mainhand.itemName]);
 
         EquipOffhand(null);
 
@@ -212,7 +212,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         if (bag == null) return "No Bag";
 
         string s = "";
-        s += bag.name + " with ";
+        s += bag.itemName + " with ";
         s += ItemManager.NumberOfItems(inventory) + "/" + bag.carryingCapacity + " capacity";
         return s;
     }
@@ -343,11 +343,11 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     bool PickupItem(Item item)
     {
         if (item == null) return GameManager.Error("No item to pickup");
-        if (bag == null) return GameManager.Error("Cannot pickup " + item.name + " without a bag.");
+        if (bag == null) return GameManager.Error("Cannot pickup " + item.itemName + " without a bag.");
         if (inventory.Count >= bag.carryingCapacity) return GameManager.Error("Not enough carrying capacity");
 
         if (inventory.Contains(item))
-            return GameManager.Error("Already carrying " + item.name + ".");
+            return GameManager.Error("Already carrying " + item.itemName + ".");
 
         //ITEMPACK??
         if (item is ItemPack)
@@ -367,7 +367,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         {
             foreach(Item i in inventory)
             {
-                if(item.name.CompareTo(i.name) == 0)
+                if(item.itemName.CompareTo(i.itemName) == 0)
                 {
                     Stackable inInventory = (Stackable)i;
                     Stackable other = (Stackable)item;
@@ -386,43 +386,58 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
 
     //ABILITY & STAT GETTERS
+    public int AbilityClamp(int input)
+    {
+        return Mathf.Clamp(input, abilityMin, abilityMax);
+    }
     public int GetStrength()
     {
         int toReturn = strength;
+        toReturn += strengthTemp;
+
         toReturn -= HemorrhagePenalty();
 
-        return toReturn;
+        return AbilityClamp(toReturn);
     }
     public int GetAgility()
     {
         int toReturn = agility;
+        toReturn += agilityTemp;
+
         toReturn -= HemorrhagePenalty();
         toReturn = GetArmor().AgilityPenalty();
 
-        return toReturn;
+        return AbilityClamp(toReturn);
     }
     public int GetPresence()
     {
         int toReturn = presence;
+        toReturn += presenceTemp;
+
         toReturn -= HemorrhagePenalty();
 
-        return toReturn;
+        return AbilityClamp(toReturn);
     }
     public int GetToughness()
     {
         int toReturn = toughness;
+        toReturn += toughnessTemp;
+
         toReturn -= HemorrhagePenalty();
 
-        return toReturn;
+        return AbilityClamp(toReturn);
     }
 
     public int GetDefense()
     {
         int toReturn = agility;
-        toReturn -= HemorrhagePenalty();
-        toReturn = GetArmor().DefensePenalty();
+        toReturn += agilityTemp;
+        toReturn += defenseTemp;
 
-        return toReturn;
+        toReturn -= HemorrhagePenalty();
+        toReturn -= GetArmor().DefensePenalty();
+
+        return AbilityClamp(toReturn);
     }
 
     public int GetStat(Stat stat)
@@ -448,6 +463,10 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     {
         if (armor != null) return armor;
         else return unequippedArmor;
+    }
+    public Weapon GetDefaultWeapon()
+    {
+        return unequippedWeapon;
     }
 
 
@@ -510,18 +529,63 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
                 break;
         }
     }
+    public void Push() //finish this. pass to battle manager?
+    {
+        if (BattleManager.BM) BattleManager.BM.Push(this);
+    }
     public void RecoverDamage(int damage)
     {
         hitPoints += damage;
 
         CheckHPBounds();
     }
+    public void SetBleeding(bool b) { bleeding = b; }
+    public void SetInfected(bool b) { infected = b; }
+    public void SetTempDisabledHands(bool b) { tempDisabledHands = b; }
+    public void SetTempDisabledLegs(bool b) { tempDisabledLegs = b; }
+    public void SetTempDisabled(bool b) { tempDisabledHands = tempDisabledLegs = b; }
+    public void SetTempBlinded(bool b) { tempBlinded = b; }
+    public void SetTempDistracted(bool b) { tempDistracted = b; }
     public void TakeDamage(int damage)
     {
         hitPoints -= damage;
 
         CheckHPBounds();
     }
+    public void TempIncreaseMaxHP(int increase)
+    {
+        hitPoints += increase;
+        maxHitPointsTempIncrease += increase;
+    }
+    public void TempIncreaseStrength(int increase)
+    {
+        strengthTemp += increase;
+    }
+    public void TempIncreaseAgility(int increase)
+    {
+        agilityTemp += increase;
+    }
+    public void TempIncreasePresence(int increase)
+    {
+        presenceTemp += increase;
+    }
+    public void TempIncreaseToughness(int increase)
+    {
+        toughnessTemp += increase;
+    }
+    public void TempIncreaseStat(int increase, Stat stat)
+    {
+        switch (stat)
+        {
+            case Stat.Agility: TempIncreaseAgility(increase); break;
+            case Stat.Presence: TempIncreasePresence(increase); break;
+            case Stat.Strength: TempIncreaseStrength(increase); break;
+            case Stat.Toughness: TempIncreaseToughness(increase); break;
+        }
+    }
+
+
+    //    tempDisabledHands, tempDisabledLegs, tempBlinded, tempDistracted;
 
 
 

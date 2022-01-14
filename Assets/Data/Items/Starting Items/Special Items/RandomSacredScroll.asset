@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61ca2ed964176aa41b7b57cb5821522a, type: 3}
   m_Name: RandomSacredScroll
   m_EditorClassIdentifier: 
-  name: Random Sacred Scroll
+  itemName: Random Sacred Scroll
   broken: 0
   value: 0
+  actions: []
   known: 1
   clean: 1
   index: 0
