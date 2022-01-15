@@ -3,8 +3,14 @@
 #####Group Name:  Team DNGNCRWL
 ######Group Contact Method: Discord (linked to email)
 
-## Meeting Times
+## Group Members
+Connor John Hofmann
+Isaiah Matthew Holt
+James Spencer Yeazel
+Raphael Azcueta, lunarsignals#5933, 608-215-8848
+Tomasz Samuel Maj
 
+## Meeting Times
 - Daily Scrum (MWF): 8 pm every day
 - Paired/Collaborative meetings (as needed)
 - SOS Meeting (at anytime for coding assistance)
