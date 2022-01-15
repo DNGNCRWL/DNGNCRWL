@@ -4,11 +4,11 @@
 ######Group Contact Method: Discord (linked to email)
 
 ## Group Members
-Connor John Hofmann
-Isaiah Matthew Holt
-James Spencer Yeazel
-Raphael Azcueta, lunarsignals#5933, 608-215-8848
-Tomasz Samuel Maj
+- Connor John Hofmann
+- Isaiah Matthew Holt
+- James Spencer Yeazel
+- Raphael Azcueta, lunarsignals#5933, 608-215-8848
+- Tomasz Samuel Maj
 
 ## Meeting Times
 - Daily Scrum (MWF): 8 pm every day
