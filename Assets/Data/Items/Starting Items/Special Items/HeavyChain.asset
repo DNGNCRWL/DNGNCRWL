@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: HeavyChain
   m_EditorClassIdentifier: 
   itemName: Heavy Chain
+  description: 
   broken: 0
   value: 0
   actions: []
   dieCount: 1
-  damage: 4
+  dieSize: 0
   twoHanded: 1
   abilityToUse: 0
+  damageType: 1

@@ -21,6 +21,18 @@ public class BattleManager : MonoBehaviour
     PositionMapping playerMap;
     PositionMapping enemyMap;
 
+    enum BattleState
+    {
+        Start,
+        SelectCharacter,
+        ChooseMove, SelectSwapPosition,
+        ChooseAction, SelectTarget, ChooseItem, ChooseHazard,
+        EnemyTurn,
+        Won, Lost
+    };
+//    BattleState currentState = BattleState.Start;
+
+    //UI Stuff
     public TextMeshProUGUI dialogueText;
     float snapTime = 0.05f; //3f
     float quickTime = 0.25f; //15f
@@ -31,16 +43,6 @@ public class BattleManager : MonoBehaviour
     WaitForSeconds mediumWait;
     WaitForSeconds longWait;
 
-    enum BattleState
-    {
-        Start,
-        SelectCharacter,
-        ChooseMove, SelectSwapPosition,
-        ChooseAction, SelectTarget, ChooseItem, ChooseHazard,
-        EnemyTurn,
-        Won, Lost
-    };
-    BattleState currentState = BattleState.Start;
 
     private void Awake()
     {
@@ -91,10 +93,7 @@ public class BattleManager : MonoBehaviour
     {
         yield return longWait;
 
-        //for(int i = 0; i < 4; i++)
-        //{
-        //    yield return StartCoroutine(SwapPositionsMOVE(characters[i], UnityEngine.Random.Range(0, 3)));
-        //}
+        //start the first round of combat
     }
 
     //**** UI STUFF ****//
@@ -220,6 +219,10 @@ public class BattleManager : MonoBehaviour
     }
 
     public void Push(CharacterSheet cs) { }
+    public void Sneak(CharacterSheet cs) { }
+    public CharacterSheet GetOpposingLeader(CharacterSheet cs) { return null; }
+    public CharacterSheet[] GetAllOpponents(CharacterSheet cs) { return null; }
+    public bool SameSide(CharacterSheet actor, CharacterSheet target) { return false; }
 
     ////**** MOVEMENT ****//
     //IEnumerator SwapPositionsMOVE(GameObject active, int i)

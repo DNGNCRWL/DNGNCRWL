@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 730087284eaaaf345bcf1009c6b546bd, type: 3}
   m_Name: Flail
   m_EditorClassIdentifier: 
-  name: Flail
+  itemName: Flail
+  description: 
   broken: 0
   value: 0
+  actions: []
   dieCount: 1
-  damage: 8
+  dieSize: 8
   twoHanded: 0
+  abilityToUse: 0
+  damageType: 6

@@ -7,12 +7,14 @@ public class ItemPack : Item
 {
     public Item[] items;
 
-    public ItemPack Set(Item[] items, bool broken, int value)
+    public ItemPack Set(string description, bool broken, int value, Item[] items)
     {
         this.itemName = items.Length.ToString() + " Item Pack";
-        this.items = items;
+        this.description = description;
         this.broken = broken;
         this.value = value;
+
+        this.items = items;
 
         return this;
     }
@@ -25,10 +27,15 @@ public class ItemPack : Item
 
     public override Item Copy()
     {
-        Item[] copy = new Item[items.Length];
-        for (int i = 0; i < items.Length; i++)
-            copy[i] = items[i].Copy();
+        ItemPack copy = ScriptableObject.CreateInstance<ItemPack>();
+        copy.CopyItemVariables(itemName, description, broken, value, actions);
 
-        return ScriptableObject.CreateInstance<ItemPack>().Set(copy, broken, value);
+        Item[] copyItems = new Item[items.Length];
+        for (int i = 0; i < items.Length; i++)
+            copyItems[i] = items[i].Copy();
+
+        copy.items = copyItems;
+
+        return copy;
     }
 }

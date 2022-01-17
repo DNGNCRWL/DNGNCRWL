@@ -10,10 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0eaf4d05ca32e9147bcc1a4b2ad90283, type: 3}
-  m_Name: PowerUp
+  m_Name: Fight
   m_EditorClassIdentifier: 
-  actionName: 
-  needsTarget: 0
-  difficultyRating: 0
-  numberOfDice: 0
-  dieSize: 0
+  actionName: Fight
+  actionTarget: 1
+  doTheseThings:
+  - atomicFunction: 13
+    dieCount: 0
+    dieSize: 0
+    actor: {fileID: 0}
+    target: {fileID: 0}

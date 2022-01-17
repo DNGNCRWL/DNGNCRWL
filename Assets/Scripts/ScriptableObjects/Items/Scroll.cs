@@ -37,12 +37,8 @@ public class Scroll : Item
     public int index;
     public bool randomizeOnCopy;
 
-    public Scroll Set(bool known, bool clean, int index, bool randomizeOnCopy, bool broken, int value)
+    public Scroll Set(string description, bool known, bool clean, int index, bool randomizeOnCopy)
     {
-        this.itemName = "Unknown Scroll";
-        this.broken = broken;
-        this.value = value;
-
         this.known = known;
         this.clean = clean;
         if (randomizeOnCopy)
@@ -55,9 +51,14 @@ public class Scroll : Item
         {
             if (clean) this.itemName = SACRED_SCROLLS[index];
             else this.itemName = UNCLEAN_SCROLLS[index];
+
+            this.description = description;
         }
         else
+        {
             this.itemName = "Unknown " + ((clean) ? "Sacred" : "Unclean") + " Power";
+            this.description = "Unknown";
+        }
 
         return this;
     }
@@ -75,6 +76,17 @@ public class Scroll : Item
 
     public override Item Copy()
     {
-        return ScriptableObject.CreateInstance<Scroll>().Set(known, clean, index, randomizeOnCopy, broken, value);
+        Scroll copy = ScriptableObject.CreateInstance<Scroll>();
+        copy.CopyItemVariables(itemName, description, broken, value, actions);
+
+        copy.known = known;
+        copy.clean = clean;
+        copy.index = index;
+
+        copy.Set(description, known, clean, index, randomizeOnCopy);
+
+        return copy;
+
+        //return ScriptableObject.CreateInstance<Scroll>().Set(description, broken, value, known, clean, index, randomizeOnCopy);
     }
 }

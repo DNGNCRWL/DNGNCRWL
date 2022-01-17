@@ -8,17 +8,6 @@ public class Armor : Item
     public int armorTier;
     public int maxArmorTier;
 
-    public Armor Set(string itemName, int armorTier, int maxArmorTier, bool broken, int value)
-    {
-        this.itemName = itemName;
-        this.armorTier = armorTier;
-        this.maxArmorTier = maxArmorTier;
-        this.broken = broken;
-        this.value = value;
-
-        return this;
-    }
-
     public override string GetExplicitString()
     {
         return "Tier " + armorTier + "/" + maxArmorTier + " " + itemName;
@@ -42,6 +31,26 @@ public class Armor : Item
 
     public override Item Copy()
     {
-        return ScriptableObject.CreateInstance<Armor>().Set(itemName, armorTier, maxArmorTier, broken, value);
+        Armor copy = ScriptableObject.CreateInstance<Armor>();
+        copy.CopyItemVariables(itemName, description, broken, value, actions);
+
+        copy.armorTier = this.armorTier;
+        copy.maxArmorTier = this.maxArmorTier;
+
+        return copy;
+    }
+
+    public void Break()
+    {
+        armorTier--;
+        if (armorTier == 0)
+            Consume();
+    }
+
+    public void Repair()
+    {
+        armorTier++;
+        if (armorTier > maxArmorTier)
+            armorTier = maxArmorTier;
     }
 }

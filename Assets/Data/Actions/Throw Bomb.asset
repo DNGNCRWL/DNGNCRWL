@@ -9,16 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 730087284eaaaf345bcf1009c6b546bd, type: 3}
-  m_Name: Knife
+  m_Script: {fileID: 11500000, guid: 0eaf4d05ca32e9147bcc1a4b2ad90283, type: 3}
+  m_Name: Throw Bomb
   m_EditorClassIdentifier: 
-  itemName: Knife
-  description: 
-  broken: 0
-  value: 0
-  actions: []
-  dieCount: 1
-  dieSize: 4
-  twoHanded: 0
-  abilityToUse: 1
-  damageType: 6
+  actionName: Throw Bomb
+  actionTarget: 0
+  doTheseThings:
+  - atomicFunction: 0
+    dieCount: 0
+    dieSize: 0
+    actor: {fileID: 0}
+    target: {fileID: 0}
+    item: {fileID: 0}

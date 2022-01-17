@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: Crowbar
   m_EditorClassIdentifier: 
   itemName: Crowbar
+  description: 
   broken: 0
   value: 0
   actions: []
   dieCount: 1
-  damage: 4
+  dieSize: 0
   twoHanded: 0
   abilityToUse: 0
+  damageType: 1

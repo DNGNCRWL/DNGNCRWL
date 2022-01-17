@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: LifeElixir
   m_EditorClassIdentifier: 
   itemName: Life Elixir
+  description: 
   broken: 0
   value: 0
-  actions: []
+  actions:
+  - {fileID: 11400000, guid: 857c55f1935763843958b430b2978019, type: 2}
   unit: Sip
   amount: 2

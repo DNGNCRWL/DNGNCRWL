@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fb4b6db08b7c1d48b4691997b66a6eb, type: 3}
   m_Name: Crossbow
   m_EditorClassIdentifier: 
-  name: Crossbow
+  itemName: Crossbow
+  description: 
   broken: 0
   value: 0
+  actions: []
   dieCount: 1
-  damage: 8
+  dieSize: 8
   twoHanded: 1
   abilityToUse: 2
+  damageType: 6
   ammoName: Bolt

@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: Bow
   m_EditorClassIdentifier: 
   itemName: Bow
+  description: 
   broken: 0
   value: 0
   actions: []
   dieCount: 1
-  damage: 6
+  dieSize: 6
   twoHanded: 1
   abilityToUse: 2
+  damageType: 6
   ammoName: Arrow

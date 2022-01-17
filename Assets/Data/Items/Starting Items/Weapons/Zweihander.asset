@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 730087284eaaaf345bcf1009c6b546bd, type: 3}
   m_Name: Zweihander
   m_EditorClassIdentifier: 
-  name: Zweihander
+  itemName: Zweihander
+  description: 
   broken: 0
   value: 0
+  actions: []
   dieCount: 1
-  damage: 10
+  dieSize: 10
   twoHanded: 1
+  abilityToUse: 0
+  damageType: 2

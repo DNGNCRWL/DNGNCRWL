@@ -8,24 +8,28 @@ public class Stackable : Item
     public string unit;
     public int amount;
 
-    public Stackable Set(string itemName, string unit, int amount, bool broken, int value)
-    {
-        this.itemName = itemName;
-        this.unit = unit;
-        this.amount = amount;
-        this.broken = broken;
-        this.value = value;
-
-        return this;
-    }
-
     public override string GetExplicitString()
     {
-        return base.GetExplicitString() + " with " + amount + " " + unit + ((amount > 1) ? "s" : "");
+        if (broken) return base.GetExplicitString();
+        else if (amount <= 0) return "Empty " + itemName;
+        else return itemName + " with " + amount + " " + unit + ((amount > 1) ? "s" : "");
     }
 
     public override Item Copy()
     {
-        return ScriptableObject.CreateInstance<Stackable>().Set(itemName, unit, amount, broken, value);
+        Stackable copy = ScriptableObject.CreateInstance<Stackable>();
+        copy.CopyItemVariables(itemName, description, broken, value, actions);
+
+        copy.unit = unit;
+        copy.amount = amount;
+
+        return copy;
+    }
+
+    public override void Consume()
+    {
+        amount--;
+        if (amount <= 0)
+            broken = true;
     }
 }

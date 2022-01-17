@@ -20,7 +20,8 @@ public class GameManager : MonoBehaviour
 
     static public int RollDie(int dieSize)
     {
-        return Mathf.Max(1, UnityEngine.Random.Range(1, dieSize+1));
+        if (dieSize < 1) return 1;
+        else return UnityEngine.Random.Range(0, dieSize) + 1;
     }
     static public int RollDice(int number, int dieSize)
     {
@@ -38,25 +39,19 @@ public class GameManager : MonoBehaviour
     }
 }
 
-public class d20
+public enum DamageType { Untyped, Bludgeon, Cut, Electric, Fire, Magic, Pierce, Spirit }
+
+[System.Serializable]
+public struct Damage
 {
-    public int difficultyRating;
-    public int roll;
-
-    public d20(int difficultyRating, CharacterSheet actor, Stat actorStat, CharacterSheet target, Stat targetStat)
+    public Damage(int dieCount, int dieSize, DamageType damageType)
     {
-        int bonus = (actor) ? actor.GetStat(actorStat) : 0;
-        int penalty = (target) ? target.GetStat(targetStat) : 0;
-
-        difficultyRating += penalty - bonus;
-
-        roll = GameManager.RollDie(20);
+        this.dieCount = dieCount;
+        this.dieSize = dieSize;
+        this.damageType = damageType;
     }
 
-    public bool IsSuccess() {return roll > difficultyRating || IsCritical(); }
-    public bool IsCritical() { return roll == 20; }
-    public bool IsSuccessOnly() { return roll > difficultyRating && !IsCritical(); }
-    public bool IsFailure() { return roll <= difficultyRating || IsFumble(); }
-    public bool IsFumble() { return roll == 1; }
-    public bool IsFailureOnly() { return roll <= difficultyRating && !IsFumble(); }
+    public int dieCount;
+    public int dieSize;
+    public DamageType damageType;
 }

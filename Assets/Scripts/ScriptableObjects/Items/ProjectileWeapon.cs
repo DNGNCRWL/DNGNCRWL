@@ -8,16 +8,18 @@ public class ProjectileWeapon : Weapon
     public string ammoName;
 
     public ProjectileWeapon
-        Set(string itemName, int dieCount, int damage, string ammoName, bool twoHanded, Stat abilityToUse, bool broken, int value)
+        Set(string itemName, string description, bool broken, int value, Damage damage, bool twoHanded, Stat abilityToUse, string ammoName)
     {
         this.itemName = itemName;
-        this.dieCount = dieCount;
-        this.damage = damage;
-        this.ammoName = ammoName;
-        this.twoHanded = twoHanded;
-        this.abilityToUse = abilityToUse;
+        this.description = description;
         this.broken = broken;
         this.value = value;
+
+        this.damage = damage;
+        this.twoHanded = twoHanded;
+        this.abilityToUse = abilityToUse;
+
+        this.ammoName = ammoName;
 
         return this;
     }
@@ -29,6 +31,12 @@ public class ProjectileWeapon : Weapon
 
     public override Item Copy()
     {
-        return ScriptableObject.CreateInstance<ProjectileWeapon>().Set(itemName, dieCount, damage, ammoName, twoHanded, abilityToUse, broken, value);
+        ProjectileWeapon copy = ScriptableObject.CreateInstance<ProjectileWeapon>();
+        copy.CopyItemVariables(itemName, description, broken, value, actions);
+        copy.CopyWeaponVariables(damage, twoHanded, abilityToUse);
+
+        copy.ammoName = this.ammoName;
+
+        return copy;
     }
 }
