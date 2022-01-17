@@ -15,9 +15,13 @@ MonoBehaviour:
   actionName: Throw Bomb
   actionTarget: 0
   doTheseThings:
-  - atomicFunction: 0
-    dieCount: 0
-    dieSize: 0
+  - atomicFunction: 7
+    dieCount: 1
+    dieSize: 10
+    damage:
+      dieCount: 0
+      dieSize: 0
+      damageType: 0
     actor: {fileID: 0}
     target: {fileID: 0}
     item: {fileID: 0}

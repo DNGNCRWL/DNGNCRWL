@@ -1920,6 +1920,7 @@ GameObject:
   - component: {fileID: 527566022}
   - component: {fileID: 527566023}
   - component: {fileID: 527566021}
+  - component: {fileID: 527566024}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -2041,6 +2042,18 @@ MonoBehaviour:
   - {fileID: 1446046360}
   - {fileID: 1644708601}
   - {fileID: 1654140944}
+--- !u!114 &527566024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 527566020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 301233471d2f11a4aa7801eebf08d7c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &528958479
 GameObject:
   m_ObjectHideFlags: 0
@@ -2205,6 +2218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomizeClassless: 1
+  test: 0
   characterName: 
   description: 
   characterClass: 
@@ -2227,6 +2241,18 @@ MonoBehaviour:
   unequippedArmor: {fileID: 0}
   inventory: []
   currentState: 0
+  infected: 0
+  bleeding: 0
+  brokenMainhand: 0
+  brokenOffhand: 0
+  brokenLeftLeg: 0
+  brokenRightLeg: 0
+  blindedLeft: 0
+  blindedRight: 0
+  canMove: 0
+  canSee: 0
+  reviveCounter: 0
+  hemorrhageTimer: 0
   maxHitPointsTempIncrease: 0
   strengthTemp: 0
   agilityTemp: 0
@@ -2237,6 +2263,20 @@ MonoBehaviour:
   tempDisabledLegs: 0
   tempBlinded: 0
   tempDistracted: 0
+  bludgeonResist: 0
+  bludgeonResistTemp: 0
+  cutResist: 0
+  cutResistTemp: 0
+  electricResist: 0
+  electricResistTemp: 0
+  fireResist: 0
+  fireResistTemp: 0
+  magicResist: 0
+  magicResistTemp: 0
+  pierceResist: 0
+  pierceResistTemp: 0
+  spiritResist: 0
+  spiritResistTemp: 0
 --- !u!4 &539683949
 Transform:
   m_ObjectHideFlags: 0
@@ -3345,6 +3385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomizeClassless: 1
+  test: 0
   characterName: Goblin
   description: 
   characterClass: 
@@ -3367,6 +3408,18 @@ MonoBehaviour:
   unequippedArmor: {fileID: 11400000, guid: e325cfabe55fa974b8d80a4b24a5bc1b, type: 2}
   inventory: []
   currentState: 0
+  infected: 0
+  bleeding: 0
+  brokenMainhand: 0
+  brokenOffhand: 0
+  brokenLeftLeg: 0
+  brokenRightLeg: 0
+  blindedLeft: 0
+  blindedRight: 0
+  canMove: 0
+  canSee: 0
+  reviveCounter: 0
+  hemorrhageTimer: 0
   maxHitPointsTempIncrease: 0
   strengthTemp: 0
   agilityTemp: 0
@@ -3377,6 +3430,20 @@ MonoBehaviour:
   tempDisabledLegs: 0
   tempBlinded: 0
   tempDistracted: 0
+  bludgeonResist: 0
+  bludgeonResistTemp: 0
+  cutResist: 0
+  cutResistTemp: 0
+  electricResist: 0
+  electricResistTemp: 0
+  fireResist: 0
+  fireResistTemp: 0
+  magicResist: 0
+  magicResistTemp: 0
+  pierceResist: 0
+  pierceResistTemp: 0
+  spiritResist: 0
+  spiritResistTemp: 0
 --- !u!4 &927576513
 Transform:
   m_ObjectHideFlags: 0
@@ -5208,6 +5275,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomizeClassless: 1
+  test: 0
   characterName: 
   description: 
   characterClass: 
@@ -5230,6 +5298,18 @@ MonoBehaviour:
   unequippedArmor: {fileID: 0}
   inventory: []
   currentState: 0
+  infected: 0
+  bleeding: 0
+  brokenMainhand: 0
+  brokenOffhand: 0
+  brokenLeftLeg: 0
+  brokenRightLeg: 0
+  blindedLeft: 0
+  blindedRight: 0
+  canMove: 0
+  canSee: 0
+  reviveCounter: 0
+  hemorrhageTimer: 0
   maxHitPointsTempIncrease: 0
   strengthTemp: 0
   agilityTemp: 0
@@ -5240,6 +5320,20 @@ MonoBehaviour:
   tempDisabledLegs: 0
   tempBlinded: 0
   tempDistracted: 0
+  bludgeonResist: 0
+  bludgeonResistTemp: 0
+  cutResist: 0
+  cutResistTemp: 0
+  electricResist: 0
+  electricResistTemp: 0
+  fireResist: 0
+  fireResistTemp: 0
+  magicResist: 0
+  magicResistTemp: 0
+  pierceResist: 0
+  pierceResistTemp: 0
+  spiritResist: 0
+  spiritResistTemp: 0
 --- !u!4 &1446046362
 Transform:
   m_ObjectHideFlags: 0
@@ -5477,6 +5571,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomizeClassless: 1
+  test: 0
   characterName: 
   description: 
   characterClass: 
@@ -5499,6 +5594,18 @@ MonoBehaviour:
   unequippedArmor: {fileID: 0}
   inventory: []
   currentState: 0
+  infected: 0
+  bleeding: 0
+  brokenMainhand: 0
+  brokenOffhand: 0
+  brokenLeftLeg: 0
+  brokenRightLeg: 0
+  blindedLeft: 0
+  blindedRight: 0
+  canMove: 0
+  canSee: 0
+  reviveCounter: 0
+  hemorrhageTimer: 0
   maxHitPointsTempIncrease: 0
   strengthTemp: 0
   agilityTemp: 0
@@ -5509,6 +5616,20 @@ MonoBehaviour:
   tempDisabledLegs: 0
   tempBlinded: 0
   tempDistracted: 0
+  bludgeonResist: 0
+  bludgeonResistTemp: 0
+  cutResist: 0
+  cutResistTemp: 0
+  electricResist: 0
+  electricResistTemp: 0
+  fireResist: 0
+  fireResistTemp: 0
+  magicResist: 0
+  magicResistTemp: 0
+  pierceResist: 0
+  pierceResistTemp: 0
+  spiritResist: 0
+  spiritResistTemp: 0
 --- !u!4 &1484241083
 Transform:
   m_ObjectHideFlags: 0
@@ -5662,6 +5783,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomizeClassless: 1
+  test: 0
   characterName: 
   description: 
   characterClass: 
@@ -5684,6 +5806,18 @@ MonoBehaviour:
   unequippedArmor: {fileID: 0}
   inventory: []
   currentState: 0
+  infected: 0
+  bleeding: 0
+  brokenMainhand: 0
+  brokenOffhand: 0
+  brokenLeftLeg: 0
+  brokenRightLeg: 0
+  blindedLeft: 0
+  blindedRight: 0
+  canMove: 0
+  canSee: 0
+  reviveCounter: 0
+  hemorrhageTimer: 0
   maxHitPointsTempIncrease: 0
   strengthTemp: 0
   agilityTemp: 0
@@ -5694,6 +5828,20 @@ MonoBehaviour:
   tempDisabledLegs: 0
   tempBlinded: 0
   tempDistracted: 0
+  bludgeonResist: 0
+  bludgeonResistTemp: 0
+  cutResist: 0
+  cutResistTemp: 0
+  electricResist: 0
+  electricResistTemp: 0
+  fireResist: 0
+  fireResistTemp: 0
+  magicResist: 0
+  magicResistTemp: 0
+  pierceResist: 0
+  pierceResistTemp: 0
+  spiritResist: 0
+  spiritResistTemp: 0
 --- !u!4 &1619461193
 Transform:
   m_ObjectHideFlags: 0
@@ -5739,6 +5887,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomizeClassless: 1
+  test: 0
   characterName: 
   description: 
   characterClass: 
@@ -5761,6 +5910,18 @@ MonoBehaviour:
   unequippedArmor: {fileID: 0}
   inventory: []
   currentState: 0
+  infected: 0
+  bleeding: 0
+  brokenMainhand: 0
+  brokenOffhand: 0
+  brokenLeftLeg: 0
+  brokenRightLeg: 0
+  blindedLeft: 0
+  blindedRight: 0
+  canMove: 0
+  canSee: 0
+  reviveCounter: 0
+  hemorrhageTimer: 0
   maxHitPointsTempIncrease: 0
   strengthTemp: 0
   agilityTemp: 0
@@ -5771,6 +5932,20 @@ MonoBehaviour:
   tempDisabledLegs: 0
   tempBlinded: 0
   tempDistracted: 0
+  bludgeonResist: 0
+  bludgeonResistTemp: 0
+  cutResist: 0
+  cutResistTemp: 0
+  electricResist: 0
+  electricResistTemp: 0
+  fireResist: 0
+  fireResistTemp: 0
+  magicResist: 0
+  magicResistTemp: 0
+  pierceResist: 0
+  pierceResistTemp: 0
+  spiritResist: 0
+  spiritResistTemp: 0
 --- !u!4 &1644708603
 Transform:
   m_ObjectHideFlags: 0
@@ -5937,6 +6112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomizeClassless: 1
+  test: 0
   characterName: 
   description: 
   characterClass: 
@@ -5959,6 +6135,18 @@ MonoBehaviour:
   unequippedArmor: {fileID: 0}
   inventory: []
   currentState: 0
+  infected: 0
+  bleeding: 0
+  brokenMainhand: 0
+  brokenOffhand: 0
+  brokenLeftLeg: 0
+  brokenRightLeg: 0
+  blindedLeft: 0
+  blindedRight: 0
+  canMove: 0
+  canSee: 0
+  reviveCounter: 0
+  hemorrhageTimer: 0
   maxHitPointsTempIncrease: 0
   strengthTemp: 0
   agilityTemp: 0
@@ -5969,6 +6157,20 @@ MonoBehaviour:
   tempDisabledLegs: 0
   tempBlinded: 0
   tempDistracted: 0
+  bludgeonResist: 0
+  bludgeonResistTemp: 0
+  cutResist: 0
+  cutResistTemp: 0
+  electricResist: 0
+  electricResistTemp: 0
+  fireResist: 0
+  fireResistTemp: 0
+  magicResist: 0
+  magicResistTemp: 0
+  pierceResist: 0
+  pierceResistTemp: 0
+  spiritResist: 0
+  spiritResistTemp: 0
 --- !u!4 &1654140946
 Transform:
   m_ObjectHideFlags: 0
@@ -7024,6 +7226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomizeClassless: 1
+  test: 0
   characterName: 
   description: 
   characterClass: 
@@ -7046,6 +7249,18 @@ MonoBehaviour:
   unequippedArmor: {fileID: 0}
   inventory: []
   currentState: 0
+  infected: 0
+  bleeding: 0
+  brokenMainhand: 0
+  brokenOffhand: 0
+  brokenLeftLeg: 0
+  brokenRightLeg: 0
+  blindedLeft: 0
+  blindedRight: 0
+  canMove: 0
+  canSee: 0
+  reviveCounter: 0
+  hemorrhageTimer: 0
   maxHitPointsTempIncrease: 0
   strengthTemp: 0
   agilityTemp: 0
@@ -7056,6 +7271,20 @@ MonoBehaviour:
   tempDisabledLegs: 0
   tempBlinded: 0
   tempDistracted: 0
+  bludgeonResist: 0
+  bludgeonResistTemp: 0
+  cutResist: 0
+  cutResistTemp: 0
+  electricResist: 0
+  electricResistTemp: 0
+  fireResist: 0
+  fireResistTemp: 0
+  magicResist: 0
+  magicResistTemp: 0
+  pierceResist: 0
+  pierceResistTemp: 0
+  spiritResist: 0
+  spiritResistTemp: 0
 --- !u!4 &1909781600
 Transform:
   m_ObjectHideFlags: 0

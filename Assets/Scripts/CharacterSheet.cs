@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Stat { Strength, Agility, Presence, Toughness, Defense };
-
 public class CharacterSheet : MonoBehaviour //can probably remove this as a monobehavior if we get rid of the unity calls at the bottom
 {
     public bool randomizeClassless;
     public bool test;
+    public CharacterAction testAction;
 
     [Header("Character Stuff")]
     [SerializeField] string characterName; ////for some reason if i header and serialize field in front of a bunch of declarations, header is duplicated
@@ -16,8 +15,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         hitPoints, maxHitPoints,
         strength, agility, presence, toughness,
         powers, omens, silver, food;
-    static int abilityMin = -3;
-    static int abilityMax = 6; //this is 3 in the book
+    static readonly int abilityMin = -3;
+    static readonly int abilityMax = 6; //this is 3 in the book
     [SerializeField] bool waterskin; //make this an item?
 
     [Header("Equipment")]
@@ -601,11 +600,13 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         if (BattleManager.BM) BattleManager.BM.Sneak(this);
     }
 
-    public void RecoverDamage(Damage damage)
+    public int RecoverDamage(Damage damage)
     {
         int increase = GameManager.RollDice(damage.dieCount, damage.dieSize);
         hitPoints += increase;
         CheckHPBounds();
+
+        return increase;
     }
 
     public void SetBleeding(bool b) { bleeding = b; }
@@ -645,48 +646,63 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         }
     }
 
-    public void TempIncreaseMaxHP(Damage damage)
+    public int TempIncreaseMaxHP(Damage damage)
     {
         int increase = GameManager.RollDice(damage.dieCount, damage.dieSize);
         hitPoints += increase;
         maxHitPointsTempIncrease += increase;
         CheckHPBounds();
+
+        return increase;
     }
-    public void TempIncreaseStrength(Damage damage)
+    public int TempIncreaseStrength(Damage damage)
     {
         int increase = GameManager.RollDice(damage.dieCount, damage.dieSize);
         strengthTemp += increase;
+
+        return increase;
     }
-    public void TempIncreaseAgility(Damage damage)
+    public int TempIncreaseAgility(Damage damage)
     {
         int increase = GameManager.RollDice(damage.dieCount, damage.dieSize);
         agilityTemp += increase;
+
+        return increase;
     }
-    public void TempIncreasePresence(Damage damage)
+    public int TempIncreasePresence(Damage damage)
     {
         int increase = GameManager.RollDice(damage.dieCount, damage.dieSize);
         presenceTemp += increase;
+
+        return increase;
     }
-    public void TempIncreaseToughness(Damage damage)
+    public int TempIncreaseToughness(Damage damage)
     {
         int increase = GameManager.RollDice(damage.dieCount, damage.dieSize);
         toughnessTemp += increase;
+
+        return increase;
     }
-    public void TempIncreaseStat(Damage damage, Stat stat)
+    public int TempIncreaseDefense(Damage damage)
+    {
+        int increase = GameManager.RollDice(damage.dieCount, damage.dieSize);
+        defenseTemp += increase;
+
+        return increase;
+    }
+    public int TempIncreaseStat(Damage damage, Stat stat)
     {
         switch (stat)
         {
-            case Stat.Agility: TempIncreaseAgility(damage); break;
-            case Stat.Presence: TempIncreasePresence(damage); break;
-            case Stat.Strength: TempIncreaseStrength(damage); break;
-            case Stat.Toughness: TempIncreaseToughness(damage); break;
+            case Stat.Agility: return TempIncreaseAgility(damage);
+            case Stat.Presence: return TempIncreasePresence(damage);
+            case Stat.Strength: return TempIncreaseStrength(damage); 
+            case Stat.Toughness: return TempIncreaseToughness(damage);
+            case Stat.Defense: return TempIncreaseDefense(damage);
         }
+
+        return 0;
     }
-
-
-    //    tempDisabledHands, tempDisabledLegs, tempBlinded, tempDistracted;
-
-
 
     //PENALTIES
     public int HemorrhagePenalty()
@@ -714,9 +730,9 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     void Test()
     {
         test = false;
-        Item elixir = ItemManager.SPECIAL_ITEMS[6].Copy();
-        PickupItem(elixir);
+        //Item elixir = ItemManager.SPECIAL_ITEMS[6].Copy();
+        //List<CharacterAction> actions = elixir.actions;
 
-        List<CharacterAction> actions = elixir.actions;
+        ActionManager.AM.StartAction(this, null, null, testAction);
     }
 }

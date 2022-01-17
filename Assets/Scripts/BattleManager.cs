@@ -98,12 +98,12 @@ public class BattleManager : MonoBehaviour
 
     //**** UI STUFF ****//
     //maybe this should be put into Menu Manager or... maybe Menu Manager should be changed to Battle UI?
-    void SetDialogueText(string s)
+    public void SetDialogueText(string s)
     {
         dialogueText.text = s; //make nicer
     }
 
-    void AddDialogueText(string s)
+    public void AddDialogueText(string s)
     {
         dialogueText.text += "\n" + s;
         string[] lines = dialogueText.text.Split('\n');

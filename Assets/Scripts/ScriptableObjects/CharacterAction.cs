@@ -3,133 +3,85 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 [CreateAssetMenu(fileName = "Action", menuName = "Action", order = 1)]
 public class CharacterAction : ScriptableObject
 {
+    /*
+    - Name
+- possible roll
+- list of targets
+- Action descriptor + timing
+- Midway descriptor + timing
+- Result descriptor + timing
+- List of results on success, fail, critical, fumble
+*/
     public string actionName;
-    public ActionTarget actionTarget;
-    public ParameteredAtomicFunction[] doTheseThings;
-    
-    /*EAF 2 Atomic Function
-     * 
-     * This takes in an Enumerated Atomic Function and returns the actual function.
-     * Enums can be made visible in the Unity Editor, so users can create a new Action
-     * and surface the action. This function will grow as we add functions
-     */
-    public static Action<ParameteredAtomicFunction> EAF2atomicFunction(EnumeratedAtomicFunction eaf)
-    {
-        switch (eaf)
-        {
-            //self actions
-            case EnumeratedAtomicFunction.CureBleeding: return ActionManager.CureBleeding;
-            case EnumeratedAtomicFunction.CureBlinded: return ActionManager.CureBlinded;
-            case EnumeratedAtomicFunction.CureDisabled: return ActionManager.CureDisabled;
-            case EnumeratedAtomicFunction.CureDistracted: return ActionManager.CureDistracted;
-            case EnumeratedAtomicFunction.CureHands: return ActionManager.CureHands;
-            case EnumeratedAtomicFunction.CureInfection: return ActionManager.CureInfection;
-            case EnumeratedAtomicFunction.DamageOtherSide: return ActionManager.DamageOtherSide;
-            case EnumeratedAtomicFunction.IncreaseMaxHP: return ActionManager.IncreaseMaxHP;
-            case EnumeratedAtomicFunction.IncreaseStrength: return ActionManager.IncreaseStrength;
-            case EnumeratedAtomicFunction.IncreaseAgility: return ActionManager.IncreaseAgility;
-            case EnumeratedAtomicFunction.IncreasePresence: return ActionManager.IncreasePresence;
-            case EnumeratedAtomicFunction.IncreaseToughness: return ActionManager.IncreaseToughness;
-            case EnumeratedAtomicFunction.RecoverDamage: return ActionManager.RecoverDamage;
+    public string verb;
+    public List<ParameteredAtomicFunction> alwaysDoThese;
+    [HideInInspector]
+    public bool useRoll;
+    [Header("If Rolling...")]
+    public int difficultyRating;
+    d20 roll;
+    public StatSelector chooseActorStatToTest;
+    public StatSelector chooseTargetStatToTest;
+    [HideInInspector]
+    public bool needsTarget;
 
-            //other actions
-            case EnumeratedAtomicFunction.Fight: return ActionManager.Fight;
-            case EnumeratedAtomicFunction.Push: return ActionManager.Fight;
-            default: return null;
-        }
+    Func<ParameteredAtomicFunction, String> startDescriptor;
+    Func<ParameteredAtomicFunction, String> actionDescriptor;
+    Func<ParameteredAtomicFunction, String> resultDescriptor;
+    public List<ParameteredAtomicFunction> success;
+    public List<ParameteredAtomicFunction> critical;
+    public List<ParameteredAtomicFunction> failure;
+    public List<ParameteredAtomicFunction> fumble;
+
+    private void Awake()
+    {
+        needsTarget = NeedsTarget();
+        useRoll = (success.Count + critical.Count + failure.Count + fumble.Count) > 0;
     }
 
-    public void ExecuteAction(CharacterSheet actor, CharacterSheet target, Item item)
+    bool NeedsTarget()
     {
-        if (actionTarget != ActionTarget.Other)
-            return;
-
-        for (int i = 0; i < doTheseThings.Length; i++)
-        {
-            doTheseThings[i].actor = actor;
-            doTheseThings[i].target = target;
-            doTheseThings[i].item = item;
-            EAF2atomicFunction(doTheseThings[i].atomicFunction)(doTheseThings[i]);
-        }
+        return (
+           NeedsTarget(success) ||
+           NeedsTarget(critical) ||
+           NeedsTarget(failure) ||
+           NeedsTarget(fumble)
+           );
     }
 
-    public void ExecuteAction(CharacterSheet actor, CharacterSheet target)
+    bool NeedsTarget(List<ParameteredAtomicFunction> list)
     {
-        if (actionTarget != ActionTarget.Other)
-            return;
-
-        for(int i = 0; i < doTheseThings.Length; i++)
+        foreach (ParameteredAtomicFunction paf in list)
         {
-            doTheseThings[i].actor = actor;
-            doTheseThings[i].target = target;
-            EAF2atomicFunction(doTheseThings[i].atomicFunction)(doTheseThings[i]);
+            switch (paf.atomicFunction)
+            {
+                case EnumeratedAtomicFunction.TargetAgility:
+                case EnumeratedAtomicFunction.TargetBleeding:
+                case EnumeratedAtomicFunction.TargetBlind:
+                case EnumeratedAtomicFunction.TargetBludgeonResist:
+                case EnumeratedAtomicFunction.TargetCutResist:
+                case EnumeratedAtomicFunction.TargetDistracted:
+                case EnumeratedAtomicFunction.TargetElectricResist:
+                case EnumeratedAtomicFunction.TargetEquip:
+                case EnumeratedAtomicFunction.TargetFireResist:
+                case EnumeratedAtomicFunction.TargetHands:
+                case EnumeratedAtomicFunction.TargetHP:
+                case EnumeratedAtomicFunction.TargetInfection:
+                case EnumeratedAtomicFunction.TargetLegs:
+                case EnumeratedAtomicFunction.TargetMagicResist:
+                case EnumeratedAtomicFunction.TargetMaxHP:
+                case EnumeratedAtomicFunction.TargetPierceResist:
+                case EnumeratedAtomicFunction.TargetPresence:
+                case EnumeratedAtomicFunction.TargetStrength:
+                case EnumeratedAtomicFunction.TargetToughness:
+                    return true;
+            }
         }
+
+        return false;
     }
-
-    public void ExecuteAction(CharacterSheet actor, Item item)
-    {
-        if (actionTarget != ActionTarget.Self)
-            return;
-
-        for (int i = 0; i < doTheseThings.Length; i++)
-        {
-            doTheseThings[i].actor = actor;
-            doTheseThings[i].target = actor;
-            doTheseThings[i].item = item;
-            EAF2atomicFunction(doTheseThings[i].atomicFunction)(doTheseThings[i]);
-        }
-    }
-
-    public void ExecuteAction(CharacterSheet actor)
-    {
-        if (actionTarget != ActionTarget.Self)
-            return;
-
-        for (int i = 0; i < doTheseThings.Length; i++)
-        {
-            doTheseThings[i].actor = actor;
-            doTheseThings[i].target = actor;
-            EAF2atomicFunction(doTheseThings[i].atomicFunction)(doTheseThings[i]);
-        }
-    }
-}
-
-[System.Serializable]
-public enum ActionTarget { Self, Other };
-
-[System.Serializable]
-public enum EnumeratedAtomicFunction
-{
-    Nothing,
-    CureBleeding,
-    CureBlinded,
-    CureDisabled,
-    CureDistracted,
-    CureHands,
-    CureInfection,
-    DamageOtherSide,
-    IncreaseMaxHP,
-    IncreaseStrength,
-    IncreaseAgility,
-    IncreasePresence,
-    IncreaseToughness,
-    RecoverDamage,
-
-    Fight,
-    Push
-}
-
-[System.Serializable]
-public struct ParameteredAtomicFunction
-{
-    public EnumeratedAtomicFunction atomicFunction;
-    public int dieCount;
-    public int dieSize;
-    public Damage damage;
-    [HideInInspector] public CharacterSheet actor;
-    [HideInInspector] public CharacterSheet target;
-    [HideInInspector] public Item item;
 }

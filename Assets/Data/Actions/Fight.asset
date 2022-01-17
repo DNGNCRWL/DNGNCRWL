@@ -15,8 +15,13 @@ MonoBehaviour:
   actionName: Fight
   actionTarget: 1
   doTheseThings:
-  - atomicFunction: 13
+  - atomicFunction: 14
     dieCount: 0
     dieSize: 0
+    damage:
+      dieCount: 0
+      dieSize: 0
+      damageType: 0
     actor: {fileID: 0}
     target: {fileID: 0}
+    item: {fileID: 0}

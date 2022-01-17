@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     {
         if (GM == null) GM = this;
         else { Destroy(gameObject); return; }
+        GameObject.DontDestroyOnLoad(this.gameObject);
 
         playerCharacters = new List<GameObject>();
         foreach (GameObject go in characters) playerCharacters.Add(go);
@@ -20,8 +21,10 @@ public class GameManager : MonoBehaviour
 
     static public int RollDie(int dieSize)
     {
-        if (dieSize < 1) return 1;
-        else return UnityEngine.Random.Range(0, dieSize) + 1;
+        if (dieSize < 0)
+            return UnityEngine.Random.Range(0, -dieSize) - 1;
+        else
+            return UnityEngine.Random.Range(0, dieSize) + 1;
     }
     static public int RollDice(int number, int dieSize)
     {
@@ -37,8 +40,28 @@ public class GameManager : MonoBehaviour
         Debug.Log(message);
         return false;
     }
+
+
+    public static CharacterSheet GetTarget()
+    {
+        //if in battle list enemies
+        //if in status menu list allies
+        return null;
+    }
+
+
 }
 
+[System.Serializable]
+public enum DescriptorSelector { Default, Fight }
+
+[System.Serializable]
+public enum StatSelector { Strength, Agility, Presence, Toughness, Defense, WeaponStat }
+
+[System.Serializable]
+public enum Stat { Strength, Agility, Presence, Toughness, Defense };
+
+[System.Serializable]
 public enum DamageType { Untyped, Bludgeon, Cut, Electric, Fire, Magic, Pierce, Spirit }
 
 [System.Serializable]

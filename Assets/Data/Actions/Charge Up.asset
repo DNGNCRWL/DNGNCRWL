@@ -7,56 +7,71 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0eaf4d05ca32e9147bcc1a4b2ad90283, type: 3}
-  m_Name: Drink Elixir
+  m_Name: Charge Up
   m_EditorClassIdentifier: 
-  actionName: Drink Elixir
-  verb: drinks
+  actionName: Charge Up
+  verb: summons their energy
   alwaysDoThese:
-  - name: Remove Infection
+  - name: Lose Toughness
     roll:
       difficultyRating: 0
       actor: {fileID: 0}
       actorStat: 0
       target: {fileID: 0}
       targetStat: 0
-      roll: 0
     actor: {fileID: 0}
     target: {fileID: 0}
     item: {fileID: 0}
-    atomicFunction: 8
+    atomicFunction: 6
     damage:
-      dieCount: 0
-      dieSize: 0
+      dieCount: 1
+      dieSize: -2
       damageType: 0
     boolean: 0
     floatValue: 1
-  - name: Increase HP
+  useRoll: 1
+  difficultyRating: 3
+  chooseActorStatToTest: 3
+  chooseTargetStatToTest: 0
+  needsTarget: 0
+  success:
+  - name: Strength Up
     roll:
       difficultyRating: 0
       actor: {fileID: 0}
       actorStat: 0
       target: {fileID: 0}
       targetStat: 0
-      roll: 0
     actor: {fileID: 0}
     target: {fileID: 0}
     item: {fileID: 0}
-    atomicFunction: 1
+    atomicFunction: 3
     damage:
       dieCount: 1
-      dieSize: 6
+      dieSize: 2
       damageType: 0
     boolean: 0
     floatValue: 0
-  useRoll: 1
-  difficultyRating: 0
-  chooseActorStatToTest: 0
-  chooseTargetStatToTest: 0
-  needsTarget: 0
-  success: []
+  - name: Max HP Up
+    roll:
+      difficultyRating: 0
+      actor: {fileID: 0}
+      actorStat: 0
+      target: {fileID: 0}
+      targetStat: 0
+    actor: {fileID: 0}
+    target: {fileID: 0}
+    item: {fileID: 0}
+    atomicFunction: 2
+    damage:
+      dieCount: 1
+      dieSize: 4
+      damageType: 0
+    boolean: 0
+    floatValue: 0
   critical: []
   failure: []
   fumble: []

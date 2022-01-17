@@ -9,7 +9,8 @@ public class d20
     public Stat actorStat;
     public CharacterSheet target;
     public Stat targetStat;
-    public int roll;
+    int roll;
+    bool randomized;
 
     public d20(int difficultyRating, CharacterSheet actor, Stat actorStat, CharacterSheet target, Stat targetStat)
     {
@@ -18,8 +19,7 @@ public class d20
         this.actorStat = actorStat;
         this.target = target;
         this.targetStat = targetStat;
-
-        roll = GameManager.RollDie(20);
+        randomized = false;
     }
     
     int Bonus() { return (actor) ? actor.GetStat(actorStat) : 0; }
@@ -30,10 +30,18 @@ public class d20
     public d20(int difficultyRating) : this(difficultyRating, null, 0, null, 0) { }
     public d20() : this(10) { }
 
-    public bool IsSuccess() { return roll > AdjustedDR() || IsCritical(); }
-    public bool IsCritical() { return roll == 20; }
-    public bool IsSuccessOnly() { return roll > AdjustedDR() && !IsCritical(); }
-    public bool IsFailure() { return roll <= AdjustedDR() || IsFumble(); }
-    public bool IsFumble() { return roll == 1; }
-    public bool IsFailureOnly() { return roll <= AdjustedDR() && !IsFumble(); }
+    void Randomize() { if (!randomized) roll = GameManager.RollDie(20); randomized = true; }
+
+    public int Roll() { Randomize(); return roll; }
+    public bool IsSuccess() { Randomize(); return roll > AdjustedDR() || IsCritical(); }
+    public bool IsCritical() { Randomize(); return roll == 20; }
+    public bool IsSuccessOnly() { Randomize(); return roll > AdjustedDR() && !IsCritical(); }
+    public bool IsFailure() { Randomize(); return roll <= AdjustedDR() || IsFumble(); }
+    public bool IsFumble() { Randomize(); return roll == 1; }
+    public bool IsFailureOnly() { Randomize(); return roll <= AdjustedDR() && !IsFumble(); }
+
+    public bool CompareTo(int newStatValue)
+    {
+        return roll > (difficultyRating - Bonus() + newStatValue);
+    }
 }

@@ -17,6 +17,6 @@ MonoBehaviour:
   broken: 0
   value: 0
   actions:
-  - {fileID: 11400000, guid: 857c55f1935763843958b430b2978019, type: 2}
+  - {fileID: 11400000, guid: 830434b92f9158e449d632b27ab7b0ed, type: 2}
   unit: Sip
   amount: 2
