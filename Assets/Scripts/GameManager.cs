@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class GameManager : MonoBehaviour
         if (GM == null) GM = this;
         else { Destroy(gameObject); return; }
         GameObject.DontDestroyOnLoad(this.gameObject);
+
+        DOTween.Init(null, null, null);
 
         playerCharacters = new List<GameObject>();
         foreach (GameObject go in characters) playerCharacters.Add(go);

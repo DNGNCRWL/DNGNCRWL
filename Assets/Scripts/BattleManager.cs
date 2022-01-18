@@ -49,8 +49,6 @@ public class BattleManager : MonoBehaviour
         if (!BM) { BM = this; }
         else { Destroy(gameObject); return; }
 
-        DOTween.Init(null, null, null);
-
         snapWait = new WaitForSeconds(snapTime);
         quickWait = new WaitForSeconds(quickTime);
         mediumWait = new WaitForSeconds(mediumTime);
