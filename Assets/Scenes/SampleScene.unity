@@ -2219,6 +2219,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomizeClassless: 1
   test: 0
+  testAction: {fileID: 0}
+  testTarget: {fileID: 0}
+  test2: 0
+  testAction2: {fileID: 0}
+  testTarget2: {fileID: 0}
   characterName: 
   description: 
   characterClass: 
@@ -3386,6 +3391,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomizeClassless: 1
   test: 0
+  testAction: {fileID: 0}
+  testTarget: {fileID: 0}
+  test2: 0
+  testAction2: {fileID: 0}
+  testTarget2: {fileID: 0}
   characterName: Goblin
   description: 
   characterClass: 
@@ -5276,6 +5286,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomizeClassless: 1
   test: 0
+  testAction: {fileID: 11400000, guid: aa7eef4ec21388c4d8b0546f2c168d3e, type: 2}
+  testTarget: {fileID: 0}
+  test2: 0
+  testAction2: {fileID: 0}
+  testTarget2: {fileID: 0}
   characterName: 
   description: 
   characterClass: 
@@ -5572,6 +5587,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomizeClassless: 1
   test: 0
+  testAction: {fileID: 11400000, guid: aa7eef4ec21388c4d8b0546f2c168d3e, type: 2}
+  testTarget: {fileID: 0}
+  test2: 0
+  testAction2: {fileID: 11400000, guid: f84747e514d9fc445a35471d9b5db195, type: 2}
+  testTarget2: {fileID: 0}
   characterName: 
   description: 
   characterClass: 
@@ -5784,6 +5804,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomizeClassless: 1
   test: 0
+  testAction: {fileID: 0}
+  testTarget: {fileID: 0}
+  test2: 0
+  testAction2: {fileID: 0}
+  testTarget2: {fileID: 0}
   characterName: 
   description: 
   characterClass: 
@@ -5888,6 +5913,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomizeClassless: 1
   test: 0
+  testAction: {fileID: 0}
+  testTarget: {fileID: 0}
+  test2: 0
+  testAction2: {fileID: 0}
+  testTarget2: {fileID: 0}
   characterName: 
   description: 
   characterClass: 
@@ -6113,6 +6143,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomizeClassless: 1
   test: 0
+  testAction: {fileID: 0}
+  testTarget: {fileID: 0}
+  test2: 0
+  testAction2: {fileID: 0}
+  testTarget2: {fileID: 0}
   characterName: 
   description: 
   characterClass: 
@@ -7227,6 +7262,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomizeClassless: 1
   test: 0
+  testAction: {fileID: 0}
+  testTarget: {fileID: 0}
+  test2: 0
+  testAction2: {fileID: 0}
+  testTarget2: {fileID: 0}
   characterName: 
   description: 
   characterClass: 

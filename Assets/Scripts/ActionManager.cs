@@ -1,17 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ActionManager : MonoBehaviour
 {
-    static readonly int bombDifficultyRating = 10;
-
-    static readonly int sneakDifficultyRating = 10;
-
-    static readonly int fightDifficultyRating = 10;
-    static readonly int sameSideRangedAttackPenalty = 2;
-    static readonly int pushDifficultyRating = 10;
+    static readonly int sameSideRangedAttackPenalty = 4;
 
     public static ActionManager AM;
 
@@ -40,14 +33,12 @@ public class ActionManager : MonoBehaviour
         else if (target && item)
             startText += " " + target.GetCharacterName() + " with " + item.itemName;
 
+        BattleManager.SetDialogueText(startText);
         if (BattleManager.BM)
-        {
-            BattleManager.BM.SetDialogueText(startText);
             yield return new WaitForSeconds(1);
-        }
-
+        
         if(action.alwaysDoThese.Count > 0)
-            yield return ExecutePAFs(action.alwaysDoThese, new d20(), actor, target, item);
+            yield return ExecutePAFs(action.alwaysDoThese, new d20(), actor, target, item, action);
 
         if (action.useRoll)
         {
@@ -65,11 +56,9 @@ public class ActionManager : MonoBehaviour
             else
                 actionText = "Amazing effort";
 
+            BattleManager.AddDialogueText(actionText);
             if (BattleManager.BM)
-            {
-                BattleManager.BM.AddDialogueText(actionText);
                 yield return new WaitForSeconds(1);
-            }
 
             //RESULT
             if (roll.IsSuccess())
@@ -78,9 +67,9 @@ public class ActionManager : MonoBehaviour
                 if (roll.IsCritical())
                 {
                     Debug.Log("Critical");
-                    yield return ExecutePAFs(action.critical, roll, actor, target, item);
+                    yield return ExecutePAFs(action.critical, roll, actor, target, item, action);
                 }
-                yield return ExecutePAFs(action.success, roll, actor, target, item);
+                yield return ExecutePAFs(action.success, roll, actor, target, item, action);
             }
             else
             {
@@ -88,9 +77,9 @@ public class ActionManager : MonoBehaviour
                 if (roll.IsFumble())
                 {
                     Debug.Log("Fumble");
-                    yield return ExecutePAFs(action.fumble, roll, actor, target, item);
+                    yield return ExecutePAFs(action.fumble, roll, actor, target, item, action);
                 }
-                yield return ExecutePAFs(action.failure, roll, actor, target, item);
+                yield return ExecutePAFs(action.failure, roll, actor, target, item, action);
             }
         }
 
@@ -114,7 +103,7 @@ public class ActionManager : MonoBehaviour
         return 0;
     }
 
-    static IEnumerator ExecutePAFs(List<ParameteredAtomicFunction> pafs, d20 roll, CharacterSheet actor, CharacterSheet target, Item item)
+    static IEnumerator ExecutePAFs(List<ParameteredAtomicFunction> pafs, d20 roll, CharacterSheet actor, CharacterSheet target, Item item, CharacterAction action)
     {
         Debug.Log("ExecutePAFs " + pafs.Count);
         for (int i = 0; i < pafs.Count; i++)
@@ -124,360 +113,264 @@ public class ActionManager : MonoBehaviour
             paf.actor = actor;
             paf.target = target;
             paf.item = item;
+            paf.action = action;
 
             yield return ExecutePAF(paf);
         }
     }
 
-    static IEnumerator ExecutePAF(ParameteredAtomicFunction paf)
+    static IEnumerator ExecutePAF(ParameteredAtomicFunction args)
     {
-        Debug.Log("ExecutePAF " + paf.name);
-        switch (paf.atomicFunction)
+        Debug.Log("ExecutePAF " + args.name);
+        switch (args.atomicFunction)
         {
             //self actions
-            case EnumeratedAtomicFunction.HP: yield return HP(paf); break;
-            case EnumeratedAtomicFunction.Infection: yield return Infection(paf); break;
-            case EnumeratedAtomicFunction.MaxHP: yield return MaxHP(paf); break;
-            case EnumeratedAtomicFunction.Strength: yield return Strength(paf); break;
-            case EnumeratedAtomicFunction.Toughness: yield return Toughness(paf); break;
+            case EnumeratedAtomicFunction.HP: yield return HP(args); break;
+            case EnumeratedAtomicFunction.Infection: yield return Infection(args); break;
+            case EnumeratedAtomicFunction.MaxHP: yield return MaxHP(args); break;
+            case EnumeratedAtomicFunction.Strength: yield return Strength(args); break;
+            case EnumeratedAtomicFunction.Toughness: yield return Toughness(args); break;
+
+            case EnumeratedAtomicFunction.Sneak: yield return Sneak(args); break;
+            case EnumeratedAtomicFunction.Fight: yield return Fight(args); break;
+            case EnumeratedAtomicFunction.Push: yield return Push(args); break;
+            case EnumeratedAtomicFunction.Return: yield return Return(args); break;
         }
 
         yield return null;
     }
 
-    static IEnumerator HP(ParameteredAtomicFunction paf)
+    static IEnumerator HP(ParameteredAtomicFunction args)
     {
         Debug.Log("HP");
 
-        int increase = paf.actor.RecoverDamage(paf.damage);
+        int increase = args.actor.RecoverDamage(args.damage);
 
-        string resultText = paf.actor.GetCharacterName() + " recovers " + increase + "HP";
+        string resultText = args.actor.GetCharacterName() + " recovers " + increase + "HP";
 
         if (BattleManager.BM)
         {
-            BattleManager.BM.AddDialogueText(resultText);
-            yield return new WaitForSeconds(paf.floatValue);
+            BattleManager.AddDialogueText(resultText);
+            yield return new WaitForSeconds(args.floatValue);
         }
 
         yield return null;
     }
 
-    static IEnumerator MaxHP(ParameteredAtomicFunction paf)
+    static IEnumerator MaxHP(ParameteredAtomicFunction args)
     {
         Debug.Log("MaxHP");
 
-        int increase = paf.actor.TempIncreaseMaxHP(paf.damage);
+        int increase = args.actor.TempIncreaseMaxHP(args.damage);
 
-        string resultText = paf.actor.GetCharacterName() + " gains " + increase + " MaxHP";
+        string resultText = args.actor.GetCharacterName() + " gains " + increase + " MaxHP";
 
         if (BattleManager.BM)
         {
-            BattleManager.BM.AddDialogueText(resultText);
-            yield return new WaitForSeconds(paf.floatValue);
+            BattleManager.AddDialogueText(resultText);
+            yield return new WaitForSeconds(args.floatValue);
         }
 
         yield return null;
     }
 
-    static IEnumerator Strength(ParameteredAtomicFunction paf)
+    static IEnumerator Strength(ParameteredAtomicFunction args)
     {
         Debug.Log("Strength");
 
-        int increase = paf.actor.TempIncreaseStrength(paf.damage);
+        int increase = args.actor.TempIncreaseStrength(args.damage);
 
-        string resultText = paf.actor.GetCharacterName();
+        string resultText = args.actor.GetCharacterName();
         resultText += (increase >= 0) ?
             " gains " + increase + " strength" :
             " loses " + (-increase) + " strength";
 
         if (BattleManager.BM && increase != 0)
         {
-            BattleManager.BM.AddDialogueText(resultText);
-            yield return new WaitForSeconds(paf.floatValue);
+            BattleManager.AddDialogueText(resultText);
+            yield return new WaitForSeconds(args.floatValue);
         }
 
         yield return null;
     }
 
-    static IEnumerator Toughness(ParameteredAtomicFunction paf)
+    static IEnumerator Toughness(ParameteredAtomicFunction args)
     {
         Debug.Log("Toughness");
 
-        int increase = paf.actor.TempIncreaseToughness(paf.damage);
+        int increase = args.actor.TempIncreaseToughness(args.damage);
 
-        string resultText = paf.actor.GetCharacterName();
+        string resultText = args.actor.GetCharacterName();
         resultText += (increase >= 0) ?
             " gains " + increase + " toughness" :
             " loses " + (-increase) + " toughness";
 
         if (BattleManager.BM && increase != 0)
         {
-            BattleManager.BM.AddDialogueText(resultText);
-            yield return new WaitForSeconds(paf.floatValue);
+            BattleManager.AddDialogueText(resultText);
+            yield return new WaitForSeconds(args.floatValue);
         }
 
         yield return null;
     }
 
-    static IEnumerator Infection(ParameteredAtomicFunction paf)
+    static IEnumerator Infection(ParameteredAtomicFunction args)
     {
         Debug.Log("Infection");
 
-        paf.actor.SetInfected(paf.boolean);
+        args.actor.SetInfected(args.boolean);
 
         string resultText = 
-            paf.actor.GetCharacterName() + ((paf.boolean)? " is now infected" : " is cured of infection");
+            args.actor.GetCharacterName() + ((args.boolean)? " is now infected" : " is cured of infection");
 
         if (BattleManager.BM)
         {
-            BattleManager.BM.AddDialogueText(resultText);
-            yield return new WaitForSeconds(paf.floatValue);
+            BattleManager.AddDialogueText(resultText);
+            yield return new WaitForSeconds(args.floatValue);
         }
 
         yield return null;
     }
 
-    //public IEnumerator EACoroutine(
-    //    bool useRoll, d20 roll, int difficultyRating, Stat toTest, ParameteredAtomicFunction[] doTheseThings,
-    //    CharacterSheet actor, CharacterSheet target, Item item)
-    //{
-    //    if (useRoll)
-    //        roll = new d20(difficultyRating, actor, toTest);
+    //calculations
+    static int CalculateSameSideRangedAttackPenalty(CharacterSheet actor, CharacterSheet target)
+    {
+        int penalty = 0;
+        bool sameSide = false;
+        bool usingRanged =
+            actor.GetWeapon().GetType().Equals(typeof(ProjectileWeapon));
+        if (BattleManager.BM)
+            sameSide = BattleManager.BM.SameSide(actor, target);
 
-    //    for (int i = 0; i < doTheseThings.Length; i++)
-    //    {
-    //        doTheseThings[i].roll = roll;
-    //        doTheseThings[i].actor = actor;
-    //        doTheseThings[i].target = target;
-    //        doTheseThings[i].item = item;
+        if (sameSide && usingRanged)
+            penalty += sameSideRangedAttackPenalty;
 
-    //        yield return ExecutePAF(doTheseThings[i]);
-    //    }
-    //}
+        return penalty;
+    }
 
-    //public void ExecuteAction(
-    //    bool useRoll, d20 roll, int difficultyRating, Stat toTest, ParameteredAtomicFunction[] doTheseThings,
-    //    CharacterSheet actor, CharacterSheet target, Item item)
-    //{
-    //    StartCoroutine(EACoroutine(useRoll, roll, difficultyRating, toTest, doTheseThings, actor, target, item));
-    //}
+    //BIGGUNS
+    public static IEnumerator Sneak(ParameteredAtomicFunction args)// SNEAK IS SPECIAL
+    {
+        if (!BattleManager.BM)
+            yield break;
+        CharacterSheet opposingLeader = BattleManager.BM.GetOpposingLeader(args.target);
 
+        d20 roll = new d20(args.action.difficultyRating, args.target, Stat.Agility, opposingLeader, Stat.Presence);
 
+        string resultText = "Sneak is";
+        if (roll.Roll() <= 7)
+            resultText += " looking questionable";
+        else if (roll.Roll() <= 13)
+            resultText += " going well";
+        else
+            resultText = args.actor.GetCharacterName() + " is a ghost";
 
-    ////Calculations
-    //static int CalculateSameSideRangedAttackPenalty(CharacterSheet actor, CharacterSheet target)
-    //{
-    //    int penalty = 0;
-    //    bool sameSide = false;
-    //    bool usingRanged =
-    //        actor.GetWeapon().GetType().Equals(typeof(ProjectileWeapon));
-    //    if (BattleManager.BM)
-    //        sameSide = BattleManager.BM.SameSide(actor, target);
+        BattleManager.AddDialogueText(resultText);
+        if (BattleManager.BM)
+            yield return new WaitForSeconds(args.floatValue);
 
-    //    if (sameSide && usingRanged)
-    //        penalty += sameSideRangedAttackPenalty;
+        if (roll.IsSuccess())
+        {
+            if (roll.Roll() <= 8)
+                resultText = "But they still made it!";
+            else
+                resultText = "And they made it through";
 
-    //    return penalty;
-    //}
+            BattleManager.AddDialogueText(resultText);
+            if (BattleManager.BM)
+                yield return new WaitForSeconds(args.floatValue);
 
-    ////Self Actions
-    //public static IEnumerator CureBleeding(ParameteredAtomicFunction args)
-    //{
-    //    args.target.SetBleeding(false);
-    //    yield return null;
-    //}
-    //public static IEnumerator CureBlinded(ParameteredAtomicFunction args)
-    //{
-    //    args.target.SetTempBlinded(false);
-    //    yield return null;
-    //}
-    //public static IEnumerator CureDisabled(ParameteredAtomicFunction args)
-    //{
-    //    args.target.SetTempDisabled(false);
-    //    yield return null;
-    //}
-    //public static IEnumerator CureDistracted(ParameteredAtomicFunction args)
-    //{
-    //    args.target.SetTempDistracted(false);
-    //    yield return null;
-    //}
-    //public static IEnumerator CureHands(ParameteredAtomicFunction args)
-    //{
-    //    args.target.SetTempDisabledHands(false);
-    //    yield return null;
-    //}
-    //public static IEnumerator CureInfection(ParameteredAtomicFunction args)
-    //{
-    //    args.target.SetInfected(false);
-    //    yield return null;
-    //}
-    //public static IEnumerator CureLegs(ParameteredAtomicFunction args)
-    //{
-    //    args.target.SetTempDisabledLegs(false);
-    //    yield return null;
-    //}
+            args.actor.Sneak();
+        }
+        else
+        {
+            if (roll.Roll() >= 13)
+                resultText = "But " + opposingLeader.GetCharacterName() + " stopped them";
+            else
+                resultText = "And they couldn't make it";
+            BattleManager.AddDialogueText(resultText);
+            if (BattleManager.BM)
+                yield return new WaitForSeconds(args.floatValue);
+        }
+        yield return null;
+    }
 
-    //public static IEnumerator ThrowBomb(ParameteredAtomicFunction args)
-    //{
-    //    if (!BattleManager.BM)
-    //        yield break;
+    static IEnumerator Fight(ParameteredAtomicFunction args)
+    {
+        Debug.Log("Fight");
 
-    //    d20 roll = new d20(bombDifficultyRating, args.actor, Stat.Presence);
+        if (!args.actor) yield break;
+        if (!args.target) yield break;
 
-    //    CharacterSheet[] opponents = BattleManager.BM.GetAllOpponents(args.actor);
+        int difficultyRating = args.action.difficultyRating;
+        difficultyRating += CalculateSameSideRangedAttackPenalty(args.actor, args.target);
 
-    //    foreach(CharacterSheet opponent in opponents)
-    //    {
-    //        if(roll.CompareTo(opponent.GetAgility()))
-    //            opponent.TakeDamage(args.damage);
-    //    }
-    //    yield return null;
-    //}
+        Weapon weapon = args.actor.GetWeapon();
+        d20 roll = new d20(difficultyRating, args.actor, weapon.abilityToUse, args.target, Stat.Defense);
 
-    //public static IEnumerator Equip(ParameteredAtomicFunction args)
-    //{
-    //    args.target.EquipWeapon(args.item);
-    //    yield return null;
-    //}
+        if (roll.IsSuccess())
+        {
+            args.target.TakeDamage(weapon.GetDamage(), roll.IsCritical());
+        }
+        else
+        {
+            if (roll.IsFumble())
+            {
+                CounterAttack(args);
+            }
+        }
 
-    //public static IEnumerator IncreaseMaxHP(ParameteredAtomicFunction args)
-    //{
-    //    args.target.TempIncreaseMaxHP(args.damage);
-    //    yield return null;
-    //}
-    //public static IEnumerator IncreaseStrength(ParameteredAtomicFunction args)
-    //{
-    //    args.target.TempIncreaseStrength(args.damage);
-    //    yield return null;
-    //}
-    //public static IEnumerator IncreaseAgility(ParameteredAtomicFunction args)
-    //{
-    //    args.target.TempIncreaseAgility(args.damage);
-    //    yield return null;
-    //}
-    //public static IEnumerator IncreasePresence(ParameteredAtomicFunction args)
-    //{
-    //    args.target.TempIncreasePresence(args.damage);
-    //    yield return null;
-    //}
-    //public static IEnumerator IncreaseToughness(ParameteredAtomicFunction args)
-    //{
-    //    args.target.TempIncreaseToughness(args.damage);
-    //    yield return null;
-    //}
+        yield return null;
+    }
 
-    //public static IEnumerator RecoverDamage(ParameteredAtomicFunction args)
-    //{
-    //    args.target.RecoverDamage(args.damage);
-    //    yield return null;
-    //}
+    public static IEnumerator CounterAttack(ParameteredAtomicFunction args)
+    {
+        if (!args.actor) yield break;
+        if (!args.target) yield break;
 
-    //public static IEnumerator Sneak(ParameteredAtomicFunction args)
-    //{
-    //    if (!BattleManager.BM)
-    //        yield break;
-    //    CharacterSheet opposingLeader = BattleManager.BM.GetOpposingLeader(args.target);
+        int difficultyRating = args.action.difficultyRating;
+        difficultyRating += CalculateSameSideRangedAttackPenalty(args.actor, args.target);
 
-    //    d20 roll = new d20(sneakDifficultyRating, args.target, Stat.Agility, opposingLeader, Stat.Presence);
+        Weapon weapon = args.target.GetWeapon();
+        d20 roll = new d20(difficultyRating, args.target, weapon.abilityToUse, args.actor, Stat.Defense);
 
-    //    if (roll.IsSuccess())
-    //    {
-    //        args.target.Sneak();
-    //    }
-    //    yield return null;
-    //}
+        if (roll.IsSuccess())
+        {
+            args.target.TakeDamage(weapon.GetDamage(), roll.IsCritical());
+        }
 
+        yield return null;
+    }
+    public static IEnumerator Push(ParameteredAtomicFunction args)
+    {
+        if (!args.actor) yield break;
+        if (!args.target) yield break;
 
+        Weapon weapon = args.actor.GetUnequippedWeapon();
+        d20 roll = new d20(args.action.difficultyRating, args.actor, Stat.Strength, args.target, Stat.Strength);
 
-    ////Targeted Actions
-    //public static IEnumerator Fight(ParameteredAtomicFunction args)
-    //{
-    //    if (!args.actor) yield break;
-    //    if (!args.target) yield break;
+        if (roll.IsSuccess())
+        {
+            args.target.TakeDamage(weapon.GetDamage(), roll.IsCritical());
+            args.target.Push();
+        }
+        else
+        {
+            if (roll.IsFumble())
+            {
+                CounterAttack(args);
+            }
+        }
 
-    //    int difficultyRating = fightDifficultyRating;
-    //    difficultyRating += CalculateSameSideRangedAttackPenalty(args.actor, args.target);
+        yield return null;
+    }
 
-    //    Weapon weapon = args.actor.GetWeapon();
-    //    d20 roll = new d20(difficultyRating, args.actor, weapon.abilityToUse, args.target, Stat.Defense);
+    public static IEnumerator Return(ParameteredAtomicFunction args)
+    {
+        args.actor.Return();
 
-    //    if (roll.IsSuccess())
-    //    {
-    //        args.target.TakeDamage(weapon.GetDamage(), roll.IsCritical());
-    //    }
-    //    else
-    //    {
-    //        if (roll.IsFumble())
-    //        {
-    //            CounterAttack(args);
-    //        }
-    //    }
-
-    //    yield return null;
-    //}
-    //public static IEnumerator CounterAttack(ParameteredAtomicFunction args)
-    //{
-    //    if (!args.actor) yield break;
-    //    if (!args.target) yield break;
-
-    //    int difficultyRating = fightDifficultyRating;
-    //    difficultyRating += CalculateSameSideRangedAttackPenalty(args.actor, args.target); 
-
-    //    Weapon weapon = args.target.GetWeapon();
-    //    d20 roll = new d20(difficultyRating, args.target, weapon.abilityToUse, args.actor, Stat.Defense);
-
-    //    if (roll.IsSuccess())
-    //    {
-    //        args.target.TakeDamage(weapon.GetDamage(), roll.IsCritical());
-    //    }
-
-    //    yield return null;
-    //}
-    //public static IEnumerator Push(ParameteredAtomicFunction args)
-    //{
-    //    if (!args.actor) yield break;
-    //    if (!args.target) yield break;
-
-    //    Weapon weapon = args.actor.GetUnequippedWeapon();
-    //    d20 roll = new d20(pushDifficultyRating, args.actor, Stat.Strength, args.target, Stat.Strength);
-
-    //    if (roll.IsSuccess())
-    //    {
-    //        args.target.TakeDamage(weapon.GetDamage(), roll.IsCritical());
-    //        args.target.Push();
-    //    }
-    //    else
-    //    {
-    //        if (roll.IsFumble())
-    //        {
-    //            CounterAttack(args);
-    //        }
-    //    }
-
-    //    yield return null;
-    //}
-
-
-
-    ////Utility
-    //public static IEnumerator Wait(float f)
-    //{
-    //    yield return new WaitForSeconds(f);
-    //}
-
-    //public static IEnumerator Display(string s, float f)
-    //{
-    //    if (BattleManager.BM)
-    //        BattleManager.BM.AddDialogueText(s);
-    //    return Wait(f);
-    //}
-
-    //public static IEnumerator SetDisplay(string s, float f)
-    //{
-    //    if (BattleManager.BM)
-    //        BattleManager.BM.SetDialogueText(s);
-    //    return Wait(f);
-    //}
+        yield return null;
+    }
 }
 
 [System.Serializable]
@@ -525,7 +418,12 @@ public enum EnumeratedAtomicFunction
     TargetElectricResist,
     TargetFireResist,
     TargetMagicResist,
-    TargetPierceResist
+    TargetPierceResist,
+
+    Sneak, //no target
+    Return, //no target
+    Fight,
+    Push
 }
 
 [System.Serializable]
@@ -536,6 +434,7 @@ public struct ParameteredAtomicFunction
     [HideInInspector] public CharacterSheet actor;
     [HideInInspector] public CharacterSheet target;
     [HideInInspector] public Item item;
+    [HideInInspector] public CharacterAction action;
     public EnumeratedAtomicFunction atomicFunction;
     public Damage damage;
     public bool boolean;

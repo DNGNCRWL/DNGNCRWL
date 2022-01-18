@@ -7,15 +7,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0eaf4d05ca32e9147bcc1a4b2ad90283, type: 3}
-  m_Name: Fight
+  m_Name: Return
   m_EditorClassIdentifier: 
-  actionName: Fight
-  verb: 
+  actionName: Return
+  verb: returns
   alwaysDoThese:
-  - name: Fight
+  - name: Return
     roll:
       difficultyRating: 0
       actor: {fileID: 0}
@@ -26,7 +26,7 @@ MonoBehaviour:
     target: {fileID: 0}
     item: {fileID: 0}
     action: {fileID: 0}
-    atomicFunction: 0
+    atomicFunction: 40
     damage:
       dieCount: 0
       dieSize: 0
@@ -37,7 +37,6 @@ MonoBehaviour:
   difficultyRating: 0
   chooseActorStatToTest: 0
   chooseTargetStatToTest: 0
-  needsTarget: 0
   success: []
   critical: []
   failure: []

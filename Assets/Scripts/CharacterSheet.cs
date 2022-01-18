@@ -7,6 +7,10 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     public bool randomizeClassless;
     public bool test;
     public CharacterAction testAction;
+    public CharacterSheet testTarget;
+    public bool test2;
+    public CharacterAction testAction2;
+    public CharacterSheet testTarget2;
 
     [Header("Character Stuff")]
     [SerializeField] string characterName; ////for some reason if i header and serialize field in front of a bunch of declarations, header is duplicated
@@ -599,6 +603,10 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     {
         if (BattleManager.BM) BattleManager.BM.Sneak(this);
     }
+    public void Return()
+    {
+        if (BattleManager.BM) BattleManager.BM.Return(this);
+    }
 
     public int RecoverDamage(Damage damage)
     {
@@ -725,6 +733,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         if (randomizeClassless) RandomClassless();
 
         if (test) Test();
+        if (test2) Test2();
     }
 
     void Test()
@@ -733,6 +742,13 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         //Item elixir = ItemManager.SPECIAL_ITEMS[6].Copy();
         //List<CharacterAction> actions = elixir.actions;
 
-        ActionManager.AM.StartAction(this, null, null, testAction);
+        ActionManager.AM.StartAction(this, testTarget, null, testAction);
+    }
+
+    void Test2()
+    {
+        test2 = false;
+
+        ActionManager.AM.StartAction(this, testTarget2, null, testAction2);
     }
 }

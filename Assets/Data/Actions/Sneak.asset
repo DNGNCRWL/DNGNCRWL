@@ -7,15 +7,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0eaf4d05ca32e9147bcc1a4b2ad90283, type: 3}
-  m_Name: Fight
+  m_Name: Sneak
   m_EditorClassIdentifier: 
-  actionName: Fight
-  verb: 
+  actionName: Sneak
+  verb: sneaks
   alwaysDoThese:
-  - name: Fight
+  - name: Sneak
     roll:
       difficultyRating: 0
       actor: {fileID: 0}
@@ -26,18 +26,17 @@ MonoBehaviour:
     target: {fileID: 0}
     item: {fileID: 0}
     action: {fileID: 0}
-    atomicFunction: 0
+    atomicFunction: 39
     damage:
       dieCount: 0
       dieSize: 0
       damageType: 0
     boolean: 0
-    floatValue: 0
+    floatValue: 1
   useRoll: 0
-  difficultyRating: 0
+  difficultyRating: 10
   chooseActorStatToTest: 0
   chooseTargetStatToTest: 0
-  needsTarget: 0
   success: []
   critical: []
   failure: []

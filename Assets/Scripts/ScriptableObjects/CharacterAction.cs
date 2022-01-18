@@ -27,7 +27,8 @@ public class CharacterAction : ScriptableObject
     public StatSelector chooseActorStatToTest;
     public StatSelector chooseTargetStatToTest;
     [HideInInspector]
-    public bool needsTarget;
+    bool needsTarget;
+    bool calculatedTarget = false;
 
     Func<ParameteredAtomicFunction, String> startDescriptor;
     Func<ParameteredAtomicFunction, String> actionDescriptor;
@@ -39,18 +40,24 @@ public class CharacterAction : ScriptableObject
 
     private void Awake()
     {
-        needsTarget = NeedsTarget();
         useRoll = (success.Count + critical.Count + failure.Count + fumble.Count) > 0;
     }
 
-    bool NeedsTarget()
+    public bool NeedsTarget()
     {
-        return (
+        if (calculatedTarget)
+            return needsTarget;
+        
+        needsTarget = (
            NeedsTarget(success) ||
            NeedsTarget(critical) ||
            NeedsTarget(failure) ||
            NeedsTarget(fumble)
            );
+
+        calculatedTarget = true;
+
+        return needsTarget;
     }
 
     bool NeedsTarget(List<ParameteredAtomicFunction> list)
@@ -78,6 +85,9 @@ public class CharacterAction : ScriptableObject
                 case EnumeratedAtomicFunction.TargetPresence:
                 case EnumeratedAtomicFunction.TargetStrength:
                 case EnumeratedAtomicFunction.TargetToughness:
+
+                case EnumeratedAtomicFunction.Fight:
+                case EnumeratedAtomicFunction.Push:
                     return true;
             }
         }

@@ -98,20 +98,22 @@ public class BattleManager : MonoBehaviour
 
     //**** UI STUFF ****//
     //maybe this should be put into Menu Manager or... maybe Menu Manager should be changed to Battle UI?
-    public void SetDialogueText(string s)
+    static public void SetDialogueText(string s)
     {
-        dialogueText.text = s; //make nicer
+        if (!BM) return;
+        BM.dialogueText.text = s; //make nicer
     }
 
-    public void AddDialogueText(string s)
+    static public void AddDialogueText(string s)
     {
-        dialogueText.text += "\n" + s;
-        string[] lines = dialogueText.text.Split('\n');
+        if (!BM) return;
+        BM.dialogueText.text += "\n" + s;
+        string[] lines = BM.dialogueText.text.Split('\n');
 
         if(lines.Length > 3)
         {
-            dialogueText.text = "";
-            dialogueText.text += lines[lines.Length-3] + "\n" + lines[lines.Length - 2] + "\n" + lines[lines.Length - 1];
+            BM.dialogueText.text = "";
+            BM.dialogueText.text += lines[lines.Length-3] + "\n" + lines[lines.Length - 2] + "\n" + lines[lines.Length - 1];
         }
     }
 
@@ -219,7 +221,13 @@ public class BattleManager : MonoBehaviour
     }
 
     public void Push(CharacterSheet cs) { }
-    public void Sneak(CharacterSheet cs) { }
+    public void Sneak(CharacterSheet cs)
+    {
+        GameObject g = cs.gameObject;
+        PositionMapping pm = PositionMappingFromGameObject(g);
+        int l = Location(g);
+        SwapAndMove(pm, l, FindRandomEmptyOpposingLocation(pm.objects), quickTime);
+    }
     public CharacterSheet GetOpposingLeader(CharacterSheet cs) { return null; }
     public CharacterSheet[] GetAllOpponents(CharacterSheet cs) { return null; }
     public bool SameSide(CharacterSheet actor, CharacterSheet target) { return false; }
@@ -312,22 +320,24 @@ public class BattleManager : MonoBehaviour
     //    yield return longWait;
     //}
 
-    //bool Return(GameObject g)
-    //{
-    //    PositionMapping pm = PositionMappingFromGameObject(g);
-    //    int l = Location(g);
-    //    if (l > 3)
-    //    {
-    //        SwapAndMove(pm, l, FindRandomHomeLocation(pm.objects), quickTime);
-    //        SetDialogueText(g.GetComponent<CharacterSheet>().characterName + " comes back to the party");
-    //        return true;
-    //    }
-    //    else
-    //    {
-    //        SetDialogueText(g.GetComponent<CharacterSheet>().characterName + " is already with the party");
-    //        return false;
-    //    }
-    //}
+    public bool Return(CharacterSheet cs)
+    {
+        GameObject g = cs.gameObject;
+
+        PositionMapping pm = PositionMappingFromGameObject(g);
+        int l = Location(g);
+        if (l > 3)
+        {
+            SwapAndMove(pm, l, FindRandomHomeLocation(pm.objects), quickTime);
+            SetDialogueText(cs.GetCharacterName() + " comes back to the party");
+            return true;
+        }
+        else
+        {
+            SetDialogueText(cs.GetCharacterName() + " is already with the party");
+            return false;
+        }
+    }
 
 
 
