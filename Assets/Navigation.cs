@@ -7,6 +7,7 @@ public class Navigation : MonoBehaviour
     static readonly float blockSize = 4;
 
     public float moveTime;
+    public float rotateTime;
     public bool calculateSpeeds;
     public float moveSpeed;
     public float rotateSpeed;
@@ -28,7 +29,7 @@ public class Navigation : MonoBehaviour
     {
         calculateSpeeds = false;
         moveSpeed = blockSize / moveTime;
-        rotateSpeed = 90 / moveTime;
+        rotateSpeed = 90 / rotateTime;
     }
 
     void Update()
