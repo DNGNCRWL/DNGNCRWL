@@ -17,8 +17,9 @@ MonoBehaviour:
   broken: 0
   value: 0
   actions: []
-  dieCount: 1
-  dieSize: 4
+  damage:
+    dieCount: 1
+    dieSize: 4
+    damageType: 6
   twoHanded: 0
   abilityToUse: 1
-  damageType: 6

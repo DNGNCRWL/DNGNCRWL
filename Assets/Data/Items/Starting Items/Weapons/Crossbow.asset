@@ -17,9 +17,10 @@ MonoBehaviour:
   broken: 0
   value: 0
   actions: []
-  dieCount: 1
-  dieSize: 8
+  damage:
+    dieCount: 1
+    dieSize: 8
+    damageType: 6
   twoHanded: 1
   abilityToUse: 2
-  damageType: 6
   ammoName: Bolt

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Fight
   m_EditorClassIdentifier: 
   actionName: Fight
-  verb: 
+  verb: fights
   alwaysDoThese:
   - name: Fight
     roll:
@@ -26,18 +26,16 @@ MonoBehaviour:
     target: {fileID: 0}
     item: {fileID: 0}
     action: {fileID: 0}
-    atomicFunction: 0
+    atomicFunction: 41
     damage:
       dieCount: 0
       dieSize: 0
       damageType: 0
     boolean: 0
-    floatValue: 0
-  useRoll: 0
-  difficultyRating: 0
+    floatValue: 1
+  difficultyRating: 10
   chooseActorStatToTest: 0
   chooseTargetStatToTest: 0
-  needsTarget: 0
   success: []
   critical: []
   failure: []

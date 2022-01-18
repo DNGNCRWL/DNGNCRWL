@@ -7,20 +7,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Action", menuName = "Action", order = 1)]
 public class CharacterAction : ScriptableObject
 {
-    /*
-    - Name
-- possible roll
-- list of targets
-- Action descriptor + timing
-- Midway descriptor + timing
-- Result descriptor + timing
-- List of results on success, fail, critical, fumble
-*/
     public string actionName;
     public string verb;
     public List<ParameteredAtomicFunction> alwaysDoThese;
-    [HideInInspector]
-    public bool useRoll;
+    bool useRoll;
     [Header("If Rolling...")]
     public int difficultyRating;
     d20 roll;
@@ -38,9 +28,10 @@ public class CharacterAction : ScriptableObject
     public List<ParameteredAtomicFunction> failure;
     public List<ParameteredAtomicFunction> fumble;
 
-    private void Awake()
+    public bool UseRoll()
     {
         useRoll = (success.Count + critical.Count + failure.Count + fumble.Count) > 0;
+        return useRoll;
     }
 
     public bool NeedsTarget()

@@ -40,7 +40,7 @@ public class ActionManager : MonoBehaviour
         if(action.alwaysDoThese.Count > 0)
             yield return ExecutePAFs(action.alwaysDoThese, new d20(), actor, target, item, action);
 
-        if (action.useRoll)
+        if (action.UseRoll())
         {
             //ACTION
             d20 roll = new d20(action.difficultyRating, actor, actorStatToTest, target, targetStatToTest);
@@ -275,12 +275,12 @@ public class ActionManager : MonoBehaviour
                 resultText = "But they still made it!";
             else
                 resultText = "And they made it through";
+            args.actor.Sneak();
 
             BattleManager.AddDialogueText(resultText);
             if (BattleManager.BM)
                 yield return new WaitForSeconds(args.floatValue);
 
-            args.actor.Sneak();
         }
         else
         {
@@ -297,26 +297,58 @@ public class ActionManager : MonoBehaviour
 
     static IEnumerator Fight(ParameteredAtomicFunction args)
     {
-        Debug.Log("Fight");
-
         if (!args.actor) yield break;
         if (!args.target) yield break;
 
         int difficultyRating = args.action.difficultyRating;
         difficultyRating += CalculateSameSideRangedAttackPenalty(args.actor, args.target);
 
+        //
         Weapon weapon = args.actor.GetWeapon();
         d20 roll = new d20(difficultyRating, args.actor, weapon.abilityToUse, args.target, Stat.Defense);
 
+        if(roll.Roll() <= 8)
+        {
+            BattleManager.AddDialogueText("This is not looking good");
+            if (BattleManager.BM)
+                yield return new WaitForSeconds(args.floatValue);
+        }
+        else
+        {
+            BattleManager.AddDialogueText("With a " + weapon.GetExplicitString());
+            if (BattleManager.BM)
+                yield return new WaitForSeconds(args.floatValue);
+        }
+        
         if (roll.IsSuccess())
         {
-            args.target.TakeDamage(weapon.GetDamage(), roll.IsCritical());
+            if (roll.IsCritical())
+            {
+                BattleManager.AddDialogueText("CRITICAL HIT!");
+                if (BattleManager.BM)
+                    yield return new WaitForSeconds(args.floatValue);
+            }
+            
+            int damage = args.target.TakeDamage(weapon.GetDamage(), roll.IsCritical());
+            
+            BattleManager.AddDialogueText(args.target.GetCharacterName() + " takes " + damage + " damage");
+            if (BattleManager.BM)
+                yield return new WaitForSeconds(args.floatValue);
         }
         else
         {
             if (roll.IsFumble())
             {
-                CounterAttack(args);
+                BattleManager.AddDialogueText("COUNTER ATTACK!");
+                if (BattleManager.BM)
+                    yield return new WaitForSeconds(args.floatValue);
+                yield return CounterAttack(args);
+            }
+            else
+            {
+                BattleManager.AddDialogueText(args.actor.GetCharacterName() + " barely misses");
+                if (BattleManager.BM)
+                    yield return new WaitForSeconds(args.floatValue);
             }
         }
 
@@ -325,6 +357,8 @@ public class ActionManager : MonoBehaviour
 
     public static IEnumerator CounterAttack(ParameteredAtomicFunction args)
     {
+        Debug.Log("Counterattack");
+
         if (!args.actor) yield break;
         if (!args.target) yield break;
 
@@ -336,7 +370,24 @@ public class ActionManager : MonoBehaviour
 
         if (roll.IsSuccess())
         {
-            args.target.TakeDamage(weapon.GetDamage(), roll.IsCritical());
+            if (roll.IsCritical())
+            {
+                BattleManager.AddDialogueText("CRITICAL COUNTER HIT!");
+                if (BattleManager.BM)
+                    yield return new WaitForSeconds(args.floatValue);
+            }
+
+            int damage = args.target.TakeDamage(weapon.GetDamage(), roll.IsCritical());
+
+            BattleManager.AddDialogueText(args.actor.GetCharacterName() + " takes " + damage + " damage");
+            if (BattleManager.BM)
+                yield return new WaitForSeconds(args.floatValue);
+        }
+        else
+        {
+            BattleManager.AddDialogueText("A wasted opportunity!");
+            if (BattleManager.BM)
+                yield return new WaitForSeconds(args.floatValue);
         }
 
         yield return null;

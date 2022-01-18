@@ -625,7 +625,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     public void SetTempBlinded(bool b) { tempBlinded = b; }
     public void SetTempDistracted(bool b) { tempDistracted = b; }
 
-    public void TakeDamage(Damage damage, bool critical)
+    public int TakeDamage(Damage damage, bool critical)
     {
         int total = GameManager.RollDice(damage.dieCount, damage.dieSize) * (critical ?  2 : 1);
 
@@ -635,9 +635,11 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
         hitPoints -= total;
         CheckHPBounds();
+
+        return total;
     }
 
-    public void TakeDamage(Damage damage) { TakeDamage(damage, false); }
+    public int TakeDamage(Damage damage) { return TakeDamage(damage, false); }
 
     int GetResistByType(DamageType type) ///gameData
     {
