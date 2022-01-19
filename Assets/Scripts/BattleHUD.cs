@@ -5,32 +5,41 @@ using TMPro;
 
 public class BattleHUD : MonoBehaviour
 {
-
     public TextMeshProUGUI characterName, stats;
+    CharacterSheet targetCharacter;
 
-    public void UpdateText(CharacterSheet cs)
+    public void UpdateText()
     {
-        //Debug.Log("Updating HUD with character: " + cs.characterName);
-        if (!cs)
-            Debug.Log("Null character sheet");
+        gameObject.SetActive(targetCharacter);
+        if (!targetCharacter)
+            return;
 
-        characterName.text = cs.GetCharacterName();
+        characterName.text = targetCharacter.GetCharacterName();
         char lb = '\n';
         stats.text =
-            ConvertCShitPointsToString(cs) + lb +
-            ConvertPowersToString(cs) + lb +
-            ConvertOmensToString(cs);
+            ConvertCShitPointsToString(targetCharacter) + lb +
+            ConvertPowersToString(targetCharacter) + lb +
+            ConvertOmensToString(targetCharacter);
+    }
+
+    public void UpdateText(CharacterSheet targetCharacter)
+    {
+        this.targetCharacter = targetCharacter;
+        targetCharacter.SetBattleHUD(this);
+        UpdateText();
     }
 
     string ConvertCShitPointsToString(CharacterSheet cs)
     {
-        //we need 9 characters
-        string r = "HP: "; //4 characters
         int hp = cs.GetHitPoints();
         int hpM = cs.GetMaxHitPoints();
-        r += (hp > 9) ? "" + hp : " " + hp;
+        //we need 9 characters
+        string r = "HP: "; //4 char
+        r += (hp > 9) ? "" : " ";
+        r += hp;
         r += "/";
-        r += (hpM > 9) ? "" + hpM : " " + hpM;
+        r += (hpM > 9) ? "": " ";
+        r += hpM;
 
         return r;
     }

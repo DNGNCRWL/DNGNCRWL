@@ -9,29 +9,55 @@ public class CharacterAction : ScriptableObject
 {
     public string actionName;
     public string verb;
-    public List<ParameteredAtomicFunction> alwaysDoThese;
-    bool useRoll;
-    [Header("If Rolling...")]
-    public int difficultyRating;
-    d20 roll;
-    public StatSelector chooseActorStatToTest;
-    public StatSelector chooseTargetStatToTest;
-    [HideInInspector]
+
+    bool targetHead;
+    bool calculatedHeadhunt = false;
     bool needsTarget;
     bool calculatedTarget = false;
+
+    [Header("TESTS")]
+    public d20[] tests;
+    public int difficultyRating;
+    public bool testAtDisadvantage;
 
     Func<ParameteredAtomicFunction, String> startDescriptor;
     Func<ParameteredAtomicFunction, String> actionDescriptor;
     Func<ParameteredAtomicFunction, String> resultDescriptor;
+
+    [Header("RESULTS")]
     public List<ParameteredAtomicFunction> success;
     public List<ParameteredAtomicFunction> critical;
     public List<ParameteredAtomicFunction> failure;
     public List<ParameteredAtomicFunction> fumble;
 
-    public bool UseRoll()
+    public bool TargetHead()
     {
-        useRoll = (success.Count + critical.Count + failure.Count + fumble.Count) > 0;
-        return useRoll;
+        if (calculatedHeadhunt)
+            return targetHead;
+
+        targetHead = (
+           TargetHead(success) ||
+           TargetHead(critical) ||
+           TargetHead(failure) ||
+           TargetHead(fumble)
+           );
+
+        calculatedHeadhunt = true;
+
+        return targetHead;
+    }
+    bool TargetHead(List<ParameteredAtomicFunction> list)
+    {
+        foreach (ParameteredAtomicFunction paf in list)
+        {
+            switch (paf.atomicFunction)
+            {
+                case EnumeratedAtomicFunction.Sneak:
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     public bool NeedsTarget()
@@ -50,7 +76,6 @@ public class CharacterAction : ScriptableObject
 
         return needsTarget;
     }
-
     bool NeedsTarget(List<ParameteredAtomicFunction> list)
     {
         foreach (ParameteredAtomicFunction paf in list)
@@ -76,6 +101,8 @@ public class CharacterAction : ScriptableObject
                 case EnumeratedAtomicFunction.TargetPresence:
                 case EnumeratedAtomicFunction.TargetStrength:
                 case EnumeratedAtomicFunction.TargetToughness:
+
+                case EnumeratedAtomicFunction.TargetTakeWeaponDamage:
 
                 case EnumeratedAtomicFunction.Fight:
                 case EnumeratedAtomicFunction.Push:

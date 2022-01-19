@@ -26,10 +26,12 @@ public class Stackable : Item
         return copy;
     }
 
-    public override void Consume()
+    public override bool Consume()
     {
-        amount--;
         if (amount <= 0)
-            broken = true;
+            return false;
+        amount--;
+        Debug.Log(amount);
+        return true;
     }
 }
