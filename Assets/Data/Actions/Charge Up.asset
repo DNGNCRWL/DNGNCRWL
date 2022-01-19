@@ -25,6 +25,7 @@ MonoBehaviour:
     actor: {fileID: 0}
     target: {fileID: 0}
     item: {fileID: 0}
+    action: {fileID: 0}
     atomicFunction: 6
     damage:
       dieCount: 1
@@ -32,11 +33,9 @@ MonoBehaviour:
       damageType: 0
     boolean: 0
     floatValue: 1
-  useRoll: 1
   difficultyRating: 3
   chooseActorStatToTest: 3
   chooseTargetStatToTest: 0
-  needsTarget: 0
   success:
   - name: Strength Up
     roll:
@@ -48,6 +47,7 @@ MonoBehaviour:
     actor: {fileID: 0}
     target: {fileID: 0}
     item: {fileID: 0}
+    action: {fileID: 0}
     atomicFunction: 3
     damage:
       dieCount: 1
@@ -65,6 +65,7 @@ MonoBehaviour:
     actor: {fileID: 0}
     target: {fileID: 0}
     item: {fileID: 0}
+    action: {fileID: 0}
     atomicFunction: 2
     damage:
       dieCount: 1

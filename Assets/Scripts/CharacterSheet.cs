@@ -101,6 +101,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     //On with the show
     void InitializeCharacter()
     {
+        randomizeClassless = false;
+
         characterName = "Unnamed";
         description = "Nothing is known. ";
         characterClass = "Classless";
@@ -116,19 +118,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         inventory = new List<Item>();
     }
 
-    void RandomClassless()
+    RollPackage RandomClasslessRollPackage()
     {
-        InitializeCharacter();
-
-        powers = GameManager.RollDie(4);
-        omens = GameManager.RollDie(2);
-        silver = 10 * GameManager.RollDice(2, 6);
-        food = GameManager.RollDie(4);
-        waterskin = true;
-
-        randomizeClassless = false;
-
-        //This is where you're supposed to make a choice in abilities, but I'm going to randomize the choice
         int firstAbility = GameManager.RollDie(4);
         int secondAbility = GameManager.RollDie(3);
 
@@ -139,7 +130,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
         switch (firstAbility)
         {
-            case 1: strengthRoll++;
+            case 1:
+                strengthRoll++;
                 switch (secondAbility)
                 {
                     case 1: agilityRoll++; break;
@@ -147,7 +139,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
                     case 3: toughnessRoll++; break;
                 }
                 break;
-            case 2: agilityRoll++;
+            case 2:
+                agilityRoll++;
                 switch (secondAbility)
                 {
                     case 1: strengthRoll++; break;
@@ -155,7 +148,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
                     case 3: toughnessRoll++; break;
                 }
                 break;
-            case 3: presenceRoll++;
+            case 3:
+                presenceRoll++;
                 switch (secondAbility)
                 {
                     case 1: strengthRoll++; break;
@@ -163,7 +157,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
                     case 3: toughnessRoll++; break;
                 }
                 break;
-            case 4: toughnessRoll++;
+            case 4:
+                toughnessRoll++;
                 switch (secondAbility)
                 {
                     case 1: strengthRoll++; break;
@@ -173,12 +168,25 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
                 break;
         }
 
-        strength = RollAbilityScore(strengthRoll, 0);
-        agility = RollAbilityScore(agilityRoll, 0);
-        presence = RollAbilityScore(presenceRoll, 0);
-        toughness = RollAbilityScore(presenceRoll, 0);
+        return new RollPackage(strength, agility, presence, toughness, 8, 4, 2, 2, 6, 4);
+    }
 
-        hitPoints = maxHitPoints = Mathf.Max(1, toughness + GameManager.RollDie(8));
+    void InitializeClassless(RollPackage rp)
+    {
+        InitializeCharacter();
+
+        powers = GameManager.RollDie(rp.powers);
+        omens = GameManager.RollDie(rp.omens);
+        silver = 10 * GameManager.RollDice(rp.silverDieCount, rp.silverDieSize);
+        food = GameManager.RollDie(rp.food);
+        waterskin = true;
+        
+        strength = RollAbilityScore(rp.strength, 0);
+        agility = RollAbilityScore(rp.agility, 0);
+        presence = RollAbilityScore(rp.presence, 0);
+        toughness = RollAbilityScore(rp.toughness, 0);
+
+        hitPoints = maxHitPoints = Mathf.Max(1, toughness + GameManager.RollDie(rp.hpDieSize));
         currentState = State.Active;
 
         EquipBag((Bag) ItemManager.RANDOM_ITEM(ItemManager.BAGS).Copy());
@@ -732,7 +740,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
     private void Update()
     {
-        if (randomizeClassless) RandomClassless();
+        if (randomizeClassless) InitializeClassless(RandomClasslessRollPackage());
 
         if (test) Test();
         if (test2) Test2();

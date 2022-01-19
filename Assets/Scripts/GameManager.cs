@@ -65,6 +65,36 @@ public enum StatSelector { Strength, Agility, Presence, Toughness, Defense, Weap
 public enum Stat { Strength, Agility, Presence, Toughness, Defense };
 
 [System.Serializable]
+public struct RollPackage
+{
+    public RollPackage(int strength, int agility, int presence, int toughness, int hpDieSize,
+        int powers, int omens, int silverDieCount, int silverDieSize, int food)
+    {
+        this.strength = strength;
+        this.agility = agility;
+        this.presence = presence;
+        this.toughness = toughness;
+        this.hpDieSize = hpDieSize;
+        this.powers = powers;
+        this.omens = omens;
+        this.silverDieCount = silverDieCount;
+        this.silverDieSize = silverDieSize;
+        this.food = food;
+    }
+
+    public int strength;
+    public int agility;
+    public int presence;
+    public int toughness;
+    public int hpDieSize;
+    public int powers;
+    public int omens;
+    public int silverDieCount;
+    public int silverDieSize;
+    public int food;
+}
+
+[System.Serializable]
 public enum DamageType { Untyped, Bludgeon, Cut, Electric, Fire, Magic, Pierce, Spirit }
 
 [System.Serializable]

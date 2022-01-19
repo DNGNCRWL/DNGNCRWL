@@ -43,6 +43,33 @@ public class BattleManager : MonoBehaviour
     WaitForSeconds mediumWait;
     WaitForSeconds longWait;
 
+    public GameObject actionText;
+    public RectTransform actionTextSpawnPosition;
+    public float actionTextSpawnOffset;
+    public float actionTextTime;
+    [SerializeField] List<ActionText> actionTexts;
+
+    public bool test;
+    public bool test2;
+    int counter = 0;
+
+    private void Update()
+    {
+        if (test)
+        {
+            test = false;
+            SetDialogueText("This string is: " + counter);
+            counter++;
+        }
+
+        if (test2)
+        {
+            test2 = false;
+            AddDialogueText("This string is: " + counter);
+            counter++;
+        }
+    }
+
 
     private void Awake()
     {
@@ -53,6 +80,8 @@ public class BattleManager : MonoBehaviour
         quickWait = new WaitForSeconds(quickTime);
         mediumWait = new WaitForSeconds(mediumTime);
         longWait = new WaitForSeconds(longTime);
+
+        actionTexts = new List<ActionText>();
 
         playerObjects = new GameObject[8];
         enemyObjects = new GameObject[8];
@@ -99,20 +128,63 @@ public class BattleManager : MonoBehaviour
     static public void SetDialogueText(string s)
     {
         if (!BM) return;
-        BM.dialogueText.text = s; //make nicer
+        //BM.dialogueText.text = s; //make nicer
+
+        BM.ClearDialogueText();
+
+        GameObject g = Instantiate(BM.actionText, BM.actionTextSpawnPosition);
+        g.GetComponent<RectTransform>().Rotate(0, 0, Random.Range(2.0f, 6.0f));
+        ActionText newAT = g.GetComponent<ActionText>();
+        TextMeshProUGUI newTMP = g.GetComponent<TextMeshProUGUI>();
+        newTMP.text = s;
+
+        BM.actionTexts.Add(newAT);
     }
 
     static public void AddDialogueText(string s)
     {
         if (!BM) return;
-        BM.dialogueText.text += "\n" + s;
-        string[] lines = BM.dialogueText.text.Split('\n');
+        //BM.dialogueText.text += "\n" + s;
+        //string[] lines = BM.dialogueText.text.Split('\n');
 
-        if(lines.Length > 3)
+        //if(lines.Length > 3)
+        //{
+        //    BM.dialogueText.text = "";
+        //    BM.dialogueText.text += lines[lines.Length-3] + "\n" + lines[lines.Length - 2] + "\n" + lines[lines.Length - 1];
+        //}
+
+        GameObject g = Instantiate(BM.actionText, BM.actionTextSpawnPosition);
+        g.GetComponent<RectTransform>().Rotate(0, 0, Random.Range(2.0f, 6.0f));
+        RectTransform gRectT = g.GetComponent<RectTransform>();
+        gRectT.anchoredPosition = gRectT.anchoredPosition - Vector2.up * BM.actionTextSpawnOffset * BM.actionTexts.Count;
+        ActionText newAT = g.GetComponent<ActionText>();
+        TextMeshProUGUI newTMP = g.GetComponent<TextMeshProUGUI>();
+        newTMP.text = s;
+        BM.actionTexts.Add(newAT.GetComponent<ActionText>());
+
+        if (BM.actionTexts.Count > 3)
         {
-            BM.dialogueText.text = "";
-            BM.dialogueText.text += lines[lines.Length-3] + "\n" + lines[lines.Length - 2] + "\n" + lines[lines.Length - 1];
+            ActionText head = BM.actionTexts[0];
+            head.MoveRelative(Random.Range(BM.actionTextSpawnOffset, -BM.actionTextSpawnOffset),
+                Random.Range(-BM.actionTextSpawnOffset, -2 * BM.actionTextSpawnOffset), BM.actionTextTime);
+            head.FadeAndDestroy(BM.actionTextTime);
+            BM.actionTexts.Remove(head);
+
+            foreach(ActionText eachAT in BM.actionTexts)
+            {
+                eachAT.MoveRelative(0, BM.actionTextSpawnOffset, BM.actionTextTime);
+            }
         }
+    }
+
+    void ClearDialogueText()
+    {
+        foreach(ActionText at in actionTexts)
+        {
+            at.MoveRelative(Random.Range(actionTextSpawnOffset, -actionTextSpawnOffset), Random.Range(-actionTextSpawnOffset, -2*actionTextSpawnOffset), actionTextTime);
+            at.FadeAndDestroy(actionTextTime);
+        }
+        actionTexts.Clear();
     }
 
 
@@ -497,3 +569,16 @@ public class BattleManager : MonoBehaviour
         //return totalHP > 0;
     }
 }
+
+public struct Party
+{
+    public string name;
+    public List<BattleCharacter> characters;
+}
+
+public struct BattleCharacter {
+    public CharacterSheet character;
+    public Side side;
+}
+
+public enum Side { Party, Opposing }
