@@ -9,13 +9,39 @@ public class BattleManager : MonoBehaviour
     public static BattleManager BM;
     public GameObject[] characters, enemies;
     public Transform[] playerSidePositions, enemySidePositions;
-    public GameObject[] playerObjects, enemyObjects;
+
+    public GameObject[] playerObjects, enemyObjects; //the object's index is the position on the map
     public BattleHUD[] characterDisplays;
 
+    [System.Serializable]
     struct PositionMapping
     {
         public Transform[] positions;
         public GameObject[] objects;
+    }
+    [System.Serializable]
+    struct Party
+    {
+        public Party(string name, List<BattleCharacter> characters)
+        {
+            this.name = name;
+            this.characters = characters;
+        }
+        public string name;
+        public List<BattleCharacter> characters;
+    }
+    [System.Serializable]
+    struct BattleCharacter
+    {
+        public BattleCharacter(CharacterSheet character, bool sneaking)
+        {
+            this.name = character.GetCharacterName();
+            this.character = character;
+            this.sneaking = sneaking;
+        }
+        public string name;
+        public CharacterSheet character;
+        public bool sneaking;
     }
 
     PositionMapping playerMap;
@@ -30,10 +56,14 @@ public class BattleManager : MonoBehaviour
         EnemyTurn,
         Won, Lost
     };
-//    BattleState currentState = BattleState.Start;
+    //    BattleState currentState = BattleState.Start;
+
+    [SerializeField]
+    Party playerParty;
+    [SerializeField]
+    Party enemyParty;
 
     //UI Stuff
-    public TextMeshProUGUI dialogueText;
     float snapTime = 0.05f; //3f
     float quickTime = 0.25f; //15f
     float mediumTime = 0.75f; //45f
@@ -83,6 +113,30 @@ public class BattleManager : MonoBehaviour
 
         actionTexts = new List<ActionText>();
 
+        //Set up Parties
+        List<BattleCharacter> playerPartyBCs = playerParty.characters = new List<BattleCharacter>();
+        characters = GameManager.GM.characters;
+        foreach(GameObject go in characters)
+        {
+            playerPartyBCs.Add(new BattleCharacter(go.GetComponent<CharacterSheet>(), false));
+        }
+
+        List<BattleCharacter> enemyPartyBCs = enemyParty.characters = new List<BattleCharacter>();
+        foreach(GameObject go in enemies)
+        {
+            enemyPartyBCs.Add(new BattleCharacter(go.GetComponent<CharacterSheet>(), false));
+        }
+
+        //Set up HUDs
+        for(int i = 0; i < 4; i++)
+        {
+            CharacterSheet current = null;
+            if (i < playerPartyBCs.Count)
+                current = playerPartyBCs[i].character;
+            characterDisplays[i].UpdateText(current);
+        }
+
+        //// old code vvvvv
         playerObjects = new GameObject[8];
         enemyObjects = new GameObject[8];
 
@@ -91,18 +145,15 @@ public class BattleManager : MonoBehaviour
         enemyMap.positions = enemySidePositions;
         enemyMap.objects = enemyObjects;
 
-        characters = GameManager.GM.characters;
         for(int i = 0; i < 4; i++)
         {
             if (characters[i])
             {
                 playerObjects[i] = characters[i];
-                characterDisplays[i].gameObject.SetActive(true);
-                characterDisplays[i].UpdateText(characters[i].GetComponent<CharacterSheet>());
             }
             else
             {
-                characterDisplays[i].gameObject.SetActive(false);
+
             }
 
             if(enemies[i])
@@ -123,8 +174,6 @@ public class BattleManager : MonoBehaviour
         //start the first round of combat
     }
 
-    //**** UI STUFF ****//
-    //maybe this should be put into Menu Manager or... maybe Menu Manager should be changed to Battle UI?
     static public void SetDialogueText(string s)
     {
         if (!BM) return;
@@ -140,18 +189,9 @@ public class BattleManager : MonoBehaviour
 
         BM.actionTexts.Add(newAT);
     }
-
     static public void AddDialogueText(string s)
     {
         if (!BM) return;
-        //BM.dialogueText.text += "\n" + s;
-        //string[] lines = BM.dialogueText.text.Split('\n');
-
-        //if(lines.Length > 3)
-        //{
-        //    BM.dialogueText.text = "";
-        //    BM.dialogueText.text += lines[lines.Length-3] + "\n" + lines[lines.Length - 2] + "\n" + lines[lines.Length - 1];
-        //}
 
         GameObject g = Instantiate(BM.actionText, BM.actionTextSpawnPosition);
         g.GetComponent<RectTransform>().Rotate(0, 0, Random.Range(2.0f, 6.0f));
@@ -176,7 +216,6 @@ public class BattleManager : MonoBehaviour
             }
         }
     }
-
     void ClearDialogueText()
     {
         foreach(ActionText at in actionTexts)
@@ -255,6 +294,15 @@ public class BattleManager : MonoBehaviour
 
         return enemyMap;
     }
+    public static CharacterSheet GetOppositeLead(CharacterSheet c)
+    {
+        if (!BM)
+            return null;
+
+        GameObject cGO = c.gameObject;
+
+        return BM.FindOppositeLead(cGO);
+    }
     CharacterSheet FindOppositeLead(GameObject g)
     {
         if (PositionMappingFromGameObject(g).objects == playerMap.objects)
@@ -290,7 +338,11 @@ public class BattleManager : MonoBehaviour
         yield return null;
     }
 
-    public void Push(CharacterSheet cs) { }
+    public CharacterSheet GetOpposingLeader(CharacterSheet cs) { return null; }
+    public CharacterSheet[] GetAllOpponents(CharacterSheet cs) { return null; }
+    public bool SameSide(CharacterSheet actor, CharacterSheet target) { return false; }
+
+    public void Push(CharacterSheet cs) { } //do this
     public void Sneak(CharacterSheet cs)
     {
         GameObject g = cs.gameObject;
@@ -298,98 +350,6 @@ public class BattleManager : MonoBehaviour
         int l = Location(g);
         SwapAndMove(pm, l, FindRandomEmptyOpposingLocation(pm.objects), quickTime);
     }
-    public CharacterSheet GetOpposingLeader(CharacterSheet cs) { return null; }
-    public CharacterSheet[] GetAllOpponents(CharacterSheet cs) { return null; }
-    public bool SameSide(CharacterSheet actor, CharacterSheet target) { return false; }
-
-    ////**** MOVEMENT ****//
-    //IEnumerator SwapPositionsMOVE(GameObject active, int i)
-    //{
-    //    PositionMapping pm = PositionMappingFromGameObject(active);
-    //    int l = Location(active);
-
-    //    if (Location(active) > 3)
-    //        Return(active);
-
-    //    GameObject other = pm.objects[i];
-    //    CharacterSheet gCS = active.GetComponent<CharacterSheet>();
-
-
-    //    //Debug.Log(oldLead.characterName + " is the old leader");
-    //    //Debug.Log(newLead.characterName + " is the new leader");
-
-    //    if (other)
-    //    {
-    //        CharacterSheet oCS = other.GetComponent<CharacterSheet>();
-    //        if (l != i)
-    //            SetDialogueText(gCS.characterName + " swaps with " + oCS.characterName);
-    //        else
-    //            SetDialogueText(gCS.characterName + " stays in place");
-    //    }
-    //    else
-    //    {
-    //        SetDialogueText(gCS.characterName + " moves into a new position.\n");
-    //    }
-
-    //    CharacterSheet oldLead = FindLead(pm.objects);
-    //    if (l != i)
-    //        yield return StartCoroutine(SwapAndRotate(pm, l, i, quickTime, 2));
-    //    CharacterSheet newLead = FindLead(pm.objects);
-
-    //    string leaderText = (oldLead == newLead)? newLead.characterName + " stays the leader." : newLead.characterName + " is the new leader.";
-
-    //    AddDialogueText(leaderText);
-    //    yield return longWait;
-    //}
-
-    //IEnumerator SneakMOVE(GameObject g)
-    //{
-    //    CharacterSheet activeCharacter = g.GetComponent<CharacterSheet>();
-    //    CharacterSheet targetCharacter = FindOppositeLead(g);
-
-    //    SetDialogueText(activeCharacter.characterName + " attempts to sneak.");
-    //    yield return mediumWait;
-
-    //    d20 roll = new d20();
-    //    bool success = false;
-
-    //    if (roll.value < 9)
-    //        AddDialogueText("They seem under prepared.");
-    //    else if (roll.value < 13)
-    //        AddDialogueText("Everything seems to go right.");
-    //    else
-    //        AddDialogueText("They seem to vanish");
-    //    yield return longWait;
-
-    //    if (roll.Normal())
-    //    {
-    //        int difficultyRating = 0;
-    //        difficultyRating = targetCharacter.GetStrength() + 10;
-    //        if (roll.value + activeCharacter.GetAgility() > difficultyRating) success = true;
-    //    }
-
-    //    if (success)
-    //    {
-    //        if(roll.value < 9)
-    //            AddDialogueText("But " + targetCharacter.characterName + " still fails to stop them!");
-    //        else
-    //            AddDialogueText("And they slip by " + targetCharacter.characterName + "!");
-
-    //        PositionMapping pm = PositionMappingFromGameObject(g);
-    //        int l = Location(g);
-    //        SwapAndMove(pm, l, FindRandomEmptyOpposingLocation(pm.objects), quickTime);
-    //    }
-    //    else
-    //    {
-    //        if (roll.value < 9)
-    //            AddDialogueText("And " + targetCharacter.characterName + " blocks the way.");
-    //        else
-    //            AddDialogueText("But " + targetCharacter.characterName + " still blocks the way.");
-    //    }
-
-    //    yield return longWait;
-    //}
-
     public bool Return(CharacterSheet cs)
     {
         GameObject g = cs.gameObject;
@@ -409,176 +369,29 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-
-
-    ////**** ACTIONS ****//
-    //bool TryAttack(GameObject attackerGO, GameObject targetGO)
-    //{
-    //    //possible ways to attack
-    //    //melee
-    //    //  targetGO = enemy lead
-    //    //  or attackerGO location > 3
-    //    //ranged
-    //    //  have ammunition
-
-    //    CharacterSheet attacker = attackerGO.GetComponent<CharacterSheet>();
-
-
-    //    return false;
-    //}
-
-    //bool Attack(CharacterSheet attacker, CharacterSheet target)
-    //{
-    //    int attackerStrength = attacker.GetStrength();
-    //    int difficulty = target.GetAgility() + 10;
-
-    //    d20 roll = new d20();
-
-    //    if (roll.value + attackerStrength > difficulty)
-    //    {
-    //        int damageMultiplier = 1;
-
-    //        if (roll.critical)
-    //            damageMultiplier = 2;
-
-    //        int damage = attacker.GetWeapon().CalculateDamage() * damageMultiplier;
-
-    //        target.TakeDamage(damage);
-
-    //        return true;
-    //    }
-    //    else
-    //    {
-    //        if (roll.fumble)
-    //        {
-    //            TryAttack(target.gameObject, attacker.gameObject);
-    //        }
-
-    //        return false;
-    //    }
-    //}
-
-    //**** THIS IS THE ACTUAL COMBAT STUFF ****//
     IEnumerator Combat()
     {
         yield return null;
-
-        //SetDialogueText("A new battle!!");
-        //yield return mediumWait;
-
-        //while (SideIsAlive(playerSide) && SideIsAlive(enemySide))
-        //{
-        //    int initiative = GameManager.RollDie(2);
-
-        //    if(initiative == 1)
-        //    {
-        //        SetDialogueText("Players go first this round");
-        //        yield return StartCoroutine(PlayerTurn());
-
-        //        SetDialogueText("Enemies finish this round");
-        //        yield return StartCoroutine(EnemyTurn());
-        //    }
-        //    else
-        //    {
-        //        SetDialogueText("Enemies go first this round");
-        //        yield return StartCoroutine(EnemyTurn());
-
-        //        SetDialogueText("Players finish this round");
-        //        yield return StartCoroutine(PlayerTurn());
-        //    }
-        //}
-
-        //SetDialogueText("The battle has been decided!");
-        //yield return mediumWait;
-
-        //if (SideIsAlive(playerSide))
-        //{
-        //    SetDialogueText("You win!!!");
-        //}
-        //else
-        //{
-        //    SetDialogueText("The party has fallen...");
-        //}
     }
 
     IEnumerator PlayerTurn()
     {
         yield return null;
-
-        //LoadSideIntoList(playerSide, playersToAct);
-        //yield return quickWait;
-
-        //while (playersToAct.Count > 0)
-        //{
-        //    SetDialogueText("Select a character to act");
-        //    currentState = BattleState.SelectCharacter;
-
-        //    yield return null;
-        //}
     }
 
     IEnumerator EnemyTurn()
     {
         yield return null;
-
-        //currentState = BattleState.EnemyTurn;
-        //LoadSideIntoList(enemySide, enemiesToAct);
-        //yield return mediumWait;
-
-        //while (enemiesToAct.Count > 0)
-        //{
-        //    int randomIndex = UnityEngine.Random.Range(0, enemiesToAct.Count);
-        //    CharacterSheet acting = enemiesToAct[randomIndex];
-
-        //    SetDialogueText("Enemy " + acting.characterName + "'s turn");
-        //    yield return new WaitForSeconds(1);
-
-        //    SetDialogueText(acting.characterName + "does this cool thing");
-        //    yield return new WaitForSeconds(1);
-
-        //    SetDialogueText("The cool thing sure was cool");
-        //    yield return new WaitForSeconds(1);
-
-        //    enemiesToAct.RemoveAt(randomIndex);
-        //}
     }
 
     void LoadSideIntoList(CharacterSheet[] side, List<CharacterSheet> list)
     {
-        //list.Clear();
-        //foreach(CharacterSheet cs in side)
-        //{
-        //    if (cs != null &&
-        //        cs.hitPoints > 0)
-        //        list.Add(cs);
-        //}
+
     }
 
     bool SideIsAlive(CharacterSheet[] toCheck)
     {
         return false;
-        //if (toCheck == null) return false;
-
-        //int totalHP = 0;
-
-        //foreach(CharacterSheet cs in toCheck)
-        //{
-        //    if (cs != null) totalHP += cs.hitPoints;
-        //}
-
-        //return totalHP > 0;
     }
 }
 
-public struct Party
-{
-    public string name;
-    public List<BattleCharacter> characters;
-}
-
-public struct BattleCharacter {
-    public CharacterSheet character;
-    public Side side;
-}
-
-public enum Side { Party, Opposing }

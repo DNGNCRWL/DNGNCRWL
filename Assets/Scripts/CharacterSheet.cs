@@ -57,7 +57,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
     static int resistMax = 5;
 
-
+    //Hooks, baby
+    BattleHUD battleHUD;
 
 
     //getters setters
@@ -68,6 +69,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     public int GetMaxHitPoints() { return Mathf.Max(1, maxHitPoints + maxHitPointsTempIncrease); }
     public int GetPowers() { return powers; }
     public int GetOmens() { return omens; }
+    public List<Item> GetInventory() { return inventory; }
 
     public int GetBludgeonResist()
     {
@@ -118,7 +120,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         inventory = new List<Item>();
     }
 
-    RollPackage RandomClasslessRollPackage()
+    CharacterRollingPackage RandomClasslessRollPackage()
     {
         int firstAbility = GameManager.RollDie(4);
         int secondAbility = GameManager.RollDie(3);
@@ -167,11 +169,11 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
                 }
                 break;
         }
-
-        return new RollPackage(strength, agility, presence, toughness, 8, 4, 2, 2, 6, 4);
+        
+        return new CharacterRollingPackage(strengthRoll, agilityRoll, presenceRoll, toughnessRoll, 8, 4, 2, 2, 6, 4);
     }
 
-    void InitializeClassless(RollPackage rp)
+    void InitializeClassless(CharacterRollingPackage rp)
     {
         InitializeCharacter();
 
@@ -209,48 +211,21 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         else
             EquipArmor((Armor) (ItemManager.RANDOM_ITEM(ItemManager.STARTING_ARMORS).Copy()));
 
-        characterName = RandomName();
+        characterName = Fun.RandomFromArray(Fun.names);
+
+        UpdateBattleHUD();
 
         Debug.Log(DebugString());
     }
 
-    string RandomName()
+    public void SetBattleHUD(BattleHUD battleHUD) { this.battleHUD = battleHUD; }
+
+    void UpdateBattleHUD()
     {
-        string[] names = {
-            //"Aerg-Tval", "Agn", "Arvant", "Belsum", "Belum", "Brint", "Börda", "Daeru",
-            //"Eldar", "Felban", "Gotven", "Graft", "Grin", "Grittr", "Haerü", "Hargha",
-            //"Harmug", "Jotna", "Karg", "Karva", "Katla", "Keftar", "Klort", "Kratar",
-            //"Kutz", "Kvetin", "Lygan", "Margar", "Merkari", "Nagl", "Niduk", "Nifehl",
-            //"Prügl", "Qillnach", "Risten", "Svind", "Theras", "Therg", "Torvul", "Törn",
-            //"Urm", "Urvarg", "Vagal", "Von", "Vrakh", "Vresi", "Wemut",
-            //"Connor", "Isaiah", "James", "Raphael", "Tomasz"
-
-            "Aerg-Tval", "Agn", "Arvant", "Belsum", "Belum", "Brint", "Borda", "Daeru",
-            "Eldar", "Felban", "Gotven", "Graft", "Grin", "Grittr", "Haeru", "Hargha",
-            "Harmug", "Jotna", "Karg", "Karva", "Katla", "Keftar", "Klort", "Kratar",
-            "Kutz", "Kvetin", "Lygan", "Margar", "Merkari", "Nagl", "Niduk", "Nifehl",
-            "Prugl", "Qillnach", "Risten", "Svind", "Theras", "Therg", "Torvul", "Torn",
-            "Urm", "Urvarg", "Vagal", "Von", "Vrakh", "Vresi", "Wemut",
-
-            "Connor", "Isaiah", "James", "Raphael", "Tomasz",
-
-            "Gilt", "Hastings", "Subar", "Osgar", "Beauner", "Edill", "Karth", "Rosse", "Kathe",
-            "Arash", "Bthil", "Coln", "Django", "Etrick", "Fong", "Gozzler", "Henk", "Iglis",
-            "Jeronimo", "Kong", "Loop", "Menthis", "Nort", "Orcrun", "Penelope", "Quisling",
-            "Rik", "Somner", "Tzands", "Uruth", "Vader", "Wander", "Xoco", "Ygg", "Zyphon",
-            "Terra", "Lucky", "Edwin", "Sabre", "Acele", "Gao", "Istrago", "Ganun", "Cyan",
-            "Magenta", "Yellow", "Kblack", "Lute", "Assel", "Robo", "Mono", "Ziegfried",
-            "Demos", "Riku", "Bluto", "Rhelm", "Cecil", "Kayn", "Risse", "Jane", "Mal",
-            "Ashe", "Ventok", "Figaro", "Ushtar", "Quinns",
-            "Shadow", "Rock", "Heavy", "Jrue", "Yan", "Portus", "Kris",
-            "Baltur", "Vera", "Scorpo", "Mazer", "Raydn",
-            "Herschil", "Peow", "Pao", "Qobo", "Wenth", "Erskin", "Remmy",
-            "Thistle", "Ygrinth", "Ursul", "Ivank", "Owenis", "Pisto"
-        };
-
-        int randomIndex = UnityEngine.Random.Range(0, names.Length);
-        return names[randomIndex];
+        if (battleHUD)
+            battleHUD.UpdateText();
     }
+    
     int RollAbilityScore(int howMany, int shift)
     {
         int diceResult = GameManager.RollDice(howMany, 6) + shift;
@@ -358,6 +333,9 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     }
     public bool EquipWeapon(Item tryEquip)
     {
+        if (tryEquip == null)
+            return EquipMainhand(null);
+
         if (!tryEquip.GetType().Equals(typeof(Weapon)))
             return GameManager.Error("Not a Weapon");
 
@@ -545,28 +523,49 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
     //ACTION FUNCTIONS
     //equip item??
-    public void CheckHPBounds()
+    public DamageReturn CheckHPBounds()
     {
         if (hitPoints > GetMaxHitPoints())
             hitPoints = GetMaxHitPoints();
 
         if (hitPoints < 0)
+        {
             currentState = State.Dead;
+            return new DamageReturn(0, GetCharacterName() + " is dead", true);
+        }
 
         if (hitPoints == 0)
-            DeathRoll();
+            return DeathRoll();
+
+        float fudgedPercent = ((float)hitPoints) / ((float)GetMaxHitPoints());
+        fudgedPercent += Random.Range(-.25f, .25f);
+
+        string r = GetCharacterName();
+
+        if (fudgedPercent < 0.25f)
+            r += " looks like death";
+        else if (fudgedPercent < 0.5f)
+            r += " is covered in bruises";
+        else
+            r += " is unscathed";
+
+        return new DamageReturn(0, r, false);
     }
-    public void DeathRoll()
+    public DamageReturn DeathRoll()
     {
-        if (currentState == State.Dead) return;
+        if (currentState == State.Dead) return new DamageReturn(0, GetCharacterName() + " is already dead", true); //beating a dead horse
 
         int deathRoll = GameManager.RollDie(4);
 
+        string hurt = GetCharacterName();
+        bool killerBlow = false;
+
         switch (deathRoll)
         {
-            case 1:
+            case 1: //knocked unconscious
                 currentState = State.Unconscious;
                 reviveCounter = GameManager.RollDie(4);
+                hurt += " is knocked unconscious for " + reviveCounter * GameManager.secondsPerRound + " seconds";
                 break;
             case 2:
                 currentState = State.Inactive;
@@ -574,32 +573,44 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
                 int brokenRoll = GameManager.RollDie(6);
                 if(brokenRoll != 6)
                 {
+                    hurt += " breaks their ";
                     int brokenLimb = GameManager.RollDie(4);
                     switch (brokenLimb)
                     {
-                        case 1: brokenMainhand = true; break;
-                        case 2: brokenOffhand = true; break;
-                        case 3: brokenLeftLeg = true; break;
-                        case 4: brokenRightLeg = true; break;
+                        case 1: brokenMainhand = true; hurt += "fighting hand"; break;
+                        case 2: brokenOffhand = true; hurt += "off hand"; break;
+                        case 3: brokenLeftLeg = true; hurt += "left leg"; break;
+                        case 4: brokenRightLeg = true; hurt += "right leg"; break;
                     }
                 }
                 else
                 {
-                    int brokenEye = GameManager.RollDie(4);
+                    int brokenEye = GameManager.RollDie(2);
                     if (brokenEye == 1)
+                    {
                         blindedLeft = true;
+                        hurt += " loses their left eye";
+                    }
                     else
+                    {
                         blindedRight = true;
+                        hurt += " loses their right eye";
+                    };
                 }
                 break;
             case 3:
                 currentState = State.Hemorrhaging;
                 hemorrhageTimer = GameManager.RollDie(2);
+                hurt = "There is blood everywhere";
                 break;
             case 4:
                 currentState = State.Dead;
+                hurt += " breaths their last breath";
+                killerBlow = true;
                 break;
         }
+
+        return new DamageReturn(0, hurt, killerBlow);
     }
 
     //??
@@ -633,7 +644,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     public void SetTempBlinded(bool b) { tempBlinded = b; }
     public void SetTempDistracted(bool b) { tempDistracted = b; }
 
-    public int TakeDamage(Damage damage, bool critical)
+    public DamageReturn TakeDamage(Damage damage, bool critical)
     {
         int total = GameManager.RollDice(damage.dieCount, damage.dieSize) * (critical ?  2 : 1);
 
@@ -642,12 +653,14 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
             total = 1;
 
         hitPoints -= total;
-        CheckHPBounds();
 
-        return total;
+        DamageReturn r = CheckHPBounds();
+        r.damageDone = total;
+
+        return r;
     }
 
-    public int TakeDamage(Damage damage) { return TakeDamage(damage, false); }
+    public DamageReturn TakeDamage(Damage damage) { return TakeDamage(damage, false); }
 
     int GetResistByType(DamageType type) ///gameData
     {
@@ -752,13 +765,13 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         //Item elixir = ItemManager.SPECIAL_ITEMS[6].Copy();
         //List<CharacterAction> actions = elixir.actions;
 
-        ActionManager.AM.StartAction(this, testTarget, null, testAction);
+        ActionManager.AM.LoadAction(this, testTarget, null, testAction);
     }
 
     void Test2()
     {
         test2 = false;
 
-        ActionManager.AM.StartAction(this, testTarget2, null, testAction2);
+        ActionManager.AM.LoadAction(this, testTarget2, null, testAction2);
     }
 }

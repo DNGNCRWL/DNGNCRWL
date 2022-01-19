@@ -1219,7 +1219,12 @@ MonoBehaviour:
   - {fileID: 2044261854}
   - {fileID: 1617667108}
   - {fileID: 82296777}
-  dialogueText: {fileID: 1003189679}
+  playerParty:
+    name: 
+    characters: []
+  enemyParty:
+    name: 
+    characters: []
   actionText: {fileID: 59665366352399672, guid: dfa1e861ec0fc8542ad3596098640dbd, type: 3}
   actionTextSpawnPosition: {fileID: 1950007276}
   actionTextSpawnOffset: 80
@@ -3328,8 +3333,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomizeClassless: 1
   test: 0
-  testAction: {fileID: 0}
-  testTarget: {fileID: 0}
+  testAction: {fileID: 11400000, guid: dbdf578bb48116e4c81170b543b5ca09, type: 2}
+  testTarget: {fileID: 1484241082}
   test2: 0
   testAction2: {fileID: 0}
   testTarget2: {fileID: 0}
@@ -5533,10 +5538,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomizeClassless: 1
   test: 0
-  testAction: {fileID: 11400000, guid: b3142f90af3313140a7e1c826740aec0, type: 2}
+  testAction: {fileID: 11400000, guid: dbdf578bb48116e4c81170b543b5ca09, type: 2}
   testTarget: {fileID: 927576512}
   test2: 0
-  testAction2: {fileID: 11400000, guid: f84747e514d9fc445a35471d9b5db195, type: 2}
+  testAction2: {fileID: 11400000, guid: 60c2a7e0a0859324a9c903bff976708f, type: 2}
   testTarget2: {fileID: 0}
   characterName: 
   description: 

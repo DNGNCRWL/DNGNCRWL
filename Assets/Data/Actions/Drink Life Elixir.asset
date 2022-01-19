@@ -10,53 +10,46 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0eaf4d05ca32e9147bcc1a4b2ad90283, type: 3}
-  m_Name: Drink Elixir
+  m_Name: Drink Life Elixir
   m_EditorClassIdentifier: 
-  actionName: Drink Elixir
+  actionName: Drink Potion
   verb: drinks
-  alwaysDoThese:
-  - name: Remove Infection
-    roll:
-      difficultyRating: 0
-      actor: {fileID: 0}
-      actorStat: 0
-      target: {fileID: 0}
-      targetStat: 0
-      roll: 0
+  tests: []
+  difficultyRating: 0
+  testAtDisadvantage: 0
+  success:
+  - name: Recover 1d6
+    critical: 0
+    fumble: 0
+    effort: 0
     actor: {fileID: 0}
     target: {fileID: 0}
     item: {fileID: 0}
-    atomicFunction: 8
-    damage:
-      dieCount: 0
-      dieSize: 0
-      damageType: 0
-    boolean: 0
-    floatValue: 1
-  - name: Increase HP
-    roll:
-      difficultyRating: 0
-      actor: {fileID: 0}
-      actorStat: 0
-      target: {fileID: 0}
-      targetStat: 0
-      roll: 0
-    actor: {fileID: 0}
-    target: {fileID: 0}
-    item: {fileID: 0}
-    atomicFunction: 1
+    action: {fileID: 0}
+    atomicFunction: 10
     damage:
       dieCount: 1
       dieSize: 6
-      damageType: 0
+      damageType: 7
     boolean: 0
-    floatValue: 0
-  useRoll: 1
-  difficultyRating: 0
-  chooseActorStatToTest: 0
-  chooseTargetStatToTest: 0
-  needsTarget: 0
-  success: []
+    floatValue: 1
+    messages: []
+  - name: Remove Infection
+    critical: 0
+    fumble: 0
+    effort: 0
+    actor: {fileID: 0}
+    target: {fileID: 0}
+    item: {fileID: 0}
+    action: {fileID: 0}
+    atomicFunction: 17
+    damage:
+      dieCount: 1
+      dieSize: 6
+      damageType: 7
+    boolean: 0
+    floatValue: 1
+    messages: []
   critical: []
   failure: []
   fumble: []

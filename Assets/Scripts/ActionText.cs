@@ -38,7 +38,7 @@ public class ActionText : MonoBehaviour
         activate3 = activate2 = activate = false;
 
         if (destroyThis && !tweening)
-            Destroy(gameObject);
+            Destroy(gameObject, Time.deltaTime);
     }
 
     public void Move(float x, float y, float time)

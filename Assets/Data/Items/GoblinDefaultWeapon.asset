@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 730087284eaaaf345bcf1009c6b546bd, type: 3}
   m_Name: GoblinDefaultWeapon
   m_EditorClassIdentifier: 
-  name: Claw
+  itemName: Grubby Claws
+  description: 
   broken: 0
   value: 0
-  dieCount: 1
-  damage: 2
+  actions: []
+  damage:
+    dieCount: 1
+    dieSize: 2
+    damageType: 2
   twoHanded: 0
+  abilityToUse: 0

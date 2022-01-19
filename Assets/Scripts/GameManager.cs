@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject[] characters;
 
+    public static readonly int secondsPerRound = 6;
+
     private void Awake()
     {
         if (GM == null) GM = this;
@@ -56,18 +58,15 @@ public class GameManager : MonoBehaviour
 }
 
 [System.Serializable]
-public enum DescriptorSelector { Default, Fight }
-
-[System.Serializable]
 public enum StatSelector { Strength, Agility, Presence, Toughness, Defense, WeaponStat }
 
 [System.Serializable]
 public enum Stat { Strength, Agility, Presence, Toughness, Defense };
 
 [System.Serializable]
-public struct RollPackage
+public struct CharacterRollingPackage
 {
-    public RollPackage(int strength, int agility, int presence, int toughness, int hpDieSize,
+    public CharacterRollingPackage(int strength, int agility, int presence, int toughness, int hpDieSize,
         int powers, int omens, int silverDieCount, int silverDieSize, int food)
     {
         this.strength = strength;
@@ -92,22 +91,4 @@ public struct RollPackage
     public int silverDieCount;
     public int silverDieSize;
     public int food;
-}
-
-[System.Serializable]
-public enum DamageType { Untyped, Bludgeon, Cut, Electric, Fire, Magic, Pierce, Spirit }
-
-[System.Serializable]
-public struct Damage
-{
-    public Damage(int dieCount, int dieSize, DamageType damageType)
-    {
-        this.dieCount = dieCount;
-        this.dieSize = dieSize;
-        this.damageType = damageType;
-    }
-
-    public int dieCount;
-    public int dieSize;
-    public DamageType damageType;
 }

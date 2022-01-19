@@ -39,8 +39,11 @@ public class Item : ScriptableObject
         return copy;
     }
 
-    public virtual void Consume()
+    public virtual bool Consume()
     {
+        if (broken)
+            return false;
         broken = true;
+        return true;
     }
 }
