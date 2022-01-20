@@ -8,27 +8,31 @@ using UnityEngine;
 public class CharacterAction : ScriptableObject
 {
     public string actionName;
-    public string verb;
 
-    bool targetHead;
-    bool calculatedHeadhunt = false;
-    bool needsTarget;
-    bool calculatedTarget = false;
+    [Header("STARTING MESSAGES")]
+    public MessagePackage startMessage;
+    public MessagePackage actionMessage;
 
     [Header("TESTS")]
     public d20[] tests;
     public int difficultyRating;
     public bool testAtDisadvantage;
 
-    Func<ParameteredAtomicFunction, String> startDescriptor;
-    Func<ParameteredAtomicFunction, String> actionDescriptor;
-    Func<ParameteredAtomicFunction, String> resultDescriptor;
-
-    [Header("RESULTS")]
-    public List<ParameteredAtomicFunction> success;
+    [Header("RESULT MESSAGES")]
+    public MessagePackage criticalMessage;
+    public MessagePackage successMessage;
+    public MessagePackage failMessage;
+    public MessagePackage fumbleMessage;
+    [Header("RESULT ACTIONS")]
     public List<ParameteredAtomicFunction> critical;
+    public List<ParameteredAtomicFunction> success;
     public List<ParameteredAtomicFunction> failure;
     public List<ParameteredAtomicFunction> fumble;
+
+    bool targetHead;
+    bool calculatedHeadhunt = false;
+    bool needsTarget;
+    bool calculatedTarget = false;
 
     public bool TargetHead()
     {
@@ -112,4 +116,14 @@ public class CharacterAction : ScriptableObject
 
         return false;
     }
+}
+
+[System.Serializable]
+public struct MessagePackage
+{
+    public string[] messages;
+    public float time;
+    [SerializeField, Range(0, 1)]
+    public float weight;
+    [HideInInspector] public int index;
 }

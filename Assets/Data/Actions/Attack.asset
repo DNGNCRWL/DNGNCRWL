@@ -13,15 +13,63 @@ MonoBehaviour:
   m_Name: Attack
   m_EditorClassIdentifier: 
   actionName: Attack
-  verb: attacks
-  difficultyRating: 10
+  startMessage:
+    messages:
+    - '{0} draws their {3}'
+    - '{0} grasps their {3}'
+    - '{0} plants their feet and stares at {1}'
+    - '{0} and {1} lock eyes'
+    time: 1
+    weight: 0.25
+    index: 0
+  actionMessage:
+    messages:
+    - ...
+    - This is not looking good
+    - They raise their {4}
+    - Decisively {0} uses their {4}
+    time: 2
+    weight: 0.4
+    index: 0
   tests:
   - difficultyRating: 0
     actor: {fileID: 0}
     actorStat: 5
     target: {fileID: 0}
     targetStat: 4
+  difficultyRating: 10
   testAtDisadvantage: 0
+  criticalMessage:
+    messages:
+    - CRITICAL HIT!
+    - CRITICAL ATTACK!
+    - SMAAASH!
+    time: 1
+    weight: 0.2
+    index: 0
+  successMessage:
+    messages:
+    - '{0} strikes {1}!'
+    - '{0} lands the hit!'
+    - It's a hit!
+    time: 1
+    weight: 0.3
+    index: 0
+  failMessage:
+    messages:
+    - They were not even close
+    - They missed
+    - They just missed
+    time: 1
+    weight: 0.8
+    index: 0
+  fumbleMessage:
+    messages:
+    - 
+    time: 0
+    weight: 0
+    index: 0
+  critical: []
   success:
   - name: Give HP Damage
     critical: 0
@@ -39,7 +87,6 @@ MonoBehaviour:
     boolean: 0
     floatValue: 1
     messages: []
-  critical: []
   failure:
   - name: Miss Message
     critical: 0

@@ -50,6 +50,22 @@ MonoBehaviour:
     boolean: 0
     floatValue: 1
     messages: []
-  critical: []
+  critical:
+  - name: 
+    critical: 0
+    fumble: 0
+    effort: 0
+    actor: {fileID: 0}
+    target: {fileID: 0}
+    item: {fileID: 0}
+    action: {fileID: 0}
+    atomicFunction: 0
+    damage:
+      dieCount: 0
+      dieSize: 0
+      damageType: 0
+    boolean: 0
+    floatValue: 0
+    messages: []
   failure: []
   fumble: []

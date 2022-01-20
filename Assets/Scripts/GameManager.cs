@@ -46,7 +46,6 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
-
     public static CharacterSheet GetTarget()
     {
         //if in battle list enemies
@@ -54,6 +53,22 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
+    //Enums to String???
+    public static string DamageTypeToString(DamageType type)
+    {
+        switch (type)
+        {
+            case DamageType.Bludgeon: return "Bludgeon";
+            case DamageType.Cut: return "Cut";
+            case DamageType.Electric: return "Electric";
+            case DamageType.Fire: return "Fire";
+            case DamageType.Magic: return "Magic";
+            case DamageType.Pierce: return "Pierce";
+            case DamageType.Spirit: return "Spirit";
+        }
+
+        return "Untyped";
+    }
 
 }
 

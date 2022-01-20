@@ -11,6 +11,32 @@ public class Fun
         return array[UnityEngine.Random.Range(0, array.Length)];
     }
 
+    public static dynamic WeightedRandomFromArray(dynamic[] array, float target, float weightPercent)
+    {
+        if (array == null)
+            return null;
+
+        target = Mathf.Clamp(target, 0, 1);
+        weightPercent = Mathf.Clamp(target, 0, 1);
+
+        float random = ((UnityEngine.Random.Range(0f, 1) * (1 - weightPercent)) + target * weightPercent) / 2;
+        return array[Mathf.RoundToInt(array.Length * random)];
+    }
+
+    public static string WeightedRandomFromArray(MessagePackage mp, float target)
+    {
+        if (mp.messages == null)
+            return null;
+
+        target = Mathf.Clamp(target, 0, 1);
+        mp.weight = Mathf.Clamp(target, 0, 1);
+
+        float random = ((UnityEngine.Random.Range(0f, 1) * (1 - mp.weight)) + target * mp.weight) / 2;
+        mp.index = Mathf.RoundToInt(mp.messages.Length * random);
+
+        return mp.messages[mp.index];
+    }
+
     public static string[] names = {
             //"Aerg-Tval", "Agn", "Arvant", "Belsum", "Belum", "Brint", "Börda", "Daeru",
             //"Eldar", "Felban", "Gotven", "Graft", "Grin", "Grittr", "Haerü", "Hargha",

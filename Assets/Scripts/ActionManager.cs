@@ -36,25 +36,26 @@ public class ActionManager : MonoBehaviour
 
     IEnumerator StartActionCR(CharacterSheet actor, CharacterSheet target, Item item, CharacterAction action)
     {
-        Debug.Log("Doing: " + action.actionName);
         doingAnAction = true;
+
+        //initialize insertable message variables
+        //input these into the messages using the {n} where n is the index of the array
+        string[] messageVariables = {
+            (actor)? actor.GetCharacterName() : "",
+            (target)? target.GetCharacterName() : "",
+            (item)? item.GetExplicitString() : "",
+            (actor)? actor.GetWeapon().itemName : "",
+            (actor)? actor.GetWeapon().GetExplicitString() : "",
+            (actor)? GameManager.DamageTypeToString(actor.GetWeapon().damage.damageType) : "",
+        };
 
         //START
         if (action.TargetHead())
             target = BattleManager.GetOppositeLead(actor);
 
         //START TEXT
-        string startText = actor.GetCharacterName() + " " + action.verb;
-        if (target && !item)
-            startText += " " + target.GetCharacterName();
-        else if (!target && item)
-            startText += " " + item.itemName;
-        else if (target && item)
-            startText += " " + target.GetCharacterName() + " with " + item.itemName;
-
-        BattleManager.SetDialogueText(startText);
-        if (BattleManager.BM)
-            yield return new WaitForSeconds(1);
+        yield return DisplayMessagePackage(action.startMessage, 0.5f, messageVariables);
+        float positivity = action.startMessage.index / 20f;
         
         //set up advantage and disadvantage booleans
         //advantage means "passes at least one test"
@@ -97,6 +98,8 @@ public class ActionManager : MonoBehaviour
         }
 
         //EFFORT TEXT
+        yield return DisplayMessagePackage(action.actionMessage, 1 - positivity, messageVariables);
+        positivity = action.actionMessage.index / 20f;
 
         bool crit, success, fail, fumble;
 
@@ -116,36 +119,28 @@ public class ActionManager : MonoBehaviour
             fumble = advFumble;
         }
 
-        Debug.Log(action.actionName + ": " + success + " " + crit + " " + fail + " " + fumble);
 
-        //string actionText;
-        //if (effort <= 8)
-        //    actionText = "Something is off";
-        //else if (effort <= 12)
-        //    actionText = "Hard to tell";
-        //else
-        //    actionText = "It looks good";
-
-        //BattleManager.AddDialogueText(actionText);
-        //if (BattleManager.BM)
-        //    yield return new WaitForSeconds(1);
 
         //RESULT & RESULT TEXT
         if (success)
         {
             if (crit)
             {
+                yield return DisplayMessagePackage(action.criticalMessage, 1-positivity, messageVariables);
                 yield return ExecutePAFs(action.critical, crit, fumble, effort, actor, target, item, action);
             }
 
+            yield return DisplayMessagePackage(action.successMessage, 1 - positivity, messageVariables);
             yield return ExecutePAFs(action.success, crit, fumble, effort, actor, target, item, action);
         }
         else
         {
+            yield return DisplayMessagePackage(action.failMessage, 1 - positivity, messageVariables);
             yield return ExecutePAFs(action.failure, crit, fumble, effort, actor, target, item, action);
 
             if (fumble)
             {
+                yield return DisplayMessagePackage(action.fumbleMessage, 1 - positivity, messageVariables);
                 yield return ExecutePAFs(action.fumble, crit, fumble, effort, actor, target, item, action);
             }
         }
@@ -153,6 +148,22 @@ public class ActionManager : MonoBehaviour
         yield return null;
 
         doingAnAction = false;
+    }
+
+    IEnumerator DisplayMessagePackage(MessagePackage mp, float target, string[] toInsert)
+    {
+        if (mp.messages.Length <= 0)
+            yield break;
+
+        if (mp.messages.Length > 0)
+        {
+            string toDisplay = string.Format(
+                Fun.WeightedRandomFromArray(mp, target),
+                toInsert);
+            BattleManager.AddDialogueText(toDisplay);
+            if (BattleManager.BM)
+                yield return new WaitForSeconds(mp.time);
+        }
     }
 
     //calculations
@@ -313,12 +324,6 @@ public class ActionManager : MonoBehaviour
 
         if (BattleManager.BM)
         {
-            if (args.critical)
-            {
-                BattleManager.AddDialogueText("CRITICAL HIT!");
-                yield return new WaitForSeconds(args.floatValue);
-            }
-
             BattleManager.AddDialogueText(args.target.GetCharacterName() + " takes " + damageReturn.damageDone + " damage");
             yield return new WaitForSeconds(args.floatValue);
 

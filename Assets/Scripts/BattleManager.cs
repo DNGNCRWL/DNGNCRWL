@@ -181,6 +181,9 @@ public class BattleManager : MonoBehaviour
 
         BM.ClearDialogueText();
 
+        if (s.Length == 0)
+            return;
+
         GameObject g = Instantiate(BM.actionText, BM.actionTextSpawnPosition);
         g.GetComponent<RectTransform>().Rotate(0, 0, Random.Range(2.0f, 6.0f));
         ActionText newAT = g.GetComponent<ActionText>();
