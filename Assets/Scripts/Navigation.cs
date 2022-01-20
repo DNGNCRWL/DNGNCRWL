@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Navigation : MonoBehaviour
 {
@@ -63,6 +64,10 @@ public class Navigation : MonoBehaviour
 
     void GetInputHolds()
     {
+        if (state != State.Idle ||
+           actionQueue.Count > 0)
+            return;
+
         int pressedCount = 0;
 
         if (Input.GetKey(KeyCode.UpArrow))
@@ -74,9 +79,7 @@ public class Navigation : MonoBehaviour
         if (Input.GetKey(KeyCode.RightArrow))
             pressedCount++;
 
-        if (pressedCount != 1 ||
-           state != State.Idle ||
-           actionQueue.Count > 0)
+        if (pressedCount != 1)
             return;
 
         if (Input.GetKey(KeyCode.LeftArrow))
@@ -91,6 +94,7 @@ public class Navigation : MonoBehaviour
 
     void GetInputBooleans()
     {
+
         if (calculateSpeeds)
             CalculateSpeeds();
         if (actionQueue.Count < actionQueueMaxLength && forward)
@@ -105,6 +109,9 @@ public class Navigation : MonoBehaviour
             ChangeLightLevel(1);
         else if (decreaseLightLevel)
             ChangeLightLevel(-1);
+
+        forward = backward = turnLeft = turnRight = false;
+        increaseLightLevel = decreaseLightLevel = false;
     }
 
     void Update()
@@ -124,10 +131,10 @@ public class Navigation : MonoBehaviour
             switch (actionQueue[0])
             {
                 case NavAction.Forward:
-                    StartCoroutine(Move(blockSize));
+                    StartCoroutine(Move(transform.forward * blockSize));//blockSize));
                     break;
                 case NavAction.Backward:
-                    StartCoroutine(Move(-blockSize));
+                    StartCoroutine(Move(-transform.forward * blockSize));// -blockSize));
                     break;
                 case NavAction.Left:
                     StartCoroutine(Turn(-90));
@@ -139,38 +146,35 @@ public class Navigation : MonoBehaviour
         }
     }
 
-    IEnumerator Move(float distance)
+    IEnumerator Move(Vector3 move)//float distance)
     {
         actionQueue.RemoveAt(0);
-        forward = backward = turnLeft = turnRight = false;
 
-        bool blocked = Physics.Raycast(transform.position, transform.forward * (distance < 0 ? -1 : 1), blockSize);
+        bool blocked = Physics.Raycast(transform.position, move, blockSize);
         if (blocked)
             yield break;
 
         state = State.Moving;
-        float toMove = distance;
 
-        while(toMove != 0)
+        //transform.DOMove(transform.position + move, moveTime);
+
+        Vector3 finalPos = transform.position + move;
+        Vector3 toMove = move;
+
+        while (toMove != Vector3.zero)
         {
-            float toMoveThisFrame = Time.deltaTime * moveSpeed * (distance < 0 ? -1 : 1);
+            Vector3 toMoveThisFrame = Time.deltaTime * moveSpeed * toMove.normalized;
 
-            if (toMove > 0 &&
-                toMove > toMoveThisFrame)
+            if (toMove.sqrMagnitude > toMoveThisFrame.sqrMagnitude)
             {
-                transform.position += transform.forward * toMoveThisFrame;
-                toMove -= toMoveThisFrame;
-            }
-            else if(toMove < 0 &&
-                toMove < toMoveThisFrame)
-            {
-                transform.position += transform.forward * toMoveThisFrame;
+                transform.position += toMoveThisFrame;
                 toMove -= toMoveThisFrame;
             }
             else
             {
-                transform.position += transform.forward * toMove;
-                toMove = 0;
+                transform.position = finalPos;
+                //transform.position += toMove;
+                toMove = Vector3.zero;
             }
 
             yield return null;
@@ -193,8 +197,8 @@ public class Navigation : MonoBehaviour
     IEnumerator Turn(float angle)
     {
         actionQueue.RemoveAt(0);
-        forward = backward = turnLeft = turnRight = false;
         state = State.Turning;
+
         float toRotate = angle;
         int sign = (angle < 0 ? -1 : 1);
 
@@ -202,14 +206,9 @@ public class Navigation : MonoBehaviour
         {
             float toRotateThisFrame = Time.deltaTime * rotateSpeed * sign;
 
-            if (toRotateThisFrame > 0 &&
-                toRotate > toRotateThisFrame)
-            {
-                transform.Rotate(Vector3.up, toRotateThisFrame);
-                toRotate -= toRotateThisFrame;
-            }
-            else if(toRotateThisFrame < 0 &&
-                toRotate < toRotateThisFrame)
+            if ((toRotateThisFrame > 0 && toRotate > toRotateThisFrame) ||
+                (toRotateThisFrame < 0 &&
+                toRotate < toRotateThisFrame))
             {
                 transform.Rotate(Vector3.up, toRotateThisFrame);
                 toRotate -= toRotateThisFrame;
