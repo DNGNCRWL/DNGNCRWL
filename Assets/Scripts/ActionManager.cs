@@ -49,6 +49,9 @@ public class ActionManager : MonoBehaviour
             (actor)? GameManager.DamageTypeToString(actor.GetWeapon().damage.damageType) : "",
         };
 
+        if (BattleManager.BM)
+            BattleManager.SetDialogueText("");
+
         //START
         if (action.TargetHead())
             target = BattleManager.GetOppositeLead(actor);
