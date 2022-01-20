@@ -22,10 +22,11 @@ public class Navigation : MonoBehaviour
 
     public Light torchLight;
     public int lightLevel;
-    static readonly int minLight = 6;
+    static readonly int minLight = 5;
     public bool increaseLightLevel;
     public bool decreaseLightLevel;
-    //public Color fog;
+    public bool useFog;
+    public Color fog;
 
     [System.Serializable]
     public enum State { Idle, Turning, Moving }
@@ -234,7 +235,11 @@ public class Navigation : MonoBehaviour
 
         torchLight.range = blockSize * lightLevel + minLight;
 
-        //RenderSettings.fogEndDistance = torchLight.range;
-        //RenderSettings.fogColor = RenderSettings.ambientSkyColor = RenderSettings.ambientGroundColor = RenderSettings.ambientEquatorColor = fog;
+        RenderSettings.fog = useFog;
+        if (useFog)
+        {
+            RenderSettings.fogEndDistance = torchLight.range;
+            RenderSettings.fogColor = fog;
+        }
     }
 }

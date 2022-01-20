@@ -229,7 +229,7 @@ GameObject:
   - component: {fileID: 1277083418100369200}
   - component: {fileID: 6521758440301465057}
   m_Layer: 0
-  m_Name: Plane
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -356,7 +356,7 @@ GameObject:
   - component: {fileID: 3234027189728130147}
   - component: {fileID: 7835664189946338919}
   m_Layer: 0
-  m_Name: Plane (1)
+  m_Name: Ceiling
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
