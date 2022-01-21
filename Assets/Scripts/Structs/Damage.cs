@@ -2,17 +2,19 @@
 using System.Collections;
 
 [System.Serializable]
-public struct Damage
+public struct Damage // Should this be its own class?
 {
-    public Damage(int dieCount, int dieSize, DamageType damageType)
+    public Damage(int dieCount, int dieSize, int modifier, DamageType damageType)
     {
         this.dieCount = dieCount;
         this.dieSize = dieSize;
+        this.modifier = modifier;
         this.damageType = damageType;
     }
 
     public int dieCount;
     public int dieSize;
+    public int modifier;
     public DamageType damageType;
 }
 

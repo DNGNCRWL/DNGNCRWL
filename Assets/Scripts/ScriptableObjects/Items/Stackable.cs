@@ -18,7 +18,7 @@ public class Stackable : Item
     public override Item Copy()
     {
         Stackable copy = ScriptableObject.CreateInstance<Stackable>();
-        copy.CopyItemVariables(itemName, description, broken, value, actions);
+        copy.CopyVariables(itemName, description, broken, value, actions);
 
         copy.unit = unit;
         copy.amount = amount;

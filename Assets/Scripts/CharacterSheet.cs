@@ -630,6 +630,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     public int RecoverDamage(Damage damage)
     {
         int increase = GameManager.RollDice(damage.dieCount, damage.dieSize);
+        increase += damage.modifier;
         hitPoints += increase;
         CheckHPBounds();
 
@@ -646,7 +647,9 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
     public DamageReturn TakeDamage(Damage damage, bool critical)
     {
-        int total = GameManager.RollDice(damage.dieCount, damage.dieSize) * (critical ?  2 : 1);
+        int total = GameManager.RollDice(damage.dieCount, damage.dieSize);;
+        total += damage.modifier;
+        total *= critical ? 2 : 1;
 
         total -= GetResistByType(damage.damageType);
         if (total < 1)
@@ -680,6 +683,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     public int TempIncreaseMaxHP(Damage damage)
     {
         int increase = GameManager.RollDice(damage.dieCount, damage.dieSize);
+        increase += damage.modifier;
         hitPoints += increase;
         maxHitPointsTempIncrease += increase;
         CheckHPBounds();
@@ -690,6 +694,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     {
         int increase = GameManager.RollDice(damage.dieCount, damage.dieSize);
         strengthTemp += increase;
+        increase += damage.modifier;
 
         return increase;
     }
@@ -697,6 +702,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     {
         int increase = GameManager.RollDice(damage.dieCount, damage.dieSize);
         agilityTemp += increase;
+        increase += damage.modifier;
 
         return increase;
     }
@@ -704,6 +710,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     {
         int increase = GameManager.RollDice(damage.dieCount, damage.dieSize);
         presenceTemp += increase;
+        increase += damage.modifier;
 
         return increase;
     }
@@ -711,6 +718,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     {
         int increase = GameManager.RollDice(damage.dieCount, damage.dieSize);
         toughnessTemp += increase;
+        increase += damage.modifier;
 
         return increase;
     }
@@ -718,6 +726,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     {
         int increase = GameManager.RollDice(damage.dieCount, damage.dieSize);
         defenseTemp += increase;
+        increase += damage.modifier;
 
         return increase;
     }

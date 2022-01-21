@@ -22,7 +22,7 @@ public class Navigation : MonoBehaviour
 
     public Light torchLight;
     public int lightLevel;
-    static readonly int minLight = 5;
+    public int minLight = 6;
     public bool increaseLightLevel;
     public bool decreaseLightLevel;
     public bool useFog;

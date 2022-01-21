@@ -32,7 +32,7 @@ public class ProjectileWeapon : Weapon
     public override Item Copy()
     {
         ProjectileWeapon copy = ScriptableObject.CreateInstance<ProjectileWeapon>();
-        copy.CopyItemVariables(itemName, description, broken, value, actions);
+        copy.CopyVariables(itemName, description, broken, value, actions);
         copy.CopyWeaponVariables(damage, twoHanded, abilityToUse);
 
         copy.ammoName = this.ammoName;

@@ -11,7 +11,12 @@ public class Item : ScriptableObject
     public int value;
     public List<CharacterAction> actions;
 
-    public Item CopyItemVariables(string itemName, string description, bool broken, int value, List<CharacterAction> actions)
+    public Item CopyVariables(Item item)
+    {
+        return CopyVariables(item.itemName, item.description, item.broken, item.value, item.actions);
+    }
+
+    public Item CopyVariables(string itemName, string description, bool broken, int value, List<CharacterAction> actions)
     {
         this.name = name;
         this.itemName = itemName;
@@ -34,7 +39,8 @@ public class Item : ScriptableObject
 
     public virtual Item Copy()
     {
-        Item copy = ScriptableObject.CreateInstance<Item>().CopyItemVariables(itemName, description, broken, value, actions);
+        //Item copy = ScriptableObject.CreateInstance<Item>().CopyVariables(itemName, description, broken, value, actions);
+        Item copy = ScriptableObject.CreateInstance<Item>().CopyVariables(this);
 
         return copy;
     }

@@ -58,8 +58,8 @@ MonoBehaviour:
   failMessage:
     messages:
     - They were not even close
-    - They missed
-    - They just missed
+    - They miss
+    - They barely miss
     time: 1
     weight: 0.8
     index: 0
@@ -87,24 +87,7 @@ MonoBehaviour:
     boolean: 0
     floatValue: 1
     messages: []
-  failure:
-  - name: Miss Message
-    critical: 0
-    fumble: 0
-    effort: 0
-    actor: {fileID: 0}
-    target: {fileID: 0}
-    item: {fileID: 0}
-    action: {fileID: 0}
-    atomicFunction: 1
-    damage:
-      dieCount: 0
-      dieSize: 0
-      damageType: 0
-    boolean: 0
-    floatValue: 1
-    messages:
-    - They miss
+  failure: []
   fumble:
   - name: Counter Attack
     critical: 0
