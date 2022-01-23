@@ -8,6 +8,7 @@ public class SpriteColorAverageLight : MonoBehaviour
     static bool foundLights;
     SpriteRenderer sr;
     public float distanceFromLights;
+    Color originalColor;
 
     void FindLights()
     {
@@ -25,6 +26,7 @@ public class SpriteColorAverageLight : MonoBehaviour
         }
 
         sr = GetComponent<SpriteRenderer>();
+        originalColor = sr.color;
     }
 
     private void Update()
@@ -44,7 +46,7 @@ public class SpriteColorAverageLight : MonoBehaviour
         }
 
         if (lights.Length > 0)
-            sr.color = new Color(1, 1, 1, distanceFromLights * distanceFromLights);
+            sr.color = originalColor * new Color(1, 1, 1, distanceFromLights * distanceFromLights);
     }
 
 }
