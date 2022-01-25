@@ -49,8 +49,7 @@ public class ActionManager : MonoBehaviour
             (actor)? GameManager.DamageTypeToString(actor.GetWeapon().damage.damageType) : "",
         };
 
-        if (BattleManager.BM)
-            BattleManager.SetDialogueText("");
+        GameManager.GM.ClearText();
 
         //START
         if (action.TargetHead())
@@ -163,9 +162,9 @@ public class ActionManager : MonoBehaviour
             string toDisplay = string.Format(
                 Fun.WeightedRandomFromArray(mp, target),
                 toInsert);
-            BattleManager.AddDialogueText(toDisplay);
-            if (BattleManager.BM)
-                yield return new WaitForSeconds(mp.time);
+
+            GameManager.GM.AddText(toDisplay);
+            yield return new WaitForSeconds(mp.time);
         }
     }
 
@@ -222,9 +221,8 @@ public class ActionManager : MonoBehaviour
 
         if (isProjectileWeapon && !hasAmmo)
         {
-            BattleManager.AddDialogueText(actor.GetCharacterName() + " does not have any " + ammoName + "s");
-            if (BattleManager.BM)
-                yield return new WaitForSeconds(time);
+            GameManager.GM.AddText(actor.GetCharacterName() + " does not have any " + ammoName + "s");
+            yield return new WaitForSeconds(time);
 
             actor.EquipWeapon(null);
         }
@@ -239,11 +237,8 @@ public class ActionManager : MonoBehaviour
 
         string resultText = args.actor.GetCharacterName() + " recovers " + increase + "HP";
 
-        if (BattleManager.BM)
-        {
-            BattleManager.AddDialogueText(resultText);
-            yield return new WaitForSeconds(args.floatValue);
-        }
+        GameManager.GM.AddText(resultText);
+        yield return new WaitForSeconds(args.floatValue);
 
         yield return null;
     }
@@ -253,11 +248,8 @@ public class ActionManager : MonoBehaviour
 
         string resultText = args.actor.GetCharacterName() + " gains " + increase + " MaxHP";
 
-        if (BattleManager.BM)
-        {
-            BattleManager.AddDialogueText(resultText);
-            yield return new WaitForSeconds(args.floatValue);
-        }
+        GameManager.GM.AddText(resultText);
+        yield return new WaitForSeconds(args.floatValue);
 
         yield return null;
     }
@@ -270,9 +262,9 @@ public class ActionManager : MonoBehaviour
             " gains " + increase + " strength" :
             " loses " + (-increase) + " strength";
 
-        if (BattleManager.BM && increase != 0)
+        if (increase != 0)
         {
-            BattleManager.AddDialogueText(resultText);
+            GameManager.GM.AddText(resultText);
             yield return new WaitForSeconds(args.floatValue);
         }
 
@@ -287,9 +279,9 @@ public class ActionManager : MonoBehaviour
             " gains " + increase + " toughness" :
             " loses " + (-increase) + " toughness";
 
-        if (BattleManager.BM && increase != 0)
+        if (increase != 0)
         {
-            BattleManager.AddDialogueText(resultText);
+            GameManager.GM.AddText(resultText);
             yield return new WaitForSeconds(args.floatValue);
         }
 
@@ -302,22 +294,16 @@ public class ActionManager : MonoBehaviour
         string resultText = 
             args.actor.GetCharacterName() + ((args.boolean)? " is now infected" : " is cured of infection");
 
-        if (BattleManager.BM)
-        {
-            BattleManager.AddDialogueText(resultText);
-            yield return new WaitForSeconds(args.floatValue);
-        }
+        GameManager.GM.AddText(resultText);
+        yield return new WaitForSeconds(args.floatValue);
 
         yield return null;
     }
 
     static IEnumerator DisplayString(ParameteredAtomicFunction args)
     {
-        if (BattleManager.BM)
-        {
-            BattleManager.AddDialogueText(Fun.RandomFromArray(args.messages));
-            yield return new WaitForSeconds(args.floatValue);
-        }
+        GameManager.GM.AddText(Fun.RandomFromArray(args.messages));
+        yield return new WaitForSeconds(args.floatValue);
     }
 
     //targeted
@@ -325,14 +311,11 @@ public class ActionManager : MonoBehaviour
     {
         DamageReturn damageReturn = args.target.TakeDamage(args.actor.GetWeapon().damage, args.critical);
 
-        if (BattleManager.BM)
-        {
-            BattleManager.AddDialogueText(args.target.GetCharacterName() + " takes " + damageReturn.damageDone + " damage");
-            yield return new WaitForSeconds(args.floatValue);
+        GameManager.GM.AddText(args.target.GetCharacterName() + " takes " + damageReturn.damageDone + " damage");
+        yield return new WaitForSeconds(args.floatValue);
 
-            BattleManager.AddDialogueText(damageReturn.message);
-            yield return new WaitForSeconds(args.floatValue);
-        }
+        GameManager.GM.AddText(damageReturn.message);
+        yield return new WaitForSeconds(args.floatValue);
 
         yield return null;
     }
@@ -354,9 +337,8 @@ public class ActionManager : MonoBehaviour
         else
             resultText = args.actor.GetCharacterName() + " disappears";
 
-        BattleManager.AddDialogueText(resultText);
-        if (BattleManager.BM)
-            yield return new WaitForSeconds(args.floatValue);
+        GameManager.GM.AddText(resultText);
+        yield return new WaitForSeconds(args.floatValue);
 
         if (roll.IsSuccess())
         {
@@ -366,9 +348,8 @@ public class ActionManager : MonoBehaviour
                 resultText = "And they made it through";
             args.actor.Sneak();
 
-            BattleManager.AddDialogueText(resultText);
-            if (BattleManager.BM)
-                yield return new WaitForSeconds(args.floatValue);
+            GameManager.GM.AddText(resultText);
+            yield return new WaitForSeconds(args.floatValue);
 
         }
         else
@@ -377,84 +358,21 @@ public class ActionManager : MonoBehaviour
                 resultText = "But " + opposingLeader.GetCharacterName() + " stopped them";
             else
                 resultText = "And they couldn't make it";
-            BattleManager.AddDialogueText(resultText);
-            if (BattleManager.BM)
-                yield return new WaitForSeconds(args.floatValue);
+
+            GameManager.GM.AddText(resultText);
+            yield return new WaitForSeconds(args.floatValue);
         }
         yield return null;
     }
-    static IEnumerator Fight(ParameteredAtomicFunction args)
-    {
-        if (!args.actor) yield break;
-        if (!args.target) yield break;
+    static IEnumerator Fight(ParameteredAtomicFunction args) { yield return null; }
 
-        Weapon weapon = args.actor.GetWeapon();
-        yield return CheckIfProjectileWeaponHasAmmo(args.actor, args.floatValue);
-        weapon = args.actor.GetWeapon();
-
-        int difficultyRating = args.action.difficultyRating;
-        difficultyRating += CalculateSameSideRangedAttackPenalty(args.actor, args.target);
-        d20 roll = new d20(difficultyRating, args.actor, weapon.abilityToUse, args.target, Stat.Defense);
-
-        if(roll.Roll() <= 8)
-        {
-            BattleManager.AddDialogueText("This is not looking good");
-            if (BattleManager.BM)
-                yield return new WaitForSeconds(args.floatValue);
-        }
-        else
-        {
-            BattleManager.AddDialogueText("They raise their " + weapon.GetExplicitString());
-            if (BattleManager.BM)
-                yield return new WaitForSeconds(args.floatValue);
-        }
-        
-        if (roll.IsSuccess())
-        {
-            if (roll.IsCritical())
-            {
-                BattleManager.AddDialogueText("CRITICAL HIT!");
-                if (BattleManager.BM)
-                    yield return new WaitForSeconds(args.floatValue);
-            }
-            
-            DamageReturn damageReturned = args.target.TakeDamage(weapon.GetDamage(), roll.IsCritical());
-            
-            BattleManager.AddDialogueText(args.target.GetCharacterName() + " takes " + damageReturned.damageDone + " damage");
-            if (BattleManager.BM)
-                yield return new WaitForSeconds(args.floatValue);
-
-            if (damageReturned.killerBlow || GameManager.RollDie(20) > 15)
-            {
-                BattleManager.AddDialogueText(damageReturned.message);
-                if (BattleManager.BM)
-                    yield return new WaitForSeconds(args.floatValue);
-            }
-        }
-        else
-        {
-            if (roll.IsFumble())
-            {
-                yield return CounterAttack(args);
-            }
-            else
-            {
-                BattleManager.AddDialogueText(args.actor.GetCharacterName() + " misses");
-                if (BattleManager.BM)
-                    yield return new WaitForSeconds(args.floatValue);
-            }
-        }
-
-        yield return null;
-    }
     static IEnumerator CounterAttack(ParameteredAtomicFunction args)
     {
         if (!args.actor) yield break;
         if (!args.target) yield break;
 
-        BattleManager.AddDialogueText("COUNTER ATTACK!");
-        if (BattleManager.BM)
-            yield return new WaitForSeconds(args.floatValue);
+        GameManager.GM.AddText("COUNTER ATTACK!");
+        yield return new WaitForSeconds(args.floatValue);
 
         int difficultyRating = args.action.difficultyRating;
         difficultyRating += CalculateSameSideRangedAttackPenalty(args.actor, args.target);
@@ -462,33 +380,32 @@ public class ActionManager : MonoBehaviour
         Weapon weapon = args.target.GetWeapon();
         d20 roll = new d20(difficultyRating, args.target, weapon.abilityToUse, args.actor, Stat.Defense);
 
+        GameManager.GM.AddText(args.target.GetCharacterName() + " pulls out " + weapon.GetExplicitString());
+        yield return new WaitForSeconds(args.floatValue);
+
         if (roll.IsSuccess())
         {
             if (roll.IsCritical())
             {
-                BattleManager.AddDialogueText("CRITICAL COUNTER HIT!");
-                if (BattleManager.BM)
-                    yield return new WaitForSeconds(args.floatValue);
+                GameManager.GM.AddText("CRITICAL COUNTER HIT!");
+                yield return new WaitForSeconds(args.floatValue);
             }
 
             DamageReturn damageReturn = args.target.TakeDamage(weapon.GetDamage(), roll.IsCritical());
 
-            BattleManager.AddDialogueText(args.actor.GetCharacterName() + " takes " + damageReturn.damageDone + " damage");
-            if (BattleManager.BM)
-                yield return new WaitForSeconds(args.floatValue);
+            GameManager.GM.AddText(args.actor.GetCharacterName() + " takes " + damageReturn.damageDone + " damage");
+            yield return new WaitForSeconds(args.floatValue);
             
             if(damageReturn.killerBlow || GameManager.RollDie(20) > 15)
             {
-                BattleManager.AddDialogueText(damageReturn.message);
-                if (BattleManager.BM)
-                    yield return new WaitForSeconds(args.floatValue);
+                GameManager.GM.AddText(damageReturn.message);
+                yield return new WaitForSeconds(args.floatValue);
             }
         }
         else
         {
-            BattleManager.AddDialogueText("A wasted opportunity!");
-            if (BattleManager.BM)
-                yield return new WaitForSeconds(args.floatValue);
+            GameManager.GM.AddText("A wasted opportunity!");
+            yield return new WaitForSeconds(args.floatValue);
         }
 
         yield return null;

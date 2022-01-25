@@ -83,24 +83,6 @@ public class BattleManager : MonoBehaviour
     public bool test2;
     int counter = 0;
 
-    private void Update()
-    {
-        if (test)
-        {
-            test = false;
-            SetDialogueText("This string is: " + counter);
-            counter++;
-        }
-
-        if (test2)
-        {
-            test2 = false;
-            AddDialogueText("This string is: " + counter);
-            counter++;
-        }
-    }
-
-
     private void Awake()
     {
         if (!BM) { BM = this; }
@@ -174,60 +156,60 @@ public class BattleManager : MonoBehaviour
         //start the first round of combat
     }
 
-    static public void SetDialogueText(string s)
-    {
-        if (!BM) return;
-        //BM.dialogueText.text = s; //make nicer
+    //static public void SetDialogueText(string s)
+    //{
+    //    if (!BM) return;
+    //    //BM.dialogueText.text = s; //make nicer
 
-        BM.ClearDialogueText();
+    //    BM.ClearDialogueText();
 
-        if (s.Length == 0)
-            return;
+    //    if (s.Length == 0)
+    //        return;
 
-        GameObject g = Instantiate(BM.actionText, BM.actionTextSpawnPosition);
-        g.GetComponent<RectTransform>().Rotate(0, 0, Random.Range(2.0f, 6.0f));
-        ActionText newAT = g.GetComponent<ActionText>();
-        TextMeshProUGUI newTMP = g.GetComponent<TextMeshProUGUI>();
-        newTMP.text = s;
+    //    GameObject g = Instantiate(BM.actionText, BM.actionTextSpawnPosition);
+    //    g.GetComponent<RectTransform>().Rotate(0, 0, Random.Range(2.0f, 6.0f));
+    //    ActionText newAT = g.GetComponent<ActionText>();
+    //    TextMeshProUGUI newTMP = g.GetComponent<TextMeshProUGUI>();
+    //    newTMP.text = s;
 
-        BM.actionTexts.Add(newAT);
-    }
-    static public void AddDialogueText(string s)
-    {
-        if (!BM) return;
+    //    BM.actionTexts.Add(newAT);
+    //}
+    //static public void AddDialogueText(string s)
+    //{
+    //    if (!BM) return;
 
-        GameObject g = Instantiate(BM.actionText, BM.actionTextSpawnPosition);
-        g.GetComponent<RectTransform>().Rotate(0, 0, Random.Range(2.0f, 6.0f));
-        RectTransform gRectT = g.GetComponent<RectTransform>();
-        gRectT.anchoredPosition = gRectT.anchoredPosition - Vector2.up * BM.actionTextSpawnOffset * BM.actionTexts.Count;
-        ActionText newAT = g.GetComponent<ActionText>();
-        TextMeshProUGUI newTMP = g.GetComponent<TextMeshProUGUI>();
-        newTMP.text = s;
-        BM.actionTexts.Add(newAT.GetComponent<ActionText>());
+    //    GameObject g = Instantiate(BM.actionText, BM.actionTextSpawnPosition);
+    //    g.GetComponent<RectTransform>().Rotate(0, 0, Random.Range(2.0f, 6.0f));
+    //    RectTransform gRectT = g.GetComponent<RectTransform>();
+    //    gRectT.anchoredPosition = gRectT.anchoredPosition - Vector2.up * BM.actionTextSpawnOffset * BM.actionTexts.Count;
+    //    ActionText newAT = g.GetComponent<ActionText>();
+    //    TextMeshProUGUI newTMP = g.GetComponent<TextMeshProUGUI>();
+    //    newTMP.text = s;
+    //    BM.actionTexts.Add(newAT.GetComponent<ActionText>());
 
-        if (BM.actionTexts.Count > 3)
-        {
-            ActionText head = BM.actionTexts[0];
-            head.MoveRelative(Random.Range(BM.actionTextSpawnOffset, -BM.actionTextSpawnOffset),
-                Random.Range(-BM.actionTextSpawnOffset, -2 * BM.actionTextSpawnOffset), BM.actionTextTime);
-            head.FadeAndDestroy(BM.actionTextTime);
-            BM.actionTexts.Remove(head);
+    //    if (BM.actionTexts.Count > 3)
+    //    {
+    //        ActionText head = BM.actionTexts[0];
+    //        head.MoveRelative(Random.Range(BM.actionTextSpawnOffset, -BM.actionTextSpawnOffset),
+    //            Random.Range(-BM.actionTextSpawnOffset, -2 * BM.actionTextSpawnOffset), BM.actionTextTime);
+    //        head.FadeAndDestroy(BM.actionTextTime);
+    //        BM.actionTexts.Remove(head);
 
-            foreach(ActionText eachAT in BM.actionTexts)
-            {
-                eachAT.MoveRelative(0, BM.actionTextSpawnOffset, BM.actionTextTime);
-            }
-        }
-    }
-    void ClearDialogueText()
-    {
-        foreach(ActionText at in actionTexts)
-        {
-            at.MoveRelative(Random.Range(actionTextSpawnOffset, -actionTextSpawnOffset), Random.Range(-actionTextSpawnOffset, -2*actionTextSpawnOffset), actionTextTime);
-            at.FadeAndDestroy(actionTextTime);
-        }
-        actionTexts.Clear();
-    }
+    //        foreach(ActionText eachAT in BM.actionTexts)
+    //        {
+    //            eachAT.MoveRelative(0, BM.actionTextSpawnOffset, BM.actionTextTime);
+    //        }
+    //    }
+    //}
+    //void ClearDialogueText()
+    //{
+    //    foreach(ActionText at in actionTexts)
+    //    {
+    //        at.MoveRelative(Random.Range(actionTextSpawnOffset, -actionTextSpawnOffset), Random.Range(-actionTextSpawnOffset, -2*actionTextSpawnOffset), actionTextTime);
+    //        at.FadeAndDestroy(actionTextTime);
+    //    }
+    //    actionTexts.Clear();
+    //}
 
 
 
@@ -362,12 +344,14 @@ public class BattleManager : MonoBehaviour
         if (l > 3)
         {
             SwapAndMove(pm, l, FindRandomHomeLocation(pm.objects), quickTime);
-            SetDialogueText(cs.GetCharacterName() + " comes back to the party");
+            GameManager.GM.SetText(cs.GetCharacterName() + " comes back to the party");
+            //SetDialogueText(cs.GetCharacterName() + " comes back to the party");
             return true;
         }
         else
         {
-            SetDialogueText(cs.GetCharacterName() + " is already with the party");
+            GameManager.GM.SetText(cs.GetCharacterName() + " is already with the party");
+            //SetDialogueText(cs.GetCharacterName() + " is already with the party");
             return false;
         }
     }

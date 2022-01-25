@@ -26,6 +26,30 @@ public class GameManager : MonoBehaviour
         foreach (GameObject go in characters) playerCharacters.Add(go);
     }
 
+    public void AddText(string message)
+    {
+        if (DEFAULT_TEXT_SPAWNER)
+            DEFAULT_TEXT_SPAWNER.AddText(message);
+        else
+            Debug.Log("No Default Text Spawner to add message: " + message);
+    }
+
+    public void SetText(string message)
+    {
+        if (DEFAULT_TEXT_SPAWNER)
+            DEFAULT_TEXT_SPAWNER.SetText(message);
+        else
+            Debug.Log("No Default Text Spawner to set message: " + message);
+    }
+
+    public void ClearText()
+    {
+        if (DEFAULT_TEXT_SPAWNER)
+            DEFAULT_TEXT_SPAWNER.ClearText();
+        else
+            Debug.Log("No Default Text Spawner to clear");
+    }
+
     static public int RollDie(int dieSize)
     {
         if (dieSize < 0)

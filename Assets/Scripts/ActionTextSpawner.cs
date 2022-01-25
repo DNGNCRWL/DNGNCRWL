@@ -15,6 +15,10 @@ public class ActionTextSpawner : MonoBehaviour
     public float rotationMax;
     [SerializeField] List<ActionText> actionTexts;
 
+    public string testString;
+    public bool setText;
+    public bool addText;
+
     private void Awake()
     {
         if(defaultTextSpawner)
@@ -22,6 +26,21 @@ public class ActionTextSpawner : MonoBehaviour
 
         actionTextSpawnPosition = GetComponent<RectTransform>();
         actionTexts = new List<ActionText>();
+    }
+
+    private void Update()
+    {
+        if (setText)
+        {
+            setText = false;
+            SetText(testString);
+        }
+
+        if (addText)
+        {
+            addText = false;
+            AddText(testString);
+        }
     }
 
     public void SetText(string message)
@@ -43,7 +62,7 @@ public class ActionTextSpawner : MonoBehaviour
         spawnedTextRT.Rotate(0, 0, Random.Range(rotationMin, rotationMax));
 
         //offset object based on how many other actionTexts there are
-        spawnedTextRT.anchoredPosition = spawnedTextRT.anchoredPosition - Vector2.up * actionTextSpawnOffset * actionTexts.Count;
+        spawnedTextRT.anchoredPosition = spawnedTextRT.anchoredPosition - Vector2.up * actionTextSpawnOffset * (actionTexts.Count -1);
 
         spawnedTextTMP.text = message;
 
