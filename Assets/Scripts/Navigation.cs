@@ -152,6 +152,7 @@ public class Navigation : MonoBehaviour
         actionQueue.RemoveAt(0);
 
         bool blocked = Physics.Raycast(transform.position, move, blockSize);
+        
         if (blocked)
             yield break;
 

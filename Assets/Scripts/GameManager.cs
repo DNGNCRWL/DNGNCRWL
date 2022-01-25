@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
 
     public static readonly int secondsPerRound = 6;
 
+    public static ActionTextSpawner DEFAULT_TEXT_SPAWNER;
+
     private void Awake()
     {
         if (GM == null) GM = this;

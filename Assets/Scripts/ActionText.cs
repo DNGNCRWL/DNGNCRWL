@@ -6,9 +6,10 @@ using DG.Tweening;
 
 public class ActionText : MonoBehaviour
 {
-    static Canvas c;
-    RectTransform rt;
-    TextMeshProUGUI tmp;
+    static Canvas canvas;
+    RectTransform rectTransform;
+    RectTransform parentRectTransform;
+    TextMeshProUGUI tmpUGUI;
 
     public bool activate;
     public bool activate2;
@@ -22,8 +23,10 @@ public class ActionText : MonoBehaviour
 
     private void Awake()
     {
-        rt = GetComponent<RectTransform>();
-        tmp = GetComponent<TextMeshProUGUI>();
+        canvas = GetComponentInParent<Canvas>();
+        rectTransform = GetComponent<RectTransform>();
+        parentRectTransform = GetComponentInParent<RectTransform>();
+        tmpUGUI = GetComponent<TextMeshProUGUI>();
     }
 
     private void Update()
@@ -47,14 +50,15 @@ public class ActionText : MonoBehaviour
     }
     public void MoveRelative(float x, float y, float time)
     {
-        StartCoroutine(MoveCR(rt.position.x + x, rt.position.y + y, time));
+        StartCoroutine(MoveCR(rectTransform.anchoredPosition.x + x, rectTransform.anchoredPosition.y + y, time));
     }
 
     public IEnumerator MoveCR(float x, float y, float time)
     {
         tweening = true;
-        rt.DOMoveX(x, time);
-        yield return rt.DOMoveY(y, time);
+
+        yield return rectTransform.DOAnchorPos(new Vector2(x, y), time, true);
+
         tweening = false;
     }
 
@@ -65,12 +69,12 @@ public class ActionText : MonoBehaviour
 
     public IEnumerator FadeAndDestroyCR(float time)
     {
-        Color initialColor = tmp.color;
+        Color initialColor = tmpUGUI.color;
         float timer = time;
 
         while(timer > 0)
         {
-            tmp.color = initialColor * timer / time;
+            tmpUGUI.color = initialColor * timer / time;
 
             timer -= Time.deltaTime;
             yield return null;
