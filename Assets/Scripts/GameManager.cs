@@ -21,6 +21,10 @@ public class GameManager : MonoBehaviour
         DOTween.Init(null, null, null);
     }
 
+    public static void Reset() {
+
+    }
+
     public static IEnumerator DisplayMessagePackage(MessagePackage mp, float target, string[] toInsert)
     {
         if (mp.messages.Length <= 0)

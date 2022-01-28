@@ -83,6 +83,18 @@ public class BattleManager : MonoBehaviour
         } while (SideIsAlive(playerParty) && SideIsAlive(enemyParty));
     }
 
+    IEnumerator CheckWinner(){
+
+        if(SideIsAlive(playerParty)){
+            GameManager.GM.SetText(playerParty.name + " is victorious");
+        } else {
+            GameManager.GM.SetText(enemyParty.name + " is victorious");
+            GameManager.Reset();
+        }
+
+        yield return null;
+    }
+
     IEnumerator PartyTurn(Party party)
     {
         Debug.Log(party.name + "'s turn");
