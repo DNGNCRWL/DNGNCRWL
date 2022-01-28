@@ -56,7 +56,7 @@ public class ActionManager : MonoBehaviour
             target = BattleManager.GetOppositeLead(actor);
 
         //START TEXT
-        yield return DisplayMessagePackage(action.startMessage, 0.5f, messageVariables);
+        yield return GameManager.DisplayMessagePackage(action.startMessage, 0.5f, messageVariables);
         float positivity = action.startMessage.index / 20f;
         
         //set up advantage and disadvantage booleans
@@ -100,7 +100,7 @@ public class ActionManager : MonoBehaviour
         }
 
         //EFFORT TEXT
-        yield return DisplayMessagePackage(action.actionMessage, 1 - positivity, messageVariables);
+        yield return GameManager.DisplayMessagePackage(action.actionMessage, 1 - positivity, messageVariables);
         positivity = action.actionMessage.index / 20f;
 
         bool crit, success, fail, fumble;
@@ -128,21 +128,21 @@ public class ActionManager : MonoBehaviour
         {
             if (crit)
             {
-                yield return DisplayMessagePackage(action.criticalMessage, 1-positivity, messageVariables);
+                yield return GameManager.DisplayMessagePackage(action.criticalMessage, 1-positivity, messageVariables);
                 yield return ExecutePAFs(action.critical, crit, fumble, effort, actor, target, item, action);
             }
 
-            yield return DisplayMessagePackage(action.successMessage, 1 - positivity, messageVariables);
+            yield return GameManager.DisplayMessagePackage(action.successMessage, 1 - positivity, messageVariables);
             yield return ExecutePAFs(action.success, crit, fumble, effort, actor, target, item, action);
         }
         else
         {
-            yield return DisplayMessagePackage(action.failMessage, 1 - positivity, messageVariables);
+            yield return GameManager.DisplayMessagePackage(action.failMessage, 1 - positivity, messageVariables);
             yield return ExecutePAFs(action.failure, crit, fumble, effort, actor, target, item, action);
 
             if (fumble)
             {
-                yield return DisplayMessagePackage(action.fumbleMessage, 1 - positivity, messageVariables);
+                yield return GameManager.DisplayMessagePackage(action.fumbleMessage, 1 - positivity, messageVariables);
                 yield return ExecutePAFs(action.fumble, crit, fumble, effort, actor, target, item, action);
             }
         }
@@ -150,22 +150,6 @@ public class ActionManager : MonoBehaviour
         yield return null;
 
         doingAnAction = false;
-    }
-
-    IEnumerator DisplayMessagePackage(MessagePackage mp, float target, string[] toInsert)
-    {
-        if (mp.messages.Length <= 0)
-            yield break;
-
-        if (mp.messages.Length > 0)
-        {
-            string toDisplay = string.Format(
-                Fun.WeightedRandomFromArray(mp, target),
-                toInsert);
-
-            GameManager.GM.AddText(toDisplay);
-            yield return new WaitForSeconds(mp.time);
-        }
     }
 
     //calculations

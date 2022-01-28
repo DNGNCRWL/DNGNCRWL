@@ -787,7 +787,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerParty:
-    name: 
+    name: Player's Party
     characters: []
     positions:
     - {fileID: 1570464273}
@@ -799,7 +799,7 @@ MonoBehaviour:
     - {fileID: 1361206164}
     - {fileID: 1725300758}
   enemyParty:
-    name: 
+    name: Enemy Party
     characters:
     - {fileID: 927576512}
     - {fileID: 1619461192}
@@ -819,6 +819,8 @@ MonoBehaviour:
   - {fileID: 2044261854}
   - {fileID: 1617667108}
   - {fileID: 82296777}
+  initiativeRate: 3
+  charactersYetToAct: []
 --- !u!4 &349719984
 Transform:
   m_ObjectHideFlags: 0

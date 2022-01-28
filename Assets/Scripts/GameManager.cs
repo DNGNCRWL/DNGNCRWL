@@ -21,6 +21,22 @@ public class GameManager : MonoBehaviour
         DOTween.Init(null, null, null);
     }
 
+    public static IEnumerator DisplayMessagePackage(MessagePackage mp, float target, string[] toInsert)
+    {
+        if (mp.messages.Length <= 0)
+            yield break;
+
+        if (mp.messages.Length > 0)
+        {
+            string toDisplay = string.Format(
+                Fun.WeightedRandomFromArray(mp, target),
+                toInsert);
+
+            GM.AddText(toDisplay);
+            yield return new WaitForSeconds(mp.time);
+        }
+    }
+
     public void AddText(string message)
     {
         if (DEFAULT_TEXT_SPAWNER)

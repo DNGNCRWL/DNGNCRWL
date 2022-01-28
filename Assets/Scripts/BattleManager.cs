@@ -11,6 +11,8 @@ public class BattleManager : MonoBehaviour
     [SerializeField] Party playerParty;
     [SerializeField] Party enemyParty;
     public BattleHUD[] characterDisplays;
+    public int initiativeRate = 3;
+    public List<CharacterSheet> charactersYetToAct;
 
     [System.Serializable]
     struct Party
@@ -39,6 +41,8 @@ public class BattleManager : MonoBehaviour
             characterDisplays[i].UpdateText(current);
         }
 
+        charactersYetToAct = new List<CharacterSheet>();
+
         DOMoveAllPositions(playerParty, 0);
         DOMoveAllPositions(enemyParty, 0);
     }
@@ -46,6 +50,57 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator Start()
     {
+        GameManager.GM.SetText("Enemies appeared");
+        yield return new WaitForSeconds(1);
+
+        yield return StartCoroutine(Combat());
+
+        yield return null;  
+    }
+
+    //BATTLE STATES
+    IEnumerator Combat()
+    {
+        do{
+            Debug.Log("Start Round");
+            GameManager.GM.SetText("Start Round");
+            yield return new WaitForSeconds(1);
+
+            int initiative = GameManager.RollDie(6);
+            bool playersGoFirst = initiative > initiativeRate;
+
+            if(playersGoFirst){
+                GameManager.GM.SetText("Player goes first");
+                yield return new WaitForSeconds(1);
+                yield return StartCoroutine(PartyTurn(playerParty));
+                yield return StartCoroutine(PartyTurn(enemyParty));
+            } else{
+                GameManager.GM.SetText("Enemies go first");
+                yield return new WaitForSeconds(1);
+                yield return StartCoroutine(PartyTurn(enemyParty));
+                yield return StartCoroutine(PartyTurn(playerParty));
+            }
+        } while (SideIsAlive(playerParty) && SideIsAlive(enemyParty));
+    }
+
+    IEnumerator PartyTurn(Party party)
+    {
+        Debug.Log(party.name + "'s turn");
+
+        GameManager.GM.SetText(party.name + "'s turn");
+        yield return new WaitForSeconds(1);
+
+        charactersYetToAct.Clear();
+
+        foreach(CharacterSheet character in party.characters){
+            if(character.GetCanAct())
+                charactersYetToAct.Add(character);
+        }
+
+        while(charactersYetToAct.Count > 0){        
+            yield return null;
+        }
+
         yield return null;
     }
 
@@ -108,30 +163,14 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    //BATTLE STATES
-    IEnumerator Combat()
-    {
-        yield return null;
-    }
-
-    IEnumerator PlayerTurn()
-    {
-        yield return null;
-    }
-
-    IEnumerator EnemyTurn()
-    {
-        yield return null;
-    }
-
     //CALCULATIONS
     bool SideIsAlive(Party party)
     {
         foreach(CharacterSheet character in party.characters){
-            if(!character.GetCanAct())
-                return false;
+            if(character.GetCanAct())
+                return true;
         }
-        return true;
+        return false;
     }
 
     Party GetParty(CharacterSheet actor){
