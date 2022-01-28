@@ -89,20 +89,15 @@ public class CharacterAction : ScriptableObject
                 case EnumeratedAtomicFunction.TargetAgility:
                 case EnumeratedAtomicFunction.TargetBleeding:
                 case EnumeratedAtomicFunction.TargetBlind:
-                case EnumeratedAtomicFunction.TargetBludgeonResist:
-                case EnumeratedAtomicFunction.TargetCutResist:
                 case EnumeratedAtomicFunction.TargetDistracted:
-                case EnumeratedAtomicFunction.TargetElectricResist:
                 case EnumeratedAtomicFunction.TargetEquip:
-                case EnumeratedAtomicFunction.TargetFireResist:
                 case EnumeratedAtomicFunction.TargetHands:
                 case EnumeratedAtomicFunction.TargetHP:
                 case EnumeratedAtomicFunction.TargetInfection:
                 case EnumeratedAtomicFunction.TargetLegs:
-                case EnumeratedAtomicFunction.TargetMagicResist:
                 case EnumeratedAtomicFunction.TargetMaxHP:
-                case EnumeratedAtomicFunction.TargetPierceResist:
                 case EnumeratedAtomicFunction.TargetPresence:
+                case EnumeratedAtomicFunction.TargetResist:
                 case EnumeratedAtomicFunction.TargetStrength:
                 case EnumeratedAtomicFunction.TargetToughness:
 

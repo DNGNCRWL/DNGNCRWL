@@ -6,9 +6,7 @@ using DG.Tweening;
 public class GameManager : MonoBehaviour
 {
     public static GameManager GM;
-    List<GameObject> playerCharacters;
-
-    public GameObject[] characters;
+    public List<CharacterSheet> playerCharacters;
 
     public static readonly int secondsPerRound = 6;
 
@@ -21,9 +19,6 @@ public class GameManager : MonoBehaviour
         GameObject.DontDestroyOnLoad(this.gameObject);
 
         DOTween.Init(null, null, null);
-
-        playerCharacters = new List<GameObject>();
-        foreach (GameObject go in characters) playerCharacters.Add(go);
     }
 
     public void AddText(string message)
