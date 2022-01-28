@@ -786,50 +786,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 573a7c310aaa8654094772914af00a7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characters: []
-  enemies:
-  - {fileID: 927576511}
-  - {fileID: 1619461191}
-  - {fileID: 539683947}
-  - {fileID: 1909781598}
-  playerSidePositions:
-  - {fileID: 1570464273}
-  - {fileID: 1005043837}
-  - {fileID: 2135993979}
-  - {fileID: 445714975}
-  - {fileID: 355263518}
-  - {fileID: 297941464}
-  - {fileID: 1361206164}
-  - {fileID: 1725300758}
-  enemySidePositions:
-  - {fileID: 1816556931}
-  - {fileID: 1838809312}
-  - {fileID: 2047573658}
-  - {fileID: 867598023}
-  - {fileID: 229178324}
-  - {fileID: 1222417356}
-  - {fileID: 216854074}
-  - {fileID: 893793055}
-  playerObjects: []
-  enemyObjects: []
+  playerParty:
+    name: Player's Party
+    characters: []
+    positions:
+    - {fileID: 1570464273}
+    - {fileID: 1005043837}
+    - {fileID: 2135993979}
+    - {fileID: 445714975}
+    - {fileID: 355263518}
+    - {fileID: 297941464}
+    - {fileID: 1361206164}
+    - {fileID: 1725300758}
+  enemyParty:
+    name: Enemy Party
+    characters:
+    - {fileID: 927576512}
+    - {fileID: 1619461192}
+    - {fileID: 539683948}
+    - {fileID: 1909781599}
+    positions:
+    - {fileID: 1816556931}
+    - {fileID: 1838809312}
+    - {fileID: 2047573658}
+    - {fileID: 867598023}
+    - {fileID: 229178324}
+    - {fileID: 1222417356}
+    - {fileID: 216854074}
+    - {fileID: 893793055}
   characterDisplays:
   - {fileID: 1169829429}
   - {fileID: 2044261854}
   - {fileID: 1617667108}
   - {fileID: 82296777}
-  playerParty:
-    name: 
-    characters: []
-  enemyParty:
-    name: 
-    characters: []
-  actionText: {fileID: 59665366352399672, guid: dfa1e861ec0fc8542ad3596098640dbd, type: 3}
-  actionTextSpawnPosition: {fileID: 0}
-  actionTextSpawnOffset: 80
-  actionTextTime: 0.25
-  actionTexts: []
-  test: 0
-  test2: 0
+  initiativeRate: 3
+  charactersYetToAct: []
 --- !u!4 &349719984
 Transform:
   m_ObjectHideFlags: 0
@@ -1327,6 +1318,22 @@ MonoBehaviour:
   silver: 0
   food: 0
   waterskin: 0
+  naturalResistances:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
+  equipmentResistances:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
   mainhand: {fileID: 0}
   offhand: {fileID: 0}
   unequippedWeapon: {fileID: 0}
@@ -1353,24 +1360,19 @@ MonoBehaviour:
   presenceTemp: 0
   toughnessTemp: 0
   defenseTemp: 0
+  sneaking: 0
   tempDisabledHands: 0
   tempDisabledLegs: 0
   tempBlinded: 0
   tempDistracted: 0
-  bludgeonResist: 0
-  bludgeonResistTemp: 0
-  cutResist: 0
-  cutResistTemp: 0
-  electricResist: 0
-  electricResistTemp: 0
-  fireResist: 0
-  fireResistTemp: 0
-  magicResist: 0
-  magicResistTemp: 0
-  pierceResist: 0
-  pierceResistTemp: 0
-  spiritResist: 0
-  spiritResistTemp: 0
+  resistancesTemp:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
 --- !u!4 &539683949
 Transform:
   m_ObjectHideFlags: 0
@@ -1662,6 +1664,26 @@ PrefabInstance:
       propertyPath: characters.Array.data[3]
       value: 
       objectReference: {fileID: 1654140944}
+    - target: {fileID: 8461809138461167435, guid: 9fd8617913a24f649a36e62c506a6bf8, type: 3}
+      propertyPath: playerCharacters.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8461809138461167435, guid: 9fd8617913a24f649a36e62c506a6bf8, type: 3}
+      propertyPath: playerCharacters.Array.data[0]
+      value: 
+      objectReference: {fileID: 1484241082}
+    - target: {fileID: 8461809138461167435, guid: 9fd8617913a24f649a36e62c506a6bf8, type: 3}
+      propertyPath: playerCharacters.Array.data[1]
+      value: 
+      objectReference: {fileID: 1446046361}
+    - target: {fileID: 8461809138461167435, guid: 9fd8617913a24f649a36e62c506a6bf8, type: 3}
+      propertyPath: playerCharacters.Array.data[2]
+      value: 
+      objectReference: {fileID: 1644708602}
+    - target: {fileID: 8461809138461167435, guid: 9fd8617913a24f649a36e62c506a6bf8, type: 3}
+      propertyPath: playerCharacters.Array.data[3]
+      value: 
+      objectReference: {fileID: 1654140945}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9fd8617913a24f649a36e62c506a6bf8, type: 3}
 --- !u!1 &612370012
@@ -2170,6 +2192,22 @@ MonoBehaviour:
   silver: 0
   food: 0
   waterskin: 0
+  naturalResistances:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
+  equipmentResistances:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
   mainhand: {fileID: 0}
   offhand: {fileID: 0}
   unequippedWeapon: {fileID: 11400000, guid: 06fb80196eb6a0643bbb56b9232d82c2, type: 2}
@@ -2196,24 +2234,19 @@ MonoBehaviour:
   presenceTemp: 0
   toughnessTemp: 0
   defenseTemp: 0
+  sneaking: 0
   tempDisabledHands: 0
   tempDisabledLegs: 0
   tempBlinded: 0
   tempDistracted: 0
-  bludgeonResist: 0
-  bludgeonResistTemp: 0
-  cutResist: 0
-  cutResistTemp: 0
-  electricResist: 0
-  electricResistTemp: 0
-  fireResist: 0
-  fireResistTemp: 0
-  magicResist: 0
-  magicResistTemp: 0
-  pierceResist: 0
-  pierceResistTemp: 0
-  spiritResist: 0
-  spiritResistTemp: 0
+  resistancesTemp:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
 --- !u!4 &927576513
 Transform:
   m_ObjectHideFlags: 0
@@ -4180,10 +4213,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomizeClassless: 1
   test: 0
-  testAction: {fileID: 11400000, guid: aa7eef4ec21388c4d8b0546f2c168d3e, type: 2}
+  testAction: {fileID: 11400000, guid: fb465c051a54d4845ba184fdef529413, type: 2}
   testTarget: {fileID: 0}
   test2: 0
-  testAction2: {fileID: 0}
+  testAction2: {fileID: 11400000, guid: 64fcccd3f9733854aa54df9eefdbe8ed, type: 2}
   testTarget2: {fileID: 0}
   characterName: 
   description: 
@@ -4199,6 +4232,22 @@ MonoBehaviour:
   silver: 0
   food: 0
   waterskin: 0
+  naturalResistances:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
+  equipmentResistances:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
   mainhand: {fileID: 0}
   offhand: {fileID: 0}
   unequippedWeapon: {fileID: 0}
@@ -4225,24 +4274,19 @@ MonoBehaviour:
   presenceTemp: 0
   toughnessTemp: 0
   defenseTemp: 0
+  sneaking: 0
   tempDisabledHands: 0
   tempDisabledLegs: 0
   tempBlinded: 0
   tempDistracted: 0
-  bludgeonResist: 0
-  bludgeonResistTemp: 0
-  cutResist: 0
-  cutResistTemp: 0
-  electricResist: 0
-  electricResistTemp: 0
-  fireResist: 0
-  fireResistTemp: 0
-  magicResist: 0
-  magicResistTemp: 0
-  pierceResist: 0
-  pierceResistTemp: 0
-  spiritResist: 0
-  spiritResistTemp: 0
+  resistancesTemp:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
 --- !u!4 &1446046362
 Transform:
   m_ObjectHideFlags: 0
@@ -4481,10 +4525,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomizeClassless: 1
   test: 0
-  testAction: {fileID: 11400000, guid: dbdf578bb48116e4c81170b543b5ca09, type: 2}
+  testAction: {fileID: 11400000, guid: fb465c051a54d4845ba184fdef529413, type: 2}
   testTarget: {fileID: 927576512}
   test2: 0
-  testAction2: {fileID: 11400000, guid: 60c2a7e0a0859324a9c903bff976708f, type: 2}
+  testAction2: {fileID: 11400000, guid: 64fcccd3f9733854aa54df9eefdbe8ed, type: 2}
   testTarget2: {fileID: 0}
   characterName: 
   description: 
@@ -4500,6 +4544,22 @@ MonoBehaviour:
   silver: 0
   food: 0
   waterskin: 0
+  naturalResistances:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
+  equipmentResistances:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
   mainhand: {fileID: 0}
   offhand: {fileID: 0}
   unequippedWeapon: {fileID: 0}
@@ -4526,24 +4586,19 @@ MonoBehaviour:
   presenceTemp: 0
   toughnessTemp: 0
   defenseTemp: 0
+  sneaking: 0
   tempDisabledHands: 0
   tempDisabledLegs: 0
   tempBlinded: 0
   tempDistracted: 0
-  bludgeonResist: 0
-  bludgeonResistTemp: 0
-  cutResist: 0
-  cutResistTemp: 0
-  electricResist: 0
-  electricResistTemp: 0
-  fireResist: 0
-  fireResistTemp: 0
-  magicResist: 0
-  magicResistTemp: 0
-  pierceResist: 0
-  pierceResistTemp: 0
-  spiritResist: 0
-  spiritResistTemp: 0
+  resistancesTemp:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
 --- !u!4 &1484241083
 Transform:
   m_ObjectHideFlags: 0
@@ -4819,6 +4874,22 @@ MonoBehaviour:
   silver: 0
   food: 0
   waterskin: 0
+  naturalResistances:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
+  equipmentResistances:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
   mainhand: {fileID: 0}
   offhand: {fileID: 0}
   unequippedWeapon: {fileID: 0}
@@ -4845,24 +4916,19 @@ MonoBehaviour:
   presenceTemp: 0
   toughnessTemp: 0
   defenseTemp: 0
+  sneaking: 0
   tempDisabledHands: 0
   tempDisabledLegs: 0
   tempBlinded: 0
   tempDistracted: 0
-  bludgeonResist: 0
-  bludgeonResistTemp: 0
-  cutResist: 0
-  cutResistTemp: 0
-  electricResist: 0
-  electricResistTemp: 0
-  fireResist: 0
-  fireResistTemp: 0
-  magicResist: 0
-  magicResistTemp: 0
-  pierceResist: 0
-  pierceResistTemp: 0
-  spiritResist: 0
-  spiritResistTemp: 0
+  resistancesTemp:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
 --- !u!4 &1619461193
 Transform:
   m_ObjectHideFlags: 0
@@ -4909,10 +4975,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomizeClassless: 1
   test: 0
-  testAction: {fileID: 0}
+  testAction: {fileID: 11400000, guid: fb465c051a54d4845ba184fdef529413, type: 2}
   testTarget: {fileID: 0}
   test2: 0
-  testAction2: {fileID: 0}
+  testAction2: {fileID: 11400000, guid: 64fcccd3f9733854aa54df9eefdbe8ed, type: 2}
   testTarget2: {fileID: 0}
   characterName: 
   description: 
@@ -4928,6 +4994,22 @@ MonoBehaviour:
   silver: 0
   food: 0
   waterskin: 0
+  naturalResistances:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
+  equipmentResistances:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
   mainhand: {fileID: 0}
   offhand: {fileID: 0}
   unequippedWeapon: {fileID: 0}
@@ -4954,24 +5036,19 @@ MonoBehaviour:
   presenceTemp: 0
   toughnessTemp: 0
   defenseTemp: 0
+  sneaking: 0
   tempDisabledHands: 0
   tempDisabledLegs: 0
   tempBlinded: 0
   tempDistracted: 0
-  bludgeonResist: 0
-  bludgeonResistTemp: 0
-  cutResist: 0
-  cutResistTemp: 0
-  electricResist: 0
-  electricResistTemp: 0
-  fireResist: 0
-  fireResistTemp: 0
-  magicResist: 0
-  magicResistTemp: 0
-  pierceResist: 0
-  pierceResistTemp: 0
-  spiritResist: 0
-  spiritResistTemp: 0
+  resistancesTemp:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
 --- !u!4 &1644708603
 Transform:
   m_ObjectHideFlags: 0
@@ -5018,10 +5095,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomizeClassless: 1
   test: 0
-  testAction: {fileID: 0}
+  testAction: {fileID: 11400000, guid: fb465c051a54d4845ba184fdef529413, type: 2}
   testTarget: {fileID: 0}
   test2: 0
-  testAction2: {fileID: 0}
+  testAction2: {fileID: 11400000, guid: 64fcccd3f9733854aa54df9eefdbe8ed, type: 2}
   testTarget2: {fileID: 0}
   characterName: 
   description: 
@@ -5037,6 +5114,22 @@ MonoBehaviour:
   silver: 0
   food: 0
   waterskin: 0
+  naturalResistances:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
+  equipmentResistances:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
   mainhand: {fileID: 0}
   offhand: {fileID: 0}
   unequippedWeapon: {fileID: 0}
@@ -5063,24 +5156,19 @@ MonoBehaviour:
   presenceTemp: 0
   toughnessTemp: 0
   defenseTemp: 0
+  sneaking: 0
   tempDisabledHands: 0
   tempDisabledLegs: 0
   tempBlinded: 0
   tempDistracted: 0
-  bludgeonResist: 0
-  bludgeonResistTemp: 0
-  cutResist: 0
-  cutResistTemp: 0
-  electricResist: 0
-  electricResistTemp: 0
-  fireResist: 0
-  fireResistTemp: 0
-  magicResist: 0
-  magicResistTemp: 0
-  pierceResist: 0
-  pierceResistTemp: 0
-  spiritResist: 0
-  spiritResistTemp: 0
+  resistancesTemp:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
 --- !u!4 &1654140946
 Transform:
   m_ObjectHideFlags: 0
@@ -6207,6 +6295,22 @@ MonoBehaviour:
   silver: 0
   food: 0
   waterskin: 0
+  naturalResistances:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
+  equipmentResistances:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
   mainhand: {fileID: 0}
   offhand: {fileID: 0}
   unequippedWeapon: {fileID: 0}
@@ -6233,24 +6337,19 @@ MonoBehaviour:
   presenceTemp: 0
   toughnessTemp: 0
   defenseTemp: 0
+  sneaking: 0
   tempDisabledHands: 0
   tempDisabledLegs: 0
   tempBlinded: 0
   tempDistracted: 0
-  bludgeonResist: 0
-  bludgeonResistTemp: 0
-  cutResist: 0
-  cutResistTemp: 0
-  electricResist: 0
-  electricResistTemp: 0
-  fireResist: 0
-  fireResistTemp: 0
-  magicResist: 0
-  magicResistTemp: 0
-  pierceResist: 0
-  pierceResistTemp: 0
-  spiritResist: 0
-  spiritResistTemp: 0
+  resistancesTemp:
+    bludgeon: 0
+    cut: 0
+    electric: 0
+    fire: 0
+    magic: 0
+    pierce: 0
+    spirit: 0
 --- !u!4 &1909781600
 Transform:
   m_ObjectHideFlags: 0

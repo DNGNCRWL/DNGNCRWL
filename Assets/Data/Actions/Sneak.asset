@@ -10,68 +10,56 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0eaf4d05ca32e9147bcc1a4b2ad90283, type: 3}
-  m_Name: Attack
+  m_Name: Sneak
   m_EditorClassIdentifier: 
-  actionName: Attack
+  actionName: Sneak
   startMessage:
     messages:
-    - '{0} draws their {3}'
-    - '{0} grasps their {3}'
-    - '{0} plants their feet and stares at {1}'
-    - '{0} and {1} lock eyes'
+    - '{0} attempts to sneak'
     time: 1
     weight: 0.25
     index: 0
   actionMessage:
     messages:
-    - ...
-    - This is not looking good
-    - They raise their {4}
-    - Decisively {0} uses their {4}
-    time: 2
-    weight: 0.4
+    - The sneaking is looking questionable
+    - The sneaking is going well
+    - '{0} is a ghost'
+    time: 1
+    weight: 0
     index: 0
   tests:
   - difficultyRating: 0
     actor: {fileID: 0}
-    actorStat: 5
+    actorStat: 1
     target: {fileID: 0}
-    targetStat: 4
+    targetStat: 0
   difficultyRating: 10
   testAtDisadvantage: 0
   criticalMessage:
-    messages:
-    - CRITICAL HIT!
-    - CRITICAL ATTACK!
-    - SMAAASH!
-    time: 1
-    weight: 0.2
+    messages: []
+    time: 0
+    weight: 0
     index: 0
   successMessage:
     messages:
-    - '{0} strikes {1}!'
-    - '{0} lands the hit!'
-    - It's a hit!
+    - '{0} makes it past enemy lines'
     time: 1
-    weight: 0.3
+    weight: 0
     index: 0
   failMessage:
     messages:
-    - They were not even close
-    - They miss
-    - They miss
+    - And they couldn't make it
     time: 1
-    weight: 0.8
+    weight: 0
     index: 0
   fumbleMessage:
-    messages:
-    - 
+    messages: []
     time: 0
     weight: 0
     index: 0
   critical: []
   success:
-  - name: Give HP Damage
+  - name: Sneak
     critical: 0
     fumble: 0
     effort: 0
@@ -79,14 +67,14 @@ MonoBehaviour:
     target: {fileID: 0}
     item: {fileID: 0}
     action: {fileID: 0}
-    atomicFunction: 150
+    atomicFunction: 200
     damage:
       dieCount: 0
       dieSize: 0
       modifier: 0
       damageType: 0
     boolean: 0
-    floatValue: 1
+    floatValue: 0
     messages: []
   failure: []
   fumble:
@@ -105,5 +93,5 @@ MonoBehaviour:
       modifier: 0
       damageType: 0
     boolean: 0
-    floatValue: 1
+    floatValue: 0
     messages: []
