@@ -35,6 +35,7 @@ public struct DamageReturn
 [System.Serializable]
 public enum DamageType { Untyped, Bludgeon, Cut, Electric, Fire, Magic, Pierce, Spirit }
 
+[System.Serializable]
 public struct Resistances
 {
     public Resistances(int bludgeon, int cut, int electric, int fire, int magic, int pierce, int spirit)

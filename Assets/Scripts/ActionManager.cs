@@ -56,7 +56,7 @@ public class ActionManager : MonoBehaviour
             target = BattleManager.GetOppositeLead(actor);
 
         //START TEXT
-        yield return DisplayMessagePackage(action.startMessage, 0.5f, messageVariables);
+        yield return GameManager.DisplayMessagePackage(action.startMessage, 0.5f, messageVariables);
         float positivity = action.startMessage.index / 20f;
         
         //set up advantage and disadvantage booleans
@@ -100,7 +100,7 @@ public class ActionManager : MonoBehaviour
         }
 
         //EFFORT TEXT
-        yield return DisplayMessagePackage(action.actionMessage, 1 - positivity, messageVariables);
+        yield return GameManager.DisplayMessagePackage(action.actionMessage, 1 - positivity, messageVariables);
         positivity = action.actionMessage.index / 20f;
 
         bool crit, success, fail, fumble;
@@ -128,21 +128,21 @@ public class ActionManager : MonoBehaviour
         {
             if (crit)
             {
-                yield return DisplayMessagePackage(action.criticalMessage, 1-positivity, messageVariables);
+                yield return GameManager.DisplayMessagePackage(action.criticalMessage, 1-positivity, messageVariables);
                 yield return ExecutePAFs(action.critical, crit, fumble, effort, actor, target, item, action);
             }
 
-            yield return DisplayMessagePackage(action.successMessage, 1 - positivity, messageVariables);
+            yield return GameManager.DisplayMessagePackage(action.successMessage, 1 - positivity, messageVariables);
             yield return ExecutePAFs(action.success, crit, fumble, effort, actor, target, item, action);
         }
         else
         {
-            yield return DisplayMessagePackage(action.failMessage, 1 - positivity, messageVariables);
+            yield return GameManager.DisplayMessagePackage(action.failMessage, 1 - positivity, messageVariables);
             yield return ExecutePAFs(action.failure, crit, fumble, effort, actor, target, item, action);
 
             if (fumble)
             {
-                yield return DisplayMessagePackage(action.fumbleMessage, 1 - positivity, messageVariables);
+                yield return GameManager.DisplayMessagePackage(action.fumbleMessage, 1 - positivity, messageVariables);
                 yield return ExecutePAFs(action.fumble, crit, fumble, effort, actor, target, item, action);
             }
         }
@@ -150,22 +150,6 @@ public class ActionManager : MonoBehaviour
         yield return null;
 
         doingAnAction = false;
-    }
-
-    IEnumerator DisplayMessagePackage(MessagePackage mp, float target, string[] toInsert)
-    {
-        if (mp.messages.Length <= 0)
-            yield break;
-
-        if (mp.messages.Length > 0)
-        {
-            string toDisplay = string.Format(
-                Fun.WeightedRandomFromArray(mp, target),
-                toInsert);
-
-            GameManager.GM.AddText(toDisplay);
-            yield return new WaitForSeconds(mp.time);
-        }
     }
 
     //calculations
@@ -176,7 +160,7 @@ public class ActionManager : MonoBehaviour
         bool usingRanged =
             actor.GetWeapon().GetType().Equals(typeof(ProjectileWeapon));
         if (BattleManager.BM)
-            sameSide = BattleManager.BM.SameSide(actor, target);
+            sameSide = BattleManager.SameSide(actor, target);
 
         if (sameSide && usingRanged)
             penalty += sameSideRangedAttackPenalty;
@@ -323,48 +307,54 @@ public class ActionManager : MonoBehaviour
     //BIGGUNS
     static IEnumerator Sneak(ParameteredAtomicFunction args)// SNEAK IS SPECIAL
     {
-        if (!BattleManager.BM)
-            yield break;
-        CharacterSheet opposingLeader = BattleManager.BM.GetOpposingLeader(args.target);
-
-        d20 roll = new d20(args.action.difficultyRating, args.target, StatSelector.Agility, opposingLeader, StatSelector.Presence);
-
-        string resultText = "Sneak is";
-        if (roll.Roll() <= 8)
-            resultText += " looking questionable";
-        else if (roll.Roll() <= 13)
-            resultText += " going well";
+        if(args.actor.GetSneaking())
+            GameManager.GM.AddText("They're already sneaking");
         else
-            resultText = args.actor.GetCharacterName() + " disappears";
-
-        GameManager.GM.AddText(resultText);
-        yield return new WaitForSeconds(args.floatValue);
-
-        if (roll.IsSuccess())
-        {
-            if (roll.Roll() <= 8)
-                resultText = "But they still made it!";
-            else
-                resultText = "And they made it through";
             args.actor.Sneak();
 
-            GameManager.GM.AddText(resultText);
-            yield return new WaitForSeconds(args.floatValue);
-
-        }
-        else
-        {
-            if (roll.Roll() > 8)
-                resultText = "But " + opposingLeader.GetCharacterName() + " stopped them";
-            else
-                resultText = "And they couldn't make it";
-
-            GameManager.GM.AddText(resultText);
-            yield return new WaitForSeconds(args.floatValue);
-        }
         yield return null;
+
+        // if (!BattleManager.BM)
+        //     yield break;
+        // CharacterSheet opposingLeader = BattleManager.GetOppositeLead(args.target);
+
+        // d20 roll = new d20(args.action.difficultyRating, args.target, StatSelector.Agility, opposingLeader, StatSelector.Presence);
+
+        // string resultText = "Sneak is";
+        // if (roll.Roll() <= 8)
+        //     resultText += " looking questionable";
+        // else if (roll.Roll() <= 13)
+        //     resultText += " going well";
+        // else
+        //     resultText = args.actor.GetCharacterName() + " disappears";
+
+        // GameManager.GM.AddText(resultText);
+        // yield return new WaitForSeconds(args.floatValue);
+
+        // if (roll.IsSuccess())
+        // {
+        //     if (roll.Roll() <= 8)
+        //         resultText = "But they still made it!";
+        //     else
+        //         resultText = "And they made it through";
+        //     args.actor.Sneak();
+
+        //     GameManager.GM.AddText(resultText);
+        //     yield return new WaitForSeconds(args.floatValue);
+
+        // }
+        // else
+        // {
+        //     if (roll.Roll() > 8)
+        //         resultText = "But " + opposingLeader.GetCharacterName() + " stopped them";
+        //     else
+        //         resultText = "And they couldn't make it";
+
+        //     GameManager.GM.AddText(resultText);
+        //     yield return new WaitForSeconds(args.floatValue);
+        // }
+        // yield return null;
     }
-    static IEnumerator Fight(ParameteredAtomicFunction args) { yield return null; }
 
     static IEnumerator CounterAttack(ParameteredAtomicFunction args)
     {
@@ -412,30 +402,32 @@ public class ActionManager : MonoBehaviour
     }
     static IEnumerator Push(ParameteredAtomicFunction args)
     {
-        if (!args.actor) yield break;
-        if (!args.target) yield break;
+        args.target.Backlines();
 
-        Weapon weapon = args.actor.GetUnequippedWeapon();
-        d20 roll = new d20(args.action.difficultyRating, args.actor, Stat.Strength, args.target, Stat.Strength);
+        // if (!args.actor) yield break;
+        // if (!args.target) yield break;
 
-        if (roll.IsSuccess())
-        {
-            args.target.TakeDamage(weapon.GetDamage(), roll.IsCritical());
-            args.target.Push();
-        }
-        else
-        {
-            if (roll.IsFumble())
-            {
-                CounterAttack(args);
-            }
-        }
+        // Weapon weapon = args.actor.GetUnequippedWeapon();
+        // d20 roll = new d20(args.action.difficultyRating, args.actor, Stat.Strength, args.target, Stat.Strength);
+
+        // if (roll.IsSuccess())
+        // {
+        //     args.target.TakeDamage(weapon.GetDamage(), roll.IsCritical());
+        //     args.target.Push();
+        // }
+        // else
+        // {
+        //     if (roll.IsFumble())
+        //     {
+        //         CounterAttack(args);
+        //     }
+        // }
 
         yield return null;
     }
     static IEnumerator Return(ParameteredAtomicFunction args)
     {
-        args.actor.Return();
+        args.actor.Backlines();
 
         yield return null;
     }
@@ -474,7 +466,6 @@ public class ActionManager : MonoBehaviour
             case EnumeratedAtomicFunction.TargetTakeWeaponDamage: yield return TargetTakeWeaponDamage(args); break;
 
             case EnumeratedAtomicFunction.Sneak: yield return Sneak(args); break;
-            case EnumeratedAtomicFunction.Fight: yield return Fight(args); break;
             case EnumeratedAtomicFunction.Push: yield return Push(args); break;
             case EnumeratedAtomicFunction.Return: yield return Return(args); break;
             case EnumeratedAtomicFunction.CounterAttack: yield return CounterAttack(args); break;
@@ -503,12 +494,7 @@ public enum EnumeratedAtomicFunction
     Legs = 20,
     Blind = 21,
     Distracted = 22,
-    BludgeonResist = 23,
-    CutResist = 24,
-    ElectricResist = 25,
-    FireResist = 26,
-    MagicResist = 27,
-    PierceResist = 28,
+    Resist = 23,
     
     TargetHP = 110,
     TargetMaxHP = 111,
@@ -523,12 +509,7 @@ public enum EnumeratedAtomicFunction
     TargetLegs = 120,
     TargetBlind = 121,
     TargetDistracted = 122,
-    TargetBludgeonResist = 123,
-    TargetCutResist = 124,
-    TargetElectricResist = 125,
-    TargetFireResist = 126,
-    TargetMagicResist = 127,
-    TargetPierceResist = 128,
+    TargetResist = 123,
 
     TargetTakeWeaponDamage = 150,
 
