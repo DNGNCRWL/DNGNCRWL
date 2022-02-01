@@ -52,6 +52,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     [SerializeField] 
     int strengthTemp, agilityTemp, presenceTemp, toughnessTemp, defenseTemp;
     [SerializeField]
+    int battleOrder;
+    [SerializeField]
     bool sneaking, tempDisabledHands, tempDisabledLegs, tempBlinded, tempDistracted;
     [SerializeField]
     Resistances resistancesTemp;
@@ -78,6 +80,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         }
         return false;
     }
+    public int GetBattleOrder() { return battleOrder;}
+    public async void SetBattleOrder(int i) {battleOrder = i;}
 
     //On with the show
     void InitializeCharacter()
@@ -199,7 +203,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
     public void SetBattleHUD(BattleHUD battleHUD) { this.battleHUD = battleHUD; }
 
-    void UpdateBattleHUD()
+    public void UpdateBattleHUD()
     {
         if (battleHUD)
             battleHUD.UpdateText();
