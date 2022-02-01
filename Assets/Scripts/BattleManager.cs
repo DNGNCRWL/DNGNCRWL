@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using DG.Tweening;
 
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager BM;
+    public MenuManager MM;
 
     [SerializeField] Party playerParty;
     [SerializeField] Party enemyParty;
@@ -15,11 +15,19 @@ public class BattleManager : MonoBehaviour
     public List<CharacterSheet> charactersYetToAct;
 
     [System.Serializable]
-    struct Party
+    public struct Party
     {
         public string name;
         public List<CharacterSheet> characters;
         public Transform[] positions;
+    }
+    public TurnPhase currentPhase;
+
+    public enum TurnPhase{
+        SelectCharacter,
+        SelectMove,
+        SelectAction,
+        Done
     }
 
     private void Awake()
@@ -32,6 +40,9 @@ public class BattleManager : MonoBehaviour
             playerParty.characters.Add(GameManager.GM.playerCharacters[i]);
         }
 
+        SetBattleOrder(playerParty);
+        SetBattleOrder(enemyParty);
+
         //Set up HUDs
         for(int i = 0; i < 4; i++)
         {
@@ -42,6 +53,8 @@ public class BattleManager : MonoBehaviour
         }
 
         charactersYetToAct = new List<CharacterSheet>();
+
+        MM.SetUpCharacterMenuLabels(playerParty.characters);
 
         DOMoveAllPositions(playerParty, 0);
         DOMoveAllPositions(enemyParty, 0);
@@ -109,7 +122,42 @@ public class BattleManager : MonoBehaviour
                 charactersYetToAct.Add(character);
         }
 
-        while(charactersYetToAct.Count > 0){        
+        currentPhase = TurnPhase.SelectCharacter;
+        CharacterSheet currentCharacter = null;
+
+        while(charactersYetToAct.Count > 0){
+
+            //while character not selected
+            //display select character
+            if (currentPhase == TurnPhase.SelectCharacter){
+                MM.OpenCharacterMenu();
+            }
+            
+            //move not selected
+            //display move menu
+            //execute move
+            if (currentPhase == TurnPhase.SelectMove){
+                MM.OpenMoveMenu();
+            }
+
+            //while action not selected
+            //display action menu
+            //execute action
+            if (currentPhase == TurnPhase.SelectAction){
+                MM.OpenActionMenu();
+
+                //action can be attack, using item, using environment, or "special"
+
+            }
+
+            //remove current character from charactersYetToAct
+            if (currentPhase == TurnPhase.Done){
+                MM.CloseAllMenus();
+                if (currentCharacter)
+                    charactersYetToAct.Remove(currentCharacter);
+                currentPhase = TurnPhase.SelectCharacter;
+            }
+
             yield return null;
         }
 
@@ -149,6 +197,8 @@ public class BattleManager : MonoBehaviour
             if(!character.GetSneaking())
                 StartCoroutine(DOMoveToPositionCR(character, 0.25f));
         }
+
+        SetBattleOrder(party);
     }
     public void SendToBackSneak(CharacterSheet actor)
     {
@@ -162,6 +212,8 @@ public class BattleManager : MonoBehaviour
             if(character.GetSneaking())
                 StartCoroutine(DOMoveToPositionCR(character, 0.25f));
         }
+
+        SetBattleOrder(party);
     }
     public void SendToFront(CharacterSheet actor){
         Party party = GetParty(actor);
@@ -173,6 +225,8 @@ public class BattleManager : MonoBehaviour
             if(!character.GetSneaking())
                 StartCoroutine(DOMoveToPositionCR(character, 0.25f));
         }
+
+        SetBattleOrder(party);
     }
 
     //CALCULATIONS
@@ -241,6 +295,14 @@ public class BattleManager : MonoBehaviour
         bool sameSneaking = actor.GetSneaking() == target.GetSneaking();
 
         return sameParty == sameSneaking;
+    }
+
+    static public void SetBattleOrder(Party party){
+        foreach(CharacterSheet character in party.characters){
+            int location = party.characters.IndexOf(character);
+            character.SetBattleOrder(location);
+            character.UpdateBattleHUD();
+        }
     }
 }
 
