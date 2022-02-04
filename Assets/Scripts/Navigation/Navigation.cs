@@ -241,6 +241,8 @@ public class Navigation : MonoBehaviour
         {
             RenderSettings.fogEndDistance = torchLight.range;
             RenderSettings.fogColor = fog;
+            RenderSettings.fogMode = FogMode.Linear;
+            Camera.main.backgroundColor = fog;
         }
     }
 }

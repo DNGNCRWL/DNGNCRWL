@@ -81,7 +81,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         return false;
     }
     public int GetBattleOrder() { return battleOrder;}
-    public async void SetBattleOrder(int i) {battleOrder = i;}
+    public void SetBattleOrder(int i) {battleOrder = i;}
 
     //On with the show
     void InitializeCharacter()
