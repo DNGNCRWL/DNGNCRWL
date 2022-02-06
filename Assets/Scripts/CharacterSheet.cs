@@ -28,7 +28,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     [SerializeField] Weapon offhand, unequippedWeapon;
     [SerializeField] Bag bag;
     [SerializeField] Armor armor, unequippedArmor;
-    [SerializeField] List<Item> inventory;
+    [SerializeField] private UI_Inventory uiInventory;
 
     [Header("Persistent Status")]
     [SerializeField] State currentState;
@@ -56,6 +56,10 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         magicResist, magicResistTemp, pierceResist, pierceResistTemp, spiritResist, spiritResistTemp;
 
     static int resistMax = 5;
+
+    //inventory
+    private Inventory inventory;
+
 
     //Hooks, baby
     BattleHUD battleHUD;
@@ -100,7 +104,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         return Mathf.Clamp(spiritResist + spiritResistTemp, -resistMax, resistMax);
     }
 
-    //On with the show
+    //On with the show 
     void InitializeCharacter()
     {
         randomizeClassless = false;
@@ -117,7 +121,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         mainhand = offhand = null;
         bag = null;
         armor = null;
-        inventory = new List<Item>();
+        inventory = new Inventory();
+        uiInventory.SetInventory(inventory);
     }
 
     CharacterRollingPackage RandomClasslessRollPackage()

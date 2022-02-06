@@ -10,6 +10,7 @@ public class Item : ScriptableObject
     public bool broken;
     public int value;
     public List<CharacterAction> actions;
+    public Sprite sprite;
 
     public Item CopyVariables(Item item)
     {
