@@ -59,7 +59,7 @@ MonoBehaviour:
     messages:
     - They were not even close
     - They miss
-    - They barely miss
+    - They miss
     time: 1
     weight: 0.8
     index: 0
@@ -83,6 +83,7 @@ MonoBehaviour:
     damage:
       dieCount: 0
       dieSize: 0
+      modifier: 0
       damageType: 0
     boolean: 0
     floatValue: 1
@@ -101,6 +102,7 @@ MonoBehaviour:
     damage:
       dieCount: 0
       dieSize: 0
+      modifier: 0
       damageType: 0
     boolean: 0
     floatValue: 1

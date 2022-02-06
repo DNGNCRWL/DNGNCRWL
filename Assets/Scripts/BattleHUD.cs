@@ -5,8 +5,16 @@ using TMPro;
 
 public class BattleHUD : MonoBehaviour
 {
-    public TextMeshProUGUI characterName, stats;
+    public TextMeshProUGUI characterName, stats, position;
     CharacterSheet targetCharacter;
+    static char LB = '\n';
+    static string FIRST = "Leader";
+    static string NOT_FIRST = "Rank";
+    static string SNEAKING = "Sneaking";
+
+    public Color firstColor;
+    public Color notFirstColor;
+    public Color sneakingColor;
 
     public void UpdateText()
     {
@@ -15,11 +23,27 @@ public class BattleHUD : MonoBehaviour
             return;
 
         characterName.text = targetCharacter.GetCharacterName();
-        char lb = '\n';
+        
         stats.text =
-            ConvertCShitPointsToString(targetCharacter) + lb +
-            ConvertPowersToString(targetCharacter) + lb +
+            ConvertCShitPointsToString(targetCharacter) + LB +
+            ConvertPowersToString(targetCharacter) + LB +
             ConvertOmensToString(targetCharacter);
+
+        if(targetCharacter.GetSneaking()){
+            position.text = SNEAKING;
+            position.color = sneakingColor;
+        }
+        else {
+            int battleOrder = targetCharacter.GetBattleOrder();
+            if(battleOrder == 0){
+                position.text = FIRST;
+                position.color = firstColor;
+            }
+            else{
+                position.text = NOT_FIRST + " " + battleOrder;
+                position.color = notFirstColor;
+            }
+        }
     }
 
     public void UpdateText(CharacterSheet targetCharacter)

@@ -22,6 +22,12 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     static readonly int abilityMin = -3;
     static readonly int abilityMax = 6; //this is 3 in the book
     [SerializeField] bool waterskin; //make this an item?
+    
+    [Header("Resistances")]
+    [SerializeField]
+    Resistances naturalResistances;
+    [SerializeField]
+    Resistances equipmentResistances;
 
     [Header("Equipment")]
     [SerializeField] Weapon mainhand;
@@ -46,16 +52,11 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     [SerializeField] 
     int strengthTemp, agilityTemp, presenceTemp, toughnessTemp, defenseTemp;
     [SerializeField]
-    bool tempDisabledHands, tempDisabledLegs, tempBlinded, tempDistracted;
-
-    [Header("Resistances")]
+    int battleOrder;
     [SerializeField]
-    int bludgeonResist; //lol
+    bool sneaking, tempDisabledHands, tempDisabledLegs, tempBlinded, tempDistracted;
     [SerializeField]
-    int bludgeonResistTemp, cutResist, cutResistTemp, electricResist, electricResistTemp, fireResist, fireResistTemp,
-        magicResist, magicResistTemp, pierceResist, pierceResistTemp, spiritResist, spiritResistTemp;
-
-    static int resistMax = 5;
+    Resistances resistancesTemp;
 
     //inventory
     private Inventory inventory;
@@ -75,34 +76,16 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     public int GetOmens() { return omens; }
     public List<Item> GetInventory() { return inventory; }
 
-    public int GetBludgeonResist()
-    {
-        return Mathf.Clamp(bludgeonResist + bludgeonResistTemp, -resistMax, resistMax);
+    public bool GetSneaking(){return sneaking;}
+    public bool GetCanAct(){
+        switch(currentState){
+            case State.Active: return true;
+            case State.Hemorrhaging: return true;
+        }
+        return false;
     }
-    public int GetCutResist()
-    {
-        return Mathf.Clamp(cutResist + cutResistTemp, -resistMax, resistMax);
-    }
-    public int GetElectricResist()
-    {
-        return Mathf.Clamp(electricResist + electricResistTemp, -resistMax, resistMax);
-    }
-    public int GetFireResist()
-    {
-        return Mathf.Clamp(fireResist + fireResistTemp, -resistMax, resistMax);
-    }
-    public int GetMagicResist()
-    {
-        return Mathf.Clamp(magicResist + magicResistTemp, -resistMax, resistMax);
-    }
-    public int GetPierceResist()
-    {
-        return Mathf.Clamp(pierceResist + pierceResistTemp, -resistMax, resistMax);
-    }
-    public int GetSpiritResist()
-    {
-        return Mathf.Clamp(spiritResist + spiritResistTemp, -resistMax, resistMax);
-    }
+    public int GetBattleOrder() { return battleOrder;}
+    public void SetBattleOrder(int i) {battleOrder = i;}
 
     //On with the show 
     void InitializeCharacter()
@@ -225,7 +208,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
     public void SetBattleHUD(BattleHUD battleHUD) { this.battleHUD = battleHUD; }
 
-    void UpdateBattleHUD()
+    public void UpdateBattleHUD()
     {
         if (battleHUD)
             battleHUD.UpdateText();
@@ -619,17 +602,22 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     }
 
     //??
-    public void Push() //finish this. pass to battle manager?
-    {
-        if (BattleManager.BM) BattleManager.BM.Push(this);
-    }
     public void Sneak()
     {
-        if (BattleManager.BM) BattleManager.BM.Sneak(this);
+        sneaking = true;
+        if (BattleManager.BM)
+            BattleManager.BM.SendToBackSneak(this);
     }
-    public void Return()
+    public void Backlines()
     {
-        if (BattleManager.BM) BattleManager.BM.Return(this);
+        sneaking = false;
+        if (BattleManager.BM)
+            BattleManager.BM.SendToBack(this);
+    }
+    public void Defend(){
+        sneaking = false;
+        if(BattleManager.BM)
+            BattleManager.BM.SendToFront(this);
     }
 
     public int RecoverDamage(Damage damage)
@@ -656,7 +644,6 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         total += damage.modifier;
         total *= critical ? 2 : 1;
 
-        total -= GetResistByType(damage.damageType);
         if (total < 1)
             total = 1;
 
@@ -669,21 +656,6 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     }
 
     public DamageReturn TakeDamage(Damage damage) { return TakeDamage(damage, false); }
-
-    int GetResistByType(DamageType type) ///gameData
-    {
-        switch (type)
-        {
-            case DamageType.Bludgeon:   return GetBludgeonResist();
-            case DamageType.Cut:        return GetCutResist();
-            case DamageType.Electric:   return GetElectricResist();
-            case DamageType.Fire:       return GetFireResist();
-            case DamageType.Magic:      return GetMagicResist();
-            case DamageType.Pierce:     return GetPierceResist();
-            case DamageType.Spirit:     return GetSpiritResist();
-            default:                    return 0;
-        }
-    }
 
     public int TempIncreaseMaxHP(Damage damage)
     {
