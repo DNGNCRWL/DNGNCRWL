@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "Item", menuName = "Item/Item", order = 1)]
 public class Item : ScriptableObject
@@ -14,10 +15,10 @@ public class Item : ScriptableObject
 
     public Item CopyVariables(Item item)
     {
-        return CopyVariables(item.itemName, item.description, item.broken, item.value, item.actions);
+        return CopyVariables(item.itemName, item.description, item.broken, item.value, item.actions, item.sprite);
     }
 
-    public Item CopyVariables(string itemName, string description, bool broken, int value, List<CharacterAction> actions)
+    public Item CopyVariables(string itemName, string description, bool broken, int value, List<CharacterAction> actions, Sprite sprite)
     {
         this.name = name;
         this.itemName = itemName;
@@ -29,8 +30,12 @@ public class Item : ScriptableObject
         {
             this.actions.Add(action);
         }
-
+        this.sprite = sprite;
         return this;
+    }
+
+    public Sprite GetSprite() {
+        return sprite;
     }
 
     public virtual string GetExplicitString()

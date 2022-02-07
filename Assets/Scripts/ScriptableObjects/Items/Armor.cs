@@ -32,7 +32,7 @@ public class Armor : Item
     public override Item Copy()
     {
         Armor copy = ScriptableObject.CreateInstance<Armor>();
-        copy.CopyVariables(itemName, description, broken, value, actions);
+        copy.CopyVariables(itemName, description, broken, value, actions, sprite);
 
         copy.armorTier = this.armorTier;
         copy.maxArmorTier = this.maxArmorTier;
