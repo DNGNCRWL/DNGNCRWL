@@ -8,9 +8,6 @@ public class BattleHUD : MonoBehaviour
     public TextMeshProUGUI characterName, stats, position;
     CharacterSheet targetCharacter;
     static char LB = '\n';
-    static string FIRST = "Leader";
-    static string NOT_FIRST = "Rank";
-    static string SNEAKING = "Sneaking";
 
     public Color firstColor;
     public Color notFirstColor;
@@ -30,20 +27,19 @@ public class BattleHUD : MonoBehaviour
             ConvertOmensToString(targetCharacter);
 
         if(targetCharacter.GetSneaking()){
-            position.text = SNEAKING;
             position.color = sneakingColor;
         }
         else {
             int battleOrder = targetCharacter.GetBattleOrder();
             if(battleOrder == 0){
-                position.text = FIRST;
                 position.color = firstColor;
             }
             else{
-                position.text = NOT_FIRST + " " + battleOrder;
                 position.color = notFirstColor;
             }
         }
+
+        position.text = targetCharacter.GetBattleOrderString();
     }
 
     public void UpdateText(CharacterSheet targetCharacter)
@@ -59,7 +55,7 @@ public class BattleHUD : MonoBehaviour
         int hpM = cs.GetMaxHitPoints();
         //we need 9 characters
         string r = "HP: "; //4 char
-        r += (hp > 9) ? "" : " ";
+        r += (hp > 9 || hp < 0) ? "" : " ";
         r += hp;
         r += "/";
         r += (hpM > 9) ? "": " ";

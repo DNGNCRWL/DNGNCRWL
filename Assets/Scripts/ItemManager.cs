@@ -5,16 +5,9 @@ using UnityEngine;
 public class ItemManager : MonoBehaviour
 {
     public static ItemManager IM;
-
-    public Bag[] bags;
-    public Item[] adventureTools;
-    public Item[] specialItems;
-    public Item[] startingWeapons;
-    public Armor[] startingArmors;
-    public Armor[] startingArmorsLowtier;
-
-    public Weapon unequippedHumanWeapon;
-    public Armor unequippedHumanArmor;
+    
+    public Armory armory;
+    public static Armory ARMORY;
 
     //Random Generator Stuff
     static public Bag[] BAGS = { };
@@ -35,28 +28,28 @@ public class ItemManager : MonoBehaviour
         public Item item;
     }
 
-    public WeaponPair[] weaponPairs;
-
     private void Awake()
     {
         if (IM == null) IM = this;
         else { Destroy(gameObject); return; }
 
+        ARMORY = armory;
+
         STARTING_WEAPON_PAIRS = new Dictionary<string, Item>();
 
-        foreach(WeaponPair pair in weaponPairs)
-            STARTING_WEAPON_PAIRS.Add(pair.weapon.itemName, pair.item);
+        foreach(Armory.WeaponPair wp in ARMORY.weaponPairs)
+            STARTING_WEAPON_PAIRS.Add(wp.weapon.itemName, wp.pair);
 
-        BAGS = bags;
-        ADVENTURE_TOOLS = adventureTools;
-        SPECIAL_ITEMS = specialItems;
+        BAGS = ARMORY.bags;
+        ADVENTURE_TOOLS = ARMORY.adventureTools;
+        SPECIAL_ITEMS = ARMORY.specialItems;
 
-        STARTING_WEAPONS = startingWeapons;
-        STARTING_ARMORS = startingArmors;
-        STARTING_ARMORS_LOWTIER = startingArmorsLowtier;
+        STARTING_WEAPONS = ARMORY.startingWeapons;
+        STARTING_ARMORS = ARMORY.startingArmors;
+        STARTING_ARMORS_LOWTIER = ARMORY.startingArmorsLowtier;
 
-        UNEQUIPPED_HUMAN_ARMOR = unequippedHumanArmor;
-        UNEQUIPPED_HUMAN_WEAPON = unequippedHumanWeapon;
+        UNEQUIPPED_HUMAN_ARMOR = ARMORY.unequippedHumanArmor;
+        UNEQUIPPED_HUMAN_WEAPON = ARMORY.unequippedHumanWeapon;
     }
 
     static public Item RANDOM_ITEM(Item[] items)
