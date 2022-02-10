@@ -58,8 +58,8 @@ MonoBehaviour:
   failMessage:
     messages:
     - They were not even close
-    - They miss
-    - They miss
+    - They miss {1}
+    - '{1} evades'
     time: 1
     weight: 0.8
     index: 0
@@ -79,7 +79,7 @@ MonoBehaviour:
     target: {fileID: 0}
     item: {fileID: 0}
     action: {fileID: 0}
-    atomicFunction: 150
+    atomicFunction: 300
     damage:
       dieCount: 0
       dieSize: 0

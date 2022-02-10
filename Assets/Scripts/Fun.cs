@@ -8,6 +8,9 @@ public class Fun
         if (array == null)
             return null;
 
+        if (array.Length == 0)
+            return null;
+
         return array[UnityEngine.Random.Range(0, array.Length)];
     }
 

@@ -15,7 +15,7 @@ MonoBehaviour:
   actionName: Return
   startMessage:
     messages:
-    - '{0} returns'
+    - '{0} retreats to the back'
     time: 1
     weight: 0
     index: 0
