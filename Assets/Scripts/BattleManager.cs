@@ -178,7 +178,7 @@ public class BattleManager : MonoBehaviour
 
             if (currentPhase == TurnPhase.SelectMove)
             {
-                int move = Random.Range(0, 4);
+                int move = 0;
 
                 if (party.playerControlled)
                 {
@@ -194,6 +194,8 @@ public class BattleManager : MonoBehaviour
 
                     MM.CloseAllMenus();
                     move = moveMenu.PullSelected();
+                } else {
+                    move = Random.Range(0, 4); //replace with EnemyClass.CalculateMove
                 }
 
                 switch (move)
@@ -269,6 +271,7 @@ public class BattleManager : MonoBehaviour
                 }
                 else
                 {
+                    //EnemyFunctions.GetAction
                     List<CharacterSheet> targets = AttackTargets(currentCharacter);
                     target = Fun.RandomFromArray(targets.ToArray());
 
