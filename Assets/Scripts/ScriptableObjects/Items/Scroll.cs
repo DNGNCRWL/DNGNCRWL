@@ -77,7 +77,7 @@ public class Scroll : Item
     public override Item Copy()
     {
         Scroll copy = ScriptableObject.CreateInstance<Scroll>();
-        copy.CopyVariables(itemName, description, broken, value, actions, sprite);
+        copy.CopyVariables(itemName, description, broken, value, actions, sprite, stackLimit);
 
         copy.known = known;
         copy.clean = clean;

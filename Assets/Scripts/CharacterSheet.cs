@@ -32,7 +32,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     [Header("Equipment")]
     [SerializeField] Weapon mainhand;
     [SerializeField] Weapon offhand, unequippedWeapon;
-    [SerializeField] Bag bag;
+    //[SerializeField] Bag bag;
     [SerializeField] Armor armor, unequippedArmor;
     [SerializeField] private UI_Inventory uiInventory;
 
@@ -108,7 +108,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         waterskin = false;
 
         mainhand = offhand = null;
-        bag = null;
+        //bag = null;
         armor = null;
         oldInventory = new List<Item>();
         inventory = new Inventory();
@@ -237,11 +237,11 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
     string BagToString()
     {
-        if (bag == null) return "No Bag";
+        if (inventory.storage == null) return "No Bag";
 
         string s = "";
-        s += bag.itemName + " with ";
-        s += ItemManager.NumberOfItems(inventory.GetItemList()) + "/" + bag.carryingCapacity + " capacity";
+        s += inventory.storage.itemName + " with ";
+        s += ItemManager.NumberOfItems(inventory.GetItemList()) + "/" + inventory.storage.carryingCapacity + " capacity";
         return s;
     }
     string OffhandToString()
@@ -322,10 +322,12 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         if (newBag == null)
             return GameManager.Error("Cannot equip nothing as a bag");
 
-        Bag oldBag = bag;
-        bag = newBag;
-        if (oldBag == null) return true;
-        return PickupItem(oldBag);
+        // Bag oldBag = bag;
+        // bag = newBag;
+        // if (oldBag == null) return true;
+        // return PickupItem(oldBag);
+        inventory.ChangeStorage(newBag);
+        return true;
     }
     public bool EquipWeapon(Item tryEquip)
     {
@@ -385,14 +387,15 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         if (oldArmor == null) return false;
         return PickupItem(oldArmor);
     }
+
     bool PickupItem(Item item)
     {
         if (item == null) return GameManager.Error("No item to pickup");
-        if (bag == null) return GameManager.Error("Cannot pickup " + item.itemName + " without a bag.");
-        if (inventory.GetItemList().Count >= bag.carryingCapacity) return GameManager.Error("Not enough carrying capacity");
+        if (inventory.storage == null) return GameManager.Error("Cannot pickup " + item.itemName + " without a bag.");
+        if (inventory.GetItemList().Count >= inventory.storage.carryingCapacity) return GameManager.Error("Not enough carrying capacity");
 
-        if (inventory.GetItemList().Contains(item))
-            return GameManager.Error("Already carrying " + item.itemName + ".");
+        // if (inventory.GetItemList().Contains(item))
+        //     return GameManager.Error("Already carrying " + item.itemName + ".");
 
         //ITEMPACK??
         if (item is ItemPack)
@@ -408,28 +411,32 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         }
 
         //STACK???
-        if(item is Stackable) //rework this!!
-        {
-            foreach(Item i in inventory.GetItemList())
-            {
-                if(item.itemName.CompareTo(i.itemName) == 0)
-                {
-                    Stackable inInventory = (Stackable)i;
-                    Stackable other = (Stackable)item;
+        // if(item is Stackable) //rework this!!
+        // {
+        //     foreach(Item i in inventory.GetItemList())
+        //     {
+        //         if(item.itemName.CompareTo(i.itemName) == 0)
+        //         {
+        //             Stackable inInventory = (Stackable)i;
+        //             Stackable other = (Stackable)item;
 
-                    inInventory.amount += other.amount;
-                    //Debug.Log("Successfully picked up " + item.GetExplicitString());
-                    return true;
-                }
-            }
-        }
+        //             inInventory.amount += other.amount;
+        //             //Debug.Log("Successfully picked up " + item.GetExplicitString());
+        //             return true;
+        //         }
+        //     }
+        // }
 
-        inventory.GetItemList().Add(item);
+        inventory.AddItem(item, item.amount);
+
+        //inventory.GetItemList().Add(item);
+
+
         return true;
     }
 
 
-
+    
     //ABILITY & STAT GETTERS
     public int AbilityClamp(int input)
     {

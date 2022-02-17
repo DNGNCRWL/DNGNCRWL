@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Tent
   m_EditorClassIdentifier: 
   itemName: Tent
+  description: 
   broken: 0
   value: 0
   actions: []
+  sprite: {fileID: 21300000, guid: 279ab1242ed544e40ae5214ccfa41603, type: 3}

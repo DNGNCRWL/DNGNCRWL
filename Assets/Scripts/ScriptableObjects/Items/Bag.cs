@@ -10,7 +10,7 @@ public class Bag : Item
     public override Item Copy()
     {
         Bag copy = ScriptableObject.CreateInstance<Bag>();
-        copy.CopyVariables(itemName, description, broken, value, actions, sprite);
+        copy.CopyVariables(itemName, description, broken, value, actions, sprite, stackLimit);
         copy.carryingCapacity = this.carryingCapacity;
 
         return copy;

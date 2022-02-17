@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Leather
   m_EditorClassIdentifier: 
   itemName: Leather
+  description: 
   broken: 0
   value: 0
   actions: []
+  sprite: {fileID: 21300000, guid: 12228d50170a6b44e824a90d9c129508, type: 3}
   armorTier: 1
   maxArmorTier: 1

@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Plate
   m_EditorClassIdentifier: 
   itemName: Plate
+  description: 
   broken: 0
   value: 0
   actions: []
+  sprite: {fileID: 21300000, guid: 14db9da373092e243a85fae196c1cd09, type: 3}
   armorTier: 3
   maxArmorTier: 3

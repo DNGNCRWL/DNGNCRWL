@@ -180,16 +180,16 @@ public class ActionManager : MonoBehaviour
             ProjectileWeapon asProjectileWeapon = (ProjectileWeapon)weapon;
 
             ammoName = asProjectileWeapon.ammoName;
-            Stackable ammo = null;
+            Ammo ammo = null;
             List<Item> inventory = actor.GetInventory();
 
             foreach (Item i in inventory)
             {
-                if (i.GetType().Equals(typeof(Stackable)))
+                if (i.GetType().Equals(typeof(Ammo)))
                 {
-                    Stackable asStackable = (Stackable)i;
-                    if (asStackable.unit.CompareTo(ammoName) == 0)
-                        ammo = asStackable;
+                    Ammo asAmmo = (Ammo)i;
+                    if (asAmmo.itemName == ammoName)
+                        ammo = asAmmo;
                 }
             }
 
@@ -198,8 +198,8 @@ public class ActionManager : MonoBehaviour
             if(ammo != null)
             {
                 Debug.Log(ammo.itemName);
-                Debug.Log(ammo.unit);
-                Debug.Log("This much: " + ammo.amount + " " + ammo.unit);
+                //Debug.Log(ammo.unit);
+                Debug.Log("This much: " + ammo.amount);
             }
         }
 

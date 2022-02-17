@@ -12,13 +12,18 @@ public class Item : ScriptableObject
     public int value;
     public List<CharacterAction> actions;
     public Sprite sprite;
+    public int stackLimit = 1;
+    
+    [HideInInspector]
+    public int amount = 1;
+
 
     public Item CopyVariables(Item item)
     {
-        return CopyVariables(item.itemName, item.description, item.broken, item.value, item.actions, item.sprite);
+        return CopyVariables(item.itemName, item.description, item.broken, item.value, item.actions, item.sprite, item.stackLimit);
     }
 
-    public Item CopyVariables(string itemName, string description, bool broken, int value, List<CharacterAction> actions, Sprite sprite)
+    public Item CopyVariables(string itemName, string description, bool broken, int value, List<CharacterAction> actions, Sprite sprite, int stackLimit)
     {
         this.name = name;
         this.itemName = itemName;
@@ -31,6 +36,7 @@ public class Item : ScriptableObject
             this.actions.Add(action);
         }
         this.sprite = sprite;
+        this.stackLimit = stackLimit;
         return this;
     }
 
@@ -58,4 +64,11 @@ public class Item : ScriptableObject
         broken = true;
         return true;
     }
+
+    public bool IsStackable() {
+        if(stackLimit > 1)
+            return true;
+        else
+            return false;
+    } 
 }

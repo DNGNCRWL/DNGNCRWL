@@ -28,7 +28,7 @@ public class ItemPack : Item
     public override Item Copy()
     {
         ItemPack copy = ScriptableObject.CreateInstance<ItemPack>();
-        copy.CopyVariables(itemName, description, broken, value, actions, sprite);
+        copy.CopyVariables(itemName, description, broken, value, actions, sprite, stackLimit);
 
         Item[] copyItems = new Item[items.Length];
         for (int i = 0; i < items.Length; i++)

@@ -18,6 +18,8 @@ MonoBehaviour:
   value: 0
   actions: []
   sprite: {fileID: 21300000, guid: 8b4e95f0ac80919459f86d54cdcba2ab, type: 3}
+  stackLimit: 2
+  amount: 1
   damage:
     dieCount: 1
     dieSize: 6

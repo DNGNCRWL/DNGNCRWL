@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Furs
   m_EditorClassIdentifier: 
   itemName: Furs
+  description: 
   broken: 0
   value: 0
   actions: []
+  sprite: {fileID: 21300000, guid: 6834cd840e50fda408f9d4c429481f6f, type: 3}
   armorTier: 1
   maxArmorTier: 1

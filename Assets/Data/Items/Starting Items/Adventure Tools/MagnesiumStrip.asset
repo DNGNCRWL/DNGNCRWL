@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 184aec5129def42449da03fa5b693483, type: 3}
   m_Name: MagnesiumStrip
   m_EditorClassIdentifier: 
-  name: Magnesium Strip
   itemName: Magnesium Strip
+  description: 
   broken: 0
   value: 0
+  actions: []
+  sprite: {fileID: 21300000, guid: 70355b0bb3b06a440b6afc6151811559, type: 3}

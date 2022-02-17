@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 184aec5129def42449da03fa5b693483, type: 3}
   m_Name: SharpNeedle
   m_EditorClassIdentifier: 
-  name: Sharp Needle
   itemName: Sharp Needle
+  description: 
   broken: 0
   value: 0
+  actions: []
+  sprite: {fileID: 21300000, guid: ef2616c1c852e8b4292691b92059b316, type: 3}
