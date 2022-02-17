@@ -24,6 +24,11 @@ public class ProjectileWeapon : Weapon
         return this;
     }
 
+    public override bool LongRanged()
+    {
+        return true;
+    }
+
     public override string GetExplicitString()
     {
         return base.GetExplicitString();

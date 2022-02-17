@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class CharacterSheet : MonoBehaviour //can probably remove this as a monobehavior if we get rid of the unity calls at the bottom
 {
-    public bool randomizeClassless;
-    public bool test;
-    public CharacterAction testAction;
-    public CharacterSheet testTarget;
-    public bool test2;
-    public CharacterAction testAction2;
-    public CharacterSheet testTarget2;
+    public CharacterAction standGround;
+    public CharacterAction defend;
+    public CharacterAction returnToBack;
+    public CharacterAction sneak;
+    public CharacterAction fight;
 
     [Header("Character Stuff")]
     [SerializeField] string characterName; ////for some reason if i header and serialize field in front of a bunch of declarations, header is duplicated
@@ -86,18 +84,27 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         }
         return false;
     }
+    public bool GetCanBeHit(){
+        return currentState != State.Dead;
+    }
+    
     public int GetBattleOrder() { return battleOrder;}
-    public void SetBattleOrder(int i) {battleOrder = i;}
 
-    public void InventoryTest() {
-        InitializeCharacter();
+    public string GetBattleOrderString(){
+        if(sneaking)
+            return "Sneaking";
+
+        if(battleOrder == 0)
+            return "Leader";
+
+        return "Rank " + battleOrder;
     }
 
-    //On with the show 
-    void InitializeCharacter()
-    {
-        randomizeClassless = false;
+    public void SetBattleOrder(int i) {battleOrder = i;}
 
+    //On with the show
+    public void InitializeCharacter()
+    {
         characterName = "Unnamed";
         description = "Nothing is known. ";
         characterClass = "Classless";
@@ -169,6 +176,10 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         return new CharacterRollingPackage(strengthRoll, agilityRoll, presenceRoll, toughnessRoll, 8, 4, 2, 2, 6, 4);
     }
 
+    public void InitializeRandomClassless(){
+        InitializeClassless(RandomClasslessRollPackage());
+    }
+
     void InitializeClassless(CharacterRollingPackage rp)
     {
         InitializeCharacter();
@@ -187,7 +198,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         hitPoints = maxHitPoints = Mathf.Max(1, toughness + GameManager.RollDie(rp.hpDieSize));
         currentState = State.Active;
 
-        EquipBag((Bag) ItemManager.RANDOM_ITEM(ItemManager.BAGS).Copy());
+        EquipBag((Bag)ItemManager.RANDOM_ITEM(ItemManager.BAGS).Copy());
         PickupItem(ItemManager.RANDOM_ITEM(ItemManager.ADVENTURE_TOOLS).Copy());
         PickupItem(ItemManager.RANDOM_ITEM(ItemManager.SPECIAL_ITEMS).Copy());
 
@@ -199,8 +210,10 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
         EquipOffhand(null);
 
-        unequippedArmor = ItemManager.UNEQUIPPED_HUMAN_ARMOR;
-        unequippedWeapon = ItemManager.UNEQUIPPED_HUMAN_WEAPON;
+        if(unequippedArmor == null)
+            unequippedArmor = ItemManager.UNEQUIPPED_HUMAN_ARMOR;
+        if(unequippedWeapon == null)
+            unequippedWeapon = ItemManager.UNEQUIPPED_HUMAN_WEAPON;
 
         if (isMagical)
             EquipArmor((Armor) (ItemManager.RANDOM_ITEM(ItemManager.STARTING_ARMORS_LOWTIER).Copy()));
@@ -531,6 +544,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         if (hitPoints > GetMaxHitPoints())
             hitPoints = GetMaxHitPoints();
 
+        UpdateBattleHUD();
+
         if (hitPoints < 0)
         {
             currentState = State.Dead;
@@ -749,30 +764,6 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     //**** UNITY CALLS ****
     private void Awake()
     {
-        Update(); //lol
-    }
-
-    private void Update()
-    {
-        if (randomizeClassless) InitializeClassless(RandomClasslessRollPackage());
-
-        if (test) Test();
-        if (test2) Test2();
-    }
-
-    void Test()
-    {
-        test = false;
-        //Item elixir = ItemManager.SPECIAL_ITEMS[6].Copy();
-        //List<CharacterAction> actions = elixir.actions;
-
-        ActionManager.AM.LoadAction(this, testTarget, null, testAction);
-    }
-
-    void Test2()
-    {
-        test2 = false;
-
-        ActionManager.AM.LoadAction(this, testTarget2, null, testAction2);
+        InitializeRandomClassless();
     }
 }
