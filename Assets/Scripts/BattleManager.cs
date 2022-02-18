@@ -143,8 +143,11 @@ public class BattleManager : MonoBehaviour
         currentPhase = TurnPhase.SelectCharacter;
         CharacterSheet currentCharacter = null;
 
+        int roundCount = -1;
+
         while (charactersYetToAct.Count > 0 && BothSidesAlive())
         {
+            ++roundCount;
             //while character not selected
             //display select character
             if (currentPhase == TurnPhase.SelectCharacter)
@@ -195,7 +198,7 @@ public class BattleManager : MonoBehaviour
                     MM.CloseAllMenus();
                     move = moveMenu.PullSelected();
                 } else {
-                    move = Random.Range(0, 4); //replace with EnemyClass.CalculateMove
+                    move = EnemyActions.enemyMove(currentCharacter); //replace with EnemyClass.CalculateMove
                 }
 
                 switch (move)
@@ -272,10 +275,7 @@ public class BattleManager : MonoBehaviour
                 else
                 {
                     //EnemyFunctions.GetAction
-                    List<CharacterSheet> targets = AttackTargets(currentCharacter);
-                    target = Fun.RandomFromArray(targets.ToArray());
-
-                    ActionManager.AM.LoadAction(currentCharacter, target, null, currentCharacter.fight);
+                    EnemyActions.enemyAction(currentCharacter, AttackTargets(currentCharacter), roundCount);
                     currentPhase = TurnPhase.Done;
                 }
             }
