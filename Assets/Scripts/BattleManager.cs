@@ -66,7 +66,6 @@ public class BattleManager : MonoBehaviour
         DOMoveAllPositions(enemyParty, 0);
     }
 
-
     IEnumerator Start()
     {
         GameManager.GM.SetText("Enemies appeared");
