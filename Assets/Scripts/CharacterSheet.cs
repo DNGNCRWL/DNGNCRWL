@@ -9,6 +9,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     public CharacterAction returnToBack;
     public CharacterAction sneak;
     public CharacterAction fight;
+    public List<CharacterAction> moveList;
+    public List<CharacterAction> actList;
 
     [Header("Character Stuff")]
     [SerializeField] string characterName; ////for some reason if i header and serialize field in front of a bunch of declarations, header is duplicated
@@ -112,6 +114,9 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         bag = null;
         armor = null;
         inventory = new List<Item>();
+
+        moveList = ActionList.genericMoveActions;
+        actList = ActionList.genericBattleActions;
     }
 
     CharacterRollingPackage RandomClasslessRollPackage()

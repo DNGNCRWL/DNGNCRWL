@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 4c3a803c9157be04b86bb0d6549862c2
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - standGround: {fileID: 11400000, guid: 134802e515f32c243a0f0de7c77030fd, type: 2}
+  - defend: {fileID: 11400000, guid: 3eb7fb0473c2f1c42a9b8545bf0005b3, type: 2}
+  - returnToBack: {fileID: 11400000, guid: 64fcccd3f9733854aa54df9eefdbe8ed, type: 2}
+  - sneak: {fileID: 11400000, guid: fb465c051a54d4845ba184fdef529413, type: 2}
+  - fight: {fileID: 11400000, guid: dbdf578bb48116e4c81170b543b5ca09, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
