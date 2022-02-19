@@ -9,8 +9,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     public CharacterAction returnToBack;
     public CharacterAction sneak;
     public CharacterAction fight;
-    public List<CharacterAction> moveList;
-    public List<CharacterAction> actList;
+    [SerializeField]
+    EnemyActions artificialIntelligence;
 
     [Header("Character Stuff")]
     [SerializeField] string characterName; ////for some reason if i header and serialize field in front of a bunch of declarations, header is duplicated
@@ -72,6 +72,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     public int GetOmens() { return omens; }
     public List<Item> GetInventory() { return inventory; }
 
+    public EnemyActions GetAI(){return artificialIntelligence;}
+
     public bool GetSneaking(){return sneaking;}
     public bool GetCanAct(){
         switch(currentState){
@@ -115,8 +117,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         armor = null;
         inventory = new List<Item>();
 
-        moveList = ActionList.genericMoveActions;
-        actList = ActionList.genericBattleActions;
+        //moveList = ActionList.genericMoveActions;
+        //actList = ActionList.genericBattleActions;
     }
 
     CharacterRollingPackage RandomClasslessRollPackage()
@@ -550,11 +552,11 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         string r = GetCharacterName();
 
         if (fudgedPercent < 0.25f)
-            r += " looks like death";
+            r += " is on the brink of death";
         else if (fudgedPercent < 0.5f)
-            r += " is covered in bruises";
+            r += " is not looking good";
         else
-            r += " is unscathed";
+            r += " is standing tall";
 
         return new DamageReturn(0, r, false);
     }
@@ -754,5 +756,6 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     private void Awake()
     {
         InitializeRandomClassless();
+        artificialIntelligence = GetComponent<EnemyActions>();
     }
 }

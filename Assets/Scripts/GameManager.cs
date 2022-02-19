@@ -25,6 +25,10 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public static void StartGame(){
+        
+    }
+
     public static IEnumerator DisplayMessagePackage(MessagePackage mp, float target, string[] toInsert)
     {
         if (mp.messages.Length <= 0)
