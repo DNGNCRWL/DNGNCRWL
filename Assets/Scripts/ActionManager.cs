@@ -163,7 +163,7 @@ public class ActionManager : MonoBehaviour
         bool usingRanged =
             actor.GetWeapon().GetType().Equals(typeof(ProjectileWeapon));
         if (BattleManager.BM)
-            sameSide = BattleManager.SameSide(actor, target);
+            sameSide = BattleManager.AreInSameArea(actor, target);
 
         if (sameSide && usingRanged)
             penalty += sameSideRangedAttackPenalty;

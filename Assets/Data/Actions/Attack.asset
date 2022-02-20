@@ -39,6 +39,7 @@ MonoBehaviour:
     targetStat: 4
   difficultyRating: 10
   testAtDisadvantage: 0
+  targetingType: 1
   criticalMessage:
     messages:
     - CRITICAL HIT!

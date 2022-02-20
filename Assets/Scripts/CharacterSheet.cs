@@ -9,6 +9,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     public CharacterAction returnToBack;
     public CharacterAction sneak;
     public CharacterAction fight;
+    [SerializeField]
+    EnemyActions artificialIntelligence;
 
     [Header("Character Stuff")]
     [SerializeField] string characterName; ////for some reason if i header and serialize field in front of a bunch of declarations, header is duplicated
@@ -75,6 +77,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     public int GetPowers() { return powers; }
     public int GetOmens() { return omens; }
     public List<Item> GetInventory() { return inventory.GetItemList(); }
+
+    public EnemyActions GetAI(){return artificialIntelligence;}
 
     public bool GetSneaking(){return sneaking;}
     public bool GetCanAct(){
@@ -544,11 +548,11 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         string r = GetCharacterName();
 
         if (fudgedPercent < 0.25f)
-            r += " looks like death";
+            r += " is on the brink of death";
         else if (fudgedPercent < 0.5f)
-            r += " is covered in bruises";
+            r += " is not looking good";
         else
-            r += " is unscathed";
+            r += " is standing tall";
 
         return new DamageReturn(0, r, false);
     }
@@ -748,5 +752,6 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     private void Awake()
     {
         InitializeRandomClassless();
+        artificialIntelligence = GetComponent<EnemyActions>();
     }
 }
