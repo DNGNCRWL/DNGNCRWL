@@ -8,7 +8,7 @@ public class itemSlotTemplate : MonoBehaviour, IPointerEnterHandler, IPointerExi
 {
     //UI_Tooltip tooltip = GameObject.Find("UI_Tooltip").GetComponent<UI_Tooltip>();
 
-    public UI_Tooltip tooltip;
+    private UI_Tooltip tooltip;
 
     public string text;
 

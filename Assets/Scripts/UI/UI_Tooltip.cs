@@ -6,7 +6,6 @@ using TMPro;
 
 public class UI_Tooltip : MonoBehaviour
 {
-    private static UI_Tooltip instance;
 
     [SerializeField]
     private Camera uiCamera;
@@ -28,6 +27,7 @@ public class UI_Tooltip : MonoBehaviour
 
     }
     public void ShowTooltip(string tooltipString) {
+        if (tooltipString == "") return;
         gameObject.SetActive(true);
         tooltipText.text = tooltipString;
         float textPaddingSize = 4f;
@@ -39,11 +39,4 @@ public class UI_Tooltip : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public static void ShowTooltip_Static(string tooltipString) {
-        instance.ShowTooltip(tooltipString);
-    }
-
-    public static void HideTooltip_Static() {
-        instance.HideTooltip();
-    }
 }

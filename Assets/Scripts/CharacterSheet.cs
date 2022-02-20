@@ -422,24 +422,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
                 //Debug.Log("Successfully picked up " + item.GetExplicitString());
             return pickedUpEverything;
         }
-
-        //STACK???
-        // if(item is Stackable) //rework this!!
-        // {
-        //     foreach(Item i in inventory.GetItemList())
-        //     {
-        //         if(item.itemName.CompareTo(i.itemName) == 0)
-        //         {
-        //             Stackable inInventory = (Stackable)i;
-        //             Stackable other = (Stackable)item;
-
-        //             inInventory.amount += other.amount;
-        //             //Debug.Log("Successfully picked up " + item.GetExplicitString());
-        //             return true;
-        //         }
-        //     }
-        // }
-
+        
         inventory.AddItem(item, item.amount);
 
         //inventory.GetItemList().Add(item);

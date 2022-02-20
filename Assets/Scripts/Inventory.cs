@@ -22,16 +22,16 @@ public class Inventory
     public Inventory() {
         itemList = new List<Item>();
         //AddItem(new Item {itemName = "Femur", sprite = Addressables.LoadAssetAsync<Sprite[]>("Assets/Images/Sprites/Weapons/Femur.png")});
-        AddItem(ItemManager.IM.startingWeapons[0].Copy(), 3);
-        AddItem(ItemManager.IM.startingWeapons[1].Copy(), 2);
-        AddItem(ItemManager.IM.startingWeapons[2].Copy());
-        AddItem(ItemManager.IM.startingWeapons[3].Copy());
-        AddItem(ItemManager.IM.startingWeapons[4].Copy());
-        AddItem(ItemManager.IM.startingWeapons[5].Copy());
-        AddItem(ItemManager.IM.startingWeapons[6].Copy());
-        AddItem(ItemManager.IM.startingWeapons[7].Copy());
-        AddItem(ItemManager.IM.startingWeapons[8].Copy());
-        AddItem(ItemManager.IM.startingWeapons[9].Copy());
+        //AddItem(ItemManager.armory.startingWeapons[0].Copy(), 3);
+        // AddItem(ItemManager.IM.STARTING_WEAPONS[1].Copy(), 2);
+        // AddItem(ItemManager.IM.STARTING_WEAPONS[2].Copy());
+        // AddItem(ItemManager.IM.STARTING_WEAPONS[3].Copy());
+        // AddItem(ItemManager.IM.STARTING_WEAPONS[4].Copy());
+        // AddItem(ItemManager.IM.STARTING_WEAPONS[5].Copy());
+        // AddItem(ItemManager.IM.STARTING_WEAPONS[6].Copy());
+        // AddItem(ItemManager.IM.STARTING_WEAPONS[7].Copy());
+        // AddItem(ItemManager.IM.STARTING_WEAPONS[8].Copy());
+        // AddItem(ItemManager.IM.STARTING_WEAPONS[9].Copy());
         Debug.Log("Inventory Init");
     }
 

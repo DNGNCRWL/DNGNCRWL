@@ -9,11 +9,13 @@ using TMPro;
 public class UI_Inventory : MonoBehaviour
 {
     private Inventory inventory;
+    [SerializeField]
     private Transform itemSlotContainer;
     public GameObject itemSlotTemplate;
 
     void Awake() {
         itemSlotContainer = transform.Find("itemSlotContainer");
+        Debug.Log(itemSlotContainer);
     }
 
     public void SetInventory (Inventory inventory) {
@@ -36,6 +38,7 @@ public class UI_Inventory : MonoBehaviour
             if (child == itemSlotTemplate) continue;
             Destroy(child.gameObject);
         }
+
         int x = 0;
         int y = 0;
         float itemSlotCellSizeY = 90f;
