@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: PaddedCloth
   m_EditorClassIdentifier: 
   itemName: Padded Cloth
+  description: 
   broken: 0
   value: 0
   actions: []
+  sprite: {fileID: 21300000, guid: 94405fda1f2d8b14cb9e31fc764bdc27, type: 3}
   armorTier: 1
   maxArmorTier: 1

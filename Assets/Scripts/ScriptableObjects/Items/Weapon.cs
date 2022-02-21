@@ -35,7 +35,7 @@ public class Weapon : Item
     public override Item Copy()
     {
         Weapon copy = ScriptableObject.CreateInstance<Weapon>();
-        copy.CopyVariables(itemName, description, broken, value, actions);
+        copy.CopyVariables(itemName, description, broken, value, actions, sprite, stackLimit);
         copy.CopyWeaponVariables(damage, twoHanded, abilityToUse);
 
         return copy;

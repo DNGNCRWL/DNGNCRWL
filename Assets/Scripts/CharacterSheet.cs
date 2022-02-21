@@ -32,9 +32,9 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     [Header("Equipment")]
     [SerializeField] Weapon mainhand;
     [SerializeField] Weapon offhand, unequippedWeapon;
-    [SerializeField] Bag bag;
+    //[SerializeField] Bag bag;
     [SerializeField] Armor armor, unequippedArmor;
-    [SerializeField] List<Item> inventory;
+    [SerializeField] private UI_Inventory uiInventory;
 
     [Header("Persistent Status")]
     [SerializeField] State currentState;
@@ -58,6 +58,12 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     [SerializeField]
     Resistances resistancesTemp;
 
+    //inventory
+    //[SerializeField]
+    private Inventory inventory;
+
+    private List<Item> oldInventory;
+
     //Hooks, baby
     BattleHUD battleHUD;
 
@@ -70,7 +76,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     public int GetMaxHitPoints() { return Mathf.Max(1, maxHitPoints + maxHitPointsTempIncrease); }
     public int GetPowers() { return powers; }
     public int GetOmens() { return omens; }
-    public List<Item> GetInventory() { return inventory; }
+    public List<Item> GetInventory() { return inventory.GetItemList(); }
 
     public EnemyActions GetAI(){return artificialIntelligence;}
 
@@ -113,12 +119,12 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         waterskin = false;
 
         mainhand = offhand = null;
-        bag = null;
+        //bag = null;
         armor = null;
-        inventory = new List<Item>();
-
-        //moveList = ActionList.genericMoveActions;
-        //actList = ActionList.genericBattleActions;
+        oldInventory = new List<Item>();
+        inventory = new Inventory();
+        uiInventory.SetInventory(inventory);
+        Debug.Log(inventory);
     }
 
     CharacterRollingPackage RandomClasslessRollPackage()
@@ -200,7 +206,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         PickupItem(ItemManager.RANDOM_ITEM(ItemManager.ADVENTURE_TOOLS).Copy());
         PickupItem(ItemManager.RANDOM_ITEM(ItemManager.SPECIAL_ITEMS).Copy());
 
-        bool isMagical = ItemManager.IsMagical(inventory);
+        bool isMagical = ItemManager.IsMagical(inventory.GetItemList());
 
         EquipMainhand((Weapon) (ItemManager.RANDOM_ITEM(ItemManager.STARTING_WEAPONS).Copy()));
         if (ItemManager.STARTING_WEAPON_PAIRS.ContainsKey(mainhand.itemName))
@@ -248,11 +254,11 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
     string BagToString()
     {
-        if (bag == null) return "No Bag";
+        if (inventory.storage == null) return "No Bag";
 
         string s = "";
-        s += bag.itemName + " with ";
-        s += ItemManager.NumberOfItems(inventory) + "/" + bag.carryingCapacity + " capacity";
+        s += inventory.storage.itemName + " with ";
+        s += ItemManager.NumberOfItems(inventory.GetItemList()) + "/" + inventory.storage.carryingCapacity + " capacity";
         return s;
     }
     string OffhandToString()
@@ -314,11 +320,11 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
             "Armor:       " + ((armor != null) ? armor.GetExplicitString() : "Tier 0/0 Naked") + lb +
             "Bag:         " + BagToString() + lb;
 
-        if (inventory.Count == 0) toReturn += "Equipment:   No Equipment";
+        if (inventory.GetItemList().Count == 0) toReturn += "Equipment:   No Equipment";
         else
         {
             toReturn += "Inventory:   ";
-            toReturn += ItemManager.ItemListToExplicitString(inventory);
+            toReturn += ItemManager.ItemListToExplicitString(inventory.GetItemList());
         }
 
         return toReturn;
@@ -333,10 +339,12 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         if (newBag == null)
             return GameManager.Error("Cannot equip nothing as a bag");
 
-        Bag oldBag = bag;
-        bag = newBag;
-        if (oldBag == null) return true;
-        return PickupItem(oldBag);
+        // Bag oldBag = bag;
+        // bag = newBag;
+        // if (oldBag == null) return true;
+        // return PickupItem(oldBag);
+        inventory.ChangeStorage(newBag);
+        return true;
     }
     public bool EquipWeapon(Item tryEquip)
     {
@@ -348,10 +356,10 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
         Weapon newWeapon = (Weapon)tryEquip;
 
-        foreach(Item i in inventory)
+        foreach(Item i in inventory.GetItemList())
         {
             if (i.Equals(newWeapon))
-                inventory.Remove(i);
+                inventory.GetItemList().Remove(i);
         }
 
         return EquipMainhand(newWeapon);
@@ -396,14 +404,15 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         if (oldArmor == null) return false;
         return PickupItem(oldArmor);
     }
+
     bool PickupItem(Item item)
     {
         if (item == null) return GameManager.Error("No item to pickup");
-        if (bag == null) return GameManager.Error("Cannot pickup " + item.itemName + " without a bag.");
-        if (inventory.Count >= bag.carryingCapacity) return GameManager.Error("Not enough carrying capacity");
+        if (inventory.storage == null) return GameManager.Error("Cannot pickup " + item.itemName + " without a bag.");
+        if (inventory.GetItemList().Count >= inventory.storage.carryingCapacity) return GameManager.Error("Not enough carrying capacity");
 
-        if (inventory.Contains(item))
-            return GameManager.Error("Already carrying " + item.itemName + ".");
+        // if (inventory.GetItemList().Contains(item))
+        //     return GameManager.Error("Already carrying " + item.itemName + ".");
 
         //ITEMPACK??
         if (item is ItemPack)
@@ -417,30 +426,17 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
                 //Debug.Log("Successfully picked up " + item.GetExplicitString());
             return pickedUpEverything;
         }
+        
+        inventory.AddItem(item, item.amount);
 
-        //STACK???
-        if(item is Stackable) //rework this!!
-        {
-            foreach(Item i in inventory)
-            {
-                if(item.itemName.CompareTo(i.itemName) == 0)
-                {
-                    Stackable inInventory = (Stackable)i;
-                    Stackable other = (Stackable)item;
+        //inventory.GetItemList().Add(item);
 
-                    inInventory.amount += other.amount;
-                    //Debug.Log("Successfully picked up " + item.GetExplicitString());
-                    return true;
-                }
-            }
-        }
 
-        inventory.Add(item);
         return true;
     }
 
 
-
+    
     //ABILITY & STAT GETTERS
     public int AbilityClamp(int input)
     {
