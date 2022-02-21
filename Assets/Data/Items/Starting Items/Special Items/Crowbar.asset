@@ -17,8 +17,11 @@ MonoBehaviour:
   broken: 0
   value: 0
   actions: []
-  dieCount: 1
-  dieSize: 0
+  sprite: {fileID: 21300000, guid: 490da33ed147f7e4da79802a3d419a91, type: 3}
+  damage:
+    dieCount: 0
+    dieSize: 0
+    modifier: 0
+    damageType: 0
   twoHanded: 0
   abilityToUse: 0
-  damageType: 1

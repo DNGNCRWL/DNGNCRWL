@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: RandomSacredScroll
   m_EditorClassIdentifier: 
   itemName: Random Sacred Scroll
+  description: 
   broken: 0
   value: 0
   actions: []
+  sprite: {fileID: 21300000, guid: a876b7049734ed34b94ee3cf27cff1c4, type: 3}
   known: 1
   clean: 1
   index: 0

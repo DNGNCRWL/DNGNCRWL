@@ -23,6 +23,10 @@ public class Weapon : Item
         return damage;
     }
 
+    public virtual bool LongRanged(){
+        return false;
+    }
+
     public override string GetExplicitString()
     {
         return ((damage.dieCount > 1) ? damage.dieCount.ToString() : "") + "d" + damage.dieSize + " " + (twoHanded ? "Two Handed " : " ") + itemName;
@@ -31,7 +35,7 @@ public class Weapon : Item
     public override Item Copy()
     {
         Weapon copy = ScriptableObject.CreateInstance<Weapon>();
-        copy.CopyVariables(itemName, description, broken, value, actions);
+        copy.CopyVariables(itemName, description, broken, value, actions, sprite, stackLimit);
         copy.CopyWeaponVariables(damage, twoHanded, abilityToUse);
 
         return copy;

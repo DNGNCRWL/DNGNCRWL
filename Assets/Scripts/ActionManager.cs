@@ -28,8 +28,11 @@ public class ActionManager : MonoBehaviour
         }
     }
 
-    public void LoadAction
-        (CharacterSheet actor, CharacterSheet target, Item item, CharacterAction action)
+    public static bool EmptyQueue(){
+        return AM.actionQueue.Count == 0 && !AM.doingAnAction;
+    }
+
+    public void LoadAction(CharacterSheet actor, CharacterSheet target, Item item, CharacterAction action)
     {
         actionQueue.Add(new ActionParameters(actor, target, item, action));
     }
@@ -53,7 +56,7 @@ public class ActionManager : MonoBehaviour
 
         //START
         if (action.TargetHead())
-            target = BattleManager.GetOppositeLead(actor);
+            target = BattleManager.GetOppositeLeader(actor);
 
         //START TEXT
         yield return GameManager.DisplayMessagePackage(action.startMessage, 0.5f, messageVariables);
@@ -160,7 +163,7 @@ public class ActionManager : MonoBehaviour
         bool usingRanged =
             actor.GetWeapon().GetType().Equals(typeof(ProjectileWeapon));
         if (BattleManager.BM)
-            sameSide = BattleManager.SameSide(actor, target);
+            sameSide = BattleManager.AreInSameArea(actor, target);
 
         if (sameSide && usingRanged)
             penalty += sameSideRangedAttackPenalty;
@@ -180,16 +183,16 @@ public class ActionManager : MonoBehaviour
             ProjectileWeapon asProjectileWeapon = (ProjectileWeapon)weapon;
 
             ammoName = asProjectileWeapon.ammoName;
-            Stackable ammo = null;
+            Ammo ammo = null;
             List<Item> inventory = actor.GetInventory();
 
             foreach (Item i in inventory)
             {
-                if (i.GetType().Equals(typeof(Stackable)))
+                if (i.GetType().Equals(typeof(Ammo)))
                 {
-                    Stackable asStackable = (Stackable)i;
-                    if (asStackable.unit.CompareTo(ammoName) == 0)
-                        ammo = asStackable;
+                    Ammo asAmmo = (Ammo)i;
+                    if (asAmmo.itemName == ammoName)
+                        ammo = asAmmo;
                 }
             }
 
@@ -198,8 +201,8 @@ public class ActionManager : MonoBehaviour
             if(ammo != null)
             {
                 Debug.Log(ammo.itemName);
-                Debug.Log(ammo.unit);
-                Debug.Log("This much: " + ammo.amount + " " + ammo.unit);
+                //Debug.Log(ammo.unit);
+                Debug.Log("This much: " + ammo.amount);
             }
         }
 
@@ -428,7 +431,16 @@ public class ActionManager : MonoBehaviour
     static IEnumerator Return(ParameteredAtomicFunction args)
     {
         args.actor.Backlines();
+        yield return null;
+    }
 
+    static IEnumerator Defend(ParameteredAtomicFunction args)
+    {
+        args.actor.Defend();
+        yield return null;
+    }
+
+    static IEnumerator StandGround(ParameteredAtomicFunction args){
         yield return null;
     }
 
@@ -466,8 +478,12 @@ public class ActionManager : MonoBehaviour
             case EnumeratedAtomicFunction.TargetTakeWeaponDamage: yield return TargetTakeWeaponDamage(args); break;
 
             case EnumeratedAtomicFunction.Sneak: yield return Sneak(args); break;
-            case EnumeratedAtomicFunction.Push: yield return Push(args); break;
             case EnumeratedAtomicFunction.Return: yield return Return(args); break;
+            case EnumeratedAtomicFunction.Defend: yield return Defend(args); break;
+            case EnumeratedAtomicFunction.StandGround: yield return StandGround(args); break;
+
+            case EnumeratedAtomicFunction.Fight: yield return TargetTakeWeaponDamage(args); break;
+            case EnumeratedAtomicFunction.Push: yield return Push(args); break;
             case EnumeratedAtomicFunction.CounterAttack: yield return CounterAttack(args); break;
         }
 
@@ -515,9 +531,12 @@ public enum EnumeratedAtomicFunction
 
     Sneak = 200, //no target
     Return = 201, //no target
-    Fight = 202,
-    Push = 203,
-    CounterAttack = 204
+    Defend = 202,
+    StandGround=203,
+
+    Fight = 300,
+    Push = 301,
+    CounterAttack = 302
 }
 
 [System.Serializable]

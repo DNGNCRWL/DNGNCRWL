@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 184aec5129def42449da03fa5b693483, type: 3}
   m_Name: MetalFile
   m_EditorClassIdentifier: 
-  name: Metal File
   itemName: Metal File
+  description: 
   broken: 0
   value: 0
+  actions: []
+  sprite: {fileID: 21300000, guid: 810e33dde6160f44587c0f168ee9b69e, type: 3}

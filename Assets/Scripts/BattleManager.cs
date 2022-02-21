@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using DG.Tweening;
 
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager BM;
+    MenuManager MM;
 
     [SerializeField] Party playerParty;
     [SerializeField] Party enemyParty;
@@ -15,11 +15,22 @@ public class BattleManager : MonoBehaviour
     public List<CharacterSheet> charactersYetToAct;
 
     [System.Serializable]
-    struct Party
+    public struct Party
     {
         public string name;
         public List<CharacterSheet> characters;
         public Transform[] positions;
+        public bool playerControlled;
+    }
+
+    public TurnPhase currentPhase;
+
+    public enum TurnPhase
+    {
+        SelectCharacter,
+        SelectMove,
+        SelectAction,
+        Done
     }
 
     private void Awake()
@@ -27,13 +38,19 @@ public class BattleManager : MonoBehaviour
         if (!BM) { BM = this; }
         else { Destroy(gameObject); return; }
 
+        MM = GetComponent<MenuManager>();
+
         //Set up Parties
-        for(int i = 0; i < GameManager.GM.playerCharacters.Count; i++){
+        for (int i = 0; i < GameManager.GM.playerCharacters.Count; i++)
+        {
             playerParty.characters.Add(GameManager.GM.playerCharacters[i]);
         }
 
+        SetBattleOrder(playerParty);
+        SetBattleOrder(enemyParty);
+
         //Set up HUDs
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             CharacterSheet current = null;
             if (i < playerParty.characters.Count)
@@ -43,10 +60,11 @@ public class BattleManager : MonoBehaviour
 
         charactersYetToAct = new List<CharacterSheet>();
 
+        MM.SetUpCharacterMenuLabels(playerParty.characters);
+
         DOMoveAllPositions(playerParty, 0);
         DOMoveAllPositions(enemyParty, 0);
     }
-
 
     IEnumerator Start()
     {
@@ -55,13 +73,14 @@ public class BattleManager : MonoBehaviour
 
         yield return StartCoroutine(Combat());
 
-        yield return null;  
+        yield return null;
     }
 
     //BATTLE STATES
     IEnumerator Combat()
     {
-        do{
+        do
+        {
             Debug.Log("Start Round");
             GameManager.GM.SetText("Start Round");
             yield return new WaitForSeconds(1);
@@ -69,25 +88,34 @@ public class BattleManager : MonoBehaviour
             int initiative = GameManager.RollDie(6);
             bool playersGoFirst = initiative > initiativeRate;
 
-            if(playersGoFirst){
+            if (playersGoFirst)
+            {
                 GameManager.GM.SetText("Player goes first");
                 yield return new WaitForSeconds(1);
                 yield return StartCoroutine(PartyTurn(playerParty));
                 yield return StartCoroutine(PartyTurn(enemyParty));
-            } else{
+            }
+            else
+            {
                 GameManager.GM.SetText("Enemies go first");
                 yield return new WaitForSeconds(1);
                 yield return StartCoroutine(PartyTurn(enemyParty));
                 yield return StartCoroutine(PartyTurn(playerParty));
             }
         } while (SideIsAlive(playerParty) && SideIsAlive(enemyParty));
+
+        yield return CheckWinner();
     }
 
-    IEnumerator CheckWinner(){
+    IEnumerator CheckWinner()
+    {
 
-        if(SideIsAlive(playerParty)){
+        if (SideIsAlive(playerParty))
+        {
             GameManager.GM.SetText(playerParty.name + " is victorious");
-        } else {
+        }
+        else
+        {
             GameManager.GM.SetText(enemyParty.name + " is victorious");
             GameManager.Reset();
         }
@@ -97,28 +125,218 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator PartyTurn(Party party)
     {
-        Debug.Log(party.name + "'s turn");
+        if (!BothSidesAlive())
+            yield break;
 
         GameManager.GM.SetText(party.name + "'s turn");
         yield return new WaitForSeconds(1);
 
         charactersYetToAct.Clear();
 
-        foreach(CharacterSheet character in party.characters){
-            if(character.GetCanAct())
+        foreach (CharacterSheet character in party.characters)
+        {
+            if (character.GetCanAct())
                 charactersYetToAct.Add(character);
         }
 
-        while(charactersYetToAct.Count > 0){        
+        currentPhase = TurnPhase.SelectCharacter;
+        CharacterSheet currentCharacter = null;
+
+        int roundCount = -1;
+
+        while (charactersYetToAct.Count > 0 && BothSidesAlive())
+        {
+            ++roundCount;
+            //while character not selected
+            //display select character
+            if (currentPhase == TurnPhase.SelectCharacter)
+            {
+                if (party.playerControlled)
+                {
+                    GameManager.GM.SetText("Choose a character to act");
+                    MM.OpenCharacterMenu(charactersYetToAct);
+
+                    Menu charMenu = MM.characterMenu.GetComponent<Menu>();
+
+                    while (!charMenu.IsSelected())
+                    {
+                        yield return null;
+                    }
+
+                    MM.CloseAllMenus();
+                    currentCharacter = party.characters[charMenu.PullSelected()];
+                }
+                else
+                {
+                    currentCharacter = charactersYetToAct[Random.Range(0, charactersYetToAct.Count)];
+                }
+
+                bool validCharacter = false;
+
+                foreach(CharacterSheet cs in charactersYetToAct){
+                    if(cs == currentCharacter)
+                        validCharacter = true;
+                }
+
+                if(validCharacter)
+                    currentPhase = TurnPhase.SelectMove;
+            }
+
+            //move not selected
+            //display move menu
+            //execute move
+
+            if (currentPhase == TurnPhase.SelectMove)
+            {
+                int move = 0;
+
+                if (party.playerControlled)
+                {
+                    GameManager.GM.SetText(currentCharacter.GetCharacterName() + "'s move");
+                    MM.OpenMoveMenu();
+
+                    Menu moveMenu = MM.moveMenu.GetComponent<Menu>();
+
+                    while (!moveMenu.IsSelected())
+                    {
+                        yield return null;
+                    }
+
+                    MM.CloseAllMenus();
+                    move = moveMenu.PullSelected();
+                } else {
+                    move = currentCharacter.GetAI().CalculateMove(currentCharacter);
+                }
+
+                switch (move)
+                {
+                    case 0: //stand ground                     
+                        yield return DoAction(currentCharacter, currentCharacter.standGround, TurnPhase.SelectMove, TurnPhase.SelectAction);
+                        break;
+                    case 1: //advance 
+                        yield return DoAction(currentCharacter, currentCharacter.defend, TurnPhase.SelectMove, TurnPhase.SelectAction);
+                        break;
+                    case 2: //retreat
+                        yield return DoAction(currentCharacter, currentCharacter.returnToBack, TurnPhase.SelectMove, TurnPhase.SelectAction);
+                        break;
+                    case 3: //sneak
+                        yield return DoAction(currentCharacter, currentCharacter.sneak, TurnPhase.SelectMove, TurnPhase.SelectAction);
+                        break;
+                    case 99:
+                    default:
+                        currentPhase = TurnPhase.SelectCharacter;
+                        break;
+                }
+            }
+
+            //while action not selected
+            //display action menu
+            //execute action
+            if (currentPhase == TurnPhase.SelectAction)
+            {
+                while (!ActionManager.EmptyQueue())
+                    yield return null;
+
+                if (party.playerControlled)
+                {
+                    GameManager.GM.SetText(currentCharacter.GetCharacterName() + "'s action");
+                    MM.OpenActionMenu();
+
+                    Menu actionMenu = MM.actionMenu.GetComponent<Menu>();
+
+                    while (!actionMenu.IsSelected())
+                    {
+                        yield return null;
+                    }
+                    MM.CloseAllMenus();
+                    //action can be attack, using item, using environment, or "special"
+                    switch (actionMenu.PullSelected())
+                    {
+                        case 0: //stand ground
+                            yield return DoAction(currentCharacter, currentCharacter.fight, TurnPhase.SelectAction, TurnPhase.Done);
+                            break;
+                        case 1:
+                        case 2:
+                        case 3:
+                        default:
+                            currentPhase = TurnPhase.Done;
+                            break;
+                    }
+                }
+                else
+                {
+                    CharacterAction calculatedAction = currentCharacter.GetAI().CalculateAction(this, currentCharacter);
+                    CharacterSheet calculatedTarget = currentCharacter.GetAI().CalculateTarget(this, currentCharacter, calculatedAction);
+                
+                    ActionManager.AM.LoadAction(currentCharacter, calculatedTarget, null, calculatedAction);
+                    currentPhase = TurnPhase.Done;
+                }
+            }
+
+            //remove current character from charactersYetToAct
+            if (currentPhase == TurnPhase.Done)
+            {
+                while (!ActionManager.EmptyQueue())
+                    yield return null;
+
+                MM.CloseAllMenus();
+                if (currentCharacter)
+                    charactersYetToAct.Remove(currentCharacter);
+
+                currentPhase = TurnPhase.SelectCharacter;
+            }
+
             yield return null;
         }
 
         yield return null;
     }
+    IEnumerator DoAction(CharacterSheet actor, CharacterAction action, TurnPhase returnPhase, TurnPhase nextPhase)
+    {
+        CharacterSheet target = null;
+
+        if(action.targetingType != CharacterAction.TargetingType.None){
+            List<CharacterSheet> targets = PossibleTargets(actor, action);
+            yield return SelectTarget(targets);
+ 
+            currentPhase = returnPhase;
+            if (targets.Count <= 0)
+                yield break;
+            else
+                target = targets[0];
+        }
+
+        ActionManager.AM.LoadAction(actor, target, null, action);
+        currentPhase = nextPhase;
+    }
+
+    IEnumerator SelectTarget(List<CharacterSheet> targets)
+    {
+        Menu targetMenu = MM.targetMenu.GetComponent<Menu>();
+        MM.OpenTargetMenu(targets);
+
+        while (!targetMenu.IsSelected())
+        {
+            yield return null;
+        }
+        MM.CloseAllMenus();
+
+        int selected = targetMenu.PullSelected();
+        if (selected < 0 || selected >= 8)
+        {
+            targets.Clear();
+            yield break;
+        }
+
+        CharacterSheet target = targets[selected];
+        targets.Clear();
+        targets.Add(target);
+    }
 
     //BATTLE ANIMATIONS
-    void DOMoveAllPositions(Party party, float time){
-        foreach(CharacterSheet actor in party.characters)
+    void DOMoveAllPositions(Party party, float time)
+    {
+        foreach (CharacterSheet actor in party.characters)
             StartCoroutine(DOMoveToPositionCR(actor, time));
     }
 
@@ -130,7 +348,7 @@ public class BattleManager : MonoBehaviour
 
         //locations 0 to 3 are the normal side locations
         //locations 4 to 7 are the sneaking locations
-        Vector3 destination = currentParty.positions[position + (actor.GetSneaking() ? 4: 0)].position;
+        Vector3 destination = currentParty.positions[position + (actor.GetSneaking() ? 4 : 0)].position;
 
         actor.gameObject.transform.DOMove(destination, time);
 
@@ -145,10 +363,13 @@ public class BattleManager : MonoBehaviour
         party.characters.Add(actor);
         //DOMoveAllPositions(party, .25f);
 
-        foreach(CharacterSheet character in party.characters){
-            if(!character.GetSneaking())
+        foreach (CharacterSheet character in party.characters)
+        {
+            if (!character.GetSneaking())
                 StartCoroutine(DOMoveToPositionCR(character, 0.25f));
         }
+
+        SetBattleOrder(party);
     }
     public void SendToBackSneak(CharacterSheet actor)
     {
@@ -158,59 +379,194 @@ public class BattleManager : MonoBehaviour
         party.characters.Remove(actor);
         party.characters.Add(actor);
 
-        foreach(CharacterSheet character in party.characters){
-            if(character.GetSneaking())
+        foreach (CharacterSheet character in party.characters)
+        {
+            if (character.GetSneaking())
                 StartCoroutine(DOMoveToPositionCR(character, 0.25f));
         }
+
+        SetBattleOrder(party);
     }
-    public void SendToFront(CharacterSheet actor){
+    public void SendToFront(CharacterSheet actor)
+    {
         Party party = GetParty(actor);
         party.characters.Remove(actor);
         party.characters.Insert(0, actor);
         //DOMoveAllPositions(party, .25f);
 
-        foreach(CharacterSheet character in party.characters){
-            if(!character.GetSneaking())
+        foreach (CharacterSheet character in party.characters)
+        {
+            if (!character.GetSneaking())
                 StartCoroutine(DOMoveToPositionCR(character, 0.25f));
         }
+
+        SetBattleOrder(party);
     }
 
     //CALCULATIONS
+    List<CharacterSheet> PossibleTargets(CharacterSheet actor, CharacterAction action)
+    {
+        List<CharacterSheet> targets = new List<CharacterSheet>();
+
+        switch (action.targetingType)
+        {
+            case CharacterAction.TargetingType.Allies:
+                return GetParty(actor).characters;
+            case CharacterAction.TargetingType.Any:
+                targets.AddRange(BM.playerParty.characters);
+                targets.AddRange(BM.enemyParty.characters);
+                break;
+            case CharacterAction.TargetingType.Enemies:
+                return GetOppositeParty(actor).characters;
+            case CharacterAction.TargetingType.NearbyAllies:
+                foreach (CharacterSheet ally in GetParty(actor).characters)
+                {
+                    if (ally.GetSneaking() == actor.GetSneaking())
+                        targets.Add(ally);
+                }
+                break;
+            case CharacterAction.TargetingType.WeaponAttack:
+                return WeaponAttackTargets(actor);
+        }
+
+        return targets;
+    }
+
+    public List<CharacterSheet> AllyTargets(CharacterSheet actor){
+        List<CharacterSheet> targets = new List<CharacterSheet>();
+        foreach(CharacterSheet cs in GetParty(actor).characters)
+            targets.Add(cs);
+        return targets;
+    }
+    public List<CharacterSheet> AnyTargets(CharacterSheet actor){
+        List<CharacterSheet> targets = new List<CharacterSheet>();
+        foreach(CharacterSheet cs in GetParty(actor).characters)
+            targets.Add(cs);
+        foreach(CharacterSheet cs in GetOppositeParty(actor).characters)
+            targets.Add(cs);
+        return targets;
+    }
+    public List<CharacterSheet> EnemyTargets(CharacterSheet actor){
+        List<CharacterSheet> targets = new List<CharacterSheet>();
+        foreach(CharacterSheet cs in GetOppositeParty(actor).characters)
+            targets.Add(cs);
+        return targets;
+    }
+    public List<CharacterSheet> NearbyAllyTargets(CharacterSheet actor){
+        List<CharacterSheet> targets = new List<CharacterSheet>();
+        foreach(CharacterSheet cs in GetParty(actor).characters){
+            if(AreInSameArea(actor, cs))
+                targets.Add(cs);
+        }
+        return targets;
+    }
+    public List<CharacterSheet> AnyTargets(){
+        List<CharacterSheet> targets = new List<CharacterSheet>();
+        foreach(CharacterSheet cs in playerParty.characters)
+            targets.Add(cs);
+        foreach(CharacterSheet cs in enemyParty.characters)
+            targets.Add(cs);
+        return targets;
+    }
+    public List<CharacterSheet> WeaponAttackTargets(CharacterSheet actor)
+    {
+        Party enemies = GetOppositeParty(actor);
+
+        List<CharacterSheet> targets = new List<CharacterSheet>();
+
+        Weapon weapon = actor.GetWeapon();
+        bool longRange = weapon.LongRanged();
+
+        if (longRange)
+        {
+            foreach (CharacterSheet character in enemies.characters)
+                if (character.GetCanBeHit())
+                    targets.Add(character);
+            return targets;
+        }
+
+        if (actor.GetSneaking())
+        {
+            foreach (CharacterSheet character in enemies.characters)
+            {
+                if (!character.GetSneaking() && character.GetCanBeHit())
+                    targets.Add(character);
+            }
+            return targets;
+        }
+
+        foreach (CharacterSheet character in enemies.characters)
+        {
+            if (character == PartyFront(enemies) || character.GetSneaking())
+                if (character.GetCanBeHit())
+                    targets.Add(character);
+        }
+        return targets;
+    }
+
+    bool BothSidesAlive()
+    {
+        return SideIsAlive(playerParty) && SideIsAlive(enemyParty);
+    }
+
     bool SideIsAlive(Party party)
     {
-        foreach(CharacterSheet character in party.characters){
-            if(character.GetCanAct())
+        foreach (CharacterSheet character in party.characters)
+        {
+            if (character.GetCanAct())
                 return true;
         }
         return false;
     }
 
-    Party GetParty(CharacterSheet actor){
-        return (IsInParty(actor, playerParty))? playerParty : enemyParty;
+    Party GetParty(CharacterSheet actor)
+    {
+        return (IsInParty(actor, playerParty)) ? playerParty : enemyParty;
     }
 
-    static bool IsInParty(CharacterSheet actor, Party party){
-        foreach(CharacterSheet character in party.characters){
-            if(actor == character)
+    Party GetOppositeParty(CharacterSheet actor)
+    {
+        return (IsInParty(actor, playerParty)) ? enemyParty : playerParty;
+    }
+
+    static bool IsInParty(CharacterSheet actor, Party party)
+    {
+        foreach (CharacterSheet character in party.characters)
+        {
+            if (actor == character)
                 return true;
         }
         return false;
     }
-
-    static CharacterSheet PartyLeader(Party party){
-        for(int i = 0; i < party.characters.Count; i++){
-            if(!party.characters[i].GetSneaking())
-                return party.characters[i];
+    static CharacterSheet PartyFront(Party party)//first able to be hit
+    {
+        for (int i = 0; i < party.characters.Count; i++)
+        {
+            if (!party.characters[i].GetSneaking())
+                if (party.characters[i].GetCanBeHit())
+                    return party.characters[i];
         }
         return party.characters[0];
     }
 
-    public static bool SameParty(CharacterSheet actor, CharacterSheet target){
-        if(
+    static CharacterSheet PartyLeader(Party party)//first able to act
+    {
+        for (int i = 0; i < party.characters.Count; i++)
+        {
+            if (!party.characters[i].GetSneaking())
+                if (party.characters[i].GetCanAct())
+                    return party.characters[i];
+        }
+        return party.characters[0];
+    }
+
+    public static bool AreSameParty(CharacterSheet actor, CharacterSheet target)
+    {
+        if (
             IsInParty(actor, BM.playerParty) &&
             IsInParty(target, BM.playerParty))
             return true;
-        else if(
+        else if (
             IsInParty(actor, BM.enemyParty) &&
             IsInParty(target, BM.enemyParty)
             )
@@ -218,29 +574,50 @@ public class BattleManager : MonoBehaviour
         else
             return false;
     }
-
-    public static CharacterSheet GetOppositeLead(CharacterSheet actor){
-        
-        if(!BattleManager.BM)
+    public static CharacterSheet GetOppositeFront(CharacterSheet actor)
+    {
+        if (!BattleManager.BM)
             return null;
 
-        if(IsInParty(actor, BattleManager.BM.playerParty))
+        if (IsInParty(actor, BattleManager.BM.playerParty))
+            return BattleManager.PartyFront(BattleManager.BM.enemyParty);
+        else
+            return BattleManager.PartyFront(BattleManager.BM.playerParty);
+    }
+
+    public static CharacterSheet GetOppositeLeader(CharacterSheet actor)
+    {
+        if (!BattleManager.BM)
+            return null;
+
+        if (IsInParty(actor, BattleManager.BM.playerParty))
             return BattleManager.PartyLeader(BattleManager.BM.enemyParty);
         else
             return BattleManager.PartyLeader(BattleManager.BM.playerParty);
     }
 
-    public static bool SameSide(CharacterSheet actor, CharacterSheet target){
+    public static bool AreInSameArea(CharacterSheet actor, CharacterSheet target)
+    {
         //same party AND same sneaking
         //opposite party AND opposite sneaking
 
-        if(!BM)
+        if (!BM)
             return false;
 
-        bool sameParty = SameParty(actor, target);
+        bool sameParty = AreSameParty(actor, target);
         bool sameSneaking = actor.GetSneaking() == target.GetSneaking();
 
         return sameParty == sameSneaking;
+    }
+
+    static public void SetBattleOrder(Party party)
+    {
+        foreach (CharacterSheet character in party.characters)
+        {
+            int location = party.characters.IndexOf(character);
+            character.SetBattleOrder(location);
+            character.UpdateBattleHUD();
+        }
     }
 }
 

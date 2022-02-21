@@ -5,8 +5,13 @@ using TMPro;
 
 public class BattleHUD : MonoBehaviour
 {
-    public TextMeshProUGUI characterName, stats;
+    public TextMeshProUGUI characterName, stats, position;
     CharacterSheet targetCharacter;
+    static char LB = '\n';
+
+    public Color firstColor;
+    public Color notFirstColor;
+    public Color sneakingColor;
 
     public void UpdateText()
     {
@@ -15,11 +20,26 @@ public class BattleHUD : MonoBehaviour
             return;
 
         characterName.text = targetCharacter.GetCharacterName();
-        char lb = '\n';
+        
         stats.text =
-            ConvertCShitPointsToString(targetCharacter) + lb +
-            ConvertPowersToString(targetCharacter) + lb +
+            ConvertCShitPointsToString(targetCharacter) + LB +
+            ConvertPowersToString(targetCharacter) + LB +
             ConvertOmensToString(targetCharacter);
+
+        if(targetCharacter.GetSneaking()){
+            position.color = sneakingColor;
+        }
+        else {
+            int battleOrder = targetCharacter.GetBattleOrder();
+            if(battleOrder == 0){
+                position.color = firstColor;
+            }
+            else{
+                position.color = notFirstColor;
+            }
+        }
+
+        position.text = targetCharacter.GetBattleOrderString();
     }
 
     public void UpdateText(CharacterSheet targetCharacter)
@@ -35,7 +55,7 @@ public class BattleHUD : MonoBehaviour
         int hpM = cs.GetMaxHitPoints();
         //we need 9 characters
         string r = "HP: "; //4 char
-        r += (hp > 9) ? "" : " ";
+        r += (hp > 9 || hp < 0) ? "" : " ";
         r += hp;
         r += "/";
         r += (hpM > 9) ? "": " ";
