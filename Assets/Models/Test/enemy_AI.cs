@@ -8,6 +8,7 @@ public class enemy_AI : MonoBehaviour
     public Transform player;
     public LayerMask whatIsGround, whatIsPlayer;
     public Vector3 currentLoc;
+    Animator animator;
 
     public float xmove;
     public float zmove;
@@ -23,6 +24,7 @@ public class enemy_AI : MonoBehaviour
 
     private void Awake()
     {
+        animator = GetComponent<Animator>();
         player = GameObject.Find("remodel_tarantula(export)").transform;
         agent = GetComponent<NavMeshAgent>();
     }
@@ -36,16 +38,22 @@ public class enemy_AI : MonoBehaviour
 
         if(zmove + xmove >= 4 || zmove + xmove <=-4)
         {
+            animator.SetBool("New Bool", false);
             currentLoc = transform.position;
             zmove = 0;
             xmove = 0;
             Patroling();
         }
 
-        if (!isInRange) Patroling();
-        else
-        if(Navigation.isMoving)
+        if (!isInRange)
         {
+            Patroling();
+        }
+       
+        else
+        if (Navigation.isMoving)
+        {
+            animator.SetBool("New Bool", true);
             chasePlayer();
         }
 
@@ -80,6 +88,7 @@ public class enemy_AI : MonoBehaviour
         currentLoc = transform.position;
         agent.SetDestination(player.position);
         Navigation.isMoving = false;
+
 
     }
 
