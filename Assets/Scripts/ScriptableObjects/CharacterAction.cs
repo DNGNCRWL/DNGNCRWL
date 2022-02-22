@@ -12,6 +12,8 @@ public class CharacterAction : ScriptableObject
     [Header("STARTING MESSAGES")]
     public MessagePackage startMessage;
     public MessagePackage actionMessage;
+    public enum TargetingType {None, WeaponAttack, Allies, Enemies, NearbyAllies, Any};
+    public TargetingType targetingType;
 
     [Header("TESTS")]
     public d20[] tests;

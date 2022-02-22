@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
 
     public static ActionTextSpawner DEFAULT_TEXT_SPAWNER;
 
+    public static CharacterSheet testC;
+
     private void Awake()
     {
         if (GM == null) GM = this;
@@ -19,6 +21,11 @@ public class GameManager : MonoBehaviour
         GameObject.DontDestroyOnLoad(this.gameObject);
 
         DOTween.Init(null, null, null);
+
+        //TEMP TESTING
+        // testC = new CharacterSheet();
+        // testC.InventoryTest();
+        Debug.Log("GM");
     }
 
     public static void Reset() {
@@ -28,6 +35,9 @@ public class GameManager : MonoBehaviour
     public void CompleteLevel()
     {
         Debug.Log("Level Complete");
+    }
+    public static void StartGame(){
+        
     }
 
     public static IEnumerator DisplayMessagePackage(MessagePackage mp, float target, string[] toInsert)

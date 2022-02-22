@@ -6,7 +6,6 @@ using UnityEngine;
 public class Stackable : Item
 {
     public string unit;
-    public int amount;
 
     public override string GetExplicitString()
     {
@@ -18,7 +17,7 @@ public class Stackable : Item
     public override Item Copy()
     {
         Stackable copy = ScriptableObject.CreateInstance<Stackable>();
-        copy.CopyVariables(itemName, description, broken, value, actions);
+        copy.CopyVariables(itemName, description, broken, value, actions, sprite, stackLimit);
 
         copy.unit = unit;
         copy.amount = amount;

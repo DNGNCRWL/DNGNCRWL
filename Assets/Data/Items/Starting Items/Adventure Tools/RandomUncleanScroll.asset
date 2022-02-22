@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61ca2ed964176aa41b7b57cb5821522a, type: 3}
   m_Name: RandomUncleanScroll
   m_EditorClassIdentifier: 
-  name: Random Unclean Scroll
   itemName: Random Unclean Scroll
+  description: 
   broken: 0
   value: 0
+  actions: []
+  sprite: {fileID: 21300000, guid: e2fc4458e6425274da0c481ba4484191, type: 3}
   known: 1
   clean: 0
   index: 0
