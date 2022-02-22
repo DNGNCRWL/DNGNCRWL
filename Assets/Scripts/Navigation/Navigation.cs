@@ -250,5 +250,10 @@ public class Navigation : MonoBehaviour
     void OnCollisionEnter() 
     {
 
-    } 
+    }
+
+    void toggleGravity()
+    {
+        
+    }
 }

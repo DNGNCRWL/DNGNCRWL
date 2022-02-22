@@ -9,6 +9,7 @@ public class EndTrigger : MonoBehaviour
     {
          if(gameHasEnded == false)
         {
+ //           GetComponent<Collider>().attachedRigidbody.useGravity = false;
             gameHasEnded = true;
             gameManager.CompleteLevel();
             Invoke("RestartGenerateDungeon", dungeonGenerationDelay);
