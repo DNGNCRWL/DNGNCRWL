@@ -99,7 +99,7 @@ public class DungeonGenerator : MonoBehaviour
 
     }
 
-    public void MazeGenerator()
+    void MazeGenerator()
     {
         board = new List<Cell>();
 

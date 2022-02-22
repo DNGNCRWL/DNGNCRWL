@@ -3,7 +3,7 @@ using UnityEngine;
 public class EndTrigger : MonoBehaviour
 {
     public bool gameHasEnded = false;
-    public float dungeonGenerationDelay = 1f;
+    public float dungeonGenerationDelay = 4f;
     public GameManager gameManager;
     public void OnTriggerEnter ()
     {

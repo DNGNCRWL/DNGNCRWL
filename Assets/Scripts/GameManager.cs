@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
 
     public void CompleteLevel()
     {
-        Debug.Log("Level Complete");
+        Debug.Log("Dungeon reload");
     }
     public static void StartGame(){
         
