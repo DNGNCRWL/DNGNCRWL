@@ -246,4 +246,9 @@ public class Navigation : MonoBehaviour
             Camera.main.backgroundColor = fog;
         }
     }
+
+    void OnCollisionEnter() 
+    {
+
+    } 
 }

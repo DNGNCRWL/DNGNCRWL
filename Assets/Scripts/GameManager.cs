@@ -32,6 +32,10 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void CompleteLevel()
+    {
+        Debug.Log("Dungeon reload");
+    }
     public static void StartGame(){
         
     }

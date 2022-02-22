@@ -5,14 +5,14 @@ public class EndTrigger : MonoBehaviour
     public bool gameHasEnded = false;
     public float dungeonGenerationDelay = 4f;
     public GameManager gameManager;
-    public void OnTriggerEnter()
+    public void OnTriggerEnter ()
     {
-        if (gameHasEnded == false)
+         if(gameHasEnded == false)
         {
             gameHasEnded = true;
             gameManager.CompleteLevel();
             Invoke("RestartGenerateDungeon", dungeonGenerationDelay);
-
+            
         }
 
     }

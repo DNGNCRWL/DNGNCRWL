@@ -24,7 +24,7 @@ public class DungeonGenerator : MonoBehaviour
         {
             // 0 - cannot spawn 1 - can spawn 2 - HAS to spawn
 
-            if (x>= minPosition.x && x<=maxPosition.x && y >= minPosition.y && y <= maxPosition.y)
+            if (x >= minPosition.x && x <= maxPosition.x && y >= minPosition.y && y <= maxPosition.y)
             {
                 return obligatory ? 2 : 1;
             }
@@ -44,7 +44,7 @@ public class DungeonGenerator : MonoBehaviour
     List<Cell> board;
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         MazeGenerator();
         for(int i = 0; i < surfaces.Length; i++)
@@ -118,22 +118,22 @@ public class DungeonGenerator : MonoBehaviour
                 {
                     int randomRoom = -1;
                     List<int> availableRooms = new List<int>();
-
                     for (int k = 0; k < rooms.Length; k++)
                     {
                         int p = rooms[k].ProbabilityOfSpawning(i, j);
 
-                        if(p == 2)
+                        if (p == 2)
                         {
                             randomRoom = k;
                             break;
-                        } else if (p == 1)
+                        }
+                        else if (p == 1)
                         {
                             availableRooms.Add(k);
                         }
                     }
 
-                    if(randomRoom == -1)
+                    if (randomRoom == -1)
                     {
                         if (availableRooms.Count > 0)
                         {
@@ -147,6 +147,11 @@ public class DungeonGenerator : MonoBehaviour
 
 
                     var newRoom = Instantiate(rooms[randomRoom].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
+                    if (i + 1 == size.x && j + 1 == size.y)
+                    {
+                        FindObjectOfType<EndTrigger>().gameHasEnded = false;
+                        // GameObject spider = Instantiate(enemy, new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, newRoom.transform.position.z), Quaternion.identity);
+                    }
                     newRoom.UpdateRoom(currentCell.status);
                     newRoom.name += " " + i + "-" + j;
                     if (i+1 == size.x && j+1 == size.y)
@@ -178,13 +183,13 @@ public class DungeonGenerator : MonoBehaviour
 
         int k = 0;
 
-        while (k<1000)
+        while (k < 10000)
         {
             k++;
 
             board[currentCell].visited = true;
 
-            if(currentCell == board.Count - 1)
+            if (currentCell == board.Count - 1)
             {
                 break;
             }
@@ -255,7 +260,7 @@ public class DungeonGenerator : MonoBehaviour
         List<int> neighbors = new List<int>();
 
         //check up neighbor
-        if (cell - size.x >= 0 && !board[(cell-size.x)].visited)
+        if (cell - size.x >= 0 && !board[(cell - size.x)].visited)
         {
             neighbors.Add((cell - size.x));
         }
@@ -267,17 +272,26 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         //check right neighbor
-        if ((cell+1) % size.x != 0 && !board[(cell +1)].visited)
+        if ((cell + 1) % size.x != 0 && !board[(cell + 1)].visited)
         {
-            neighbors.Add((cell +1));
+            neighbors.Add((cell + 1));
         }
 
         //check left neighbor
         if (cell % size.x != 0 && !board[(cell - 1)].visited)
         {
-            neighbors.Add((cell -1));
+            neighbors.Add((cell - 1));
         }
 
         return neighbors;
     }
+
+    public void Restarter()
+    { 
+        foreach (Transform child in transform) 
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+    }
+    
 }
