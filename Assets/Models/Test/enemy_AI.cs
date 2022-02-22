@@ -25,7 +25,7 @@ public class enemy_AI : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        player = GameObject.Find("remodel_tarantula(export)").transform;
+        player = GameObject.FindWithTag("Navigator 1").transform;
         agent = GetComponent<NavMeshAgent>();
     }
 

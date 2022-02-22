@@ -7,6 +7,7 @@ TagManager:
   - Spawn Point
   - Rooms
   - SpawnPoint
+  - Navigator 1
   layers:
   - Default
   - TransparentFX

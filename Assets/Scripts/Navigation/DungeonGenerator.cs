@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class DungeonGenerator : MonoBehaviour
 {
@@ -32,11 +33,13 @@ public class DungeonGenerator : MonoBehaviour
         }
 
     }
-
+    public GameObject spider;
     public Vector2Int size;
     public int startPos = 0;
     public Rule[] rooms;
+    public Rule[] saved;
     public Vector2 offset;
+    public NavMeshSurface[] surfaces;
 
     List<Cell> board;
 
@@ -44,9 +47,66 @@ public class DungeonGenerator : MonoBehaviour
     void Start()
     {
         MazeGenerator();
+        for(int i = 0; i < surfaces.Length; i++)
+        {
+            surfaces[i].BuildNavMesh();
+        }
     }
 
-    void GenerateDungeon()
+    void SaveDungeon()
+    {
+        saved = GenerateDungeon(spider);
+    }
+
+    void GenerateSavedDungeon(Rule[] saved)
+    {
+        for (int i = 0; i < size.x; i++)
+        {
+            for (int j = 0; j < size.y; j++)
+            {
+                Cell currentCell = board[(i + j * size.x)];
+                if (currentCell.visited)
+                {
+                    int randomRoom = -1;
+                    List<int> availableRooms = new List<int>();
+
+                    for (int k = 0; k < saved.Length; k++)
+                    {
+                        int p = rooms[k].ProbabilityOfSpawning(i, j);
+
+                        if (p == 2)
+                        {
+                            randomRoom = k;
+                            break;
+                        }
+                        else if (p == 1)
+                        {
+                            availableRooms.Add(k);
+                        }
+                    }
+
+                    if (randomRoom == -1)
+                    {
+                        if (availableRooms.Count > 0)
+                        {
+                            randomRoom = availableRooms[Random.Range(0, availableRooms.Count)];
+                        }
+                        else
+                        {
+                            randomRoom = 0;
+                        }
+                    }
+
+
+                    var newRoom = Instantiate(saved[randomRoom].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
+                    newRoom.UpdateRoom(currentCell.status);
+                    newRoom.name += " " + i + "-" + j;
+                }
+            }
+        }
+    }
+
+        Rule[] GenerateDungeon(GameObject enemy)
     {
 
         for (int i = 0; i < size.x; i++)
@@ -89,10 +149,14 @@ public class DungeonGenerator : MonoBehaviour
                     var newRoom = Instantiate(rooms[randomRoom].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
                     newRoom.UpdateRoom(currentCell.status);
                     newRoom.name += " " + i + "-" + j;
-
+                    if (i+1 == size.x && j+1 == size.y)
+                    {
+                        GameObject spider = Instantiate(enemy, new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, newRoom.transform.position.z), Quaternion.identity);
+                    }
                 }
             }
         }
+        return rooms;
 
     }
 
@@ -181,7 +245,9 @@ public class DungeonGenerator : MonoBehaviour
             }
 
         }
-        GenerateDungeon();
+        //saved = GenerateDungeon(spider);
+        GenerateDungeon(spider);
+      //  saved = GenerateDungeon(spider);
     }
 
     List<int> CheckNeighbors(int cell)
