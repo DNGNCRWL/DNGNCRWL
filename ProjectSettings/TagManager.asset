@@ -9,6 +9,7 @@ TagManager:
   - SpawnPoint
   - test
   - Navigator 1
+  - Spider
   layers:
   - Default
   - TransparentFX

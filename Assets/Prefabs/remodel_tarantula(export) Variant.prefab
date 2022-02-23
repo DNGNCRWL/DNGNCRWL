@@ -55,6 +55,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: remodel_tarantula(export) Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36b4e0b6c98c77243ac78281654a97c3, type: 3}
+      propertyPath: m_TagString
+      value: Spider
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36b4e0b6c98c77243ac78281654a97c3, type: 3}
 --- !u!1 &1425353541870137400 stripped
@@ -62,6 +66,19 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 36b4e0b6c98c77243ac78281654a97c3, type: 3}
   m_PrefabInstance: {fileID: 2235675129693506921}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &9196434064890893880
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1425353541870137400}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1992125118650138853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,6 +106,21 @@ MonoBehaviour:
   walkPointRange: 0
   sightRange: 1
   isInRange: 0
+--- !u!114 &2185970573839322597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1425353541870137400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afea19e39e43354385627f1aebd3976, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameHasEnded: 0
+  dungeonGenerationDelay: 1
+  gameManager: {fileID: 6523248009475443555, guid: c0992dccf8503624b8229d117c60dedc, type: 3}
 --- !u!195 &6673438407026022523
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -111,15 +143,3 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &2185970573839322597
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1425353541870137400}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5afea19e39e43354385627f1aebd3976, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

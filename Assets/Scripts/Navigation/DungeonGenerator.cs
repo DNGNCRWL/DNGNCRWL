@@ -40,16 +40,26 @@ public class DungeonGenerator : MonoBehaviour
     public Rule[] saved;
     public Vector2 offset;
     public NavMeshSurface[] surfaces;
+    public static bool genNewMesh = true;
 
     List<Cell> board;
 
     // Start is called before the first frame update
+    
     public void Start()
     {
         MazeGenerator();
-        for(int i = 0; i < surfaces.Length; i++)
+    }
+
+    public void Update()
+    {
+        if (genNewMesh)
         {
-            surfaces[i].BuildNavMesh();
+            for (int i = 0; i < surfaces.Length; i++)
+            {
+                surfaces[i].BuildNavMesh();
+            }
+            genNewMesh = false;
         }
     }
 
@@ -60,6 +70,10 @@ public class DungeonGenerator : MonoBehaviour
 
     void GenerateSavedDungeon(Rule[] saved)
     {
+        for (int i = 0; i < surfaces.Length; i++)
+        {
+            surfaces[i].BuildNavMesh();
+        }
         for (int i = 0; i < size.x; i++)
         {
             for (int j = 0; j < size.y; j++)
@@ -147,11 +161,6 @@ public class DungeonGenerator : MonoBehaviour
 
 
                     var newRoom = Instantiate(rooms[randomRoom].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
-                    if (i + 1 == size.x && j + 1 == size.y)
-                    {
-                        FindObjectOfType<EndTrigger>().gameHasEnded = false;
-                        // GameObject spider = Instantiate(enemy, new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, newRoom.transform.position.z), Quaternion.identity);
-                    }
                     newRoom.UpdateRoom(currentCell.status);
                     newRoom.name += " " + i + "-" + j;
                     if (i+1 == size.x && j+1 == size.y)
@@ -161,6 +170,7 @@ public class DungeonGenerator : MonoBehaviour
                 }
             }
         }
+        
         return rooms;
 
     }
@@ -287,11 +297,14 @@ public class DungeonGenerator : MonoBehaviour
     }
 
     public void Restarter()
-    { 
+    {
         foreach (Transform child in transform) 
         {
             GameObject.Destroy(child.gameObject);
         }
+        GameObject.Destroy(GameObject.FindWithTag("Spider"));
+        //GameObject.Destroy(spider.gameObject);
+        //GameObject.Destroy(GameObject.FindWithTag("Spider").transform);
     }
     
 }

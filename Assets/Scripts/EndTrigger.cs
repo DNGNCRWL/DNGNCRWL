@@ -9,10 +9,11 @@ public class EndTrigger : MonoBehaviour
     {
          if(gameHasEnded == false)
         {
- //           GetComponent<Collider>().attachedRigidbody.useGravity = false;
+            //           GetComponent<Collider>().attachedRigidbody.useGravity = false;
             gameHasEnded = true;
             gameManager.CompleteLevel();
             Invoke("RestartGenerateDungeon", dungeonGenerationDelay);
+            gameHasEnded = false;
             
         }
 
@@ -20,6 +21,7 @@ public class EndTrigger : MonoBehaviour
     public void RestartGenerateDungeon()
     {
         FindObjectOfType<DungeonGenerator>().Restarter();
+        DungeonGenerator.genNewMesh = true;
         FindObjectOfType<DungeonGenerator>().Start();
     }
 }
