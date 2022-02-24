@@ -5,10 +5,6 @@ using UnityEngine.UIElements;
 
 public class TownManager : MonoBehaviour
 {
-    public GameObject PartySwapMenu;
-    public GameObject RecruitMenu;
-    public GameObject RestMenu;
-    public GameObject StoreMenu;
     public GameObject PartySwapButton;
     public GameObject RecruitButton;
     public GameObject RestButton;
