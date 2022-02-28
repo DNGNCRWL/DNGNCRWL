@@ -281,6 +281,10 @@ PrefabInstance:
       value: Navigator
       objectReference: {fileID: 0}
     - target: {fileID: 3819049138370474021, guid: 6248399d9fc64534aa2e2a6e7bf7464d, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3819049138370474021, guid: 6248399d9fc64534aa2e2a6e7bf7464d, type: 3}
       propertyPath: m_TagString
       value: Navigator 1
       objectReference: {fileID: 0}
@@ -294,7 +298,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3819049138370474027, guid: 6248399d9fc64534aa2e2a6e7bf7464d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.75
+      value: 2.07
       objectReference: {fileID: 0}
     - target: {fileID: 3819049138370474027, guid: 6248399d9fc64534aa2e2a6e7bf7464d, type: 3}
       propertyPath: m_LocalPosition.z

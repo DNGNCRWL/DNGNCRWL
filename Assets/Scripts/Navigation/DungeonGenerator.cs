@@ -41,6 +41,9 @@ public class DungeonGenerator : MonoBehaviour
     public Vector2 offset;
     public NavMeshSurface[] surfaces;
     public static bool genNewMesh = true;
+    public static bool genSaved = false;
+    public static bool wantSaved = false;
+    public static int i = 0;
 
     List<Cell> board;
 
@@ -48,7 +51,11 @@ public class DungeonGenerator : MonoBehaviour
     
     public void Start()
     {
-        MazeGenerator();
+            MazeGenerator();
+        for (int i = 0; i < surfaces.Length; i++)
+        {
+            surfaces[i].BuildNavMesh();
+        }
     }
 
     public void Update()
@@ -261,7 +268,19 @@ public class DungeonGenerator : MonoBehaviour
 
         }
         //saved = GenerateDungeon(spider);
-        GenerateDungeon(spider);
+        if (genSaved)
+        {
+            GenerateSavedDungeon(saved);
+        }
+        else if(wantSaved)
+        {
+            saved = GenerateDungeon(spider);
+        }
+        else
+        {
+            GenerateDungeon(spider);
+        }
+
       //  saved = GenerateDungeon(spider);
     }
 

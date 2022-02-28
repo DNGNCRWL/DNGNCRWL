@@ -36,26 +36,28 @@ public class enemy_AI : MonoBehaviour
         xmove = currentLoc.x - transform.position.x;
         zmove = currentLoc.z - transform.position.z;
 
-       // if(zmove + xmove >= 4 || zmove + xmove <=-4)
-      //  {
-     //       animator.SetBool("New Bool", false);
-    //        currentLoc = transform.position;
-   //         zmove = 0;
-  //          xmove = 0;
- //           Patroling();
-//        }
+        // if(zmove + xmove >= 4 || zmove + xmove <=-4)
+        //  {
+        //       animator.SetBool("New Bool", false);
+        //        currentLoc = transform.position;
+        //         zmove = 0;
+        //          xmove = 0;
+        //           Patroling();
+        //        }
 
         if (!isInRange)
         {
             Patroling();
         }
-       
+
         else
-  //      if (Navigation.isMoving)
-    //    {
-            animator.SetBool("New Bool", true);
+        {
+            //      if (Navigation.isMoving)
+            //    {
+            //animator.SetBool("New Bool", true);
             chasePlayer();
-    //    }
+            //    }
+        }
 
     }
 
@@ -88,8 +90,6 @@ public class enemy_AI : MonoBehaviour
         currentLoc = transform.position;
         agent.SetDestination(player.position);
         Navigation.isMoving = false;
-
-
     }
 
 }

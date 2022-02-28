@@ -247,6 +247,10 @@ public class Navigation : MonoBehaviour
         }
     }
 
+    public void respawn()
+    {
+        transform.position = new Vector3(0, 1, 0);
+    }
     void OnCollisionEnter() 
     {
 

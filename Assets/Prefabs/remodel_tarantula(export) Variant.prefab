@@ -98,13 +98,13 @@ MonoBehaviour:
     m_Bits: 0
   whatIsPlayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   currentLoc: {x: 0, y: 0, z: 0}
   xmove: 0
   zmove: 0
   walkPoint: {x: 0, y: 0, z: 0}
   walkPointRange: 0
-  sightRange: 1
+  sightRange: 18
   isInRange: 0
 --- !u!114 &2185970573839322597
 MonoBehaviour:
