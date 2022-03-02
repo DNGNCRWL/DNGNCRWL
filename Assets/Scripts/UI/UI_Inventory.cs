@@ -15,7 +15,7 @@ public class UI_Inventory : MonoBehaviour
 
     void Awake() {
         itemSlotContainer = transform.Find("itemSlotContainer");
-        Debug.Log(itemSlotContainer);
+        //Debug.Log(itemSlotContainer);
     }
 
     public void SetInventory (Inventory inventory) {
@@ -99,6 +99,13 @@ public class UI_Inventory : MonoBehaviour
 
     public List<Item> GetItemList() {
         return inventory.GetItemList();
+    }
+
+    public void OpenInventoryUI () {
+        gameObject.SetActive(true);
+    }
+    public void CloseInventoryUI () {
+        gameObject.SetActive(false);
     }
 
 }
