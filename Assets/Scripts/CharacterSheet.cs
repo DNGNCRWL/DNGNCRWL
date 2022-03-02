@@ -59,7 +59,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     Resistances resistancesTemp;
 
     //inventory
-    //[SerializeField]
+    [SerializeField]
     private Inventory inventory;
 
     private List<Item> oldInventory;
@@ -123,7 +123,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         armor = null;
         oldInventory = new List<Item>();
         inventory = new Inventory();
-        uiInventory.SetInventory(inventory);
+        if(uiInventory)
+            uiInventory.SetInventory(inventory);
         Debug.Log(inventory);
     }
 
