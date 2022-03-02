@@ -14,14 +14,14 @@ public class BattleManager : MonoBehaviour
     public int initiativeRate = 3;
     public List<CharacterSheet> charactersYetToAct;
 
-    [System.Serializable]
-    public struct Party
-    {
-        public string name;
-        public List<CharacterSheet> characters;
-        public Transform[] positions;
-        public bool playerControlled;
-    }
+    //[System.Serializable]
+    // public struct Party
+    // {
+    //     public string name;
+    //     public List<CharacterSheet> characters;
+    //     public Transform[] positions;
+    //     public bool playerControlled;
+    // }
 
     public TurnPhase currentPhase;
 
