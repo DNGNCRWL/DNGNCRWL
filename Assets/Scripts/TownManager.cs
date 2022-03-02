@@ -6,37 +6,44 @@ using TMPro;
 
 public class TownManager : MonoBehaviour
 {
+    public Transform TM;
+    public GameObject characterPrefab;
+
     public GameObject PartySwapButton;
     public GameObject RecruitButton;
     public GameObject RestButton;
     public GameObject StoreButton;
 
     //Player Characters
-    public CharacterSheet Char1;
-    public CharacterSheet Char2;
-    public CharacterSheet Char3;
-    public CharacterSheet Char4;
+    public List<CharacterSheet> playerCharacters;
 
     //Recruitable Characters
-    public CharacterSheet RecChar1;
-    public CharacterSheet RecChar2;
-    public CharacterSheet RecChar3;
-    public CharacterSheet RecChar4;
+    public List<CharacterSheet> recruitableCharacters;
 
-    public TextMeshProUGUI RecChar1Name;
-    public TextMeshProUGUI RecChar2Name;
-    public TextMeshProUGUI RecChar3Name;
-    public TextMeshProUGUI RecChar4Name;
+    //Swap Party Menu ------------------------------------------------------------
+    //Current Party Character Names
+    public List<TextMeshProUGUI> charMenuNames;
+
+
+    //Recruit Character Menu -----------------------------------------------------
+    //Recruitable Characters Menu Name
+    public List<TextMeshProUGUI> recCharMenuNames;
 
     void Awake() {
-
+        for (int i = 0; i < 4; ++i) {
+            GameObject temp = Instantiate(characterPrefab, TM);
+            recruitableCharacters.Add(temp.GetComponent<CharacterSheet>());
+        }
+        for (int i = 0; i < recruitableCharacters.Count; ++i) {
+            recruitableCharacters[i].InitializeRandomClassless();
+        }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("RecChar1 Name: " + RecChar1.GetCharacterName());
         setRecCharInfo();
+        setCharInfo();
     }
 
     // Update is called once per frame
@@ -64,10 +71,15 @@ public class TownManager : MonoBehaviour
         //Char1.RecoverDamage(10);
     }
 
+    public void setCharInfo() {
+        for (int i = 0; i < playerCharacters.Count; ++i) {
+            charMenuNames[i].text = playerCharacters[i].GetCharacterName();
+        }
+    }
+
     public void setRecCharInfo() {
-        RecChar1Name.text = RecChar1.GetCharacterName();
-        RecChar2Name.text = RecChar2.GetCharacterName();
-        RecChar3Name.text = RecChar3.GetCharacterName();
-        RecChar4Name.text = RecChar4.GetCharacterName();
+        for (int i = 0; i < recruitableCharacters.Count; ++i) {
+            recCharMenuNames[i].text = recruitableCharacters[i].GetCharacterName();
+        }
     }
 }

@@ -24,7 +24,7 @@ public class UI_Inventory : MonoBehaviour
         inventory.OnItemListChanged += Inventory_OnItemListChanged;
 
         RefreshInventoryItems();
-        //Debug.Log("SetInv");
+        Debug.Log("SetInv");
 
     }
 
