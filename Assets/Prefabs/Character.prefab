@@ -84,7 +84,7 @@ MonoBehaviour:
   unequippedWeapon: {fileID: 0}
   armor: {fileID: 0}
   unequippedArmor: {fileID: 0}
-  uiInventory: {fileID: 5857738736828516556, guid: 62d0d2eaaff1c004892d091d9cfeabba, type: 3}
+  uiInventory: {fileID: 0}
   currentState: 0
   infected: 0
   bleeding: 0
@@ -118,3 +118,7 @@ MonoBehaviour:
     magic: 0
     pierce: 0
     spirit: 0
+  inventory:
+    itemList: []
+    storage: {fileID: 0}
+    armor: {fileID: 0}
