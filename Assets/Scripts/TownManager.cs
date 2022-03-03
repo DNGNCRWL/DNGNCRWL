@@ -6,7 +6,9 @@ using TMPro;
 
 public class TownManager : MonoBehaviour
 {
-    public Transform TM;
+    public Transform TMTransform;
+    public Transform GMTransform;
+    public GameManager GM;
     public GameObject characterPrefab;
 
     public GameObject PartySwapButton;
@@ -31,7 +33,7 @@ public class TownManager : MonoBehaviour
 
     void Awake() {
         for (int i = 0; i < 4; ++i) {
-            GameObject temp = Instantiate(characterPrefab, TM);
+            GameObject temp = Instantiate(characterPrefab, TMTransform);
             recruitableCharacters.Add(temp.GetComponent<CharacterSheet>());
         }
         for (int i = 0; i < recruitableCharacters.Count; ++i) {
@@ -52,6 +54,7 @@ public class TownManager : MonoBehaviour
 
     }
     
+    //Changes whether an object is active or not
     public void toggleActive(GameObject target) {
         if (target.activeSelf) {
             target.SetActive(false);
@@ -60,6 +63,7 @@ public class TownManager : MonoBehaviour
         }
     }
 
+    //Changes all background button to inactive at once
     public void toggleBackground() {
         toggleActive(PartySwapButton);
         toggleActive(RecruitButton);
@@ -67,19 +71,41 @@ public class TownManager : MonoBehaviour
         toggleActive(StoreButton);
     }
 
+    //Reset player health
     public void rest() {
         //Char1.RecoverDamage(10);
     }
 
+    //Set info about characters in player party
     public void setCharInfo() {
-        for (int i = 0; i < playerCharacters.Count; ++i) {
-            charMenuNames[i].text = playerCharacters[i].GetCharacterName();
+        for (int i = 0; i < 6; ++i) {
+            if (i < playerCharacters.Count) {
+                charMenuNames[i].text = playerCharacters[i].GetCharacterName();
+            } else {
+                charMenuNames[i].text = "";
+            }
         }
     }
 
+    //Set info about recruitable characters
     public void setRecCharInfo() {
-        for (int i = 0; i < recruitableCharacters.Count; ++i) {
-            recCharMenuNames[i].text = recruitableCharacters[i].GetCharacterName();
+        for (int i = 0; i < 4; ++i) {
+            if (i < recruitableCharacters.Count) {
+                recCharMenuNames[i].text = recruitableCharacters[i].GetCharacterName();
+            } else {
+                recCharMenuNames[i].text = "";
+            }
         }
+    }
+
+    //Swap a character from the recruitable character under TownManager to player characters under GameManager
+    public void addCharToParty(int index) {
+        GameObject character = recruitableCharacters[index].transform.gameObject;
+        character.transform.parent = GMTransform;
+        recruitableCharacters.Remove(character.GetComponent<CharacterSheet>());
+        playerCharacters.Add(character.GetComponent<CharacterSheet>());
+        GM.playerCharacters.Add(character.GetComponent<CharacterSheet>());
+        setCharInfo();
+        setRecCharInfo();
     }
 }
