@@ -7,6 +7,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager GM;
     public List<CharacterSheet> playerCharacters;
+    public List<CharacterSheet> reserveCharacters;
+
+    public Party playerParty;
 
     public static readonly int secondsPerRound = 6;
 
@@ -22,12 +25,20 @@ public class GameManager : MonoBehaviour
 
         DOTween.Init(null, null, null);
 
-        //TEMP TESTING
-        // testC = new CharacterSheet();
-        // testC.InventoryTest();
+        playerParty.SetParty(playerCharacters);
+
+        //init party menu
+        Debug.Log(playerParty.characters);
+        
         Debug.Log("GM");
     }
 
+    private void Start() {
+        if (UI_PartyMenu.UI_PARTYMENU != null)
+        {
+            UI_PartyMenu.UI_PARTYMENU.SetParty(playerParty);
+        }
+    }
     public static void Reset() {
 
     }
