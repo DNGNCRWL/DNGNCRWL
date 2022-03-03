@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager GM;
     public List<CharacterSheet> playerCharacters;
+    public List<CharacterSheet> reserveCharacters;
 
     public static readonly int secondsPerRound = 6;
 
