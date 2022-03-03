@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class TownManager : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class TownManager : MonoBehaviour
     public Transform GMTransform;
     public GameManager GM;
     public GameObject characterPrefab;
+    // private AssetBundle myLoadedAssetBundle;
+    // private string[] scenePaths;
 
     //Player Characters
     public List<CharacterSheet> playerCharacters;
@@ -43,6 +46,8 @@ public class TownManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //myLoadedAssetBundle = AssetBundle.LoadFromFile("Assets/AssetBundles/scenes");
+        //scenePaths = myLoadedAssetBundle.GetAllScenePaths();
         playerCharacters = new List<CharacterSheet>(GM.playerCharacters);
         reserveCharacters = new List<CharacterSheet>(GM.reserveCharacters);
         setRecCharInfo();
@@ -196,5 +201,11 @@ public class TownManager : MonoBehaviour
     public void decrementPageNumber() {
         --pageNumber;
         setReserveCharInfo();
+    }
+
+    public void enterDungeon() {
+        // if (playerCharacters.Count == 4) {
+        //     SceneManager.LoadScene(scenePaths[2], LoadSceneMode.Single);
+        // }
     }
 }
