@@ -84,6 +84,18 @@ public class UI_PartyMenu : MonoBehaviour
             Button invButton = charSlotRectTransform.Find("inventoryButton").GetComponent<Button>();
             invButton.onClick.AddListener(delegate { OpenCharInv(character); });
 
+            string InfoText = "";
+            InfoText += "Class: " + character.GetCharacterClass();
+            InfoText += "\nHealth: " + character.GetHitPoints().ToString()+  " / "+ character.GetMaxHitPoints().ToString();
+            InfoText += "\nStrength: " + character.GetStrength().ToString();
+            InfoText += "\nAgility: " + character.GetAgility().ToString();
+            InfoText += "\nPresence: " + character.GetPresence().ToString();
+            InfoText += "\nToughness: " + character.GetToughness().ToString();
+            InfoText += "\nOmens: " + character.GetOmens().ToString();
+
+            TextMeshProUGUI infoUI = charSlotRectTransform.Find("text").GetComponent<TextMeshProUGUI>();
+            infoUI.SetText(InfoText);
+
             x++;
         }
     }
