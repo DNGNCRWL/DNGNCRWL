@@ -256,7 +256,7 @@ public class BattleManager : MonoBehaviour
                             yield return DoAction(currentCharacter, currentCharacter.fight, TurnPhase.SelectAction, TurnPhase.Done);
                             break;
                         case 1:
-                            List<Item> items = new List<Item>(currentCharacter.GetInventory());
+                            List<Item> items = new List<Item>(currentCharacter.GetInventoryList());
                             yield return SelectItem(items, currentCharacter);
                             break;
                         case 2:
