@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-// [System.Serializable]
+[System.Serializable]
 public class Inventory
 {
     // [SerializeField]
