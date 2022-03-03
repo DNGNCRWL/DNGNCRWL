@@ -13,7 +13,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     EnemyActions artificialIntelligence;
 
     [Header("Character Stuff")]
-    [SerializeField] string characterName; ////for some reason if i header and serialize field in front of a bunch of declarations, header is duplicated
+    [SerializeField] public string characterName; ////for some reason if i header and serialize field in front of a bunch of declarations, header is duplicated
     [SerializeField] string description, characterClass;
     [SerializeField] int
         hitPoints, maxHitPoints,
@@ -34,7 +34,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     [SerializeField] Weapon offhand, unequippedWeapon;
     //[SerializeField] Bag bag;
     [SerializeField] Armor armor, unequippedArmor;
-    [SerializeField] private UI_Inventory uiInventory;
+    //[SerializeField] private UI_Inventory uiInventory;
 
     [Header("Persistent Status")]
     [SerializeField] State currentState;
@@ -62,7 +62,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     //[SerializeField]
     private Inventory inventory;
 
-    private List<Item> oldInventory;
+    //private List<Item> oldInventory;
 
     //Hooks, baby
     BattleHUD battleHUD;
@@ -76,7 +76,9 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     public int GetMaxHitPoints() { return Mathf.Max(1, maxHitPoints + maxHitPointsTempIncrease); }
     public int GetPowers() { return powers; }
     public int GetOmens() { return omens; }
-    public List<Item> GetInventory() { return inventory.GetItemList(); }
+    public List<Item> GetInventoryList() { return inventory.GetItemList(); }
+
+    public Inventory GetInventory() { return inventory; }
 
     public EnemyActions GetAI(){return artificialIntelligence;}
 
@@ -121,10 +123,14 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         mainhand = offhand = null;
         //bag = null;
         armor = null;
-        oldInventory = new List<Item>();
+        //oldInventory = new List<Item>();
         inventory = new Inventory();
-        uiInventory.SetInventory(inventory);
-        Debug.Log(inventory);
+        //Debug.Log(uiInventory);
+        // if (uiInventory != null)
+        // {
+        //     uiInventory.SetInventory(inventory);
+        // } 
+        //Debug.Log(inventory);
     }
 
     CharacterRollingPackage RandomClasslessRollPackage()
