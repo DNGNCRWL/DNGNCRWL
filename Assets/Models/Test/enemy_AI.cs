@@ -27,6 +27,7 @@ public class enemy_AI : MonoBehaviour
         animator = GetComponent<Animator>();
         player = GameObject.FindWithTag("Navigator 1").transform;
         agent = GetComponent<NavMeshAgent>();
+        currentLoc = transform.position;
     }
 
     private void Update()
@@ -36,14 +37,14 @@ public class enemy_AI : MonoBehaviour
         xmove = currentLoc.x - transform.position.x;
         zmove = currentLoc.z - transform.position.z;
 
-        // if(zmove + xmove >= 4 || zmove + xmove <=-4)
-        //  {
-        //       animator.SetBool("New Bool", false);
-        //        currentLoc = transform.position;
-        //         zmove = 0;
-        //          xmove = 0;
-        //           Patroling();
-        //        }
+         if(zmove + xmove >= 4 || zmove + xmove <=-4)
+          {
+               //animator.SetBool("New Bool", false);
+               currentLoc = transform.position;
+               zmove = 0;
+               xmove = 0;
+               Patroling();
+          }
 
         if (!isInRange)
         {
