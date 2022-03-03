@@ -239,6 +239,7 @@ MonoBehaviour:
   returnToBack: {fileID: 11400000, guid: 64fcccd3f9733854aa54df9eefdbe8ed, type: 2}
   sneak: {fileID: 11400000, guid: fb465c051a54d4845ba184fdef529413, type: 2}
   fight: {fileID: 11400000, guid: dbdf578bb48116e4c81170b543b5ca09, type: 2}
+  artificialIntelligence: {fileID: 0}
   characterName: Unnamed
   description: 'Nothing is known. '
   characterClass: Classless
@@ -272,10 +273,8 @@ MonoBehaviour:
   mainhand: {fileID: 0}
   offhand: {fileID: 0}
   unequippedWeapon: {fileID: 0}
-  bag: {fileID: 0}
   armor: {fileID: 0}
   unequippedArmor: {fileID: 0}
-  inventory: []
   currentState: 0
   infected: 0
   bleeding: 0
@@ -358,6 +357,7 @@ MonoBehaviour:
   returnToBack: {fileID: 11400000, guid: 64fcccd3f9733854aa54df9eefdbe8ed, type: 2}
   sneak: {fileID: 11400000, guid: fb465c051a54d4845ba184fdef529413, type: 2}
   fight: {fileID: 11400000, guid: dbdf578bb48116e4c81170b543b5ca09, type: 2}
+  artificialIntelligence: {fileID: 0}
   characterName: Unnamed
   description: 'Nothing is known. '
   characterClass: Classless
@@ -391,10 +391,8 @@ MonoBehaviour:
   mainhand: {fileID: 0}
   offhand: {fileID: 0}
   unequippedWeapon: {fileID: 0}
-  bag: {fileID: 0}
   armor: {fileID: 0}
   unequippedArmor: {fileID: 0}
-  inventory: []
   currentState: 0
   infected: 0
   bleeding: 0
@@ -477,6 +475,7 @@ MonoBehaviour:
   returnToBack: {fileID: 11400000, guid: 64fcccd3f9733854aa54df9eefdbe8ed, type: 2}
   sneak: {fileID: 11400000, guid: fb465c051a54d4845ba184fdef529413, type: 2}
   fight: {fileID: 11400000, guid: dbdf578bb48116e4c81170b543b5ca09, type: 2}
+  artificialIntelligence: {fileID: 0}
   characterName: Unnamed
   description: 'Nothing is known. '
   characterClass: Classless
@@ -510,10 +509,8 @@ MonoBehaviour:
   mainhand: {fileID: 0}
   offhand: {fileID: 0}
   unequippedWeapon: {fileID: 0}
-  bag: {fileID: 0}
   armor: {fileID: 0}
   unequippedArmor: {fileID: 0}
-  inventory: []
   currentState: 0
   infected: 0
   bleeding: 0
@@ -596,6 +593,7 @@ MonoBehaviour:
   returnToBack: {fileID: 11400000, guid: 64fcccd3f9733854aa54df9eefdbe8ed, type: 2}
   sneak: {fileID: 11400000, guid: fb465c051a54d4845ba184fdef529413, type: 2}
   fight: {fileID: 11400000, guid: dbdf578bb48116e4c81170b543b5ca09, type: 2}
+  artificialIntelligence: {fileID: 0}
   characterName: Unnamed
   description: 'Nothing is known. '
   characterClass: Classless
@@ -629,10 +627,8 @@ MonoBehaviour:
   mainhand: {fileID: 0}
   offhand: {fileID: 0}
   unequippedWeapon: {fileID: 0}
-  bag: {fileID: 0}
   armor: {fileID: 0}
   unequippedArmor: {fileID: 0}
-  inventory: []
   currentState: 0
   infected: 0
   bleeding: 0
@@ -868,6 +864,7 @@ GameObject:
   - component: {fileID: 8461809138461167435}
   - component: {fileID: 8461809138461167433}
   - component: {fileID: 8461809138461167428}
+  - component: {fileID: 8002304157188255244}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -910,6 +907,11 @@ MonoBehaviour:
   - {fileID: 1446046361}
   - {fileID: 1644708602}
   - {fileID: 1654140945}
+  playerParty:
+    name: 
+    characters: []
+    positions: []
+    playerControlled: 0
 --- !u!114 &8461809138461167433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -933,5 +935,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 301233471d2f11a4aa7801eebf08d7c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8002304157188255244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8461809138461167432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b266cb4863b12954787d1e7241879e89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
