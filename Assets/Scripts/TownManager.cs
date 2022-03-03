@@ -8,8 +8,8 @@ using UnityEngine.SceneManagement;
 public class TownManager : MonoBehaviour
 {
     public Transform TMTransform;
-    public Transform GMTransform;
-    public GameManager GM;
+    public GameManager GM = GameManager.GM;
+    public Transform GMTransform = GameManager.GM.transform;
     public GameObject characterPrefab;
 
     //Player Characters
