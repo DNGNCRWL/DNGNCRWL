@@ -13,6 +13,10 @@ public class Party
 
     public event EventHandler OnPartyListChanged;
 
+    public void SetParty(List<CharacterSheet> characters) {
+        this.characters = characters;
+        OnPartyListChanged?.Invoke(this, EventArgs.Empty);
+    }
     public void UpdatedParty() {
         OnPartyListChanged?.Invoke(this, EventArgs.Empty);
     }

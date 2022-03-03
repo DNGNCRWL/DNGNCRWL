@@ -8,14 +8,29 @@ using TMPro;
 
 public class UI_Inventory : MonoBehaviour
 {
+    public static UI_Inventory UI_INVENTORY;
+    public CharacterSheet targetCharacter;
     private Inventory inventory;
     [SerializeField]
     private Transform itemSlotContainer;
     public GameObject itemSlotTemplate;
 
+
     void Awake() {
+        if (UI_INVENTORY == null)
+        {
+            UI_INVENTORY = this;
+        } else {
+            Destroy(gameObject);
+        }
+
         itemSlotContainer = transform.Find("itemSlotContainer");
+        CloseInventoryUI();
         //Debug.Log(itemSlotContainer);
+    }
+
+    public void SetCharacterTarget (CharacterSheet character){
+        SetInventory(character.GetInventory());
     }
 
     public void SetInventory (Inventory inventory) {
@@ -101,10 +116,10 @@ public class UI_Inventory : MonoBehaviour
         return inventory.GetItemList();
     }
 
-    public void OpenInventoryUI () {
+    public void OpenInventoryUI() {
         gameObject.SetActive(true);
     }
-    public void CloseInventoryUI () {
+    public void CloseInventoryUI() {
         gameObject.SetActive(false);
     }
 
