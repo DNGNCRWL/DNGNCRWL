@@ -4751,7 +4751,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 833674082}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1709150566}
+        m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
+        m_MethodName: enterDungeon
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &833674082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5854,7 +5866,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Char 1
+  m_text: 'Char 5
 
 '
   m_isRightToLeft: 0
@@ -9132,7 +9144,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Char 1
+  m_text: 'Char 6
 
 '
   m_isRightToLeft: 0
@@ -9268,7 +9280,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Char 1
+  m_text: 'Char 4
 
 '
   m_isRightToLeft: 0
@@ -9404,7 +9416,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Char 1
+  m_text: 'Char 2
 
 '
   m_isRightToLeft: 0
@@ -10361,7 +10373,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Char 1
+  m_text: 'Char 3
 
 '
   m_isRightToLeft: 0
@@ -13982,6 +13994,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCharacters: []
   reserveCharacters: []
+  playerParty:
+    name: 
+    characters: []
+    positions: []
+    playerControlled: 0
 --- !u!4 &8461809137768000631
 Transform:
   m_ObjectHideFlags: 0

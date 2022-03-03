@@ -11,8 +11,6 @@ public class TownManager : MonoBehaviour
     public Transform GMTransform;
     public GameManager GM;
     public GameObject characterPrefab;
-    // private AssetBundle myLoadedAssetBundle;
-    // private string[] scenePaths;
 
     //Player Characters
     public List<CharacterSheet> playerCharacters;
@@ -46,8 +44,6 @@ public class TownManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //myLoadedAssetBundle = AssetBundle.LoadFromFile("Assets/AssetBundles/scenes");
-        //scenePaths = myLoadedAssetBundle.GetAllScenePaths();
         playerCharacters = new List<CharacterSheet>(GM.playerCharacters);
         reserveCharacters = new List<CharacterSheet>(GM.reserveCharacters);
         setRecCharInfo();
@@ -173,7 +169,7 @@ public class TownManager : MonoBehaviour
     //Swap the char at the index from reserve characters to the player party
     public void addCharToParty(int index) {
         if (playerCharacters.Count < 4) {
-            CharacterSheet charSheet = reserveCharacters[index * (pageNumber + 1)];
+            CharacterSheet charSheet = reserveCharacters[index + (pageNumber + 1)];
             playerCharacters.Add(charSheet);
             GM.playerCharacters.Add(charSheet);
             reserveCharacters.Remove(charSheet);
@@ -204,8 +200,8 @@ public class TownManager : MonoBehaviour
     }
 
     public void enterDungeon() {
-        // if (playerCharacters.Count == 4) {
-        //     SceneManager.LoadScene(scenePaths[2], LoadSceneMode.Single);
-        // }
+        if (playerCharacters.Count > 0) {
+            SceneManager.LoadScene("DungeonNavigation", LoadSceneMode.Single);
+        }
     }
 }
