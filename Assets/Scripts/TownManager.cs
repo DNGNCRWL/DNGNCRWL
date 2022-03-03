@@ -169,7 +169,7 @@ public class TownManager : MonoBehaviour
     //Swap the char at the index from reserve characters to the player party
     public void addCharToParty(int index) {
         if (playerCharacters.Count < 4) {
-            CharacterSheet charSheet = reserveCharacters[index + (pageNumber + 1)];
+            CharacterSheet charSheet = reserveCharacters[index + (pageNumber * 2)];
             playerCharacters.Add(charSheet);
             GM.playerCharacters.Add(charSheet);
             reserveCharacters.Remove(charSheet);
