@@ -11,11 +11,6 @@ public class TownManager : MonoBehaviour
     public GameManager GM;
     public GameObject characterPrefab;
 
-    public GameObject PartySwapButton;
-    public GameObject RecruitButton;
-    public GameObject RestButton;
-    public GameObject StoreButton;
-
     //Player Characters
     public List<CharacterSheet> playerCharacters;
 
@@ -28,8 +23,8 @@ public class TownManager : MonoBehaviour
 
 
     //Recruit Character Menu -----------------------------------------------------
-    //Recruitable Characters Menu Name
-    public List<TextMeshProUGUI> recCharMenuNames;
+    //Recruitable Character Tiles
+    public List<GameObject> recruitMenuTiles;
 
     void Awake() {
         for (int i = 0; i < 4; ++i) {
@@ -63,18 +58,12 @@ public class TownManager : MonoBehaviour
         }
     }
 
-    //Changes all background button to inactive at once
-    public void toggleBackground() {
-        toggleActive(PartySwapButton);
-        toggleActive(RecruitButton);
-        toggleActive(RestButton);
-        toggleActive(StoreButton);
-    }
-
     //Reset player health
-    public void rest() {
-        //Char1.RecoverDamage(10);
-    }
+    // public void rest() {
+    //     foreach (CharacterSheet character in playerCharacters) {
+    //         character.RecoverDamage(new Damage(50, 20, 10, new DamageType(Untyped)));
+    //     }
+    // }
 
     //Set info about characters in player party
     public void setCharInfo() {
@@ -87,13 +76,14 @@ public class TownManager : MonoBehaviour
         }
     }
 
-    //Set info about recruitable characters
+    //Set info about recruitable characters, if there are more spaces than characters deactivate unused spaces
     public void setRecCharInfo() {
         for (int i = 0; i < 4; ++i) {
             if (i < recruitableCharacters.Count) {
-                recCharMenuNames[i].text = recruitableCharacters[i].GetCharacterName();
+                recruitMenuTiles[i].SetActive(true);
+                recruitMenuTiles[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = recruitableCharacters[i].GetCharacterName();
             } else {
-                recCharMenuNames[i].text = "";
+                recruitMenuTiles[i].SetActive(false);
             }
         }
     }
