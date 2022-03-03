@@ -14,14 +14,14 @@ public class BattleManager : MonoBehaviour
     public int initiativeRate = 3;
     public List<CharacterSheet> charactersYetToAct;
 
-    [System.Serializable]
-    public struct Party
-    {
-        public string name;
-        public List<CharacterSheet> characters;
-        public Transform[] positions;
-        public bool playerControlled;
-    }
+    //[System.Serializable]
+    // public struct Party
+    // {
+    //     public string name;
+    //     public List<CharacterSheet> characters;
+    //     public Transform[] positions;
+    //     public bool playerControlled;
+    // }
 
     public TurnPhase currentPhase;
 
@@ -256,7 +256,7 @@ public class BattleManager : MonoBehaviour
                             yield return DoAction(currentCharacter, currentCharacter.fight, TurnPhase.SelectAction, TurnPhase.Done);
                             break;
                         case 1:
-                            List<Item> items = new List<Item>(currentCharacter.GetInventory());
+                            List<Item> items = new List<Item>(currentCharacter.GetInventoryList());
                             yield return SelectItem(items, currentCharacter);
                             break;
                         case 2:

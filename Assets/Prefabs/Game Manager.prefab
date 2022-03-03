@@ -167,7 +167,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 5922816741404586159, guid: af609e5eeb92d2d448752564a1c77ee4, type: 3}
+  m_Sprite: {fileID: 5922816741404586159, guid: af609e5eeb92d2d448752564a1c77ee4,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -273,10 +274,8 @@ MonoBehaviour:
   mainhand: {fileID: 0}
   offhand: {fileID: 0}
   unequippedWeapon: {fileID: 0}
-  bag: {fileID: 0}
   armor: {fileID: 0}
   unequippedArmor: {fileID: 0}
-  inventory: []
   currentState: 0
   infected: 0
   bleeding: 0
@@ -393,10 +392,8 @@ MonoBehaviour:
   mainhand: {fileID: 0}
   offhand: {fileID: 0}
   unequippedWeapon: {fileID: 0}
-  bag: {fileID: 0}
   armor: {fileID: 0}
   unequippedArmor: {fileID: 0}
-  inventory: []
   currentState: 0
   infected: 0
   bleeding: 0
@@ -513,10 +510,8 @@ MonoBehaviour:
   mainhand: {fileID: 0}
   offhand: {fileID: 0}
   unequippedWeapon: {fileID: 0}
-  bag: {fileID: 0}
   armor: {fileID: 0}
   unequippedArmor: {fileID: 0}
-  inventory: []
   currentState: 0
   infected: 0
   bleeding: 0
@@ -633,10 +628,8 @@ MonoBehaviour:
   mainhand: {fileID: 0}
   offhand: {fileID: 0}
   unequippedWeapon: {fileID: 0}
-  bag: {fileID: 0}
   armor: {fileID: 0}
   unequippedArmor: {fileID: 0}
-  inventory: []
   currentState: 0
   infected: 0
   bleeding: 0
@@ -742,7 +735,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -7094321317713930746, guid: af609e5eeb92d2d448752564a1c77ee4, type: 3}
+  m_Sprite: {fileID: -7094321317713930746, guid: af609e5eeb92d2d448752564a1c77ee4,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -837,7 +831,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -6296816681089383544, guid: af609e5eeb92d2d448752564a1c77ee4, type: 3}
+  m_Sprite: {fileID: -6296816681089383544, guid: af609e5eeb92d2d448752564a1c77ee4,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -872,6 +867,7 @@ GameObject:
   - component: {fileID: 8461809138461167435}
   - component: {fileID: 8461809138461167433}
   - component: {fileID: 8461809138461167428}
+  - component: {fileID: 8002304157188255244}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -914,6 +910,11 @@ MonoBehaviour:
   - {fileID: 1446046361}
   - {fileID: 1644708602}
   - {fileID: 1654140945}
+  playerParty:
+    name: 
+    characters: []
+    positions: []
+    playerControlled: 0
 --- !u!114 &8461809138461167433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -937,5 +938,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 301233471d2f11a4aa7801eebf08d7c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8002304157188255244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8461809138461167432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b266cb4863b12954787d1e7241879e89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
