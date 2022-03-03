@@ -72,8 +72,6 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         yield return StartCoroutine(Combat());
-
-        yield return null;
     }
 
     //BATTLE STATES
@@ -113,6 +111,8 @@ public class BattleManager : MonoBehaviour
         if (SideIsAlive(playerParty))
         {
             GameManager.GM.SetText(playerParty.name + " is victorious");
+            yield return new WaitForSeconds(3);
+            GameManager.GoToDungeonNavigation();
         }
         else
         {
