@@ -1,7 +1,16 @@
 fileFormatVersion: 2
-guid: 460468ba05222a443a97bbfb2632f748
+guid: 7125f3308c01aea4984e6bd28393cc86
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -8041184664218908090
+    second: TRAVELERS_727h_0
+  - first:
+      213: 7213380261777143273
+    second: TRAVELERS_727h_1
+  - first:
+      213: -468973695279496817
+    second: TRAVELERS_727h_2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -41,12 +50,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 7
+  alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 125
+  spritePixelsToUnits: 300
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,7 +122,70 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: TRAVELERS_727h_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 373
+        height: 678
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64ac9e3e629f76090800000000000000
+      internalID: -8041184664218908090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TRAVELERS_727h_1
+      rect:
+        serializedVersion: 2
+        x: 478
+        y: 17
+        width: 406
+        height: 710
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e57a0541231b1460800000000000000
+      internalID: 7213380261777143273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TRAVELERS_727h_2
+      rect:
+        serializedVersion: 2
+        x: 962
+        y: 34
+        width: 473
+        height: 680
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f810ddba8eedd79f0800000000000000
+      internalID: -468973695279496817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []

@@ -184,7 +184,7 @@ public class ActionManager : MonoBehaviour
 
             ammoName = asProjectileWeapon.ammoName;
             Ammo ammo = null;
-            List<Item> inventory = actor.GetInventory();
+            List<Item> inventory = actor.GetInventoryList();
 
             foreach (Item i in inventory)
             {

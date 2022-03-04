@@ -14,14 +14,14 @@ public class BattleManager : MonoBehaviour
     public int initiativeRate = 3;
     public List<CharacterSheet> charactersYetToAct;
 
-    [System.Serializable]
-    public struct Party
-    {
-        public string name;
-        public List<CharacterSheet> characters;
-        public Transform[] positions;
-        public bool playerControlled;
-    }
+    //[System.Serializable]
+    // public struct Party
+    // {
+    //     public string name;
+    //     public List<CharacterSheet> characters;
+    //     public Transform[] positions;
+    //     public bool playerControlled;
+    // }
 
     public TurnPhase currentPhase;
 
@@ -60,8 +60,6 @@ public class BattleManager : MonoBehaviour
 
         charactersYetToAct = new List<CharacterSheet>();
 
-        MM.SetUpCharacterMenuLabels(playerParty.characters);
-
         DOMoveAllPositions(playerParty, 0);
         DOMoveAllPositions(enemyParty, 0);
     }
@@ -69,6 +67,8 @@ public class BattleManager : MonoBehaviour
     IEnumerator Start()
     {
         GameManager.GM.SetText("Enemies appeared");
+        MM.CloseAllMenus();
+        
         yield return new WaitForSeconds(1);
 
         yield return StartCoroutine(Combat());
@@ -154,7 +154,7 @@ public class BattleManager : MonoBehaviour
                 if (party.playerControlled)
                 {
                     GameManager.GM.SetText("Choose a character to act");
-                    MM.OpenCharacterMenu(charactersYetToAct);
+                    MM.OpenCharacterMenu(charactersYetToAct, playerParty.characters);
 
                     Menu charMenu = MM.characterMenu.GetComponent<Menu>();
 
@@ -252,10 +252,13 @@ public class BattleManager : MonoBehaviour
                     //action can be attack, using item, using environment, or "special"
                     switch (actionMenu.PullSelected())
                     {
-                        case 0: //stand ground
+                        case 0:
                             yield return DoAction(currentCharacter, currentCharacter.fight, TurnPhase.SelectAction, TurnPhase.Done);
                             break;
                         case 1:
+                            List<Item> items = new List<Item>(currentCharacter.GetInventoryList());
+                            yield return SelectItem(items, currentCharacter);
+                            break;
                         case 2:
                         case 3:
                         default:
@@ -306,8 +309,45 @@ public class BattleManager : MonoBehaviour
                 target = targets[0];
         }
 
+        //Debug.Log(actor.GetCharacterName() + " is doing " + action.name + " to " + target.GetCharacterName());
         ActionManager.AM.LoadAction(actor, target, null, action);
         currentPhase = nextPhase;
+    }
+
+    IEnumerator SelectItem(List<Item> items, CharacterSheet character){
+        Menu itemMenu = MM.itemMenu.GetComponent<Menu>();
+
+        MM.OpenItemMenu(items);
+
+        while(!itemMenu.IsSelected()){
+            yield return null;
+        }
+        MM.CloseAllMenus();
+
+        int selected = itemMenu.PullSelected();
+        if(selected < 0 || selected >= items.Count){
+            yield break;
+        }
+
+        SelectItemAction(items[selected], character);
+    }
+
+    IEnumerator SelectItemAction(Item item, CharacterSheet character){
+        Menu subActionMenu = MM.actionMenu.GetComponent<Menu>();
+
+        MM.OpenSubActionMenu(item.actions);
+
+        while(!subActionMenu.IsSelected()){
+            yield return null;
+        }
+        MM.CloseAllMenus();
+
+        int selected = subActionMenu.PullSelected();
+        if(selected < 0 || selected >= item.actions.Count){
+            yield break;
+        }
+
+        DoAction(character, item.actions[selected], TurnPhase.SelectAction, TurnPhase.Done);
     }
 
     IEnumerator SelectTarget(List<CharacterSheet> targets)
