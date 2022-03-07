@@ -7,6 +7,7 @@ public class Navigation : MonoBehaviour
 {
     static readonly float blockSize = 4;
 
+    public static bool isMoving = false;
     public float moveTime;
     public float rotateTime;
     public bool calculateSpeeds;
@@ -17,7 +18,7 @@ public class Navigation : MonoBehaviour
     public bool turnLeft;
     public bool turnRight;
     public State state;
-    public List<NavAction> actionQueue;
+    public static List<NavAction> actionQueue;
     static readonly int actionQueueMaxLength = 2;
 
     public Light torchLight;
@@ -181,7 +182,7 @@ public class Navigation : MonoBehaviour
 
             yield return null;
         }
-
+        isMoving = true;
         state = State.Idle;
 
         Snap();
@@ -244,5 +245,19 @@ public class Navigation : MonoBehaviour
             RenderSettings.fogMode = FogMode.Linear;
             Camera.main.backgroundColor = fog;
         }
+    }
+
+    public void respawn()
+    {
+        transform.position = new Vector3(0, 1, 0);
+    }
+    void OnCollisionEnter() 
+    {
+
+    }
+
+    void toggleGravity()
+    {
+        
     }
 }
