@@ -141,7 +141,7 @@ public class GameManager : MonoBehaviour
     //SCENE NAVIGATION
 
     public static void GoToDungeonNavigation(){
-        SceneManager.LoadScene("DungeonNavigation", LoadSceneMode.Single);
+        SceneManager.LoadScene("DungeonGeneration", LoadSceneMode.Single);
     }
 
 }

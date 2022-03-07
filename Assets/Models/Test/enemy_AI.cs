@@ -90,7 +90,7 @@ public class enemy_AI : MonoBehaviour
     {
         currentLoc = transform.position;
         agent.SetDestination(player.position);
-        Navigation.isMoving = false;
+        //Navigation.isMoving = false;
     }
 
 }
