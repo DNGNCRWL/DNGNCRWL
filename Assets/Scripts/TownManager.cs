@@ -201,7 +201,7 @@ public class TownManager : MonoBehaviour
 
     public void enterDungeon() {
         if (playerCharacters.Count > 0) {
-            SceneManager.LoadScene("DungeonNavigation", LoadSceneMode.Single);
+            SceneManager.LoadScene("DungeonGeneration", LoadSceneMode.Single);
         }
     }
 }
