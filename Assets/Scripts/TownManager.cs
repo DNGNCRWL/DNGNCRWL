@@ -8,8 +8,8 @@ using UnityEngine.SceneManagement;
 public class TownManager : MonoBehaviour
 {
     public Transform TMTransform;
-    public GameManager GM = GameManager.GM;
-    public Transform GMTransform = GameManager.GM.transform;
+    public GameManager GM;
+    public Transform GMTransform;
     public GameObject characterPrefab;
 
     //Player Characters
@@ -39,6 +39,9 @@ public class TownManager : MonoBehaviour
         for (int i = 0; i < recruitableCharacters.Count; ++i) {
             recruitableCharacters[i].InitializeRandomClassless();
         }
+        
+        GM = GameManager.GM;
+        GMTransform = GameManager.GM.transform;
     }
 
     // Start is called before the first frame update
@@ -89,6 +92,10 @@ public class TownManager : MonoBehaviour
 
     //Set info about characters in player party, if there are more spaces than characters deactivate unused spaces
     public void setReserveCharInfo() {
+        if ((pageNumber + 1) * 2 > reserveCharacters.Count + 1 && pageNumber != 0) {
+            --pageNumber;
+        }
+
         //Check for decrement button
         if (pageNumber > 0) {
             decrementPageButton.SetActive(true);
