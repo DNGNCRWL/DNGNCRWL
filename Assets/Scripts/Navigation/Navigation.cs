@@ -56,8 +56,16 @@ public class Navigation : MonoBehaviour
     private void CalculateSpeeds()
     {
         calculateSpeeds = false;
-        moveSpeed = blockSize / moveTime;
-        rotateSpeed = 90 / rotateTime;
+
+        if(moveTime != 0)
+            moveSpeed = blockSize / moveTime;
+        else
+            moveSpeed = int.MaxValue;
+        
+        if(rotateTime != 0)
+            rotateSpeed = 90 / rotateTime;
+        else
+            rotateSpeed = int.MaxValue;
     }
 
     void GetInputTaps()
