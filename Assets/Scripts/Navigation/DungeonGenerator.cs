@@ -45,13 +45,24 @@ public class DungeonGenerator : MonoBehaviour
     public static bool wantSaved = false;
     public static int i = 0;
 
+    public static GameObject SAVED_DUNGEON;
+
     List<Cell> board;
 
     // Start is called before the first frame update
     
     public void Start()
     {
+        if (!SAVED_DUNGEON)
+        {
             MazeGenerator();
+            SAVED_DUNGEON = gameObject;
+            DontDestroyOnLoad(SAVED_DUNGEON);
+        }
+        else
+        {
+            SAVED_DUNGEON.SetActive(true);
+        }
         for (int i = 0; i < surfaces.Length; i++)
         {
             surfaces[i].BuildNavMesh();

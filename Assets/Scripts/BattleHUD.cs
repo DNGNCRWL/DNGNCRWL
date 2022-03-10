@@ -44,6 +44,8 @@ public class BattleHUD : MonoBehaviour
 
     public void UpdateText(CharacterSheet targetCharacter)
     {
+        if(!targetCharacter)
+            return;
         this.targetCharacter = targetCharacter;
         targetCharacter.SetBattleHUD(this);
         UpdateText();

@@ -1,25 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using DG.Tweening;
 
 public class Navigation : MonoBehaviour
 {
-    static readonly float blockSize = 4;
+    static readonly int blockSize = 4;
 
-    public static bool isMoving = false;
-    public float moveTime;
-    public float rotateTime;
+    public int moveTime;
+    public int rotateTime;
     public bool calculateSpeeds;
-    public float moveSpeed;
-    public float rotateSpeed;
+    public int moveSpeed;
+    public int rotateSpeed;
     public bool forward;
     public bool backward;
     public bool turnLeft;
     public bool turnRight;
     public State state;
-    public static List<NavAction> actionQueue;
+    public List<NavAction> actionQueue;
     static readonly int actionQueueMaxLength = 2;
+
+    public int steps_min, steps_max, steps;
 
     public Light torchLight;
     public int lightLevel;
@@ -27,6 +29,12 @@ public class Navigation : MonoBehaviour
     public bool increaseLightLevel;
     public bool decreaseLightLevel;
     public bool useFog;
+
+    static Vector3Int SAVE_POSITION = new Vector3Int(0,1,0);
+    static int SAVE_ROTATION_Y;
+
+    public EnemyEncounter[] enemy_encounters;
+
     public Color fog;
 
     [System.Serializable]
@@ -37,6 +45,9 @@ public class Navigation : MonoBehaviour
 
     private void Awake()
     {
+        transform.position = SAVE_POSITION;
+        transform.eulerAngles = new Vector3Int(0, SAVE_ROTATION_Y, 0);
+        SetRandomSteps();
         CalculateSpeeds();
         actionQueue = new List<NavAction>();
         ChangeLightLevel(0);
@@ -45,8 +56,16 @@ public class Navigation : MonoBehaviour
     private void CalculateSpeeds()
     {
         calculateSpeeds = false;
-        moveSpeed = blockSize / moveTime;
-        rotateSpeed = 90 / rotateTime;
+
+        if(moveTime != 0)
+            moveSpeed = blockSize / moveTime;
+        else
+            moveSpeed = int.MaxValue;
+        
+        if(rotateTime != 0)
+            rotateSpeed = 90 / rotateTime;
+        else
+            rotateSpeed = int.MaxValue;
     }
 
     void GetInputTaps()
@@ -118,6 +137,10 @@ public class Navigation : MonoBehaviour
 
     void Update()
     {
+        if(steps == 0)
+        {
+            StartEncounter(enemy_encounters[Random.Range(0,enemy_encounters.Length)]);
+        }
         GetInputTaps();
         GetInputHolds();
         GetInputBooleans();
@@ -133,10 +156,10 @@ public class Navigation : MonoBehaviour
             switch (actionQueue[0])
             {
                 case NavAction.Forward:
-                    StartCoroutine(Move(transform.forward * blockSize));//blockSize));
+                    StartCoroutine(Move(Vector3Int.RoundToInt(transform.forward * blockSize)));//blockSize));
                     break;
                 case NavAction.Backward:
-                    StartCoroutine(Move(-transform.forward * blockSize));// -blockSize));
+                    StartCoroutine(Move(Vector3Int.RoundToInt(-transform.forward * blockSize)));// -blockSize));
                     break;
                 case NavAction.Left:
                     StartCoroutine(Turn(-90));
@@ -148,8 +171,9 @@ public class Navigation : MonoBehaviour
         }
     }
 
-    IEnumerator Move(Vector3 move)//float distance)
+    IEnumerator Move(Vector3Int move)//float distance)
     {
+        steps--;
         actionQueue.RemoveAt(0);
 
         bool blocked = Physics.Raycast(transform.position, move, blockSize);
@@ -161,12 +185,13 @@ public class Navigation : MonoBehaviour
 
         //transform.DOMove(transform.position + move, moveTime);
 
-        Vector3 finalPos = transform.position + move;
-        Vector3 toMove = move;
+        Vector3Int finalPos = Vector3Int.FloorToInt(transform.position + move);
+        //Vector3Int finalPos = new Vector3Int(Mathf.RoundToInt(transform.position.x) + move.x, Mathf.RoundToInt(transform.position.y) + move.y, Mathf.RoundToInt(transform.position.z) + move.z);
+        Vector3Int toMove = move;
 
-        while (toMove != Vector3.zero)
+        while (toMove != Vector3Int.zero)
         {
-            Vector3 toMoveThisFrame = Time.deltaTime * moveSpeed * toMove.normalized;
+            Vector3Int toMoveThisFrame = (Mathf.RoundToInt(Time.deltaTime) * Mathf.RoundToInt(moveSpeed) * toMove);
 
             if (toMove.sqrMagnitude > toMoveThisFrame.sqrMagnitude)
             {
@@ -177,12 +202,12 @@ public class Navigation : MonoBehaviour
             {
                 transform.position = finalPos;
                 //transform.position += toMove;
-                toMove = Vector3.zero;
+                toMove = Vector3Int.zero;
             }
 
             yield return null;
         }
-        isMoving = true;
+
         state = State.Idle;
 
         Snap();
@@ -190,13 +215,13 @@ public class Navigation : MonoBehaviour
 
     void Snap()
     {
-        transform.position = new Vector3(
-            Mathf.Round(transform.position.x),
-            transform.position.y,
-            Mathf.Round(transform.position.z)
+        transform.position = new Vector3Int(
+            Mathf.RoundToInt(transform.position.x),
+            Mathf.RoundToInt(transform.position.y),
+            Mathf.RoundToInt(transform.position.z)
             );
     }
-
+    
     IEnumerator Turn(float angle)
     {
         actionQueue.RemoveAt(0);
@@ -213,12 +238,12 @@ public class Navigation : MonoBehaviour
                 (toRotateThisFrame < 0 &&
                 toRotate < toRotateThisFrame))
             {
-                transform.Rotate(Vector3.up, toRotateThisFrame);
+                transform.Rotate(Vector3Int.up, toRotateThisFrame);
                 toRotate -= toRotateThisFrame;
             }
             else
             {
-                transform.Rotate(Vector3.up, toRotate);
+                transform.Rotate(Vector3Int.up, toRotate);
                 toRotate = 0;
             }
             
@@ -247,17 +272,18 @@ public class Navigation : MonoBehaviour
         }
     }
 
-    public void respawn()
+    void StartEncounter(EnemyEncounter enemyencounter)
     {
-        transform.position = new Vector3(0, 1, 0);
+        BattleManager.SetENEMY_ENCOUNTER(enemyencounter);
+        SAVE_POSITION = Vector3Int.FloorToInt(transform.position);
+        SAVE_ROTATION_Y = Mathf.RoundToInt(transform.eulerAngles.y);
+        DungeonGenerator.SAVED_DUNGEON.SetActive(false);
+        SceneManager.LoadScene("Battle");
     }
-    void OnCollisionEnter() 
-    {
 
+    void SetRandomSteps()
+    {
+        steps = Random.Range(steps_min, steps_max + 1);
     }
 
-    void toggleGravity()
-    {
-        
-    }
 }
