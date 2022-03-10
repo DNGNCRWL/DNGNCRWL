@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37b40be16330b6049ad229b0edd2a3d4, type: 3}
+  m_Name: Rat Friends
+  m_EditorClassIdentifier: 
+  encounterName: Rat Friends
+  enemies:
+  - {fileID: 3689827403824109842, guid: 8e46b05d78b868d4c9001bc5cc49aa92, type: 3}
+  - {fileID: 7097171901544760574, guid: dde67c8b87038784987c0643fb1b05b0, type: 3}

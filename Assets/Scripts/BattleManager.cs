@@ -6,6 +6,8 @@ using DG.Tweening;
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager BM;
+    static EnemyEncounter ENEMY_ENCOUNTER;
+    public static void SetENEMY_ENCOUNTER(EnemyEncounter enemyEncounter){ENEMY_ENCOUNTER = enemyEncounter;}
     MenuManager MM;
 
     [SerializeField] Party playerParty;
@@ -67,13 +69,15 @@ public class BattleManager : MonoBehaviour
     IEnumerator Start()
     {
         GameManager.GM.SetText("Enemies appeared");
+        if(ENEMY_ENCOUNTER != null)
+            GameManager.GM.AddText(ENEMY_ENCOUNTER.GetEncounterName());
         MM.CloseAllMenus();
         
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(3);
 
-        yield return StartCoroutine(Combat());
+        GameManager.GoToDungeonNavigation();
 
-        yield return null;
+        //yield return StartCoroutine(Combat());
     }
 
     //BATTLE STATES
@@ -113,6 +117,8 @@ public class BattleManager : MonoBehaviour
         if (SideIsAlive(playerParty))
         {
             GameManager.GM.SetText(playerParty.name + " is victorious");
+            yield return new WaitForSeconds(3);
+            GameManager.GoToDungeonNavigation();
         }
         else
         {
