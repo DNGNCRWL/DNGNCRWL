@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spider: {fileID: 1425353541870137400, guid: 89460ed69b79d604a8b970c84641b270, type: 3}
-  size: {x: 9, y: 9}
+  size: {x: 4, y: 4}
   startPos: 0
   rooms:
   - room: {fileID: 8353801903171688916, guid: 875d6a1026a416d47b78558d00bdcc0c, type: 3}
@@ -226,6 +226,7 @@ MonoBehaviour:
   offset: {x: 12, y: 12}
   surfaces:
   - {fileID: 1896285819}
+  key: {fileID: 11400000, guid: a063e50125b1a13448b2c53c64978352, type: 2}
 --- !u!4 &1896285818
 Transform:
   m_ObjectHideFlags: 0
@@ -277,12 +278,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3819049138370474020, guid: 6248399d9fc64534aa2e2a6e7bf7464d, type: 3}
+      propertyPath: steps
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 3819049138370474020, guid: 6248399d9fc64534aa2e2a6e7bf7464d, type: 3}
+      propertyPath: moveTime
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3819049138370474020, guid: 6248399d9fc64534aa2e2a6e7bf7464d, type: 3}
       propertyPath: steps_max
-      value: 1
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 3819049138370474020, guid: 6248399d9fc64534aa2e2a6e7bf7464d, type: 3}
       propertyPath: steps_min
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3819049138370474020, guid: 6248399d9fc64534aa2e2a6e7bf7464d, type: 3}
       propertyPath: enemy_encounters.Array.size

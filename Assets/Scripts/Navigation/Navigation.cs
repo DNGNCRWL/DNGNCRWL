@@ -8,11 +8,11 @@ public class Navigation : MonoBehaviour
 {
     static readonly int blockSize = 4;
 
-    public int moveTime;
-    public int rotateTime;
+    public float moveTime;
+    public float rotateTime;
     public bool calculateSpeeds;
-    public int moveSpeed;
-    public int rotateSpeed;
+    public float moveSpeed;
+    public float rotateSpeed;
     public bool forward;
     public bool backward;
     public bool turnLeft;
@@ -46,6 +46,7 @@ public class Navigation : MonoBehaviour
     private void Awake()
     {
         transform.position = SAVE_POSITION;
+        Debug.Log("Wheres save"+ SAVE_POSITION);
         transform.eulerAngles = new Vector3Int(0, SAVE_ROTATION_Y, 0);
         SetRandomSteps();
         CalculateSpeeds();
@@ -60,12 +61,12 @@ public class Navigation : MonoBehaviour
         if(moveTime != 0)
             moveSpeed = blockSize / moveTime;
         else
-            moveSpeed = int.MaxValue;
+            moveSpeed = float.MaxValue;
         
         if(rotateTime != 0)
             rotateSpeed = 90 / rotateTime;
         else
-            rotateSpeed = int.MaxValue;
+            rotateSpeed = float.MaxValue;
     }
 
     void GetInputTaps()
@@ -185,13 +186,13 @@ public class Navigation : MonoBehaviour
 
         //transform.DOMove(transform.position + move, moveTime);
 
-        Vector3Int finalPos = Vector3Int.FloorToInt(transform.position + move);
+        Vector3 finalPos = transform.position + move;
         //Vector3Int finalPos = new Vector3Int(Mathf.RoundToInt(transform.position.x) + move.x, Mathf.RoundToInt(transform.position.y) + move.y, Mathf.RoundToInt(transform.position.z) + move.z);
-        Vector3Int toMove = move;
+        Vector3 toMove = move;
 
         while (toMove != Vector3Int.zero)
         {
-            Vector3Int toMoveThisFrame = (Mathf.RoundToInt(Time.deltaTime) * Mathf.RoundToInt(moveSpeed) * toMove);
+            Vector3 toMoveThisFrame = Time.deltaTime * moveSpeed * toMove.normalized;
 
             if (toMove.sqrMagnitude > toMoveThisFrame.sqrMagnitude)
             {
@@ -202,7 +203,7 @@ public class Navigation : MonoBehaviour
             {
                 transform.position = finalPos;
                 //transform.position += toMove;
-                toMove = Vector3Int.zero;
+                toMove = Vector3.zero;
             }
 
             yield return null;
@@ -215,11 +216,18 @@ public class Navigation : MonoBehaviour
 
     void Snap()
     {
-        transform.position = new Vector3Int(
-            Mathf.RoundToInt(transform.position.x),
-            Mathf.RoundToInt(transform.position.y),
-            Mathf.RoundToInt(transform.position.z)
-            );
+        int x = Mathf.RoundToInt(transform.position.x);
+        int y = Mathf.RoundToInt(transform.position.y);
+        int z = Mathf.RoundToInt(transform.position.z);
+        int yRotate = Mathf.RoundToInt(transform.eulerAngles.y / 90) * 90;
+        
+        transform.position = new Vector3(x, y, z);
+        if (x % blockSize == 0 && z % blockSize == 0)
+        {
+            
+            SAVE_POSITION = new Vector3Int(x, y, z);
+            SAVE_ROTATION_Y = yRotate;
+        }
     }
     
     IEnumerator Turn(float angle)
@@ -275,8 +283,6 @@ public class Navigation : MonoBehaviour
     void StartEncounter(EnemyEncounter enemyencounter)
     {
         BattleManager.SetENEMY_ENCOUNTER(enemyencounter);
-        SAVE_POSITION = Vector3Int.FloorToInt(transform.position);
-        SAVE_ROTATION_Y = Mathf.RoundToInt(transform.eulerAngles.y);
         DungeonGenerator.SAVED_DUNGEON.SetActive(false);
         SceneManager.LoadScene("Battle");
     }

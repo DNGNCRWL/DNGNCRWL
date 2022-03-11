@@ -47,6 +47,8 @@ public class DungeonGenerator : MonoBehaviour
 
     public static GameObject SAVED_DUNGEON;
 
+    public Item key;
+
     List<Cell> board;
 
     // Start is called before the first frame update
@@ -195,6 +197,7 @@ public class DungeonGenerator : MonoBehaviour
 
     void MazeGenerator()
     {
+        key = key.Copy();
         board = new List<Cell>();
 
         for (int i = 0; i < size.x; i++)
