@@ -74,7 +74,6 @@ public class BattleManager : MonoBehaviour
         MM.CloseAllMenus();
         
         yield return new WaitForSeconds(3);
-
         GameManager.GoToDungeonNavigation();
 
         //yield return StartCoroutine(Combat());

@@ -6,13 +6,4 @@ using UnityEngine;
 public class Bag : Item
 {
     public int carryingCapacity;
-
-    public override Item Copy()
-    {
-        Bag copy = ScriptableObject.CreateInstance<Bag>();
-        copy.CopyVariables(itemName, description, broken, value, actions, sprite, stackLimit);
-        copy.carryingCapacity = this.carryingCapacity;
-
-        return copy;
-    }
 }

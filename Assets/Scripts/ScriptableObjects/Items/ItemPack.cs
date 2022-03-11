@@ -24,18 +24,4 @@ public class ItemPack : Item
         List<Item> asList = new List<Item>(items);
         return base.GetExplicitString() + ": " + ItemManager.ItemListToExplicitString(new List<Item>(items));
     }
-
-    public override Item Copy()
-    {
-        ItemPack copy = ScriptableObject.CreateInstance<ItemPack>();
-        copy.CopyVariables(itemName, description, broken, value, actions, sprite, stackLimit);
-
-        Item[] copyItems = new Item[items.Length];
-        for (int i = 0; i < items.Length; i++)
-            copyItems[i] = items[i].Copy();
-
-        copy.items = copyItems;
-
-        return copy;
-    }
 }
