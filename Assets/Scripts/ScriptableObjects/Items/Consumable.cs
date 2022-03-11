@@ -12,16 +12,6 @@ public class Consumable : Item
         else return itemName + " with " + amount;
     }
 
-    public override Item Copy()
-    {
-        Item copy = ScriptableObject.CreateInstance<Item>();
-        copy.CopyVariables(itemName, description, broken, value, actions, sprite, stackLimit);
-
-        copy.amount = amount;
-
-        return copy;
-    }
-
     public override bool Consume()
     {
         if (amount <= 0)

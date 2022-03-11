@@ -9,15 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e06c0768d80cde741a0693385f4ad72d, type: 3}
-  m_Name: StackOfBolts
+  m_Script: {fileID: 11500000, guid: 872987c653755ce4f81116342f30c129, type: 3}
+  m_Name: Poison Darts
   m_EditorClassIdentifier: 
-  itemName: Stack Of Bolts
+  itemName: Poison Darts
   description: 
   broken: 0
   value: 0
-  actions: []
-  sprite: {fileID: 21300000, guid: 45c7dfe1b865b1b4f81df9c62f845fac, type: 3}
-  stackLimit: 10
-  amount: 10
-  unit: Bolt
+  actions:
+  - {fileID: 11400000, guid: 94d4320c20800e0428b825d0e980eb4d, type: 2}
+  sprite: {fileID: 0}
+  stackLimit: 1
+  amount: 1

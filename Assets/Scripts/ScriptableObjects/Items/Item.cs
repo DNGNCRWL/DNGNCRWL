@@ -13,32 +13,7 @@ public class Item : ScriptableObject
     public List<CharacterAction> actions;
     public Sprite sprite;
     public int stackLimit = 1;
-    
-    [HideInInspector]
     public int amount = 1;
-
-
-    public Item CopyVariables(Item item)
-    {
-        return CopyVariables(item.itemName, item.description, item.broken, item.value, item.actions, item.sprite, item.stackLimit);
-    }
-
-    public Item CopyVariables(string itemName, string description, bool broken, int value, List<CharacterAction> actions, Sprite sprite, int stackLimit)
-    {
-        this.name = name;
-        this.itemName = itemName;
-        this.description = description;
-        this.broken = broken;
-        this.value = value;
-        this.actions = new List<CharacterAction>(actions);
-        foreach(CharacterAction action in actions)
-        {
-            this.actions.Add(action);
-        }
-        this.sprite = sprite;
-        this.stackLimit = stackLimit;
-        return this;
-    }
 
     public Sprite GetSprite() {
         return sprite;
@@ -51,8 +26,7 @@ public class Item : ScriptableObject
 
     public virtual Item Copy()
     {
-        //Item copy = ScriptableObject.CreateInstance<Item>().CopyVariables(itemName, description, broken, value, actions);
-        Item copy = ScriptableObject.CreateInstance<Item>().CopyVariables(this);
+        Item copy = Instantiate(this);
 
         return copy;
     }

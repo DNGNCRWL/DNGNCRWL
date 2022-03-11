@@ -73,20 +73,4 @@ public class Scroll : Item
     {
         return "Scroll of " + base.GetExplicitString();
     }
-
-    public override Item Copy()
-    {
-        Scroll copy = ScriptableObject.CreateInstance<Scroll>();
-        copy.CopyVariables(itemName, description, broken, value, actions, sprite, stackLimit);
-
-        copy.known = known;
-        copy.clean = clean;
-        copy.index = index;
-
-        copy.Set(description, known, clean, index, randomizeOnCopy);
-
-        return copy;
-
-        //return ScriptableObject.CreateInstance<Scroll>().Set(description, broken, value, known, clean, index, randomizeOnCopy);
-    }
 }
