@@ -18,5 +18,5 @@ MonoBehaviour:
   value: 0
   actions: []
   sprite: {fileID: 21300000, guid: 45c7dfe1b865b1b4f81df9c62f845fac, type: 3}
-  stackLimit: 10
-  amount: 1
+  stackLimit: 20
+  amount: 10
