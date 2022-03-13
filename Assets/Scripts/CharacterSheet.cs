@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CharacterSheet : MonoBehaviour //can probably remove this as a monobehavior if we get rid of the unity calls at the bottom
 {
+    public SpriteRenderer spriteRenderer;
     public CharacterAction standGround;
     public CharacterAction defend;
     public CharacterAction returnToBack;
@@ -541,6 +542,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
         if (hitPoints < 0)
         {
+            spriteRenderer.color = Color.black;
             currentState = State.Dead;
             return new DamageReturn(0, GetCharacterName() + " is dead", true);
         }
@@ -759,5 +761,6 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     {
         InitializeRandomClassless();
         artificialIntelligence = GetComponent<EnemyActions>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 }

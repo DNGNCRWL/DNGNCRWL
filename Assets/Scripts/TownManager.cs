@@ -8,11 +8,7 @@ using UnityEngine.SceneManagement;
 public class TownManager : MonoBehaviour
 {
     public Transform TMTransform;
-    public Transform GMTransform;
-    public GameManager GM;
     public GameObject characterPrefab;
-    // private AssetBundle myLoadedAssetBundle;
-    // private string[] scenePaths;
 
     //Player Characters
     public List<CharacterSheet> playerCharacters;
@@ -46,10 +42,8 @@ public class TownManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //myLoadedAssetBundle = AssetBundle.LoadFromFile("Assets/AssetBundles/scenes");
-        //scenePaths = myLoadedAssetBundle.GetAllScenePaths();
-        playerCharacters = new List<CharacterSheet>(GM.playerCharacters);
-        reserveCharacters = new List<CharacterSheet>(GM.reserveCharacters);
+        playerCharacters = new List<CharacterSheet>(GameManager.GM.playerCharacters);
+        reserveCharacters = new List<CharacterSheet>(GameManager.GM.reserveCharacters);
         setRecCharInfo();
         setCharInfo();
         setReserveCharInfo();
@@ -145,14 +139,14 @@ public class TownManager : MonoBehaviour
     public void addCharToPlayerChars(int index) {
         GameObject character = recruitableCharacters[index].transform.gameObject;
         CharacterSheet charSheet = character.GetComponent<CharacterSheet>();
-        character.transform.parent = GMTransform;
+        character.transform.parent = GameManager.GM.transform;
         recruitableCharacters.Remove(charSheet);
         if (playerCharacters.Count < 4) {
             playerCharacters.Add(charSheet);
-            GM.playerCharacters.Add(charSheet);
+            GameManager.GM.playerCharacters.Add(charSheet);
         } else {
             reserveCharacters.Add(charSheet);
-            GM.reserveCharacters.Add(charSheet);
+            GameManager.GM.reserveCharacters.Add(charSheet);
         }
         setCharInfo();
         setReserveCharInfo();
@@ -163,9 +157,9 @@ public class TownManager : MonoBehaviour
     public void removeCharFromParty(int index) {
         CharacterSheet charSheet = playerCharacters[index];
         playerCharacters.Remove(charSheet);
-        GM.playerCharacters.Remove(charSheet);
+        GameManager.GM.playerCharacters.Remove(charSheet);
         reserveCharacters.Add(charSheet);
-        GM.reserveCharacters.Add(charSheet);
+        GameManager.GM.reserveCharacters.Add(charSheet);
         setCharInfo();
         setReserveCharInfo();
     }
@@ -173,11 +167,11 @@ public class TownManager : MonoBehaviour
     //Swap the char at the index from reserve characters to the player party
     public void addCharToParty(int index) {
         if (playerCharacters.Count < 4) {
-            CharacterSheet charSheet = reserveCharacters[index * (pageNumber + 1)];
+            CharacterSheet charSheet = reserveCharacters[index + (pageNumber * 2)];
             playerCharacters.Add(charSheet);
-            GM.playerCharacters.Add(charSheet);
+            GameManager.GM.playerCharacters.Add(charSheet);
             reserveCharacters.Remove(charSheet);
-            GM.reserveCharacters.Remove(charSheet);
+            GameManager.GM.reserveCharacters.Remove(charSheet);
             setCharInfo();
             setReserveCharInfo();
         }
@@ -204,8 +198,14 @@ public class TownManager : MonoBehaviour
     }
 
     public void enterDungeon() {
-        // if (playerCharacters.Count == 4) {
-        //     SceneManager.LoadScene(scenePaths[2], LoadSceneMode.Single);
-        // }
+        if (playerCharacters.Count > 0) {
+            SceneManager.LoadScene("DungeonNavigation", LoadSceneMode.Single);
+        }
+    }
+
+    public void TestBattle(){
+        if(playerCharacters.Count > 0){
+            SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
+        }
     }
 }

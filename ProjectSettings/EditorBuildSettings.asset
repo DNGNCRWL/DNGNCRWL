@@ -15,7 +15,10 @@ EditorBuildSettings:
     path: Assets/Scenes/DungeonNavigation.unity
     guid: 19f79742efd83ae4b9208121a17bb433
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/Battle.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/DungeonGeneration.unity
+    guid: 581eb09ea9c895444a4dda90a666d9f3
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 7d57bf700064e4e46bb1c634defa0595, type: 2}

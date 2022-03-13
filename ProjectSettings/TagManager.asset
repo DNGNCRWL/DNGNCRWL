@@ -7,11 +7,14 @@ TagManager:
   - Spawn Point
   - Rooms
   - SpawnPoint
+  - Spider
+  - Navigator 1
+  - test
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - whatIsPlayer
   - Water
   - UI
   - 
