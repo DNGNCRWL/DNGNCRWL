@@ -31,6 +31,9 @@ public class TownManager : MonoBehaviour
     //Recruitable Character Tiles
     public List<GameObject> recruitMenuTiles;
 
+    private List<Item> storeItems;
+    private List<Item[]> itemLists;
+
     void Awake() {
         for (int i = 0; i < 4; ++i) {
             GameObject temp = Instantiate(characterPrefab, TMTransform);
@@ -40,6 +43,7 @@ public class TownManager : MonoBehaviour
             recruitableCharacters[i].InitializeRandomClassless();
         }
 
+        //StoreGen();
         GM = GameManager.GM;
         GMTransform = GameManager.GM.transform;
     }
@@ -219,4 +223,17 @@ public class TownManager : MonoBehaviour
             SceneManager.LoadScene("DungeonGeneration", LoadSceneMode.Single);
         }
     }
+
+    // public void StoreGen() {
+    //     itemLists.Add(Armory.adventureTools);
+    //     itemLists.Add(Armory.specialItems);
+    //     itemLists.Add(Armory.startingWeapons);
+    //     for (int i = 0; i < 4; ++i) {
+    //         int randomIndex = UnityEngine.Random.Range(0, 1);
+    //         if (randomIndex == 1) {
+    //             int randomList = UnityEngine.Random.Range(0, 2);
+    //             Item temp = Instantiate(itemLists[randomList], TMTransform);
+    //         }
+    //     }
+    // }
 }
