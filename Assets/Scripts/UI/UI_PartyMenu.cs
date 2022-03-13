@@ -15,7 +15,6 @@ public class UI_PartyMenu : MonoBehaviour
     private bool shownState = true;
 
 
-
     private void Awake()
     {
         if (UI_PARTYMENU == null)
@@ -36,11 +35,6 @@ public class UI_PartyMenu : MonoBehaviour
     }
 
     private void Update() {
-        // Debug.Log(Input.GetKeyDown(KeyCode.P));
-        // if(Input.GetKeyDown(KeyCode.P)) {
-        //     Debug.Log("Party Menu Key Pressed");
-        //     OpenPartyUI();
-        // }
     }
 
     public void SetParty(Party party)

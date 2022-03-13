@@ -30,7 +30,11 @@ public class UI_Inventory : MonoBehaviour
     }
 
     public void SetCharacterTarget (CharacterSheet character){
+        targetCharacter = character;
         SetInventory(character.GetInventory());
+        if (UI_ContextMenu.UI_CONTEXTMENU != null) {
+            UI_ContextMenu.UI_CONTEXTMENU.targetCharacter = character;
+        }
     }
 
     public void SetInventory (Inventory inventory) {
@@ -63,7 +67,9 @@ public class UI_Inventory : MonoBehaviour
             int countShown = 0;
             do
             {
-                RectTransform itemSlotRectTransform = Instantiate(itemSlotTemplate, itemSlotContainer).GetComponent<RectTransform>();
+                GameObject itemSlotNew = Instantiate(itemSlotTemplate, itemSlotContainer);
+                itemSlotHandler handler = itemSlotNew.GetComponentInChildren<itemSlotHandler>();
+                RectTransform itemSlotRectTransform = itemSlotNew.GetComponent<RectTransform>();
                 itemSlotRectTransform.gameObject.SetActive(true);
                 itemSlotRectTransform.anchoredPosition = new Vector2(x * itemSlotCellSizeX, -y * itemSlotCellSizeY);
                 UnityEngine.UI.Image image = itemSlotRectTransform.Find("icon").gameObject.GetComponent<UnityEngine.UI.Image>();
@@ -80,7 +86,9 @@ public class UI_Inventory : MonoBehaviour
 
                 TextMeshProUGUI uiCount = itemSlotRectTransform.Find("count").GetComponent<TextMeshProUGUI>();
                 int remaining = count - countShown;
-                Debug.Log("Name: " + item.itemName + " Stackable: " + item.IsStackable().ToString()+ " StackLimit: " + item.stackLimit +  "\n  amount: " + item.amount+ " remaining: " + remaining);
+                //Debug.Log("Name: " + item.itemName + " Stackable: " + item.IsStackable().ToString()+ " StackLimit: " + item.stackLimit +  "\n  amount: " + item.amount+ " remaining: " + remaining);
+
+                handler.item = item;
 
                 if (item.amount > 1 && item.IsStackable())
                 {

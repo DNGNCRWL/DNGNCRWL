@@ -12,7 +12,7 @@ public class CharacterAction : ScriptableObject
     [Header("STARTING MESSAGES")]
     public MessagePackage startMessage;
     public MessagePackage actionMessage;
-    public enum TargetingType {None, WeaponAttack, Allies, Enemies, NearbyAllies, Any};
+    public enum TargetingType {None, WeaponAttack, Allies, Enemies, NearbyAllies, Any, Self};
     public TargetingType targetingType;
 
     [Header("TESTS")]

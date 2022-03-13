@@ -11,6 +11,8 @@ public class Item : ScriptableObject
     public bool broken;
     public int value;
     public List<CharacterAction> actions;
+    
+    public List<CharacterAction> inventoryActions;
     public Sprite sprite;
     public int stackLimit = 1;
     

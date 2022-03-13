@@ -32,14 +32,14 @@ public class Party
 
     public void ChangePartyLimit(int partyLimitIn) {
         if (characters.Count > partyLimitIn)
-            Debug.LogError("Error: Tired to set Party limit below existing character count");
+            Debug.LogError("Error: Tried to set Party limit below existing character count");
         else
             this.partyLimit = partyLimitIn;
     }
 
     public void AddCharacter(CharacterSheet newChar) {
         if (characters.Count >= partyLimit) {
-            Debug.LogError("Tried Adding Character when Party is Full");
+            Debug.LogError("Error: Tried Adding Character when Party is Full");
         } else {
             characters.Add(newChar);
             OnPartyListChanged?.Invoke(this, EventArgs.Empty);

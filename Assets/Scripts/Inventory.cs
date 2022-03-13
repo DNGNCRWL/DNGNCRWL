@@ -18,20 +18,12 @@ public class Inventory
     public Bag storage = null;
 
     public Armor armor = null;
+    private int slotsLimit = 10;
+    private int slotsUsed = 0;
 
     public Inventory() {
         itemList = new List<Item>();
-        //AddItem(new Item {itemName = "Femur", sprite = Addressables.LoadAssetAsync<Sprite[]>("Assets/Images/Sprites/Weapons/Femur.png")});
         //AddItem(ItemManager.armory.startingWeapons[0].Copy(), 3);
-        // AddItem(ItemManager.IM.STARTING_WEAPONS[1].Copy(), 2);
-        // AddItem(ItemManager.IM.STARTING_WEAPONS[2].Copy());
-        // AddItem(ItemManager.IM.STARTING_WEAPONS[3].Copy());
-        // AddItem(ItemManager.IM.STARTING_WEAPONS[4].Copy());
-        // AddItem(ItemManager.IM.STARTING_WEAPONS[5].Copy());
-        // AddItem(ItemManager.IM.STARTING_WEAPONS[6].Copy());
-        // AddItem(ItemManager.IM.STARTING_WEAPONS[7].Copy());
-        // AddItem(ItemManager.IM.STARTING_WEAPONS[8].Copy());
-        // AddItem(ItemManager.IM.STARTING_WEAPONS[9].Copy());
         Debug.Log("Inventory Init");
     }
 
@@ -133,6 +125,38 @@ public class Inventory
     {
         AddItem(armor);
         armor = newArmor;
+    }
+
+    public void SetSlotLimit(int slotsLimit) {
+        this.slotsLimit = slotsLimit;
+    }
+
+    private void UpdateSlotsUsed() {
+        int usedSlots = 0;
+        foreach (Item item in itemList) {
+            int count = item.amount;
+            int counted = 0;
+            do
+            {
+                int remaining = count - counted;
+                if (item.amount > 1 && item.IsStackable())
+                {
+                    if (remaining > item.stackLimit)
+                    {
+                        counted += item.stackLimit;
+                    }
+                    else
+                    {
+                        counted += remaining;
+                    }
+                }
+                else
+                {
+                    counted++;
+                }
+                usedSlots++;
+            } while (counted < count);
+        }
     }
 
 }
