@@ -47,7 +47,7 @@ public class DungeonGenerator : MonoBehaviour
 
     public static GameObject SAVED_DUNGEON;
 
-    public Item key;
+    //public Item key;
 
     List<Cell> board;
 
