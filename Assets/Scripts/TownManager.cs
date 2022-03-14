@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
@@ -31,31 +31,32 @@ public class TownManager : MonoBehaviour
     //Recruitable Character Tiles
     public List<GameObject> recruitMenuTiles;
 
-    private List<Item> storeItems;
-    private List<Item[]> itemLists;
+
+    //Store Menu -----------------------------------------------------------------
+    public List<Item> storeItems;
+    public List<GameObject> storeTiles;
+    public GameObject itemInfo;
+    public TextMeshProUGUI silverCount;
+
+    public int silver;
 
     void Awake() {
-        for (int i = 0; i < 4; ++i) {
-            GameObject temp = Instantiate(characterPrefab, TMTransform);
-            recruitableCharacters.Add(temp.GetComponent<CharacterSheet>());
-        }
-        for (int i = 0; i < recruitableCharacters.Count; ++i) {
-            recruitableCharacters[i].InitializeRandomClassless();
-        }
-
-        //StoreGen();
         GM = GameManager.GM;
         GMTransform = GameManager.GM.transform;
+        generateRandom();
+        StoreGen();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        playerCharacters = new List<CharacterSheet>(GM.playerCharacters);
-        reserveCharacters = new List<CharacterSheet>(GM.reserveCharacters);
+        playerCharacters = GM.playerCharacters;
+        reserveCharacters = GM.reserveCharacters;
         setRecCharInfo();
         setCharInfo();
         setReserveCharInfo();
+        setStoreInfo();
+        silver = CalculateSilver();
     }
 
     // Update is called once per frame
@@ -159,23 +160,20 @@ public class TownManager : MonoBehaviour
         recruitableCharacters.Remove(charSheet);
         if (playerCharacters.Count < 4) {
             playerCharacters.Add(charSheet);
-            GM.playerCharacters.Add(charSheet);
         } else {
             reserveCharacters.Add(charSheet);
-            GM.reserveCharacters.Add(charSheet);
         }
         setCharInfo();
         setReserveCharInfo();
         setRecCharInfo();
+        silver = CalculateSilver();
     }
 
     //Swap the char at the index from the player party to reserve characters
     public void removeCharFromParty(int index) {
         CharacterSheet charSheet = playerCharacters[index];
         playerCharacters.Remove(charSheet);
-        GM.playerCharacters.Remove(charSheet);
         reserveCharacters.Add(charSheet);
-        GM.reserveCharacters.Add(charSheet);
         setCharInfo();
         setReserveCharInfo();
     }
@@ -185,9 +183,7 @@ public class TownManager : MonoBehaviour
         if (playerCharacters.Count < 4) {
             CharacterSheet charSheet = reserveCharacters[index + (pageNumber * 2)];
             playerCharacters.Add(charSheet);
-            GM.playerCharacters.Add(charSheet);
             reserveCharacters.Remove(charSheet);
-            GM.reserveCharacters.Remove(charSheet);
             setCharInfo();
             setReserveCharInfo();
         }
@@ -224,16 +220,126 @@ public class TownManager : MonoBehaviour
         }
     }
 
-    // public void StoreGen() {
-    //     itemLists.Add(Armory.adventureTools);
-    //     itemLists.Add(Armory.specialItems);
-    //     itemLists.Add(Armory.startingWeapons);
-    //     for (int i = 0; i < 4; ++i) {
-    //         int randomIndex = UnityEngine.Random.Range(0, 1);
-    //         if (randomIndex == 1) {
-    //             int randomList = UnityEngine.Random.Range(0, 2);
-    //             Item temp = Instantiate(itemLists[randomList], TMTransform);
-    //         }
-    //     }
-    // }
+    public void setStoreInfo() {
+        for (int i = 0; i < storeTiles.Count; ++i) {
+            if (storeItems[i] != null) {
+                storeTiles[i].GetComponent<Image>().sprite = storeItems[i].GetSprite();
+            } else {
+                storeTiles[i].SetActive(false);
+            }
+            HideItemInfo();
+        }
+    }
+
+    public void StoreGen() {
+        for (int i = 0; i < storeTiles.Count; ++i) {
+            int randomIndex = UnityEngine.Random.Range(0, 2);
+            if (randomIndex == 0) {
+                int randomList = UnityEngine.Random.Range(0, 6);
+                Item temp = (ItemManager.RANDOM_ITEM(ItemManager.STARTING_WEAPONS).Copy());
+                switch (randomList) {
+                    case 0:
+                        temp = (ItemManager.RANDOM_ITEM(ItemManager.BAGS).Copy());
+                        Debug.Log("check case 0");
+                        break;
+                    case 1:
+                        temp = (ItemManager.RANDOM_ITEM(ItemManager.ADVENTURE_TOOLS).Copy());
+                        Debug.Log("check case 1");
+                        break;
+                    case 2:
+                        temp = (ItemManager.RANDOM_ITEM(ItemManager.SPECIAL_ITEMS).Copy());
+                        Debug.Log("check case 2");
+                        break;
+                    case 3:
+                        temp = (ItemManager.RANDOM_ITEM(ItemManager.STARTING_WEAPONS).Copy());
+                        Debug.Log("check case 3");
+                        break;
+                    case 4:
+                        temp = (ItemManager.RANDOM_ITEM(ItemManager.STARTING_ARMORS).Copy());
+                        Debug.Log("check case 4");
+                        break;
+                    case 5:
+                        temp = (ItemManager.RANDOM_ITEM(ItemManager.STARTING_ARMORS_LOWTIER).Copy());
+                        Debug.Log("check case 5");
+                        break;
+                }
+                Debug.Log("end of switch check");
+                //temp.gameObject.parent = TMTransform;
+                storeItems.Add(temp);
+            } else {
+                storeItems.Add(null);
+            }
+        }
+        silverCount.text = silver.ToString();
+    }
+
+    public void DisplayItemInfo(GameObject button) {
+        int index = storeTiles.IndexOf(button);
+        Item item = storeItems[index];
+        string type = "";
+        string wielding = "";
+        string extras = "";
+        string actions = "";
+
+        for (int i = 0; i < item.actions.Count; ++i) {
+            actions += item.actions[i].actionName;
+            if(i < item.actions.Count - 1) {
+                actions += ", ";
+            }
+        }
+
+        if (item.GetType() == typeof(Item)) {
+            type = "Item";
+        } else if (item.GetType() == typeof(Ammo)) {
+            type = "Ammo";
+        } else if (item.GetType() == typeof(Armor)) {
+            Armor armor = (Armor) item;
+            type = "Armor";
+            extras = (armor.armorTier * 2).ToString() + " defense";
+        } else if (item.GetType() == typeof(Bag)) {
+            Bag bag = (Bag) item;
+            type = "Bag";
+            extras = bag.carryingCapacity.ToString() + " slots";
+        } else if (item.GetType() == typeof(Consumable)) {
+            type = "Consumable";
+        } else if (item.GetType() == typeof(ProjectileWeapon)) {
+            type = "Projectile Weapon";
+        } else if (item.GetType() == typeof(Scroll)) {
+            type = "Scroll";
+        } else if (item.GetType() == typeof(Weapon)) {
+            Weapon weapon = (Weapon) item;
+            if (weapon.twoHanded) {
+                wielding = "Two Handed";
+            } else {
+                wielding = "One Handed";
+            }
+            type = "Weapon";
+            extras = (weapon.damage.dieCount * weapon.damage.dieSize).ToString() + " Max Damage";
+        }
+
+        itemInfo.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = item.itemName;
+        itemInfo.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = wielding;
+        itemInfo.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = type;
+        itemInfo.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = actions;
+        itemInfo.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = extras;
+        itemInfo.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = item.description;
+        itemInfo.transform.GetChild(6).GetComponent<TextMeshProUGUI>().text = item.value + " silver";
+
+        itemInfo.SetActive(true);
+    }
+
+    public void HideItemInfo() {
+        itemInfo.SetActive(false);
+    }
+
+    public int CalculateSilver() {
+        int total = 0;
+        foreach(CharacterSheet character in playerCharacters) {
+            silver += character.GetSilver();
+        }
+        foreach(CharacterSheet character in reserveCharacters) {
+            silver += character.GetSilver();
+        }
+        return total;
+    }
 }
