@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 public class TownManager : MonoBehaviour
 {
     public Transform TMTransform;
+    public GameManager GM;
+    public Transform GMTransform;
     public GameObject characterPrefab;
 
     //Player Characters
@@ -29,6 +31,9 @@ public class TownManager : MonoBehaviour
     //Recruitable Character Tiles
     public List<GameObject> recruitMenuTiles;
 
+    private List<Item> storeItems;
+    private List<Item[]> itemLists;
+
     void Awake() {
         for (int i = 0; i < 4; ++i) {
             GameObject temp = Instantiate(characterPrefab, TMTransform);
@@ -37,13 +42,17 @@ public class TownManager : MonoBehaviour
         for (int i = 0; i < recruitableCharacters.Count; ++i) {
             recruitableCharacters[i].InitializeRandomClassless();
         }
+
+        //StoreGen();
+        GM = GameManager.GM;
+        GMTransform = GameManager.GM.transform;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        playerCharacters = new List<CharacterSheet>(GameManager.GM.playerCharacters);
-        reserveCharacters = new List<CharacterSheet>(GameManager.GM.reserveCharacters);
+        playerCharacters = new List<CharacterSheet>(GM.playerCharacters);
+        reserveCharacters = new List<CharacterSheet>(GM.reserveCharacters);
         setRecCharInfo();
         setCharInfo();
         setReserveCharInfo();
@@ -75,6 +84,7 @@ public class TownManager : MonoBehaviour
 
     //Set info about characters in player party, if there are more spaces than characters deactivate unused spaces
     public void setCharInfo() {
+        //Set each tile with character info
         for (int i = 0; i < 4; ++i) {
             if (i < playerCharacters.Count) {
                 charMenuTiles[i].SetActive(true);
@@ -87,6 +97,11 @@ public class TownManager : MonoBehaviour
 
     //Set info about characters in player party, if there are more spaces than characters deactivate unused spaces
     public void setReserveCharInfo() {
+        //if the current page is beyond the amount of reserve characters, go back a page
+        if ((pageNumber + 1) * 2 > reserveCharacters.Count + 1 && pageNumber != 0) {
+            --pageNumber;
+        }
+
         //Check for decrement button
         if (pageNumber > 0) {
             decrementPageButton.SetActive(true);
@@ -101,6 +116,7 @@ public class TownManager : MonoBehaviour
             incrementPageButton.SetActive(false);
         }
 
+        //Set each tile with character info
         for (int i = 0; i < 2; ++i) {
             if (i + (pageNumber * 2) < reserveCharacters.Count) {
                 reserveCharMenuTiles[i].SetActive(true);
@@ -124,7 +140,7 @@ public class TownManager : MonoBehaviour
         }
     }
 
-
+    //Takes tile list, index of tile list, character list, and index of character list, and sets tile info to character info
     public void setInfo(List<GameObject> tiles, int tIndex, List<CharacterSheet> characters, int cIndex) {
         tiles[tIndex].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = characters[cIndex].GetCharacterName();
         tiles[tIndex].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Max HP: " + characters[cIndex].GetMaxHitPoints().ToString();
@@ -139,14 +155,14 @@ public class TownManager : MonoBehaviour
     public void addCharToPlayerChars(int index) {
         GameObject character = recruitableCharacters[index].transform.gameObject;
         CharacterSheet charSheet = character.GetComponent<CharacterSheet>();
-        character.transform.parent = GameManager.GM.transform;
+        character.transform.parent = GMTransform;
         recruitableCharacters.Remove(charSheet);
         if (playerCharacters.Count < 4) {
             playerCharacters.Add(charSheet);
-            GameManager.GM.playerCharacters.Add(charSheet);
+            GM.playerCharacters.Add(charSheet);
         } else {
             reserveCharacters.Add(charSheet);
-            GameManager.GM.reserveCharacters.Add(charSheet);
+            GM.reserveCharacters.Add(charSheet);
         }
         setCharInfo();
         setReserveCharInfo();
@@ -157,9 +173,9 @@ public class TownManager : MonoBehaviour
     public void removeCharFromParty(int index) {
         CharacterSheet charSheet = playerCharacters[index];
         playerCharacters.Remove(charSheet);
-        GameManager.GM.playerCharacters.Remove(charSheet);
+        GM.playerCharacters.Remove(charSheet);
         reserveCharacters.Add(charSheet);
-        GameManager.GM.reserveCharacters.Add(charSheet);
+        GM.reserveCharacters.Add(charSheet);
         setCharInfo();
         setReserveCharInfo();
     }
@@ -169,14 +185,15 @@ public class TownManager : MonoBehaviour
         if (playerCharacters.Count < 4) {
             CharacterSheet charSheet = reserveCharacters[index + (pageNumber * 2)];
             playerCharacters.Add(charSheet);
-            GameManager.GM.playerCharacters.Add(charSheet);
+            GM.playerCharacters.Add(charSheet);
             reserveCharacters.Remove(charSheet);
-            GameManager.GM.reserveCharacters.Remove(charSheet);
+            GM.reserveCharacters.Remove(charSheet);
             setCharInfo();
             setReserveCharInfo();
         }
     }
 
+    //Generates random recruitable characters
     public void generateRandom() {
         for (int i = 0; i < 4; ++i) {
             GameObject temp = Instantiate(characterPrefab, TMTransform);
@@ -188,24 +205,35 @@ public class TownManager : MonoBehaviour
         setRecCharInfo();
     }
 
+    //Increases page number and reloads reserve characters
     public void incrementPageNumber() {
         ++pageNumber;
         setReserveCharInfo();
     }
+
+    //Decreases page number and reloads reserve characters
     public void decrementPageNumber() {
         --pageNumber;
         setReserveCharInfo();
     }
 
+    //ensures party is not empty and enters the rest of the dungeon
     public void enterDungeon() {
         if (playerCharacters.Count > 0) {
             SceneManager.LoadScene("DungeonGeneration", LoadSceneMode.Single);
         }
     }
 
-    public void TestBattle(){
-        if(playerCharacters.Count > 0){
-            SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
-        }
-    }
+    // public void StoreGen() {
+    //     itemLists.Add(Armory.adventureTools);
+    //     itemLists.Add(Armory.specialItems);
+    //     itemLists.Add(Armory.startingWeapons);
+    //     for (int i = 0; i < 4; ++i) {
+    //         int randomIndex = UnityEngine.Random.Range(0, 1);
+    //         if (randomIndex == 1) {
+    //             int randomList = UnityEngine.Random.Range(0, 2);
+    //             Item temp = Instantiate(itemLists[randomList], TMTransform);
+    //         }
+    //     }
+    // }
 }

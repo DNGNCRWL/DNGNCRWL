@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Cross Burst
+  m_Name: Pierce 2
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -21,21 +21,21 @@ AnimationClip:
   - curve:
     - time: 0
       value: {fileID: 8440789591619582875, guid: 6e640b5f810b161449fc109c04459687, type: 3}
-    - time: 0.083333336
+    - time: 0.06666667
       value: {fileID: 7486689902080301189, guid: 6e640b5f810b161449fc109c04459687, type: 3}
-    - time: 0.16666667
+    - time: 0.13333334
       value: {fileID: -4957503897148772955, guid: 6e640b5f810b161449fc109c04459687, type: 3}
-    - time: 0.25
+    - time: 0.2
       value: {fileID: -8670099552693586326, guid: 6e640b5f810b161449fc109c04459687, type: 3}
-    - time: 0.33333334
+    - time: 0.26666668
       value: {fileID: -6445527427219040749, guid: 6e640b5f810b161449fc109c04459687, type: 3}
-    - time: 0.41666666
+    - time: 0.33333334
       value: {fileID: -2710752615471462656, guid: 6e640b5f810b161449fc109c04459687, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
     script: {fileID: 0}
-  m_SampleRate: 12
+  m_SampleRate: 15
   m_WrapMode: 0
   m_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -61,7 +61,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.5
+    m_StopTime: 0.4
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

@@ -8,15 +8,8 @@ public class Weapon : Item
     public Damage damage;
     public bool twoHanded;
     public Stat abilityToUse;
-
-    public Weapon CopyWeaponVariables(Damage damage, bool twoHanded, Stat abilityToUse)
-    {
-        this.damage = damage;
-        this.twoHanded = twoHanded;
-        this.abilityToUse = abilityToUse;
-
-        return this;
-    }
+    public AnimationClip effectAnimation;
+    public AnimationClip criticalEffectAnimation;
 
     public virtual Damage GetDamage()
     {
@@ -30,15 +23,6 @@ public class Weapon : Item
     public override string GetExplicitString()
     {
         return ((damage.dieCount > 1) ? damage.dieCount.ToString() : "") + "d" + damage.dieSize + " " + (twoHanded ? "Two Handed " : " ") + itemName;
-    }
-
-    public override Item Copy()
-    {
-        Weapon copy = ScriptableObject.CreateInstance<Weapon>();
-        copy.CopyVariables(itemName, description, broken, value, actions, sprite, stackLimit);
-        copy.CopyWeaponVariables(damage, twoHanded, abilityToUse);
-
-        return copy;
     }
 }
 

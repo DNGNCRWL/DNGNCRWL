@@ -5,6 +5,7 @@ using UnityEngine;
 public class ActionManager : MonoBehaviour
 {
     static readonly int sameSideRangedAttackPenalty = 4;
+    public GameObject battleEffect;
 
     public static ActionManager AM;
     List<ActionParameters> actionQueue;
@@ -296,7 +297,15 @@ public class ActionManager : MonoBehaviour
     //targeted
     static IEnumerator TargetTakeWeaponDamage(ParameteredAtomicFunction args)
     {
-        DamageReturn damageReturn = args.target.TakeDamage(args.actor.GetWeapon().damage, args.critical);
+        Weapon thisWeapon = args.actor.GetWeapon();
+
+        DamageReturn damageReturn = args.target.TakeDamage(thisWeapon.damage, args.critical);
+
+        SpriteRenderer targetSpriteRenderer = args.target.gameObject.GetComponentInChildren<SpriteRenderer>();
+        Vector3 spawnPoint = targetSpriteRenderer.bounds.center;
+        AM.StartCoroutine(
+            BattleEffect.RandomSpawnEffect(AM.battleEffect, thisWeapon.effectAnimation, spawnPoint, 1, 0.2f, damageReturn.damageDone)
+            );
 
         GameManager.GM.AddText(args.target.GetCharacterName() + " takes " + damageReturn.damageDone + " damage");
         yield return new WaitForSeconds(args.floatValue);
@@ -316,47 +325,6 @@ public class ActionManager : MonoBehaviour
             args.actor.Sneak();
 
         yield return null;
-
-        // if (!BattleManager.BM)
-        //     yield break;
-        // CharacterSheet opposingLeader = BattleManager.GetOppositeLead(args.target);
-
-        // d20 roll = new d20(args.action.difficultyRating, args.target, StatSelector.Agility, opposingLeader, StatSelector.Presence);
-
-        // string resultText = "Sneak is";
-        // if (roll.Roll() <= 8)
-        //     resultText += " looking questionable";
-        // else if (roll.Roll() <= 13)
-        //     resultText += " going well";
-        // else
-        //     resultText = args.actor.GetCharacterName() + " disappears";
-
-        // GameManager.GM.AddText(resultText);
-        // yield return new WaitForSeconds(args.floatValue);
-
-        // if (roll.IsSuccess())
-        // {
-        //     if (roll.Roll() <= 8)
-        //         resultText = "But they still made it!";
-        //     else
-        //         resultText = "And they made it through";
-        //     args.actor.Sneak();
-
-        //     GameManager.GM.AddText(resultText);
-        //     yield return new WaitForSeconds(args.floatValue);
-
-        // }
-        // else
-        // {
-        //     if (roll.Roll() > 8)
-        //         resultText = "But " + opposingLeader.GetCharacterName() + " stopped them";
-        //     else
-        //         resultText = "And they couldn't make it";
-
-        //     GameManager.GM.AddText(resultText);
-        //     yield return new WaitForSeconds(args.floatValue);
-        // }
-        // yield return null;
     }
 
     static IEnumerator CounterAttack(ParameteredAtomicFunction args)
@@ -407,25 +375,6 @@ public class ActionManager : MonoBehaviour
     {
         args.target.Backlines();
 
-        // if (!args.actor) yield break;
-        // if (!args.target) yield break;
-
-        // Weapon weapon = args.actor.GetUnequippedWeapon();
-        // d20 roll = new d20(args.action.difficultyRating, args.actor, Stat.Strength, args.target, Stat.Strength);
-
-        // if (roll.IsSuccess())
-        // {
-        //     args.target.TakeDamage(weapon.GetDamage(), roll.IsCritical());
-        //     args.target.Push();
-        // }
-        // else
-        // {
-        //     if (roll.IsFumble())
-        //     {
-        //         CounterAttack(args);
-        //     }
-        // }
-
         yield return null;
     }
     static IEnumerator Return(ParameteredAtomicFunction args)
@@ -458,11 +407,11 @@ public class ActionManager : MonoBehaviour
             paf.item = item;
             paf.action = action;
 
-            yield return ExecutePAF(paf);
+            yield return ExecuteSinglePAF(paf);
         }
     }
 
-    static IEnumerator ExecutePAF(ParameteredAtomicFunction args)
+    static IEnumerator ExecuteSinglePAF(ParameteredAtomicFunction args)
     {
         switch (args.atomicFunction)
         {
