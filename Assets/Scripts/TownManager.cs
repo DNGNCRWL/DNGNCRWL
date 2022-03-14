@@ -37,6 +37,8 @@ public class TownManager : MonoBehaviour
     public List<GameObject> storeTiles;
     public GameObject itemInfo;
     public TextMeshProUGUI silverCount;
+    public GameObject buyForMenu;
+    public int itemToBuy;
 
     public int silver;
 
@@ -56,6 +58,7 @@ public class TownManager : MonoBehaviour
         setCharInfo();
         setReserveCharInfo();
         setStoreInfo();
+        SetBuyForMenu();
         silver = CalculateSilver();
     }
 
@@ -166,6 +169,7 @@ public class TownManager : MonoBehaviour
         setCharInfo();
         setReserveCharInfo();
         setRecCharInfo();
+        SetBuyForMenu();
         silver = CalculateSilver();
     }
 
@@ -176,6 +180,7 @@ public class TownManager : MonoBehaviour
         reserveCharacters.Add(charSheet);
         setCharInfo();
         setReserveCharInfo();
+        SetBuyForMenu();
     }
 
     //Swap the char at the index from reserve characters to the player party
@@ -186,6 +191,7 @@ public class TownManager : MonoBehaviour
             reserveCharacters.Remove(charSheet);
             setCharInfo();
             setReserveCharInfo();
+            SetBuyForMenu();
         }
     }
 
@@ -341,5 +347,53 @@ public class TownManager : MonoBehaviour
             silver += character.GetSilver();
         }
         return total;
+    }
+
+    public void SetBuyForMenu() {
+        for(int i = 0; i < 4; ++i) {
+            GameObject temp = buyForMenu.transform.GetChild(4-i).gameObject;
+            if (i < playerCharacters.Count) {
+                temp.SetActive(true);
+                temp.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = playerCharacters[i].GetCharacterName();
+            } else {
+                temp.SetActive(false);
+            }
+        }
+    }
+
+    public void OpenBuyForMenu(int itemNum) {
+        itemToBuy = itemNum;
+        buyForMenu.transform.position = Input.mousePosition;
+        if (playerCharacters.Count != 0) {
+            buyForMenu.transform.position = Input.mousePosition + GetGUIElementOffset(buyForMenu.transform.GetChild(5-playerCharacters.Count).GetComponent<RectTransform>());
+        } else {
+            buyForMenu.transform.position = Input.mousePosition + GetGUIElementOffset(buyForMenu.transform.GetChild(0).GetComponent<RectTransform>());
+        }
+        buyForMenu.SetActive(true);
+    }
+
+    public static Vector3 GetGUIElementOffset(RectTransform rect) {
+        Rect screenBounds = new Rect(0f, 0f, Screen.width, Screen.height);
+        Vector3[] objectCorners = new Vector3[4];
+        rect.GetWorldCorners(objectCorners);
+ 
+        Vector3 offset = new Vector3(0, 0, 0);
+ 
+        for (int i = 0; i < objectCorners.Length; i++) {
+            if (objectCorners[i].x < screenBounds.xMin) {
+                offset.x = screenBounds.xMin - objectCorners[i].x;
+            }
+            if (objectCorners[i].x > screenBounds.xMax) {
+                offset.x = screenBounds.xMax - objectCorners[i].x;
+            }
+            if (objectCorners[i].y < screenBounds.yMin) {
+                offset.y = screenBounds.yMin - objectCorners[i].y;
+            }
+            if (objectCorners[i].y > screenBounds.yMax) {
+                offset.y = screenBounds.yMax - objectCorners[i].y;
+            }
+        }
+ 
+        return offset;
     }
 }
