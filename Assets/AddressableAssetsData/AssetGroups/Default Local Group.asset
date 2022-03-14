@@ -29,6 +29,10 @@ MonoBehaviour:
     m_Address: Assets/Images/Items/debugEmpty.png
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 49eb1c9310fc59c48a1945f82eaa0518
+    m_Address: Assets/Scenes/Town.unity
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 2e705956a3c624349946baf88c802f93, type: 2}
   m_SchemaSet:

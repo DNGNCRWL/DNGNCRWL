@@ -150,7 +150,7 @@ public class DungeonGenerator : MonoBehaviour
                 Cell currentCell = board[(i + j * size.x)];
                 if (currentCell.visited)
                 {
-                    int randomRoom = -1;
+                    int randomRoom = Random.Range(0, rooms.Length);
                     List<int> availableRooms = new List<int>();
                     for (int k = 0; k < rooms.Length; k++)
                     {
@@ -186,6 +186,7 @@ public class DungeonGenerator : MonoBehaviour
                     if (i+1 == size.x && j+1 == size.y)
                     {
                         GameObject spider = Instantiate(enemy, new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, newRoom.transform.position.z), Quaternion.identity);
+                        FindObjectOfType<EndTrigger>().gameHasEnded = false;
                     }
                 }
             }
