@@ -47,7 +47,7 @@ public class DungeonGenerator : MonoBehaviour
 
     public static GameObject SAVED_DUNGEON;
 
-    public Item key;
+   // public Item key;
 
     List<Cell> board;
 
@@ -70,14 +70,12 @@ public class DungeonGenerator : MonoBehaviour
 
     public void BuildMesh()
     {
-        for (int i = 0; i < surfaces.Length; i++)
-        {
             for (int i = 0; i < surfaces.Length; i++)
             {
                 surfaces[i].BuildNavMesh();
 
             }
-        }
+        
     }
     public void Update()
     {
@@ -207,7 +205,7 @@ public class DungeonGenerator : MonoBehaviour
 
     void MazeGenerator()
     {
-        key = key.Copy();
+        //key = key.Copy();
         board = new List<Cell>();
 
         for (int i = 0; i < size.x; i++)
