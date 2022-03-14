@@ -47,6 +47,8 @@ public class DungeonGenerator : MonoBehaviour
 
     public static GameObject SAVED_DUNGEON;
 
+    public Item key;
+
     List<Cell> board;
 
     // Start is called before the first frame update
@@ -148,7 +150,7 @@ public class DungeonGenerator : MonoBehaviour
                 Cell currentCell = board[(i + j * size.x)];
                 if (currentCell.visited)
                 {
-                    int randomRoom = -1;
+                    int randomRoom = Random.Range(0, rooms.Length);
                     List<int> availableRooms = new List<int>();
                     for (int k = 0; k < rooms.Length; k++)
                     {
@@ -184,6 +186,7 @@ public class DungeonGenerator : MonoBehaviour
                     if (i+1 == size.x && j+1 == size.y)
                     {
                         GameObject spider = Instantiate(enemy, new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, newRoom.transform.position.z), Quaternion.identity);
+                        FindObjectOfType<EndTrigger>().gameHasEnded = false;
                     }
                 }
             }
@@ -195,6 +198,7 @@ public class DungeonGenerator : MonoBehaviour
 
     void MazeGenerator()
     {
+        key = key.Copy();
         board = new List<Cell>();
 
         for (int i = 0; i < size.x; i++)
