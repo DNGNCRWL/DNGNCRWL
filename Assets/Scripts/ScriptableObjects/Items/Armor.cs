@@ -29,17 +29,6 @@ public class Armor : Item
         return 0;
     }
 
-    public override Item Copy()
-    {
-        Armor copy = ScriptableObject.CreateInstance<Armor>();
-        copy.CopyVariables(itemName, description, broken, value, actions, sprite, stackLimit);
-
-        copy.armorTier = this.armorTier;
-        copy.maxArmorTier = this.maxArmorTier;
-
-        return copy;
-    }
-
     public void Break()
     {
         armorTier--;

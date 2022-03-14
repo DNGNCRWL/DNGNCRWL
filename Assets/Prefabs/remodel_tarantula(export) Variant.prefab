@@ -104,7 +104,7 @@ MonoBehaviour:
   zmove: 0
   walkPoint: {x: 0, y: 0, z: 0}
   walkPointRange: 0
-  sightRange: 18
+  sightRange: 20
   isInRange: 0
 --- !u!114 &2185970573839322597
 MonoBehaviour:

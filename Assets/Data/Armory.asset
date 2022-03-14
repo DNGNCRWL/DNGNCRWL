@@ -80,6 +80,6 @@ MonoBehaviour:
   unequippedHumanArmor: {fileID: 11400000, guid: 1b55636a5bf97b24f82d271cf48741ce, type: 2}
   weaponPairs:
   - weapon: {fileID: 11400000, guid: 3800ad9e4ab82ef44a1d12ee211f5cb0, type: 2}
-    pair: {fileID: 11400000, guid: f52dfd8668bc4ca4eb64ea5c66f00356, type: 2}
+    pair: {fileID: 11400000, guid: d38987acb3c3bde40bbbfa4d89fcd66f, type: 2}
   - weapon: {fileID: 11400000, guid: 913e3529bd3c64144b4ef7393ab31303, type: 2}
-    pair: {fileID: 11400000, guid: 583063e250f65b24f984b8a8a9986037, type: 2}
+    pair: {fileID: 11400000, guid: 51100c84653482b4f8f33761881f9836, type: 2}

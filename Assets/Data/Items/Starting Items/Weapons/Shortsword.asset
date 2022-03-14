@@ -18,6 +18,8 @@ MonoBehaviour:
   value: 0
   actions: []
   sprite: {fileID: 21300000, guid: 613ae25b0a46d2a4e98961ee0be5897f, type: 3}
+  stackLimit: 1
+  amount: 1
   damage:
     dieCount: 1
     dieSize: 4
@@ -25,3 +27,5 @@ MonoBehaviour:
     damageType: 2
   twoHanded: 0
   abilityToUse: 0
+  effectAnimation: {fileID: 7400000, guid: f0cf3365a77ae94478d43dc169885720, type: 2}
+  criticalEffectAnimation: {fileID: 7400000, guid: 0c4ce51e6f761bf4fa65994b8f0beb80, type: 2}

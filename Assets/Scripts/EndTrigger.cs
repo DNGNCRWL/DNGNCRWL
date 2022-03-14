@@ -5,8 +5,9 @@ public class EndTrigger : MonoBehaviour
     public bool gameHasEnded = false;
     public float dungeonGenerationDelay = 4f;
     public GameManager gameManager;
-    public void OnTriggerEnter ()
+    public void OnTriggerEnter (Collider collider)
     {
+        Debug.Log(gameObject.name + " has triggered end by " + collider.gameObject.name);
          if(gameHasEnded == false)
         {
             //           GetComponent<Collider>().attachedRigidbody.useGravity = false;
@@ -22,11 +23,11 @@ public class EndTrigger : MonoBehaviour
     {
         FindObjectOfType<DungeonGenerator>().Restarter();
         DungeonGenerator.genNewMesh = true;
-        FindObjectOfType<Navigation>().respawn();
+        //FindObjectOfType<Navigation>().respawn();
         FindObjectOfType<DungeonGenerator>().Start();
 
-/* 
- *      if (DungeonGenerator.i == 0)
+
+      if (DungeonGenerator.i == 0)
         {
             DungeonGenerator.i++;
             FindObjectOfType<DungeonGenerator>().Start();
@@ -43,7 +44,7 @@ public class EndTrigger : MonoBehaviour
             DungeonGenerator.i++;
             FindObjectOfType<DungeonGenerator>().Start();
         }
-*/
+
         
         
     }
