@@ -51,13 +51,21 @@ public class DungeonGenerator : MonoBehaviour
     
     public void Start()
     {
-            MazeGenerator();
-        for (int i = 0; i < surfaces.Length; i++)
-        {
-            surfaces[i].BuildNavMesh();
-        }
+        MazeGenerator();
+
     }
 
+    public void BuildMesh()
+    {
+        if (surfaces.Length > 0)
+        {
+            for (int i = 0; i < surfaces.Length; i++)
+            {
+                surfaces[i].BuildNavMesh();
+
+            }
+        }
+    }
     public void Update()
     {
         if (genNewMesh)
@@ -172,6 +180,7 @@ public class DungeonGenerator : MonoBehaviour
                     newRoom.name += " " + i + "-" + j;
                     if (i+1 == size.x && j+1 == size.y)
                     {
+                        BuildMesh();
                         GameObject spider = Instantiate(enemy, new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, newRoom.transform.position.z), Quaternion.identity);
                     }
                 }
@@ -317,11 +326,12 @@ public class DungeonGenerator : MonoBehaviour
 
     public void Restarter()
     {
+        GameObject.Destroy(GameObject.FindWithTag("Spider"));
         foreach (Transform child in transform) 
         {
             GameObject.Destroy(child.gameObject);
         }
-        GameObject.Destroy(GameObject.FindWithTag("Spider"));
+
         //GameObject.Destroy(spider.gameObject);
         //GameObject.Destroy(GameObject.FindWithTag("Spider").transform);
     }
