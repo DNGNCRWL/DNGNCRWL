@@ -30,7 +30,28 @@ public class GameManager : MonoBehaviour
 
         //init party menu
         Debug.Log(playerParty.characters);
-        
+
+        //initialize menus if present and not active
+        if (UI_PartyMenu.UI_PARTYMENU == null) {
+            UI_PartyMenu partyMenu = null;
+            var canvases = Resources.FindObjectsOfTypeAll<UI_PartyMenu>();
+            if (canvases.Length > 0)
+                partyMenu = canvases[0];
+
+            if (partyMenu != null)
+                partyMenu.OpenPartyUI();
+        }
+
+        if (UI_Inventory.UI_INVENTORY == null) {
+            UI_Inventory inventoryMenu = null;
+            var canvases = Resources.FindObjectsOfTypeAll<UI_Inventory>();
+            if (canvases.Length > 0)
+                inventoryMenu = canvases[0];
+
+            if (inventoryMenu != null)
+                inventoryMenu.OpenInventoryUI();
+        }
+
         Debug.Log("GM");
     }
 

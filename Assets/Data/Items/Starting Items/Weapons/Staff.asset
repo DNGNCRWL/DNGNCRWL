@@ -17,6 +17,9 @@ MonoBehaviour:
   broken: 0
   value: 0
   actions: []
+  inventoryActions:
+  - {fileID: 11400000, guid: ca1b5b577e256334abcc00fce757009e, type: 2}
+  - {fileID: 11400000, guid: 99b4da20d506f6f4385c71c4b557b030, type: 2}
   sprite: {fileID: 21300000, guid: 62344b15179d7874cb840c3b8cba1c78, type: 3}
   stackLimit: 1
   amount: 1
@@ -28,4 +31,5 @@ MonoBehaviour:
   twoHanded: 0
   abilityToUse: 0
   effectAnimation: {fileID: 7400000, guid: 12ae1c8ceb079b8409a99365bef4ca48, type: 2}
-  criticalEffectAnimation: {fileID: 7400000, guid: 71c65056b1f05a94f861558974f535aa, type: 2}
+  criticalEffectAnimation: {fileID: 7400000, guid: 71c65056b1f05a94f861558974f535aa,
+    type: 2}
