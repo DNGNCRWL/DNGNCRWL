@@ -746,6 +746,12 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
         return 0;
     }
+    public bool MakePayment(int amount) {
+        if (amount > silver) return GameManager.Error("Not enough silver");
+        silver = silver - amount;
+        return true;
+    }
+
 
     //PENALTIES
     public int HemorrhagePenalty()

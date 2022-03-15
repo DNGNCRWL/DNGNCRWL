@@ -35,17 +35,22 @@ public class TownManager : MonoBehaviour
     //Store Menu -----------------------------------------------------------------
     public List<Item> storeItems;
     public List<GameObject> storeTiles;
+    public List<GameObject> buyingTiles;
     public GameObject itemInfo;
-    public TextMeshProUGUI silverCount;
+    public GameObject silverInfo;
     public GameObject buyForMenu;
-    public int itemToBuy;
+    public int itemSelected;
+    public List<int> previousLocations;
+    public List<Item> cartItems;
+    public List<CharacterSheet> charToBuyFor;
+    public int cost = 0;
 
     public int silver;
 
     void Awake() {
         GM = GameManager.GM;
         GMTransform = GameManager.GM.transform;
-        generateRandom();
+        generateRandomChar();
         StoreGen();
     }
 
@@ -57,7 +62,7 @@ public class TownManager : MonoBehaviour
         setRecCharInfo();
         setCharInfo();
         setReserveCharInfo();
-        setStoreInfo();
+        SetStoreInfo();
         SetBuyForMenu();
         silver = CalculateSilver();
     }
@@ -166,11 +171,12 @@ public class TownManager : MonoBehaviour
         } else {
             reserveCharacters.Add(charSheet);
         }
+        silver = CalculateSilver();
         setCharInfo();
         setReserveCharInfo();
         setRecCharInfo();
         SetBuyForMenu();
-        silver = CalculateSilver();
+        SetStoreInfo();
     }
 
     //Swap the char at the index from the player party to reserve characters
@@ -196,7 +202,7 @@ public class TownManager : MonoBehaviour
     }
 
     //Generates random recruitable characters
-    public void generateRandom() {
+    public void generateRandomChar() {
         for (int i = 0; i < 4; ++i) {
             GameObject temp = Instantiate(characterPrefab, TMTransform);
             recruitableCharacters.Add(temp.GetComponent<CharacterSheet>());
@@ -226,17 +232,31 @@ public class TownManager : MonoBehaviour
         }
     }
 
-    public void setStoreInfo() {
+    //Set info about both buyable items and items in the store cart within the store menu
+    public void SetStoreInfo() {
         for (int i = 0; i < storeTiles.Count; ++i) {
             if (storeItems[i] != null) {
+                storeTiles[i].SetActive(true);
                 storeTiles[i].GetComponent<Image>().sprite = storeItems[i].GetSprite();
             } else {
                 storeTiles[i].SetActive(false);
             }
             HideItemInfo();
         }
+        for (int i = 0; i < 30; ++i) {
+            if (i < cartItems.Count) {
+                buyingTiles[i].SetActive(true);
+                buyingTiles[i].GetComponent<Image>().sprite = cartItems[i].GetSprite();
+            } else {
+                buyingTiles[i].SetActive(false);
+            }
+        }
+        
+        silverInfo.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "" + silver;
+        silverInfo.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = "" + cost;
     }
 
+    //Generates random items for the store to sell
     public void StoreGen() {
         for (int i = 0; i < storeTiles.Count; ++i) {
             int randomIndex = UnityEngine.Random.Range(0, 2);
@@ -246,42 +266,44 @@ public class TownManager : MonoBehaviour
                 switch (randomList) {
                     case 0:
                         temp = (ItemManager.RANDOM_ITEM(ItemManager.BAGS).Copy());
-                        Debug.Log("check case 0");
                         break;
                     case 1:
                         temp = (ItemManager.RANDOM_ITEM(ItemManager.ADVENTURE_TOOLS).Copy());
-                        Debug.Log("check case 1");
                         break;
                     case 2:
                         temp = (ItemManager.RANDOM_ITEM(ItemManager.SPECIAL_ITEMS).Copy());
-                        Debug.Log("check case 2");
                         break;
                     case 3:
                         temp = (ItemManager.RANDOM_ITEM(ItemManager.STARTING_WEAPONS).Copy());
-                        Debug.Log("check case 3");
                         break;
                     case 4:
                         temp = (ItemManager.RANDOM_ITEM(ItemManager.STARTING_ARMORS).Copy());
-                        Debug.Log("check case 4");
                         break;
                     case 5:
                         temp = (ItemManager.RANDOM_ITEM(ItemManager.STARTING_ARMORS_LOWTIER).Copy());
-                        Debug.Log("check case 5");
                         break;
                 }
-                Debug.Log("end of switch check");
-                //temp.gameObject.parent = TMTransform;
                 storeItems.Add(temp);
             } else {
                 storeItems.Add(null);
             }
         }
-        silverCount.text = silver.ToString();
     }
 
-    public void DisplayItemInfo(GameObject button) {
+    //
+    public void SetBuyableInfo(GameObject button) {
         int index = storeTiles.IndexOf(button);
         Item item = storeItems[index];
+        DisplayItemInfo(item, -1);
+    }
+
+    public void SetCartItemInfo(GameObject button) {
+        int index = buyingTiles.IndexOf(button);
+        Item item = cartItems[index];
+        DisplayItemInfo(item, index);
+    }
+
+    public void DisplayItemInfo(Item item, int cartNum) {
         string type = "";
         string wielding = "";
         string extras = "";
@@ -330,6 +352,11 @@ public class TownManager : MonoBehaviour
         itemInfo.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = extras;
         itemInfo.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = item.description;
         itemInfo.transform.GetChild(6).GetComponent<TextMeshProUGUI>().text = item.value + " silver";
+        if (cartNum == -1) {
+            itemInfo.transform.GetChild(7).GetComponent<TextMeshProUGUI>().text = "";
+        } else {
+            itemInfo.transform.GetChild(7).GetComponent<TextMeshProUGUI>().text = "Buying for: " + charToBuyFor[cartNum].GetCharacterName();
+        }
 
         itemInfo.SetActive(true);
     }
@@ -341,11 +368,12 @@ public class TownManager : MonoBehaviour
     public int CalculateSilver() {
         int total = 0;
         foreach(CharacterSheet character in playerCharacters) {
-            silver += character.GetSilver();
+            total += character.GetSilver();
         }
         foreach(CharacterSheet character in reserveCharacters) {
-            silver += character.GetSilver();
+            total += character.GetSilver();
         }
+        Debug.Log(total);
         return total;
     }
 
@@ -362,7 +390,7 @@ public class TownManager : MonoBehaviour
     }
 
     public void OpenBuyForMenu(int itemNum) {
-        itemToBuy = itemNum;
+        itemSelected = itemNum;
         buyForMenu.transform.position = Input.mousePosition;
         if (playerCharacters.Count != 0) {
             buyForMenu.transform.position = Input.mousePosition + GetGUIElementOffset(buyForMenu.transform.GetChild(5-playerCharacters.Count).GetComponent<RectTransform>());
@@ -395,5 +423,59 @@ public class TownManager : MonoBehaviour
         }
  
         return offset;
+    }
+
+    public void AddItemToCart(int character) {
+        Item temp = storeItems[itemSelected];
+        storeItems.Insert(itemSelected, null);
+        storeItems.Remove(temp);
+
+        cartItems.Add(temp);
+        previousLocations.Add(itemSelected);
+        charToBuyFor.Add(playerCharacters[character]);
+        cost += temp.value;
+
+        buyForMenu.SetActive(false);
+        SetStoreInfo();
+    }
+
+    public void RemoveItemFromCart(int index) {
+        Item temp = cartItems[index];
+        storeItems.RemoveAt(previousLocations[index]);
+        storeItems.Insert(previousLocations[index], temp);
+        cartItems.RemoveAt(index);
+        previousLocations.RemoveAt(index);
+        charToBuyFor.RemoveAt(index);
+        SetStoreInfo();
+    }
+
+    public void PurchaseItems() {
+        if (silver >= cost) {
+            for (int i = 0; i < cartItems.Count; ++i) {
+                charToBuyFor[i].GetInventory().AddItem(cartItems[i]);
+            }
+
+            cartItems.Clear();
+            previousLocations.Clear();
+            charToBuyFor.Clear();
+
+            int totalChars = playerCharacters.Count + reserveCharacters.Count;
+            CharacterSheet[] characters = new CharacterSheet[totalChars];
+            playerCharacters.CopyTo(characters);
+            reserveCharacters.CopyTo(characters, playerCharacters.Count);
+            int j = 0;
+            while (cost != 0) {
+                if (characters[j % totalChars].GetSilver() > 0)
+                    characters[j % totalChars].MakePayment(1);
+                    --cost;
+                ++j;
+            }
+        silver = CalculateSilver();
+        SetStoreInfo();
+        }
+    }
+
+    public void ErrorMessage() {
+
     }
 }
