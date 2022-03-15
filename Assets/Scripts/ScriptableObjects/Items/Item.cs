@@ -28,6 +28,10 @@ public class Item : ScriptableObject
 
     public virtual Item Copy()
     {
+        if (this == null){
+            Debug.LogError("Tried copying null item");
+            return null;
+        }
         Item copy = Instantiate(this);
 
         return copy;
