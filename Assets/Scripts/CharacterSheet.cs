@@ -77,6 +77,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     public int GetMaxHitPoints() { return Mathf.Max(1, maxHitPoints + maxHitPointsTempIncrease); }
     public int GetPowers() { return powers; }
     public int GetOmens() { return omens; }
+    public int GetSilver() { return silver; }
     public List<Item> GetInventoryList() { return inventory.GetItemList(); }
 
     public Inventory GetInventory() { return inventory; }
@@ -745,6 +746,12 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
         return 0;
     }
+    public bool MakePayment(int amount) {
+        if (amount > silver) return GameManager.Error("Not enough silver");
+        silver = silver - amount;
+        return true;
+    }
+
 
     //PENALTIES
     public int HemorrhagePenalty()
