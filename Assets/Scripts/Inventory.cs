@@ -18,17 +18,22 @@ public class Inventory
     public Bag storage = null;
 
     public Armor armor = null;
+
+    public Weapon mainHand = null;
+    public Weapon offHand = null;
+
     private int slotsLimit = 10;
     private int slotsUsed = 0;
 
     public Inventory() {
         itemList = new List<Item>();
         //AddItem(ItemManager.armory.startingWeapons[0].Copy(), 3);
-        Debug.Log("Inventory Init");
+        //Debug.Log("Inventory Init");
     }
 
     public void ReplaceInventory (List<Item> newInv) {
         itemList = newInv;
+        OnItemListChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void AddItem(Item item, int qty = 1) {
@@ -50,13 +55,41 @@ public class Inventory
             itemList.Add(item);
         }
 
+        UpdateSlotsUsed();
         OnItemListChanged?.Invoke(this, EventArgs.Empty); //refresh UI
+        Debug.Log("Invoked Inventory Change");
+    }
+
+    public bool AddIfHasSpace(Item item, int qty = 1) {
+        if(CheckHasSpace(item,qty)) {
+            AddItem(item, qty);
+            return true;
+        } else
+            return false;
     }
 
     public List<Item> GetItemList() {
         return itemList;
     }
 
+    public bool RemoveItem(Item item, int amount = 1) {
+        foreach (Item i in itemList) {
+            if (i.itemName == item.itemName) {
+                if ((i.amount - amount )<0) {
+                    return false;
+                } else {
+                    i.amount -= amount;
+                    if (i.amount == 0) {
+                        itemList.Remove(i);
+                    } 
+                    UpdateSlotsUsed();
+                    OnItemListChanged?.Invoke(this, EventArgs.Empty); //refresh UI
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     public bool UseAmmo(ProjectileWeapon weapon) {
 
         string ammoName = weapon.ammoName;
@@ -80,6 +113,7 @@ public class Inventory
 
 
         OnItemListChanged?.Invoke(this, EventArgs.Empty); //refresh UI
+        UpdateSlotsUsed();
 
         return ammo!= null;
     }
@@ -107,25 +141,72 @@ public class Inventory
         }
 
         OnItemListChanged?.Invoke(this, EventArgs.Empty); //refresh UI
+        UpdateSlotsUsed();
 
         return consume != null;
         
     }
 
-    public void ChangeStorage(Bag bag) {
+    public Item GetItem(Item item) {
+        foreach (Item i in itemList){
+            if (i.itemName == item.itemName)
+                return i;
+        }
+        return null;
+    }
+    public void SwapStorage(Bag bag) {
         AddItem(storage);
         storage = bag;
+    }
+
+    public void SetStorage(Bag bag) {
+        storage = bag;
+    }
+
+    public Bag GetStorage(Bag bag) {
+        return storage;
     }
 
 /// <summary>
 /// 
 /// </summary>
 /// <param name="newArmor">testna</param>
-    public void ChangeArmor(Armor newArmor)
+    public void SwapArmor(Armor newArmor)
     {
         AddItem(armor);
         armor = newArmor;
     }
+    public void SetArmor(Armor newArmor)
+    {
+        armor = newArmor;
+    }
+
+    public Armor GetArmor(Armor newArmor) {
+        return armor;
+    }
+
+    public void SwapMainHand(Weapon wep) {
+        AddItem(mainHand);
+        mainHand = wep;
+    }
+    public void SetMainHand(Weapon wep) {
+        mainHand = wep;
+    }
+    public Weapon GetMainHand(Weapon wep) {
+        return mainHand;
+    }
+
+    public void SwapOffHand(Weapon wep) {
+        AddItem(offHand);
+        offHand = wep;
+    }
+    public void SetOffHand(Weapon wep) {
+        offHand = wep;
+    }
+    public Weapon GetOffHand(Weapon wep) {
+        return offHand;
+    }
+
 
     public void SetSlotLimit(int slotsLimit) {
         this.slotsLimit = slotsLimit;
@@ -159,4 +240,22 @@ public class Inventory
         }
     }
 
+    private bool CheckHasSpace (Item item, int qty = 1) {
+        
+        Item invItem = GetItem(item);
+
+        int slotsAlreadyUsed = (int)Math.Ceiling((double)invItem.amount / invItem.stackLimit);
+        int slotsToBeUsed = (int)Math.Ceiling(((double)invItem.amount + (double)qty)/ invItem.stackLimit);
+        int newSlotsUsed = slotsToBeUsed - slotsAlreadyUsed;
+
+        if((newSlotsUsed+slotsUsed) > slotsLimit)
+            return false;
+        else
+            return true;
+
+    }
+
+    public bool IsOverencumbered () {
+        return slotsUsed > slotsLimit;
+    }
 }
