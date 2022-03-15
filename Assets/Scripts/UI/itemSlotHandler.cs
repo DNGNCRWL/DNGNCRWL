@@ -15,6 +15,7 @@ public class itemSlotHandler : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public float delay = 1f;
     public Item item;
+    public Inventory inventory;
 
     private bool mouseIsHovering;
     private float mouseHoverTime;
@@ -106,8 +107,8 @@ public class itemSlotHandler : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     private void ShowContextMenu() 
     {
-        if (contextMenu!=null)
-            contextMenu.ShowContextMenu(item);
+        if (contextMenu!=null && item != null)
+            contextMenu.ShowContextMenu(item, inventory);
     }
 
     private void HideContextMenu()
