@@ -45,7 +45,14 @@ public class TownManager : MonoBehaviour
     public List<CharacterSheet> charToBuyFor;
     public int cost = 0;
 
+    public GameObject errorMessageWindow;
     public int silver;
+
+    //
+    //
+    //---------------------------------------------------------------------------EXTRA METHODS--------------------------------------------------------------------------------------------
+    //
+    //
 
     void Awake() {
         GM = GameManager.GM;
@@ -82,6 +89,21 @@ public class TownManager : MonoBehaviour
         }
     }
 
+    //Pops up error message window with given message
+    public void ErrorMessage(string message) {
+        errorMessageWindow.transform.GetChild(0).transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
+        errorMessageWindow.SetActive(true);
+    }
+
+    //ensures party is not empty and enters the rest of the dungeon
+    public void enterDungeon() {
+        if (playerCharacters.Count > 0) {
+            SceneManager.LoadScene("DungeonGeneration", LoadSceneMode.Single);
+        } else {
+            ErrorMessage("Must have at least one character in party to enter the dungeon");
+        }
+    }
+
     //Reset player health
     // public void rest() {
     //     foreach (CharacterSheet character in playerCharacters) {
@@ -90,6 +112,11 @@ public class TownManager : MonoBehaviour
     // }
 
     
+    //
+    //
+    //---------------------------------------------------------------------------PARTY CHANGE METHODS--------------------------------------------------------------------------------------------
+    //
+    //
 
     //Set info about characters in player party, if there are more spaces than characters deactivate unused spaces
     public void setCharInfo() {
@@ -198,6 +225,8 @@ public class TownManager : MonoBehaviour
             setCharInfo();
             setReserveCharInfo();
             SetBuyForMenu();
+        } else {
+            ErrorMessage("There can only be four characters in the party");
         }
     }
 
@@ -225,12 +254,11 @@ public class TownManager : MonoBehaviour
         setReserveCharInfo();
     }
 
-    //ensures party is not empty and enters the rest of the dungeon
-    public void enterDungeon() {
-        if (playerCharacters.Count > 0) {
-            SceneManager.LoadScene("DungeonGeneration", LoadSceneMode.Single);
-        }
-    }
+    //
+    //
+    //---------------------------------------------------------------------------STORE METHODS--------------------------------------------------------------------------------------------
+    //
+    //
 
     //Set info about both buyable items and items in the store cart within the store menu
     public void SetStoreInfo() {
@@ -290,19 +318,21 @@ public class TownManager : MonoBehaviour
         }
     }
 
-    //
+    //Set the item info for a buyable item
     public void SetBuyableInfo(GameObject button) {
         int index = storeTiles.IndexOf(button);
         Item item = storeItems[index];
         DisplayItemInfo(item, -1);
     }
 
+    //Set the item info for an item in the cart
     public void SetCartItemInfo(GameObject button) {
         int index = buyingTiles.IndexOf(button);
         Item item = cartItems[index];
         DisplayItemInfo(item, index);
     }
 
+    //Set item info
     public void DisplayItemInfo(Item item, int cartNum) {
         string type = "";
         string wielding = "";
@@ -361,10 +391,12 @@ public class TownManager : MonoBehaviour
         itemInfo.SetActive(true);
     }
 
+    //Hide the item info
     public void HideItemInfo() {
         itemInfo.SetActive(false);
     }
 
+    //Calculate total silver for player (combined silver of all characters in both party and reserve)
     public int CalculateSilver() {
         int total = 0;
         foreach(CharacterSheet character in playerCharacters) {
@@ -373,10 +405,10 @@ public class TownManager : MonoBehaviour
         foreach(CharacterSheet character in reserveCharacters) {
             total += character.GetSilver();
         }
-        Debug.Log(total);
         return total;
     }
 
+    //Set the characters that you can buy for in the store to those in the party
     public void SetBuyForMenu() {
         for(int i = 0; i < 4; ++i) {
             GameObject temp = buyForMenu.transform.GetChild(4-i).gameObject;
@@ -389,17 +421,23 @@ public class TownManager : MonoBehaviour
         }
     }
 
+    //Open the menu to select what character to buy an item for
     public void OpenBuyForMenu(int itemNum) {
-        itemSelected = itemNum;
-        buyForMenu.transform.position = Input.mousePosition;
-        if (playerCharacters.Count != 0) {
-            buyForMenu.transform.position = Input.mousePosition + GetGUIElementOffset(buyForMenu.transform.GetChild(5-playerCharacters.Count).GetComponent<RectTransform>());
+        if (playerCharacters.Count > 0) {
+            itemSelected = itemNum;
+            buyForMenu.transform.position = Input.mousePosition;
+            if (playerCharacters.Count != 0) {
+                buyForMenu.transform.position = Input.mousePosition + GetGUIElementOffset(buyForMenu.transform.GetChild(5-playerCharacters.Count).GetComponent<RectTransform>());
+            } else {
+                buyForMenu.transform.position = Input.mousePosition + GetGUIElementOffset(buyForMenu.transform.GetChild(0).GetComponent<RectTransform>());
+            }
+            buyForMenu.SetActive(true);
         } else {
-            buyForMenu.transform.position = Input.mousePosition + GetGUIElementOffset(buyForMenu.transform.GetChild(0).GetComponent<RectTransform>());
+            ErrorMessage("Must have characters in the party to buy for");
         }
-        buyForMenu.SetActive(true);
     }
 
+    //Returns offset required to ensure buyFor menu is fully on the screen
     public static Vector3 GetGUIElementOffset(RectTransform rect) {
         Rect screenBounds = new Rect(0f, 0f, Screen.width, Screen.height);
         Vector3[] objectCorners = new Vector3[4];
@@ -425,6 +463,7 @@ public class TownManager : MonoBehaviour
         return offset;
     }
 
+    //Moves the selected item from buyable items to items in cart
     public void AddItemToCart(int character) {
         Item temp = storeItems[itemSelected];
         storeItems.Insert(itemSelected, null);
@@ -439,6 +478,7 @@ public class TownManager : MonoBehaviour
         SetStoreInfo();
     }
 
+    //Moves the selected item from items in the cart to buyable items
     public void RemoveItemFromCart(int index) {
         Item temp = cartItems[index];
         storeItems.RemoveAt(previousLocations[index]);
@@ -449,8 +489,11 @@ public class TownManager : MonoBehaviour
         SetStoreInfo();
     }
 
+    //Move items from cart to respective character inventories, and remove silver cost from all characters equally
     public void PurchaseItems() {
-        if (silver >= cost) {
+        if (cartItems.Count == 0) {
+            ErrorMessage("Nothing to buy!");
+        } else if (silver >= cost) {
             for (int i = 0; i < cartItems.Count; ++i) {
                 charToBuyFor[i].GetInventory().AddItem(cartItems[i]);
             }
@@ -470,12 +513,10 @@ public class TownManager : MonoBehaviour
                     --cost;
                 ++j;
             }
-        silver = CalculateSilver();
-        SetStoreInfo();
+            silver = CalculateSilver();
+            SetStoreInfo();
+        } else {
+            ErrorMessage("Not enough silver!");
         }
-    }
-
-    public void ErrorMessage() {
-
     }
 }
