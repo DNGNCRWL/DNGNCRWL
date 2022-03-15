@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Sword
   description: 
   broken: 0
-  value: 0
+  value: 30
   actions: []
   sprite: {fileID: 21300000, guid: fbf50b9f4b20997429f1bcde795dea6c, type: 3}
   stackLimit: 1

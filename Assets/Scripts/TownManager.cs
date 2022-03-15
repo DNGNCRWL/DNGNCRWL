@@ -483,6 +483,7 @@ public class TownManager : MonoBehaviour
         Item temp = cartItems[index];
         storeItems.RemoveAt(previousLocations[index]);
         storeItems.Insert(previousLocations[index], temp);
+        cost -= temp.value;
         cartItems.RemoveAt(index);
         previousLocations.RemoveAt(index);
         charToBuyFor.RemoveAt(index);
@@ -493,7 +494,7 @@ public class TownManager : MonoBehaviour
     public void PurchaseItems() {
         if (cartItems.Count == 0) {
             ErrorMessage("Nothing to buy!");
-        } else if (silver >= cost) {
+        } else if(GetPayment()) {
             for (int i = 0; i < cartItems.Count; ++i) {
                 charToBuyFor[i].GetInventory().AddItem(cartItems[i]);
             }
@@ -501,7 +502,12 @@ public class TownManager : MonoBehaviour
             cartItems.Clear();
             previousLocations.Clear();
             charToBuyFor.Clear();
+        }
+        SetStoreInfo();
+    }
 
+    public bool GetPayment() {
+        if (silver >= cost) {
             int totalChars = playerCharacters.Count + reserveCharacters.Count;
             CharacterSheet[] characters = new CharacterSheet[totalChars];
             playerCharacters.CopyTo(characters);
@@ -515,8 +521,10 @@ public class TownManager : MonoBehaviour
             }
             silver = CalculateSilver();
             SetStoreInfo();
+            return true;
         } else {
             ErrorMessage("Not enough silver!");
+            return false;
         }
     }
 }

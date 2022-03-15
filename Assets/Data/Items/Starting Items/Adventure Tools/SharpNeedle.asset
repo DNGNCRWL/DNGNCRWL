@@ -15,6 +15,8 @@ MonoBehaviour:
   itemName: Sharp Needle
   description: 
   broken: 0
-  value: 0
+  value: 3
   actions: []
   sprite: {fileID: 21300000, guid: ef2616c1c852e8b4292691b92059b316, type: 3}
+  stackLimit: 1
+  amount: 1

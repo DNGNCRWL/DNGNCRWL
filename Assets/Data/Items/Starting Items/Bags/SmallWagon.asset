@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: SmallWagon
   m_EditorClassIdentifier: 
   itemName: Small Wagon
+  description: 
   broken: 0
-  value: 0
+  value: 25
   actions: []
+  sprite: {fileID: 0}
+  stackLimit: 1
+  amount: 1
   carryingCapacity: 12

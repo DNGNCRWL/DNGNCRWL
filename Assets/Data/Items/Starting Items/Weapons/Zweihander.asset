@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Zweihander
   description: 
   broken: 0
-  value: 0
+  value: 60
   actions: []
   sprite: {fileID: 21300000, guid: 3ea08d4548a49db4f8b8da5ae0444f05, type: 3}
   stackLimit: 1

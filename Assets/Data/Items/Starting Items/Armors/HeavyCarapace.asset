@@ -15,8 +15,10 @@ MonoBehaviour:
   itemName: Heavy Carapace
   description: 
   broken: 0
-  value: 0
+  value: 200
   actions: []
   sprite: {fileID: 21300000, guid: 08585c9b651cbed4d9dbfcd5399ea2f6, type: 3}
+  stackLimit: 1
+  amount: 1
   armorTier: 3
   maxArmorTier: 3

@@ -15,9 +15,11 @@ MonoBehaviour:
   itemName: Shield
   description: 
   broken: 0
-  value: 0
+  value: 20
   actions: []
   sprite: {fileID: 21300000, guid: ed017d81ebcd5304894aaa89e6276cb4, type: 3}
+  stackLimit: 1
+  amount: 1
   damage:
     dieCount: 0
     dieSize: 0
@@ -25,3 +27,5 @@ MonoBehaviour:
     damageType: 0
   twoHanded: 0
   abilityToUse: 0
+  effectAnimation: {fileID: 0}
+  criticalEffectAnimation: {fileID: 0}

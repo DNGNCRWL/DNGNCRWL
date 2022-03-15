@@ -15,8 +15,10 @@ MonoBehaviour:
   itemName: Thick Hide
   description: 
   broken: 0
-  value: 0
+  value: 100
   actions: []
   sprite: {fileID: 21300000, guid: c2ed341f699b8714781a68212b5d4ace, type: 3}
+  stackLimit: 1
+  amount: 1
   armorTier: 2
   maxArmorTier: 2

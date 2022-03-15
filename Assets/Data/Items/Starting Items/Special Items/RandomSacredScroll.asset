@@ -15,9 +15,11 @@ MonoBehaviour:
   itemName: Random Sacred Scroll
   description: 
   broken: 0
-  value: 0
+  value: 50
   actions: []
   sprite: {fileID: 21300000, guid: a876b7049734ed34b94ee3cf27cff1c4, type: 3}
+  stackLimit: 1
+  amount: 1
   known: 1
   clean: 1
   index: 0

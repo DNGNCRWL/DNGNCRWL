@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: Backpack
   m_EditorClassIdentifier: 
   itemName: Backpack
+  description: 
   broken: 0
-  value: 0
+  value: 6
   actions: []
+  sprite: {fileID: 0}
+  stackLimit: 1
+  amount: 1
   carryingCapacity: 7

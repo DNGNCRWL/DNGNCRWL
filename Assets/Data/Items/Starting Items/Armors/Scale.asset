@@ -15,8 +15,10 @@ MonoBehaviour:
   itemName: Scale
   description: 
   broken: 0
-  value: 0
+  value: 100
   actions: []
   sprite: {fileID: 21300000, guid: be94edca10321924e817adc8c82ef752, type: 3}
+  stackLimit: 1
+  amount: 1
   armorTier: 2
   maxArmorTier: 2

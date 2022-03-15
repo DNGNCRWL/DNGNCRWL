@@ -15,9 +15,11 @@ MonoBehaviour:
   itemName: Random Unclean Scroll
   description: 
   broken: 0
-  value: 0
+  value: 50
   actions: []
   sprite: {fileID: 21300000, guid: e2fc4458e6425274da0c481ba4484191, type: 3}
+  stackLimit: 1
+  amount: 1
   known: 1
   clean: 0
   index: 0
