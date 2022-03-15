@@ -9,6 +9,7 @@ public class UI_PartyMenu : MonoBehaviour
     public static UI_PartyMenu UI_PARTYMENU;
     [SerializeField] public Party party;
 
+
     [SerializeField]
     private Transform charSlotContainer;
     public GameObject charSlotTemplate;
@@ -28,9 +29,20 @@ public class UI_PartyMenu : MonoBehaviour
 
         charSlotContainer = transform.Find("CharSlotContainer");
         ClosePartyUI();
-        Debug.Log("UI_PartyMenuAwake");
+        //Debug.Log("UI_PartyMenuAwake");
     }
     private void Start() {
+
+        if (UI_Inventory.UI_INVENTORY == null) {
+            UI_Inventory inventoryMenu = null;
+            var canvases = Resources.FindObjectsOfTypeAll<UI_Inventory>();
+            if (canvases.Length > 0)
+                inventoryMenu = canvases[0];
+
+            if (inventoryMenu != null)
+                inventoryMenu.OpenInventoryUI();
+        }
+
         RefreshPartyList();
     }
 
@@ -96,28 +108,23 @@ public class UI_PartyMenu : MonoBehaviour
 
     private void OpenCharInv (CharacterSheet character) {
         Debug.Log(character);
+        if (UI_Inventory.UI_INVENTORY == null) return;
+
         UI_Inventory.UI_INVENTORY.SetCharacterTarget(character);
         UI_Inventory.UI_INVENTORY.OpenInventoryUI();
     }
 
     public void OpenPartyUI()
     {
-        //Debug.Log(shownState);
-        if (!shownState)
-        {
-            gameObject.SetActive(true);
-            RefreshPartyList();
-            shownState = true;
-        }
+        gameObject.SetActive(true);
+        RefreshPartyList();
+        shownState = true;
         Debug.Log("Open Party Menu");
     }
     public void ClosePartyUI()
     {
-        if (shownState)
-        {
-            gameObject.SetActive(false);
-            shownState = false;
-        }
+        gameObject.SetActive(false);
+        shownState = false;
         Debug.Log("Close Party Menu");
     }
 }

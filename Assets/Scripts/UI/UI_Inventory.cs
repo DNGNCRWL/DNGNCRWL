@@ -146,7 +146,7 @@ public class UI_Inventory : MonoBehaviour
         if (inventory.armor != null) {
             SetSlotItem(armorSlot, inventory.armor);
         } else {
-            //Debug.Log("Armor Slot Empty");
+            Debug.Log("Armor Slot Empty");
             SetSlotBlank(armorSlot);
         }
 
@@ -154,7 +154,7 @@ public class UI_Inventory : MonoBehaviour
         if (inventory.storage != null) {
             SetSlotItem(bagSlot, inventory.storage);
         } else {
-            //Debug.Log("Bag Slot Empty");
+            Debug.Log("Bag Slot Empty");
             SetSlotBlank(bagSlot);
         }
 
@@ -162,7 +162,7 @@ public class UI_Inventory : MonoBehaviour
         if (inventory.mainHand != null) {
             SetSlotItem(mainhandSlot, inventory.mainHand);
         } else {
-            //Debug.Log("MainHand Slot Empty");
+            Debug.Log("MainHand Slot Empty");
             SetSlotBlank(mainhandSlot);
         }
 
@@ -170,15 +170,21 @@ public class UI_Inventory : MonoBehaviour
         if (inventory.offHand != null) {
             SetSlotItem(offhandSlot, inventory.offHand);
         } else {
-           // Debug.Log("OffHand Slot Empty");
+           Debug.Log("OffHand Slot Empty");
             SetSlotBlank(offhandSlot);
         }
+        Debug.Log("Refresh Inventory Char UI");
 
     }
 
     private void SetSlotItem(RectTransform itemSlot, Item item) {
+        
         itemSlotHandler handler = itemSlot.gameObject.GetComponentInChildren<itemSlotHandler>();
         itemSlot.gameObject.SetActive(true);
+        itemSlot.Find("icon").gameObject.SetActive(true);
+        itemSlot.Find("name").gameObject.SetActive(true);
+        itemSlot.Find("count").gameObject.SetActive(true);
+        itemSlot.Find("border").gameObject.SetActive(true);
         UnityEngine.UI.Image image = itemSlot.Find("icon").gameObject.GetComponent<UnityEngine.UI.Image>();
 
         if (item.GetSprite() != null) {  //Default empty sprite if not set
@@ -213,6 +219,7 @@ public class UI_Inventory : MonoBehaviour
 
     public void OpenInventoryUI() {
         gameObject.SetActive(true);
+        RefreshInventoryItems();
     }
     public void CloseInventoryUI() {
         gameObject.SetActive(false);

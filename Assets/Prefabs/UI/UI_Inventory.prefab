@@ -850,8 +850,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetCharacter: {fileID: 0}
+  inventory:
+    itemList: []
+    storage: {fileID: 0}
+    armor: {fileID: 0}
+    mainHand: {fileID: 0}
+    offHand: {fileID: 0}
   itemSlotContainer: {fileID: 5857738736420877853}
-  itemSlotTemplate: {fileID: 0}
+  itemSlotTemplate: {fileID: 7734990798954990171, guid: 6596211147c656f4997a02a91eac3f15, type: 3}
 --- !u!1 &6624349661349339962
 GameObject:
   m_ObjectHideFlags: 0

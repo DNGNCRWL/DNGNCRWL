@@ -466,6 +466,12 @@ MonoBehaviour:
     magic: 0
     pierce: 0
     spirit: 0
+  inventory:
+    itemList: []
+    storage: {fileID: 0}
+    armor: {fileID: 0}
+    mainHand: {fileID: 0}
+    offHand: {fileID: 0}
 --- !u!4 &1315484693
 Transform:
   m_ObjectHideFlags: 0
@@ -935,7 +941,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5857738736828516558, guid: 62d0d2eaaff1c004892d091d9cfeabba, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 62d0d2eaaff1c004892d091d9cfeabba, type: 3}
@@ -960,7 +966,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6533229801998521676, guid: 6aeee0b9744aa894ea433d94911b1f81, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6533229801998521679, guid: 6aeee0b9744aa894ea433d94911b1f81, type: 3}
       propertyPath: m_Pivot.x
