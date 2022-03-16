@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0eaf4d05ca32e9147bcc1a4b2ad90283, type: 3}
+  m_Name: Inv_SelfUse
+  m_EditorClassIdentifier: 
+  actionName: Use On Self
+  startMessage:
+    messages: []
+    time: 0
+    weight: 0
+    index: 0
+  actionMessage:
+    messages:
+    - '{0} Used'
+    time: 0
+    weight: 0
+    index: 0
+  targetingType: 6
+  tests: []
+  difficultyRating: 0
+  testAtDisadvantage: 0
+  criticalMessage:
+    messages: []
+    time: 0
+    weight: 0
+    index: 0
+  successMessage:
+    messages: []
+    time: 0
+    weight: 0
+    index: 0
+  failMessage:
+    messages: []
+    time: 0
+    weight: 0
+    index: 0
+  fumbleMessage:
+    messages: []
+    time: 0
+    weight: 0
+    index: 0
+  critical: []
+  success: []
+  failure: []
+  fumble: []

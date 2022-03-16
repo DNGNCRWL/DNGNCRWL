@@ -17,6 +17,9 @@ MonoBehaviour:
   broken: 0
   value: 40
   actions: []
+  inventoryActions:
+  - {fileID: 11400000, guid: ca1b5b577e256334abcc00fce757009e, type: 2}
+  - {fileID: 11400000, guid: 99b4da20d506f6f4385c71c4b557b030, type: 2}
   sprite: {fileID: 0}
   stackLimit: 1
   amount: 1
