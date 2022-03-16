@@ -198,7 +198,7 @@ public class DungeonGenerator : MonoBehaviour
                 }
             }
         }
-        
+        Debug.Log(rooms);
         return rooms;
 
     }
