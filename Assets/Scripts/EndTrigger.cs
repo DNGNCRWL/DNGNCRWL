@@ -1,18 +1,27 @@
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class EndTrigger : MonoBehaviour
 {
     public bool gameHasEnded = false;
     public float dungeonGenerationDelay = 4f;
     public GameManager gameManager;
+    public static bool COLLIDE;
     public void OnTriggerEnter (Collider collider)
     {
         Debug.Log(gameObject.name + " has triggered end by " + collider.gameObject.name);
          if(gameHasEnded == false)
         {
             //           GetComponent<Collider>().attachedRigidbody.useGravity = false;
+            if(gameObject.name.Equals("stairwell"))
+            {
+                Debug.Log("stair~");
+                SceneManager.LoadScene("Town");
+            }
             gameHasEnded = true;
-            gameManager.CompleteLevel();
+            COLLIDE = true;
+            //gameManager.CompleteLevel();
+            Debug.Log("endtrigger!");
+            GameManager.GM.CompleteLevel();
             Invoke("RestartGenerateDungeon", dungeonGenerationDelay);
             gameHasEnded = false;
             
@@ -23,29 +32,9 @@ public class EndTrigger : MonoBehaviour
     {
         FindObjectOfType<DungeonGenerator>().Restarter();
         DungeonGenerator.genNewMesh = true;
-        //FindObjectOfType<Navigation>().respawn();
+        FindObjectOfType<Navigation>().respawn();
         FindObjectOfType<DungeonGenerator>().Start();
 
 
-      if (DungeonGenerator.i == 0)
-        {
-            DungeonGenerator.i++;
-            FindObjectOfType<DungeonGenerator>().Start();
-        }
-        else if (DungeonGenerator.i == 1)
-        {
-            DungeonGenerator.wantSaved = true;
-            DungeonGenerator.i++;
-            FindObjectOfType<DungeonGenerator>().Start();
-        }
-        else if(DungeonGenerator.i == 2)
-        {
-            DungeonGenerator.genSaved = true;
-            DungeonGenerator.i++;
-            FindObjectOfType<DungeonGenerator>().Start();
-        }
-
-        
-        
     }
 }

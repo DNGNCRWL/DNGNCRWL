@@ -73,10 +73,10 @@ public class BattleManager : MonoBehaviour
             GameManager.GM.AddText(ENEMY_ENCOUNTER.GetEncounterName());
         MM.CloseAllMenus();
         
-        yield return new WaitForSeconds(3);
-        GameManager.GoToDungeonNavigation();
+        //yield return new WaitForSeconds(3);
+        //GameManager.GoToDungeonNavigation();
 
-        //yield return StartCoroutine(Combat());
+        yield return StartCoroutine(Combat());
     }
 
     //BATTLE STATES

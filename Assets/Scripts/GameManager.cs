@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
         playerParty.SetParty(playerCharacters);
 
         //init party menu
-        Debug.Log(playerParty.characters);
+        //Debug.Log(playerParty.characters);
 
         //initialize menus if present and not active
         if (UI_PartyMenu.UI_PARTYMENU == null) {
@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
                 inventoryMenu.OpenInventoryUI();
         }
 
-        Debug.Log("GM");
+        //Debug.Log("GM");
     }
 
     private void Start() {
@@ -162,7 +162,7 @@ public class GameManager : MonoBehaviour
     //SCENE NAVIGATION
 
     public static void GoToDungeonNavigation(){
-        SceneManager.LoadScene("DungeonGeneration", LoadSceneMode.Single);
+        SceneManager.LoadScene("DungeonGeneration");
     }
 
 }
