@@ -7,7 +7,7 @@ using TMPro;
 public class UI_PartyMenu : MonoBehaviour
 {
     public static UI_PartyMenu UI_PARTYMENU;
-    [SerializeField] public Party party;
+    [SerializeField] public List<CharacterSheet> party;
 
 
     [SerializeField]
@@ -49,11 +49,9 @@ public class UI_PartyMenu : MonoBehaviour
     private void Update() {
     }
 
-    public void SetParty(Party party)
+    public void SetParty(List<CharacterSheet> party)
     {
         this.party = party;
-
-        party.OnPartyListChanged += Party_OnPartyListChanged;
 
         RefreshPartyList();
         Debug.Log("SetParty");
@@ -77,7 +75,7 @@ public class UI_PartyMenu : MonoBehaviour
         //float charSlotCellSizeY = 90f;
         float charSlotCellSizeX = 300f;
         float charSlotCellBufferX = 10f;
-        foreach (CharacterSheet character in party.characters)
+        foreach (CharacterSheet character in party)
         {
             Debug.Log(character);
             RectTransform charSlotRectTransform = Instantiate(charSlotTemplate, charSlotContainer).GetComponent<RectTransform>();
@@ -116,6 +114,8 @@ public class UI_PartyMenu : MonoBehaviour
 
     public void OpenPartyUI()
     {
+        if (party == null)
+            party = GameManager.GM.playerCharacters;
         gameObject.SetActive(true);
         RefreshPartyList();
         shownState = true;

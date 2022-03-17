@@ -243,7 +243,13 @@ public class Inventory
     private bool CheckHasSpace (Item item, int qty = 1) {
         
         Item invItem = GetItem(item);
-
+        if(invItem == null) {
+            int slotsNeeded = (int)Math.Ceiling((double)qty / item.stackLimit);
+            if ((slotsNeeded + slotsUsed) > slotsLimit)
+                return false;
+            else
+                return true;
+        } 
         int slotsAlreadyUsed = (int)Math.Ceiling((double)invItem.amount / invItem.stackLimit);
         int slotsToBeUsed = (int)Math.Ceiling(((double)invItem.amount + (double)qty)/ invItem.stackLimit);
         int newSlotsUsed = slotsToBeUsed - slotsAlreadyUsed;
