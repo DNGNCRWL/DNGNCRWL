@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7097171901544760569}
   - component: {fileID: 7097171901544760571}
   m_Layer: 0
-  m_Name: Man Eater
+  m_Name: Cockatrice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f864b19878f05c49a191f06f82d35a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  randomize: 0
   spriteRenderer: {fileID: 0}
   standGround: {fileID: 11400000, guid: 134802e515f32c243a0f0de7c77030fd, type: 2}
   defend: {fileID: 11400000, guid: 3eb7fb0473c2f1c42a9b8545bf0005b3, type: 2}
@@ -52,18 +53,19 @@ MonoBehaviour:
   sneak: {fileID: 11400000, guid: fb465c051a54d4845ba184fdef529413, type: 2}
   fight: {fileID: 11400000, guid: dbdf578bb48116e4c81170b543b5ca09, type: 2}
   artificialIntelligence: {fileID: 0}
-  characterName: Unnamed
+  characterName: Cockatrice
   description: 'Nothing is known. '
   characterClass: Classless
-  hitPoints: 1
-  maxHitPoints: 1
-  strength: -3
-  agility: -3
+  hitPoints: 5
+  maxHitPoints: 5
+  strength: 3
+  agility: -5
   presence: -3
   toughness: -3
   powers: 0
   omens: 0
-  silver: 0
+  silver: 3
+  experience: 4
   food: 0
   waterskin: 0
   naturalResistances:
@@ -82,7 +84,7 @@ MonoBehaviour:
     magic: 0
     pierce: 0
     spirit: 0
-  mainhand: {fileID: 0}
+  mainhand: {fileID: 11400000, guid: 17fce1c7e5cb60e4fa217f98f9e52011, type: 2}
   offhand: {fileID: 0}
   unequippedWeapon: {fileID: 11400000, guid: 06fb80196eb6a0643bbb56b9232d82c2, type: 2}
   armor: {fileID: 0}
@@ -144,8 +146,9 @@ GameObject:
   - component: {fileID: 7097171901612537004}
   - component: {fileID: 7097171901612537005}
   - component: {fileID: 7097171901612537007}
+  - component: {fileID: 4627809020858462691}
   m_Layer: 0
-  m_Name: Test-Character-7
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -205,7 +208,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -468973695279496817, guid: 7125f3308c01aea4984e6bd28393cc86, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c742542a84f628e409a9064a70516005, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -228,3 +231,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00599a50748abd34b9f23d4a1b250ef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &4627809020858462691
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7097171901612536994}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1cee572ac7d60e545b274bbe3cb438b0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

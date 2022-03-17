@@ -15,4 +15,7 @@ MonoBehaviour:
   encounterName: Rat Friends
   enemies:
   - {fileID: 3689827403824109842, guid: 8e46b05d78b868d4c9001bc5cc49aa92, type: 3}
+  - {fileID: 3689827403824109842, guid: 8e46b05d78b868d4c9001bc5cc49aa92, type: 3}
   - {fileID: 7097171901544760574, guid: dde67c8b87038784987c0643fb1b05b0, type: 3}
+  lootRate: 0
+  loot: []

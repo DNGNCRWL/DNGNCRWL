@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f864b19878f05c49a191f06f82d35a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  randomize: 0
   spriteRenderer: {fileID: 0}
   standGround: {fileID: 11400000, guid: 134802e515f32c243a0f0de7c77030fd, type: 2}
   defend: {fileID: 11400000, guid: 3eb7fb0473c2f1c42a9b8545bf0005b3, type: 2}
@@ -54,7 +55,7 @@ MonoBehaviour:
   characterName: Unnamed
   description: 'Nothing is known. '
   characterClass: Classless
-  hitPoints: 1
+  hitPoints: 10
   maxHitPoints: 1
   strength: -3
   agility: -3
@@ -63,6 +64,7 @@ MonoBehaviour:
   powers: 0
   omens: 0
   silver: 0
+  experience: 0
   food: 0
   waterskin: 0
   naturalResistances:
@@ -83,9 +85,9 @@ MonoBehaviour:
     spirit: 0
   mainhand: {fileID: 0}
   offhand: {fileID: 0}
-  unequippedWeapon: {fileID: 0}
+  unequippedWeapon: {fileID: 11400000, guid: 2f057fd4fd57dd442b717efe99d4fb10, type: 2}
   armor: {fileID: 0}
-  unequippedArmor: {fileID: 0}
+  unequippedArmor: {fileID: 11400000, guid: 1b55636a5bf97b24f82d271cf48741ce, type: 2}
   currentState: 0
   infected: 0
   bleeding: 0
@@ -130,8 +132,9 @@ GameObject:
   - component: {fileID: 4576381878893785056}
   - component: {fileID: 5137453467446864840}
   - component: {fileID: 4212520352980392176}
+  - component: {fileID: 3416865354322767379}
   m_Layer: 0
-  m_Name: Test-Character
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -214,3 +217,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00599a50748abd34b9f23d4a1b250ef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &3416865354322767379
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7519617101036752088}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1cee572ac7d60e545b274bbe3cb438b0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

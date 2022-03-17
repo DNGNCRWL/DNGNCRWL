@@ -52,7 +52,8 @@ public class GameManager : MonoBehaviour
     private void Start() {
         
     }
-    public static void Reset() {
+    public static void Reset()
+    {
 
     }
 
@@ -60,8 +61,9 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Dungeon reload");
     }
-    public static void StartGame(){
-        
+    public static void StartGame()
+    {
+
     }
 
     public static IEnumerator DisplayMessagePackage(MessagePackage mp, float target, string[] toInsert)
@@ -152,8 +154,13 @@ public class GameManager : MonoBehaviour
 
     //SCENE NAVIGATION
 
-    public static void GoToDungeonNavigation(){
+    public static void GoToDungeonNavigation()
+    {
         SceneManager.LoadScene("DungeonGeneration", LoadSceneMode.Single);
+    }
+    public static void GameOver()
+    {
+        SceneManager.LoadScene("Title", LoadSceneMode.Single);
     }
 
 }

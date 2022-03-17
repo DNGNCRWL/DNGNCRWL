@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 4575246126486918638}
   - component: {fileID: 4575246126486918639}
   - component: {fileID: 4575246126486918637}
+  - component: {fileID: 8951662283251502174}
   m_Layer: 0
-  m_Name: Test-Character-8
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 5922816741404586159, guid: af609e5eeb92d2d448752564a1c77ee4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1882001a2a4ba1f4c81a4d654daf4e32, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -95,6 +96,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00599a50748abd34b9f23d4a1b250ef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &8951662283251502174
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4575246126486918640}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1cee572ac7d60e545b274bbe3cb438b0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &4575246128239112673
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,6 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f864b19878f05c49a191f06f82d35a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  randomize: 0
   spriteRenderer: {fileID: 0}
   standGround: {fileID: 11400000, guid: 134802e515f32c243a0f0de7c77030fd, type: 2}
   defend: {fileID: 11400000, guid: 3eb7fb0473c2f1c42a9b8545bf0005b3, type: 2}
@@ -150,15 +171,16 @@ MonoBehaviour:
   characterName: Unnamed
   description: 'Nothing is known. '
   characterClass: Classless
-  hitPoints: 1
-  maxHitPoints: 1
-  strength: -3
-  agility: -3
+  hitPoints: 4
+  maxHitPoints: 4
+  strength: 3
+  agility: -1
   presence: -3
   toughness: -3
   powers: 0
   omens: 0
-  silver: 0
+  silver: 5
+  experience: 3
   food: 0
   waterskin: 0
   naturalResistances:
@@ -179,7 +201,7 @@ MonoBehaviour:
     spirit: 0
   mainhand: {fileID: 0}
   offhand: {fileID: 0}
-  unequippedWeapon: {fileID: 11400000, guid: 06fb80196eb6a0643bbb56b9232d82c2, type: 2}
+  unequippedWeapon: {fileID: 11400000, guid: ae54a764e7224a045bdd0cf472136aa1, type: 2}
   armor: {fileID: 0}
   unequippedArmor: {fileID: 11400000, guid: e325cfabe55fa974b8d80a4b24a5bc1b, type: 2}
   currentState: 0

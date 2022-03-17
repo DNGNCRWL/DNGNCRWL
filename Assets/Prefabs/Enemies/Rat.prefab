@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 3689827402319004506}
   - component: {fileID: 3689827402319004507}
   - component: {fileID: 3689827402319004485}
+  - component: {fileID: 6726659326083875145}
   m_Layer: 0
-  m_Name: Test-Character-6
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,12 +73,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7213380261777143273, guid: 7125f3308c01aea4984e6bd28393cc86, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 61534c3e291f8bf48ad769ab0a7572b0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.885, y: 2.77}
+  m_Size: {x: 1.952, y: 2.032}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -95,6 +96,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00599a50748abd34b9f23d4a1b250ef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &6726659326083875145
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3689827402319004504}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1cee572ac7d60e545b274bbe3cb438b0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3689827403824109842
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,6 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f864b19878f05c49a191f06f82d35a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  randomize: 0
   spriteRenderer: {fileID: 0}
   standGround: {fileID: 11400000, guid: 134802e515f32c243a0f0de7c77030fd, type: 2}
   defend: {fileID: 11400000, guid: 3eb7fb0473c2f1c42a9b8545bf0005b3, type: 2}
@@ -147,18 +168,19 @@ MonoBehaviour:
   sneak: {fileID: 11400000, guid: fb465c051a54d4845ba184fdef529413, type: 2}
   fight: {fileID: 11400000, guid: dbdf578bb48116e4c81170b543b5ca09, type: 2}
   artificialIntelligence: {fileID: 0}
-  characterName: Unnamed
+  characterName: Rat
   description: 'Nothing is known. '
   characterClass: Classless
   hitPoints: 1
   maxHitPoints: 1
   strength: -3
-  agility: -3
+  agility: 0
   presence: -3
   toughness: -3
   powers: 0
   omens: 0
-  silver: 0
+  silver: 2
+  experience: 1
   food: 0
   waterskin: 0
   naturalResistances:
@@ -179,9 +201,9 @@ MonoBehaviour:
     spirit: 0
   mainhand: {fileID: 0}
   offhand: {fileID: 0}
-  unequippedWeapon: {fileID: 11400000, guid: 06fb80196eb6a0643bbb56b9232d82c2, type: 2}
+  unequippedWeapon: {fileID: 11400000, guid: ae54a764e7224a045bdd0cf472136aa1, type: 2}
   armor: {fileID: 0}
-  unequippedArmor: {fileID: 11400000, guid: e325cfabe55fa974b8d80a4b24a5bc1b, type: 2}
+  unequippedArmor: {fileID: 11400000, guid: 20d9be5a45b52014fb437c47d47e39a2, type: 2}
   currentState: 0
   infected: 0
   bleeding: 0
