@@ -24,8 +24,10 @@ public class Item : ScriptableObject
         return ((broken) ? "Broken " : "") + itemName;
     }
 
-    public virtual Item Copy()
+    public Item Copy()
     {
+        Debug.Log("This: " + this);
+
         Item copy = Instantiate(this);
 
         return copy;

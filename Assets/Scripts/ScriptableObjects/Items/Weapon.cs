@@ -9,7 +9,6 @@ public class Weapon : Item
     public bool twoHanded;
     public Stat abilityToUse;
     public AnimationClip effectAnimation;
-    public AnimationClip criticalEffectAnimation;
 
     public virtual Damage GetDamage()
     {

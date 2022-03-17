@@ -9,14 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 184aec5129def42449da03fa5b693483, type: 3}
-  m_Name: RedPoison
+  m_Script: {fileID: 11500000, guid: 730087284eaaaf345bcf1009c6b546bd, type: 3}
+  m_Name: Weapon
   m_EditorClassIdentifier: 
-  itemName: Red Poison
+  itemName: 
   description: 
   broken: 0
   value: 0
   actions: []
-  sprite: {fileID: 21300000, guid: 9c097b97603bdb341badce11961b4cb0, type: 3}
-  stackLimit: 4
-  amount: 4
+  sprite: {fileID: 0}
+  stackLimit: 1
+  amount: 1
+  damage:
+    dieCount: 0
+    dieSize: 0
+    modifier: 0
+    damageType: 0
+  twoHanded: 0
+  abilityToUse: 0
+  effectAnimation: {fileID: 0}

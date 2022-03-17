@@ -9,14 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e06c0768d80cde741a0693385f4ad72d, type: 3}
-  m_Name: PairOfMonkeys
+  m_Script: {fileID: 11500000, guid: 184aec5129def42449da03fa5b693483, type: 3}
+  m_Name: Torch
   m_EditorClassIdentifier: 
-  itemName: Pair Of Monkeys
+  itemName: Torch
   description: 
   broken: 0
   value: 0
   actions: []
-  sprite: {fileID: 21300000, guid: f9704c0f6a591de46995cf4401129835, type: 3}
-  unit: Monkey
-  amount: 2
+  sprite: {fileID: 21300000, guid: a02255264cb599a409990043c1582195, type: 3}
+  stackLimit: 5
+  amount: 5

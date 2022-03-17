@@ -9,14 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e06c0768d80cde741a0693385f4ad72d, type: 3}
-  m_Name: ExquisitePerfume
+  m_Script: {fileID: 11500000, guid: b69ab4697d02f72469d5f17d830a64d7, type: 3}
+  m_Name: Soft Fur
   m_EditorClassIdentifier: 
-  itemName: Exquisite Perfume
+  itemName: Soft Fur
   description: 
   broken: 0
   value: 0
   actions: []
-  sprite: {fileID: 21300000, guid: 168e1fb3a3837424ea19cbdb8b7c11d7, type: 3}
-  unit: Spray
-  amount: 30
+  sprite: {fileID: 0}
+  stackLimit: 1
+  amount: 1
+  armorTier: 0
+  maxArmorTier: 0
