@@ -9,17 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 730087284eaaaf345bcf1009c6b546bd, type: 3}
-  m_Name: HumanDefaultWeapon
+  m_Script: {fileID: 11500000, guid: b69ab4697d02f72469d5f17d830a64d7, type: 3}
+  m_Name: Soft Fur
   m_EditorClassIdentifier: 
-  itemName: Fist
+  itemName: Soft Fur
   description: 
   broken: 0
   value: 0
   actions: []
-  damage:
-    dieCount: 1
-    dieSize: 2
-    damageType: 1
-  twoHanded: 0
-  abilityToUse: 0
+  sprite: {fileID: 0}
+  stackLimit: 1
+  amount: 1
+  armorTier: 0
+  maxArmorTier: 0

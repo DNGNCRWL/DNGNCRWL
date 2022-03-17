@@ -7,7 +7,8 @@ public class BattleManager : MonoBehaviour
 {
     public static BattleManager BM;
     static EnemyEncounter ENEMY_ENCOUNTER;
-    public static void SetENEMY_ENCOUNTER(EnemyEncounter enemyEncounter){ENEMY_ENCOUNTER = enemyEncounter;}
+    public EnemyEncounter defaultEnemyEncounter;
+    public static void SetENEMY_ENCOUNTER(EnemyEncounter enemyEncounter) { ENEMY_ENCOUNTER = enemyEncounter; }
     MenuManager MM;
 
     [SerializeField] Party playerParty;
@@ -35,17 +36,33 @@ public class BattleManager : MonoBehaviour
         Done
     }
 
-    private void Awake()
+    bool battleCompleted = false;
+
+    private async void Awake()
     {
         if (!BM) { BM = this; }
         else { Destroy(gameObject); return; }
 
         MM = GetComponent<MenuManager>();
 
-        //Set up Parties
+        //Set up PlayerParty
         for (int i = 0; i < GameManager.GM.playerCharacters.Count; i++)
         {
             playerParty.characters.Add(GameManager.GM.playerCharacters[i]);
+        }
+        //Set up EnemyParty
+        EnemyEncounter thisEncounter = defaultEnemyEncounter;
+        if (ENEMY_ENCOUNTER != null)
+            thisEncounter = ENEMY_ENCOUNTER;
+
+        GameObject[] enemies = thisEncounter.GetEnemies();
+
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            GameObject go = Instantiate(enemies[i]);
+            CharacterSheet goCS = go.GetComponent<CharacterSheet>();
+            goCS.MakeItemCopies();
+            enemyParty.characters.Add(goCS);
         }
 
         SetBattleOrder(playerParty);
@@ -69,10 +86,10 @@ public class BattleManager : MonoBehaviour
     IEnumerator Start()
     {
         GameManager.GM.SetText("Enemies appeared");
-        if(ENEMY_ENCOUNTER != null)
+        if (ENEMY_ENCOUNTER != null)
             GameManager.GM.AddText(ENEMY_ENCOUNTER.GetEncounterName());
         MM.CloseAllMenus();
-        
+
         //yield return new WaitForSeconds(3);
         //GameManager.GoToDungeonNavigation();
 
@@ -116,13 +133,42 @@ public class BattleManager : MonoBehaviour
         if (SideIsAlive(playerParty))
         {
             GameManager.GM.SetText(playerParty.name + " is victorious");
+
+            int silver = 0;
+            Item item = null;
+            if (ENEMY_ENCOUNTER != null)
+            {
+                silver = ENEMY_ENCOUNTER.GetSilver();
+                item = ENEMY_ENCOUNTER.GetLoot();
+            }
+            
+            Debug.Log("Silver: " + silver + ", and Item: " + (item!= null ? item.name : "null"));
+
+            if (silver > 0)
+                GameManager.GM.AddText("They acquired " + silver + " silver coins");
+            GameManager.GM.playerCharacters[0].AddSilver(silver);
+
+            if (item != null)
+            {
+                GameManager.GM.AddText("And they found " + item.GetExplicitString());
+                bool pickedup = false;
+                for (int i = 0; i < GameManager.GM.playerCharacters.Count; i++)
+                {
+                    if (!pickedup)
+                        GameManager.GM.playerCharacters[i].PickupItem(item);
+                }
+            }
+
             yield return new WaitForSeconds(3);
-            GameManager.GoToDungeonNavigation();
+            battleCompleted = true;
         }
         else
         {
             GameManager.GM.SetText(enemyParty.name + " is victorious");
             GameManager.Reset();
+
+            yield return new WaitForSeconds(3);
+            GameManager.GameOver();
         }
 
         yield return null;
@@ -178,12 +224,13 @@ public class BattleManager : MonoBehaviour
 
                 bool validCharacter = false;
 
-                foreach(CharacterSheet cs in charactersYetToAct){
-                    if(cs == currentCharacter)
+                foreach (CharacterSheet cs in charactersYetToAct)
+                {
+                    if (cs == currentCharacter)
                         validCharacter = true;
                 }
 
-                if(validCharacter)
+                if (validCharacter)
                     currentPhase = TurnPhase.SelectMove;
             }
 
@@ -194,6 +241,7 @@ public class BattleManager : MonoBehaviour
             if (currentPhase == TurnPhase.SelectMove)
             {
                 int move = 0;
+                currentCharacter.gameObject.GetComponentInChildren<Animator>().SetTrigger("Prepare");
 
                 if (party.playerControlled)
                 {
@@ -209,7 +257,9 @@ public class BattleManager : MonoBehaviour
 
                     MM.CloseAllMenus();
                     move = moveMenu.PullSelected();
-                } else {
+                }
+                else
+                {
                     move = currentCharacter.GetAI().CalculateMove(currentCharacter);
                 }
 
@@ -239,6 +289,8 @@ public class BattleManager : MonoBehaviour
             //execute action
             if (currentPhase == TurnPhase.SelectAction)
             {
+                currentCharacter.gameObject.GetComponentInChildren<Animator>().SetTrigger("Prepare");
+
                 while (!ActionManager.EmptyQueue())
                     yield return null;
 
@@ -275,7 +327,7 @@ public class BattleManager : MonoBehaviour
                 {
                     CharacterAction calculatedAction = currentCharacter.GetAI().CalculateAction(this, currentCharacter);
                     CharacterSheet calculatedTarget = currentCharacter.GetAI().CalculateTarget(this, currentCharacter, calculatedAction);
-                
+
                     ActionManager.AM.LoadAction(currentCharacter, calculatedTarget, null, calculatedAction);
                     currentPhase = TurnPhase.Done;
                 }
@@ -303,10 +355,11 @@ public class BattleManager : MonoBehaviour
     {
         CharacterSheet target = null;
 
-        if(action.targetingType != CharacterAction.TargetingType.None){
+        if (action.targetingType != CharacterAction.TargetingType.None)
+        {
             List<CharacterSheet> targets = PossibleTargets(actor, action);
             yield return SelectTarget(targets);
- 
+
             currentPhase = returnPhase;
             if (targets.Count <= 0)
                 yield break;
@@ -319,36 +372,42 @@ public class BattleManager : MonoBehaviour
         currentPhase = nextPhase;
     }
 
-    IEnumerator SelectItem(List<Item> items, CharacterSheet character){
+    IEnumerator SelectItem(List<Item> items, CharacterSheet character)
+    {
         Menu itemMenu = MM.itemMenu.GetComponent<Menu>();
 
         MM.OpenItemMenu(items);
 
-        while(!itemMenu.IsSelected()){
+        while (!itemMenu.IsSelected())
+        {
             yield return null;
         }
         MM.CloseAllMenus();
 
         int selected = itemMenu.PullSelected();
-        if(selected < 0 || selected >= items.Count){
+        if (selected < 0 || selected >= items.Count)
+        {
             yield break;
         }
 
         SelectItemAction(items[selected], character);
     }
 
-    IEnumerator SelectItemAction(Item item, CharacterSheet character){
+    IEnumerator SelectItemAction(Item item, CharacterSheet character)
+    {
         Menu subActionMenu = MM.actionMenu.GetComponent<Menu>();
 
         MM.OpenSubActionMenu(item.actions);
 
-        while(!subActionMenu.IsSelected()){
+        while (!subActionMenu.IsSelected())
+        {
             yield return null;
         }
         MM.CloseAllMenus();
 
         int selected = subActionMenu.PullSelected();
-        if(selected < 0 || selected >= item.actions.Count){
+        if (selected < 0 || selected >= item.actions.Count)
+        {
             yield break;
         }
 
@@ -477,39 +536,45 @@ public class BattleManager : MonoBehaviour
         return targets;
     }
 
-    public List<CharacterSheet> AllyTargets(CharacterSheet actor){
+    public List<CharacterSheet> AllyTargets(CharacterSheet actor)
+    {
         List<CharacterSheet> targets = new List<CharacterSheet>();
-        foreach(CharacterSheet cs in GetParty(actor).characters)
+        foreach (CharacterSheet cs in GetParty(actor).characters)
             targets.Add(cs);
         return targets;
     }
-    public List<CharacterSheet> AnyTargets(CharacterSheet actor){
+    public List<CharacterSheet> AnyTargets(CharacterSheet actor)
+    {
         List<CharacterSheet> targets = new List<CharacterSheet>();
-        foreach(CharacterSheet cs in GetParty(actor).characters)
+        foreach (CharacterSheet cs in GetParty(actor).characters)
             targets.Add(cs);
-        foreach(CharacterSheet cs in GetOppositeParty(actor).characters)
-            targets.Add(cs);
-        return targets;
-    }
-    public List<CharacterSheet> EnemyTargets(CharacterSheet actor){
-        List<CharacterSheet> targets = new List<CharacterSheet>();
-        foreach(CharacterSheet cs in GetOppositeParty(actor).characters)
+        foreach (CharacterSheet cs in GetOppositeParty(actor).characters)
             targets.Add(cs);
         return targets;
     }
-    public List<CharacterSheet> NearbyAllyTargets(CharacterSheet actor){
+    public List<CharacterSheet> EnemyTargets(CharacterSheet actor)
+    {
         List<CharacterSheet> targets = new List<CharacterSheet>();
-        foreach(CharacterSheet cs in GetParty(actor).characters){
-            if(AreInSameArea(actor, cs))
+        foreach (CharacterSheet cs in GetOppositeParty(actor).characters)
+            targets.Add(cs);
+        return targets;
+    }
+    public List<CharacterSheet> NearbyAllyTargets(CharacterSheet actor)
+    {
+        List<CharacterSheet> targets = new List<CharacterSheet>();
+        foreach (CharacterSheet cs in GetParty(actor).characters)
+        {
+            if (AreInSameArea(actor, cs))
                 targets.Add(cs);
         }
         return targets;
     }
-    public List<CharacterSheet> AnyTargets(){
+    public List<CharacterSheet> AnyTargets()
+    {
         List<CharacterSheet> targets = new List<CharacterSheet>();
-        foreach(CharacterSheet cs in playerParty.characters)
+        foreach (CharacterSheet cs in playerParty.characters)
             targets.Add(cs);
-        foreach(CharacterSheet cs in enemyParty.characters)
+        foreach (CharacterSheet cs in enemyParty.characters)
             targets.Add(cs);
         return targets;
     }
@@ -663,6 +728,11 @@ public class BattleManager : MonoBehaviour
             character.SetBattleOrder(location);
             character.UpdateBattleHUD();
         }
+    }
+
+    void Update(){
+        if(battleCompleted && Input.GetKeyDown(KeyCode.Space))
+            GameManager.GoToDungeonNavigation();
     }
 }
 

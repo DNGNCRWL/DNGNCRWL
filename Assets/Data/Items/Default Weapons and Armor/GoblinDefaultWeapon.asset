@@ -17,9 +17,14 @@ MonoBehaviour:
   broken: 0
   value: 0
   actions: []
+  sprite: {fileID: 0}
+  stackLimit: 1
+  amount: 1
   damage:
     dieCount: 1
     dieSize: 2
+    modifier: 0
     damageType: 2
   twoHanded: 0
   abilityToUse: 0
+  effectAnimation: {fileID: 7400000, guid: 12ae1c8ceb079b8409a99365bef4ca48, type: 2}

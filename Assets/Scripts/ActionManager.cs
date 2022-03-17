@@ -40,17 +40,23 @@ public class ActionManager : MonoBehaviour
 
     IEnumerator StartActionCR(CharacterSheet actor, CharacterSheet target, Item item, CharacterAction action)
     {
+        actor.gameObject.GetComponentInChildren<Animator>().SetTrigger("Prepare");
         doingAnAction = true;
 
         //initialize insertable message variables
         //input these into the messages using the {n} where n is the index of the array
-        string[] messageVariables = {
-            (actor)? actor.GetCharacterName() : "",
-            (target)? target.GetCharacterName() : "",
-            (item)? item.GetExplicitString() : "",
-            (actor)? actor.GetWeapon().itemName : "",
-            (actor)? actor.GetWeapon().GetExplicitString() : "",
-            (actor)? GameManager.DamageTypeToString(actor.GetWeapon().damage.damageType) : "",
+
+        string[] messageVariables =
+        // {
+        //     "CHARNAME", "TARGNAME", "ITEMSTRING", "WEAPONNAME", "WEAPON FANCY NAME", "DAMAGE TO TO STRING"
+        // };
+        {
+            (actor != null)? actor.GetCharacterName() : "",
+            (target != null)? target.GetCharacterName() : "",
+            (item != null)? item.GetExplicitString() : "",
+            (actor != null)? actor.GetWeapon().itemName : "",
+            (actor != null)? actor.GetWeapon().GetExplicitString() : "",
+            (actor != null)? GameManager.DamageTypeToString(actor.GetWeapon().damage.damageType) : "",
         };
 
         GameManager.GM.ClearText();
@@ -153,6 +159,7 @@ public class ActionManager : MonoBehaviour
 
         yield return null;
 
+        actor.gameObject.GetComponentInChildren<Animator>().SetTrigger("Idle");
         doingAnAction = false;
     }
 
@@ -297,6 +304,8 @@ public class ActionManager : MonoBehaviour
     //targeted
     static IEnumerator TargetTakeWeaponDamage(ParameteredAtomicFunction args)
     {
+        args.actor.gameObject.GetComponentInChildren<Animator>().SetTrigger("Attack");
+
         Weapon thisWeapon = args.actor.GetWeapon();
 
         DamageReturn damageReturn = args.target.TakeDamage(thisWeapon.damage, args.critical);
@@ -306,6 +315,9 @@ public class ActionManager : MonoBehaviour
         AM.StartCoroutine(
             BattleEffect.RandomSpawnEffect(AM.battleEffect, thisWeapon.effectAnimation, spawnPoint, 1, 0.2f, damageReturn.damageDone)
             );
+
+        Animator targetAnimator = args.target.gameObject.GetComponentInChildren<Animator>();
+        targetAnimator.SetTrigger("Hurt");
 
         GameManager.GM.AddText(args.target.GetCharacterName() + " takes " + damageReturn.damageDone + " damage");
         yield return new WaitForSeconds(args.floatValue);

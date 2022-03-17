@@ -10,4 +10,33 @@ public class EnemyEncounter : ScriptableObject
 
     public string GetEncounterName(){return encounterName;}
     public GameObject[] GetEnemies(){return enemies;}
+    public float lootRate;
+    public Item[] loot;
+
+    public Item GetLoot(){
+        Item ret = null;
+        float random = Random.Range(0, 1);
+        if(random < lootRate && loot.Length > 0){
+            ret = loot[Random.Range(0, loot.Length)].Copy();
+        }
+        return ret;
+    }
+
+    public int GetSilver(){
+        int silver = 0;
+        foreach(GameObject enemy in enemies){
+            CharacterSheet charSheet = enemy.GetComponent<CharacterSheet>();
+            silver += charSheet.GetSilver();
+        }
+        return silver;
+    }
+
+    public int GetExperience(){
+        int exp = 0;
+        foreach(GameObject enemy in enemies){
+            CharacterSheet charSheet = enemy.GetComponent<CharacterSheet>();
+            exp += charSheet.GetExperience();
+        }
+        return exp;
+    }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CharacterSheet : MonoBehaviour //can probably remove this as a monobehavior if we get rid of the unity calls at the bottom
 {
+    public bool randomize;
     public SpriteRenderer spriteRenderer;
     public CharacterAction standGround;
     public CharacterAction defend;
@@ -19,7 +20,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     [SerializeField] int
         hitPoints, maxHitPoints,
         strength, agility, presence, toughness,
-        powers, omens, silver, food;
+        powers, omens, silver, experience, food;
     static readonly int abilityMin = -3;
     static readonly int abilityMax = 6; //this is 3 in the book
     [SerializeField] bool waterskin; //make this an item?
@@ -77,7 +78,9 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     public int GetMaxHitPoints() { return Mathf.Max(1, maxHitPoints + maxHitPointsTempIncrease); }
     public int GetPowers() { return powers; }
     public int GetOmens() { return omens; }
-    public int GetSilver() { return silver; }
+    public int GetSilver(){return silver;}
+    public void AddSilver(int silver){this.silver += silver;}
+    public int GetExperience(){return experience;}
     public List<Item> GetInventoryList() { return inventory.GetItemList(); }
 
     public Inventory GetInventory() { return inventory; }
@@ -111,6 +114,21 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     public void SetBattleOrder(int i) {battleOrder = i;}
 
     //On with the show
+    public void MakeItemCopies(){
+
+        if(mainhand != null)
+            mainhand = (Weapon) mainhand.Copy();
+        if(offhand != null)
+            offhand = (Weapon) offhand.Copy();
+        if(unequippedWeapon != null)
+            unequippedWeapon = (Weapon) unequippedWeapon.Copy();
+        if(armor != null)
+            armor = (Armor) unequippedArmor.Copy();
+        if(unequippedArmor !=null)
+            unequippedArmor = (Armor) unequippedArmor.Copy();
+
+        //set inventory to copy of inventory
+    }
     public void InitializeCharacter()
     {
         characterName = "Unnamed";
@@ -119,7 +137,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
         hitPoints = maxHitPoints = 1;
         strength = agility = presence = toughness = abilityMin;
-        powers = omens = silver = food = 0;
+        powers = omens = silver = experience = food = 0;
         waterskin = false;
 
         mainhand = offhand = null;
@@ -202,6 +220,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         powers = GameManager.RollDie(rp.powers);
         omens = GameManager.RollDie(rp.omens);
         silver = 10 * GameManager.RollDice(rp.silverDieCount, rp.silverDieSize);
+        
         food = GameManager.RollDie(rp.food);
         waterskin = true;
         
@@ -416,7 +435,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         return PickupItem(oldArmor);
     }
 
-    bool PickupItem(Item item)
+    public bool PickupItem(Item item)
     {
         if (item == null) return GameManager.Error("No item to pickup");
         if (inventory.storage == null) return GameManager.Error("Cannot pickup " + item.itemName + " without a bag.");
@@ -546,7 +565,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
         if (hitPoints < 0)
         {
-            spriteRenderer.color = Color.black;
+            gameObject.GetComponentInChildren<Animator>().Play("Dead");
             currentState = State.Dead;
             return new DamageReturn(0, GetCharacterName() + " is dead", true);
         }
@@ -621,6 +640,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
                 hurt = "There is blood everywhere";
                 break;
             case 4:
+                gameObject.GetComponentInChildren<Animator>().Play("Dead");
                 currentState = State.Dead;
                 hurt += " breaths their last breath";
                 killerBlow = true;
@@ -769,8 +789,15 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     //**** UNITY CALLS ****
     private void Awake()
     {
-        InitializeRandomClassless();
+        //InitializeRandomClassless();
         artificialIntelligence = GetComponent<EnemyActions>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+    }
+
+    private void Update(){
+        if(randomize){
+            randomize = false;
+            InitializeClassless(RandomClasslessRollPackage());
+        }
     }
 }
