@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Tent
   description: 
   broken: 0
-  value: 0
+  value: 12
   actions: []
   inventoryActions:
   - {fileID: 11400000, guid: ca1b5b577e256334abcc00fce757009e, type: 2}

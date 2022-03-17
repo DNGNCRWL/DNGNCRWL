@@ -105,11 +105,12 @@ public class TownManager : MonoBehaviour
     }
 
     //Reset player health
-    // public void rest() {
-    //     foreach (CharacterSheet character in playerCharacters) {
-    //         character.RecoverDamage(new Damage(50, 20, 10, new DamageType(Untyped)));
-    //     }
-    // }
+    public void rest() {
+        GetPayment(3);
+        foreach (CharacterSheet character in playerCharacters) {
+            character.RecoverDamage(new Damage(50, 20, 10, DamageType.Untyped));
+        }
+    }
 
     
     //
@@ -423,15 +424,14 @@ public class TownManager : MonoBehaviour
 
     //Open the menu to select what character to buy an item for
     public void OpenBuyForMenu(int itemNum) {
-        if (playerCharacters.Count > 0) {
+        if (playerCharacters.Count > 1) {
             itemSelected = itemNum;
             buyForMenu.transform.position = Input.mousePosition;
-            if (playerCharacters.Count != 0) {
-                buyForMenu.transform.position = Input.mousePosition + GetGUIElementOffset(buyForMenu.transform.GetChild(5-playerCharacters.Count).GetComponent<RectTransform>());
-            } else {
-                buyForMenu.transform.position = Input.mousePosition + GetGUIElementOffset(buyForMenu.transform.GetChild(0).GetComponent<RectTransform>());
-            }
+            buyForMenu.transform.position = Input.mousePosition + GetGUIElementOffset(buyForMenu.transform.GetChild(5-playerCharacters.Count).GetComponent<RectTransform>());
             buyForMenu.SetActive(true);
+        } else if (playerCharacters.Count == 1) {
+            itemSelected = itemNum;
+            AddItemToCart(0);
         } else {
             ErrorMessage("Must have characters in the party to buy for");
         }
@@ -483,6 +483,7 @@ public class TownManager : MonoBehaviour
         Item temp = cartItems[index];
         storeItems.RemoveAt(previousLocations[index]);
         storeItems.Insert(previousLocations[index], temp);
+        cost -= temp.value;
         cartItems.RemoveAt(index);
         previousLocations.RemoveAt(index);
         charToBuyFor.RemoveAt(index);
@@ -493,7 +494,7 @@ public class TownManager : MonoBehaviour
     public void PurchaseItems() {
         if (cartItems.Count == 0) {
             ErrorMessage("Nothing to buy!");
-        } else if (silver >= cost) {
+        } else if(GetPayment(cost)) {
             for (int i = 0; i < cartItems.Count; ++i) {
                 charToBuyFor[i].GetInventory().AddItem(cartItems[i]);
             }
@@ -501,22 +502,30 @@ public class TownManager : MonoBehaviour
             cartItems.Clear();
             previousLocations.Clear();
             charToBuyFor.Clear();
+            cost = 0;
+        }
+        SetStoreInfo();
+    }
 
+    public bool GetPayment(int charge) {
+        if (silver >= charge) {
             int totalChars = playerCharacters.Count + reserveCharacters.Count;
             CharacterSheet[] characters = new CharacterSheet[totalChars];
             playerCharacters.CopyTo(characters);
             reserveCharacters.CopyTo(characters, playerCharacters.Count);
             int j = 0;
-            while (cost != 0) {
+            while (charge != 0) {
                 if (characters[j % totalChars].GetSilver() > 0)
                     characters[j % totalChars].MakePayment(1);
-                    --cost;
+                    --charge;
                 ++j;
             }
             silver = CalculateSilver();
             SetStoreInfo();
+            return true;
         } else {
             ErrorMessage("Not enough silver!");
+            return false;
         }
     }
 }
