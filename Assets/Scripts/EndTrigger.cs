@@ -26,8 +26,8 @@ public class EndTrigger : MonoBehaviour
         //FindObjectOfType<Navigation>().respawn();
         FindObjectOfType<DungeonGenerator>().Start();
 
-/* 
- *      if (DungeonGenerator.i == 0)
+
+      if (DungeonGenerator.i == 0)
         {
             DungeonGenerator.i++;
             FindObjectOfType<DungeonGenerator>().Start();
@@ -44,7 +44,7 @@ public class EndTrigger : MonoBehaviour
             DungeonGenerator.i++;
             FindObjectOfType<DungeonGenerator>().Start();
         }
-*/
+
         
         
     }

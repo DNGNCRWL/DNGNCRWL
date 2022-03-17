@@ -11,6 +11,8 @@ public class Item : ScriptableObject
     public bool broken;
     public int value;
     public List<CharacterAction> actions;
+    
+    public List<CharacterAction> inventoryActions;
     public Sprite sprite;
     public int stackLimit = 1;
     public int amount = 1;
@@ -26,8 +28,10 @@ public class Item : ScriptableObject
 
     public Item Copy()
     {
-        Debug.Log("This: " + this);
-
+        if (this == null){
+            Debug.LogError("Tried copying null item");
+            return null;
+        }
         Item copy = Instantiate(this);
 
         return copy;

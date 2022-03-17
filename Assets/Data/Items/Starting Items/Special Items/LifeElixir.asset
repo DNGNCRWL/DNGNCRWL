@@ -9,14 +9,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 184aec5129def42449da03fa5b693483, type: 3}
+  m_Script: {fileID: 11500000, guid: e06c0768d80cde741a0693385f4ad72d, type: 3}
   m_Name: LifeElixir
   m_EditorClassIdentifier: 
   itemName: Life Elixir
   description: 
   broken: 0
   value: 0
-  actions: []
+  actions:
+  - {fileID: 11400000, guid: 830434b92f9158e449d632b27ab7b0ed, type: 2}
+  inventoryActions:
+  - {fileID: 11400000, guid: ca1b5b577e256334abcc00fce757009e, type: 2}
+  - {fileID: 11400000, guid: 99b4da20d506f6f4385c71c4b557b030, type: 2}
+  - {fileID: 11400000, guid: ea48a32d183a6c246b3d5b3d6750e4ce, type: 2}
+  - {fileID: 11400000, guid: b640807c03ad6874081488f385b61870, type: 2}
   sprite: {fileID: 21300000, guid: 890f00588fe42b949a9cda235e4689f7, type: 3}
-  stackLimit: 3
-  amount: 3
+  stackLimit: 1
+  amount: 2
+  unit: Sip

@@ -19,24 +19,21 @@ public class Inventory
 
     public Armor armor = null;
 
+    public Weapon mainHand = null;
+    public Weapon offHand = null;
+
+    private int slotsLimit = 10;
+    private int slotsUsed = 0;
+
     public Inventory() {
         itemList = new List<Item>();
-        //AddItem(new Item {itemName = "Femur", sprite = Addressables.LoadAssetAsync<Sprite[]>("Assets/Images/Sprites/Weapons/Femur.png")});
         //AddItem(ItemManager.armory.startingWeapons[0].Copy(), 3);
-        // AddItem(ItemManager.IM.STARTING_WEAPONS[1].Copy(), 2);
-        // AddItem(ItemManager.IM.STARTING_WEAPONS[2].Copy());
-        // AddItem(ItemManager.IM.STARTING_WEAPONS[3].Copy());
-        // AddItem(ItemManager.IM.STARTING_WEAPONS[4].Copy());
-        // AddItem(ItemManager.IM.STARTING_WEAPONS[5].Copy());
-        // AddItem(ItemManager.IM.STARTING_WEAPONS[6].Copy());
-        // AddItem(ItemManager.IM.STARTING_WEAPONS[7].Copy());
-        // AddItem(ItemManager.IM.STARTING_WEAPONS[8].Copy());
-        // AddItem(ItemManager.IM.STARTING_WEAPONS[9].Copy());
-        Debug.Log("Inventory Init");
+        //Debug.Log("Inventory Init");
     }
 
     public void ReplaceInventory (List<Item> newInv) {
         itemList = newInv;
+        OnItemListChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void AddItem(Item item, int qty = 1) {
@@ -58,13 +55,41 @@ public class Inventory
             itemList.Add(item);
         }
 
+        UpdateSlotsUsed();
         OnItemListChanged?.Invoke(this, EventArgs.Empty); //refresh UI
+        Debug.Log("Invoked Inventory Change");
+    }
+
+    public bool AddIfHasSpace(Item item, int qty = 1) {
+        if(CheckHasSpace(item,qty)) {
+            AddItem(item, qty);
+            return true;
+        } else
+            return false;
     }
 
     public List<Item> GetItemList() {
         return itemList;
     }
 
+    public bool RemoveItem(Item item, int amount = 1) {
+        foreach (Item i in itemList) {
+            if (i.itemName == item.itemName) {
+                if ((i.amount - amount )<0) {
+                    return false;
+                } else {
+                    i.amount -= amount;
+                    if (i.amount == 0) {
+                        itemList.Remove(i);
+                    } 
+                    UpdateSlotsUsed();
+                    OnItemListChanged?.Invoke(this, EventArgs.Empty); //refresh UI
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     public bool UseAmmo(ProjectileWeapon weapon) {
 
         string ammoName = weapon.ammoName;
@@ -88,6 +113,7 @@ public class Inventory
 
 
         OnItemListChanged?.Invoke(this, EventArgs.Empty); //refresh UI
+        UpdateSlotsUsed();
 
         return ammo!= null;
     }
@@ -115,24 +141,127 @@ public class Inventory
         }
 
         OnItemListChanged?.Invoke(this, EventArgs.Empty); //refresh UI
+        UpdateSlotsUsed();
 
         return consume != null;
         
     }
 
-    public void ChangeStorage(Bag bag) {
+    public Item GetItem(Item item) {
+        foreach (Item i in itemList){
+            if (i.itemName == item.itemName)
+                return i;
+        }
+        return null;
+    }
+    public void SwapStorage(Bag bag) {
         AddItem(storage);
         storage = bag;
+    }
+
+    public void SetStorage(Bag bag) {
+        storage = bag;
+    }
+
+    public Bag GetStorage(Bag bag) {
+        return storage;
     }
 
 /// <summary>
 /// 
 /// </summary>
 /// <param name="newArmor">testna</param>
-    public void ChangeArmor(Armor newArmor)
+    public void SwapArmor(Armor newArmor)
     {
         AddItem(armor);
         armor = newArmor;
     }
+    public void SetArmor(Armor newArmor)
+    {
+        armor = newArmor;
+    }
 
+    public Armor GetArmor(Armor newArmor) {
+        return armor;
+    }
+
+    public void SwapMainHand(Weapon wep) {
+        AddItem(mainHand);
+        mainHand = wep;
+    }
+    public void SetMainHand(Weapon wep) {
+        mainHand = wep;
+    }
+    public Weapon GetMainHand(Weapon wep) {
+        return mainHand;
+    }
+
+    public void SwapOffHand(Weapon wep) {
+        AddItem(offHand);
+        offHand = wep;
+    }
+    public void SetOffHand(Weapon wep) {
+        offHand = wep;
+    }
+    public Weapon GetOffHand(Weapon wep) {
+        return offHand;
+    }
+
+
+    public void SetSlotLimit(int slotsLimit) {
+        this.slotsLimit = slotsLimit;
+    }
+
+    private void UpdateSlotsUsed() {
+        int usedSlots = 0;
+        foreach (Item item in itemList) {
+            int count = item.amount;
+            int counted = 0;
+            do
+            {
+                int remaining = count - counted;
+                if (item.amount > 1 && item.IsStackable())
+                {
+                    if (remaining > item.stackLimit)
+                    {
+                        counted += item.stackLimit;
+                    }
+                    else
+                    {
+                        counted += remaining;
+                    }
+                }
+                else
+                {
+                    counted++;
+                }
+                usedSlots++;
+            } while (counted < count);
+        }
+    }
+
+    private bool CheckHasSpace (Item item, int qty = 1) {
+        
+        Item invItem = GetItem(item);
+        if(invItem == null) {
+            int slotsNeeded = (int)Math.Ceiling((double)qty / item.stackLimit);
+            if ((slotsNeeded + slotsUsed) > slotsLimit)
+                return false;
+            else
+                return true;
+        } 
+        int slotsAlreadyUsed = (int)Math.Ceiling((double)invItem.amount / invItem.stackLimit);
+        int slotsToBeUsed = (int)Math.Ceiling(((double)invItem.amount + (double)qty)/ invItem.stackLimit);
+        int newSlotsUsed = slotsToBeUsed - slotsAlreadyUsed;
+
+        if((newSlotsUsed+slotsUsed) > slotsLimit)
+            return false;
+        else
+            return true;
+
+    }
+
+    public bool IsOverencumbered () {
+        return slotsUsed > slotsLimit;
+    }
 }

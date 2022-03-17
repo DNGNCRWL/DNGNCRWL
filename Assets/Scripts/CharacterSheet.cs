@@ -62,7 +62,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
     //inventory
     //[SerializeField]
-    private Inventory inventory;
+    public Inventory inventory;
 
     //private List<Item> oldInventory;
 
@@ -144,7 +144,10 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         //bag = null;
         armor = null;
         //oldInventory = new List<Item>();
-        inventory = new Inventory();
+        if (inventory == null)
+            inventory = new Inventory();
+        else
+            inventory.ReplaceInventory(new List<Item>());
         //Debug.Log(uiInventory);
         // if (uiInventory != null)
         // {
@@ -254,7 +257,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         characterName = Fun.RandomFromArray(Fun.names);
 
         UpdateBattleHUD();
-
+        
         Debug.Log(DebugString());
     }
 
@@ -370,7 +373,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         // bag = newBag;
         // if (oldBag == null) return true;
         // return PickupItem(oldBag);
-        inventory.ChangeStorage(newBag);
+        inventory.SwapStorage(newBag);
         return true;
     }
     public bool EquipWeapon(Item tryEquip)
@@ -766,6 +769,12 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
         return 0;
     }
+    public bool MakePayment(int amount) {
+        if (amount > silver) return GameManager.Error("Not enough silver");
+        silver = silver - amount;
+        return true;
+    }
+
 
     //PENALTIES
     public int HemorrhagePenalty()

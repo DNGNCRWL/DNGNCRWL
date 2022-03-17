@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
     public List<CharacterSheet> playerCharacters;
     public List<CharacterSheet> reserveCharacters;
 
-    public Party playerParty;
 
     public static readonly int secondsPerRound = 6;
 
@@ -26,20 +25,32 @@ public class GameManager : MonoBehaviour
 
         DOTween.Init(null, null, null);
 
-        playerParty.SetParty(playerCharacters);
+        //initialize menus if present and not active
+        if (UI_PartyMenu.UI_PARTYMENU == null) {
+            UI_PartyMenu partyMenu = null;
+            var canvases = Resources.FindObjectsOfTypeAll<UI_PartyMenu>();
+            if (canvases.Length > 0)
+                partyMenu = canvases[0];
 
-        //init party menu
-        Debug.Log(playerParty.characters);
+            if (partyMenu != null)
+                partyMenu.OpenPartyUI();
+        }
+
+        if (UI_Inventory.UI_INVENTORY == null) {
+            UI_Inventory inventoryMenu = null;
+            var canvases = Resources.FindObjectsOfTypeAll<UI_Inventory>();
+            if (canvases.Length > 0)
+                inventoryMenu = canvases[0];
+
+            if (inventoryMenu != null)
+                inventoryMenu.OpenInventoryUI();
+        }
 
         Debug.Log("GM");
     }
 
-    private void Start()
-    {
-        if (UI_PartyMenu.UI_PARTYMENU != null)
-        {
-            UI_PartyMenu.UI_PARTYMENU.SetParty(playerParty);
-        }
+    private void Start() {
+        
     }
     public static void Reset()
     {
