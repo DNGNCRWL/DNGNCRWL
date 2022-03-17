@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Heavy Chain
   description: 
   broken: 0
-  value: 0
+  value: 10
   actions: []
   inventoryActions:
   - {fileID: 11400000, guid: ca1b5b577e256334abcc00fce757009e, type: 2}
@@ -24,9 +24,11 @@ MonoBehaviour:
   stackLimit: 1
   amount: 1
   damage:
-    dieCount: 0
-    dieSize: 0
+    dieCount: 1
+    dieSize: 4
     modifier: 0
     damageType: 0
   twoHanded: 1
   abilityToUse: 0
+  effectAnimation: {fileID: 0}
+  criticalEffectAnimation: {fileID: 0}

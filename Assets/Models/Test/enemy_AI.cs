@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using static Navigation;
+using UnityEngine.SceneManagement;
 
 public class enemy_AI : MonoBehaviour
 {
@@ -22,6 +23,10 @@ public class enemy_AI : MonoBehaviour
 
     public bool isInRange;
 
+    private void Start()
+    {
+        player = GameObject.FindWithTag("Navigator 1").transform;
+    }
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -30,6 +35,10 @@ public class enemy_AI : MonoBehaviour
         currentLoc = transform.position;
     }
 
+    private void OnEnable()
+    {
+        player = GameObject.FindWithTag("Navigator 1").transform;
+    }
     private void Update()
     {
         isInRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);

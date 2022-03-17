@@ -78,6 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 301233471d2f11a4aa7801eebf08d7c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  battleEffect: {fileID: 0}
 --- !u!114 &8002304157188255244
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Shield
   description: 
   broken: 0
-  value: 0
+  value: 20
   actions: []
   inventoryActions:
   - {fileID: 11400000, guid: ca1b5b577e256334abcc00fce757009e, type: 2}
@@ -30,3 +30,5 @@ MonoBehaviour:
     damageType: 0
   twoHanded: 0
   abilityToUse: 0
+  effectAnimation: {fileID: 0}
+  criticalEffectAnimation: {fileID: 0}

@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Bow
   description: 
   broken: 0
-  value: 0
+  value: 25
   actions: []
   inventoryActions:
   - {fileID: 11400000, guid: ca1b5b577e256334abcc00fce757009e, type: 2}
