@@ -54,7 +54,7 @@ public class UI_PartyMenu : MonoBehaviour
         this.party = party;
 
         RefreshPartyList();
-        Debug.Log("SetParty");
+        //Debug.Log("SetParty");
 
     }
 
@@ -119,12 +119,12 @@ public class UI_PartyMenu : MonoBehaviour
         gameObject.SetActive(true);
         RefreshPartyList();
         shownState = true;
-        Debug.Log("Open Party Menu");
+        //Debug.Log("Open Party Menu");
     }
     public void ClosePartyUI()
     {
         gameObject.SetActive(false);
         shownState = false;
-        Debug.Log("Close Party Menu");
+        //Debug.Log("Close Party Menu");
     }
 }

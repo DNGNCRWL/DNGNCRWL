@@ -46,7 +46,7 @@ public class Navigation : MonoBehaviour
     private void Awake()
     {
         transform.position = SAVE_POSITION;
-        Debug.Log("Wheres save"+ SAVE_POSITION);
+        //Debug.Log("Wheres save"+ SAVE_POSITION);
         transform.eulerAngles = new Vector3Int(0, SAVE_ROTATION_Y, 0);
         SetRandomSteps();
         CalculateSpeeds();
@@ -282,6 +282,7 @@ public class Navigation : MonoBehaviour
 
     void StartEncounter(EnemyEncounter enemyencounter)
     {
+        Debug.Log("encounter started");
         BattleManager.SetENEMY_ENCOUNTER(enemyencounter);
         DungeonGenerator.SAVED_DUNGEON.SetActive(false);
         SceneManager.LoadScene("Battle");
@@ -292,4 +293,8 @@ public class Navigation : MonoBehaviour
         steps = Random.Range(steps_min, steps_max + 1);
     }
 
+    public void respawn()
+    {
+        transform.position = new Vector3(0, 1, 0);
+    }
 }

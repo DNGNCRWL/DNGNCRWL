@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -52,6 +53,11 @@ public class UIManager : MonoBehaviour
             Debug.Log("Party Menu Key Pressed");
             if (UI_PartyMenu.UI_PARTYMENU != null)
                 UI_PartyMenu.UI_PARTYMENU.OpenPartyUI();
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Debug.Log("Exit Key Pressed");
+            SceneManager.LoadScene("Town", LoadSceneMode.Additive);
         }
     }
 }

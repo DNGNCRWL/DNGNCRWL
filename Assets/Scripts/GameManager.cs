@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
                 inventoryMenu.OpenInventoryUI();
         }
 
-        Debug.Log("GM");
+        //Debug.Log("GM");
     }
 
     private void Start() {
@@ -154,9 +154,8 @@ public class GameManager : MonoBehaviour
 
     //SCENE NAVIGATION
 
-    public static void GoToDungeonNavigation()
-    {
-        SceneManager.LoadScene("DungeonGeneration", LoadSceneMode.Single);
+    public static void GoToDungeonNavigation(){
+        SceneManager.LoadScene("DungeonGeneration");
     }
     public static void GameOver()
     {
