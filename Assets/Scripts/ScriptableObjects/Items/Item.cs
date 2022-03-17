@@ -26,7 +26,7 @@ public class Item : ScriptableObject
         return ((broken) ? "Broken " : "") + itemName;
     }
 
-    public virtual Item Copy()
+    public Item Copy()
     {
         if (this == null){
             Debug.LogError("Tried copying null item");
