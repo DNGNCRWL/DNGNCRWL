@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
     public List<CharacterSheet> playerCharacters;
     public List<CharacterSheet> reserveCharacters;
 
-    public Party playerParty;
 
     public static readonly int secondsPerRound = 6;
 
@@ -25,11 +24,6 @@ public class GameManager : MonoBehaviour
         GameObject.DontDestroyOnLoad(this.gameObject);
 
         DOTween.Init(null, null, null);
-
-        playerParty.SetParty(playerCharacters);
-
-        //init party menu
-        Debug.Log(playerParty.characters);
 
         //initialize menus if present and not active
         if (UI_PartyMenu.UI_PARTYMENU == null) {
@@ -56,10 +50,7 @@ public class GameManager : MonoBehaviour
     }
 
     private void Start() {
-        if (UI_PartyMenu.UI_PARTYMENU != null)
-        {
-            UI_PartyMenu.UI_PARTYMENU.SetParty(playerParty);
-        }
+        
     }
     public static void Reset() {
 
