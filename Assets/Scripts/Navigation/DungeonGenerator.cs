@@ -33,6 +33,7 @@ public class DungeonGenerator : MonoBehaviour
         }
 
     }
+    public Transform GENtransform;
     public GameObject spider;
     public Vector2Int size;
     public int startPos = 0;
@@ -46,8 +47,9 @@ public class DungeonGenerator : MonoBehaviour
     public static int i = 0;
 
     public static GameObject SAVED_DUNGEON;
+    public static bool NEW_DUNGEON = false;
 
-   // public Item key;
+    //public Item key;
 
     List<Cell> board;
 
@@ -55,17 +57,30 @@ public class DungeonGenerator : MonoBehaviour
     
     public void Start()
     {
-        if (!SAVED_DUNGEON)
+        if (!EndTrigger.COLLIDE) //new level, boss collision
         {
-            MazeGenerator();
-            SAVED_DUNGEON = gameObject;
-            DontDestroyOnLoad(SAVED_DUNGEON);
+            if (!SAVED_DUNGEON)
+            {
+                Debug.Log("No saved Dunegon, now save");
+                MazeGenerator();
+                SAVED_DUNGEON = gameObject;
+                DontDestroyOnLoad(SAVED_DUNGEON);
+            }
+            else
+            {
+                Debug.Log("saved Dungeon");
+                
+                SAVED_DUNGEON.SetActive(true);
+                Destroy(gameObject);
+                //MazeGenerator(); 
+            }
         }
         else
         {
-            SAVED_DUNGEON.SetActive(true);
+            Debug.Log("new level");
+            EndTrigger.COLLIDE = false;
+            MazeGenerator();
         }
-
     }
 
     public void BuildMesh()
@@ -89,12 +104,7 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
-    void SaveDungeon()
-    {
-        saved = GenerateDungeon(spider);
-    }
-
-    void GenerateSavedDungeon(Rule[] saved)
+    void GenerateSavedDungeon(Rule[] saved, GameObject enemy)
     {
         for (int i = 0; i < surfaces.Length; i++)
         {
@@ -141,6 +151,12 @@ public class DungeonGenerator : MonoBehaviour
                     var newRoom = Instantiate(saved[randomRoom].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
                     newRoom.UpdateRoom(currentCell.status);
                     newRoom.name += " " + i + "-" + j;
+                    if (i + 1 == size.x && j + 1 == size.y)
+                    {
+                        BuildMesh();
+                        GameObject spider = Instantiate(enemy, new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, newRoom.transform.position.z), Quaternion.identity);
+                        //FindObjectOfType<EndTrigger>().gameHasEnded = false;
+                    }
                 }
             }
         }
@@ -192,13 +208,13 @@ public class DungeonGenerator : MonoBehaviour
                     if (i+1 == size.x && j+1 == size.y)
                     {
                         BuildMesh();
-                        GameObject spider = Instantiate(enemy, new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, newRoom.transform.position.z), Quaternion.identity);
-                        FindObjectOfType<EndTrigger>().gameHasEnded = false;
+                        GameObject spider = Instantiate(enemy, new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, newRoom.transform.position.z), Quaternion.identity, GENtransform);
+                        //FindObjectOfType<EndTrigger>().gameHasEnded = false;
                     }
                 }
             }
         }
-        
+        Debug.Log(rooms);
         return rooms;
 
     }
@@ -230,7 +246,7 @@ public class DungeonGenerator : MonoBehaviour
 
             if (currentCell == board.Count - 1)
             {
-                break;
+                //break;
             }
 
             //Check the cell's neighbors
@@ -292,7 +308,7 @@ public class DungeonGenerator : MonoBehaviour
         //saved = GenerateDungeon(spider);
         if (genSaved)
         {
-            GenerateSavedDungeon(saved);
+            GenerateSavedDungeon(saved, spider);
         }
         else if(wantSaved)
         {
@@ -344,6 +360,7 @@ public class DungeonGenerator : MonoBehaviour
         {
             GameObject.Destroy(child.gameObject);
         }
+        NEW_DUNGEON = true;
 
         //GameObject.Destroy(spider.gameObject);
         //GameObject.Destroy(GameObject.FindWithTag("Spider").transform);
