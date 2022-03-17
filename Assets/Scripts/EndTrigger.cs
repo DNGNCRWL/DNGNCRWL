@@ -12,11 +12,12 @@ public class EndTrigger : MonoBehaviour
          if(gameHasEnded == false)
         {
             //           GetComponent<Collider>().attachedRigidbody.useGravity = false;
-            if(gameObject.name.Equals("stairwell"))
-            {
-                Debug.Log("stair~");
-                SceneManager.LoadScene("Town");
-            }
+         //   if(gameObject.name.Equals("stairwell"))
+         //   {
+//
+           //     Debug.Log("stair~");
+           //     SceneManager.LoadScene("Town");
+           // }
             gameHasEnded = true;
             COLLIDE = true;
             //gameManager.CompleteLevel();
@@ -30,11 +31,12 @@ public class EndTrigger : MonoBehaviour
     }
     public void RestartGenerateDungeon()
     {
+        //SceneManager.LoadScene("Town");
+        //DungeonGenerator.SAVED_DUNGEON = null;
         FindObjectOfType<DungeonGenerator>().Restarter();
         DungeonGenerator.genNewMesh = true;
         FindObjectOfType<Navigation>().respawn();
         FindObjectOfType<DungeonGenerator>().Start();
-
 
     }
 }

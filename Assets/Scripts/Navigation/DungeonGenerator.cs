@@ -77,6 +77,7 @@ public class DungeonGenerator : MonoBehaviour
         }
         else
         {
+            Debug.Log("new level");
             EndTrigger.COLLIDE = false;
             MazeGenerator();
         }
