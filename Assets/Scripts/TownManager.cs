@@ -47,6 +47,7 @@ public class TownManager : MonoBehaviour
 
     public GameObject errorMessageWindow;
     public int silver;
+    public GameObject backgroundButtons;
 
     //
     //
@@ -59,6 +60,7 @@ public class TownManager : MonoBehaviour
         GMTransform = GameManager.GM.transform;
         generateRandomChar();
         StoreGen();
+        setButtonAlphaHit();
     }
 
     // Start is called before the first frame update
@@ -109,6 +111,14 @@ public class TownManager : MonoBehaviour
         GetPayment(3);
         foreach (CharacterSheet character in playerCharacters) {
             character.RecoverDamage(new Damage(50, 20, 10, DamageType.Untyped));
+        }
+    }
+
+    public void setButtonAlphaHit() {
+        for (int i = 0; i < 5; ++i) {
+            if (i != 1) {
+                backgroundButtons.transform.GetChild(i).GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;
+            }
         }
     }
 
