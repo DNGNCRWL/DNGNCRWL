@@ -121,6 +121,12 @@ MonoBehaviour:
     magic: 0
     pierce: 0
     spirit: 0
+  inventory:
+    itemList: []
+    storage: {fileID: 0}
+    armor: {fileID: 0}
+    mainHand: {fileID: 0}
+    offHand: {fileID: 0}
 --- !u!1 &7519617101036752088
 GameObject:
   m_ObjectHideFlags: 0

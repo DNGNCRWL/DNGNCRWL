@@ -48,11 +48,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCharacters: []
   reserveCharacters: []
-  playerParty:
-    name: 
-    characters: []
-    positions: []
-    playerControlled: 0
 --- !u!114 &8461809138461167433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78,7 +73,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 301233471d2f11a4aa7801eebf08d7c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  battleEffect: {fileID: 0}
+  battleEffect: {fileID: 7285223446453713522, guid: 811c2acec7c9ebe4fa10ae70a8acff3b, type: 3}
 --- !u!114 &8002304157188255244
 MonoBehaviour:
   m_ObjectHideFlags: 0
