@@ -99,6 +99,7 @@ public class TownManager : MonoBehaviour
     public void enterDungeon() {
         if (playerCharacters.Count > 0) {
             SceneManager.LoadScene("DungeonGeneration", LoadSceneMode.Single);
+            GameManager.PartySetActive(false);
         } else {
             ErrorMessage("Must have at least one character in party to enter the dungeon");
         }

@@ -4,8 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
-{
+public class GameManager : MonoBehaviour {
     public static GameManager GM;
     public List<CharacterSheet> playerCharacters;
     public List<CharacterSheet> reserveCharacters;
@@ -17,8 +16,7 @@ public class GameManager : MonoBehaviour
 
     public static CharacterSheet testC;
 
-    private void Awake()
-    {
+    private void Awake() {
         if (GM == null) GM = this;
         else { Destroy(gameObject); return; }
         GameObject.DontDestroyOnLoad(this.gameObject);
@@ -50,29 +48,25 @@ public class GameManager : MonoBehaviour
     }
 
     private void Start() {
-        
-    }
-    public static void Reset()
-    {
 
     }
+    public static void Reset() {
+        GM.playerCharacters.Clear();
+        GM.reserveCharacters.Clear();
+    }
 
-    public void CompleteLevel()
-    {
+    public void CompleteLevel() {
         Debug.Log("Dungeon reload");
     }
-    public static void StartGame()
-    {
+    public static void StartGame() {
 
     }
 
-    public static IEnumerator DisplayMessagePackage(MessagePackage mp, float target, string[] toInsert)
-    {
+    public static IEnumerator DisplayMessagePackage(MessagePackage mp, float target, string[] toInsert) {
         if (mp.messages.Length <= 0)
             yield break;
 
-        if (mp.messages.Length > 0)
-        {
+        if (mp.messages.Length > 0) {
             string toDisplay = string.Format(
                 Fun.WeightedRandomFromArray(mp, target),
                 toInsert);
@@ -82,64 +76,54 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void AddText(string message)
-    {
+    public void AddText(string message) {
         if (DEFAULT_TEXT_SPAWNER)
             DEFAULT_TEXT_SPAWNER.AddText(message);
         else
             Debug.Log("No Default Text Spawner to add message: " + message);
     }
 
-    public void SetText(string message)
-    {
+    public void SetText(string message) {
         if (DEFAULT_TEXT_SPAWNER)
             DEFAULT_TEXT_SPAWNER.SetText(message);
         else
             Debug.Log("No Default Text Spawner to set message: " + message);
     }
 
-    public void ClearText()
-    {
+    public void ClearText() {
         if (DEFAULT_TEXT_SPAWNER)
             DEFAULT_TEXT_SPAWNER.ClearText();
         else
             Debug.Log("No Default Text Spawner to clear");
     }
 
-    static public int RollDie(int dieSize)
-    {
+    static public int RollDie(int dieSize) {
         if (dieSize < 0)
             return UnityEngine.Random.Range(0, -dieSize) - 1;
         else
             return UnityEngine.Random.Range(0, dieSize) + 1;
     }
-    static public int RollDice(int number, int dieSize)
-    {
+    static public int RollDice(int number, int dieSize) {
         int result = 0;
-        for (int i = 0; i < number; i++)
-        {
+        for (int i = 0; i < number; i++) {
             result += RollDie(dieSize);
         }
         return result;
     }
-    public static bool Error(string message)
-    {
+    public static bool Error(string message) {
         Debug.Log(message);
         return false;
     }
 
-    public static CharacterSheet GetTarget()
-    {
+    public static CharacterSheet GetTarget() {
         //if in battle list enemies
         //if in status menu list allies
         return null;
     }
 
     //Enums to String???
-    public static string DamageTypeToString(DamageType type)
-    {
-        switch (type)
-        {
+    public static string DamageTypeToString(DamageType type) {
+        switch (type) {
             case DamageType.Bludgeon: return "Bludgeon";
             case DamageType.Cut: return "Cut";
             case DamageType.Electric: return "Electric";
@@ -153,13 +137,17 @@ public class GameManager : MonoBehaviour
     }
 
     //SCENE NAVIGATION
-
-    public static void GoToDungeonNavigation(){
+    public static void GoToDungeonNavigation() {
         SceneManager.LoadScene("DungeonGeneration");
+        PartySetActive(false);
     }
-    public static void GameOver()
-    {
+    public static void PartySetActive(bool b){
+        foreach(CharacterSheet charSheet in GM.playerCharacters)
+            charSheet.gameObject.SetActive(b);
+    }
+    public static void GameOver() {
         SceneManager.LoadScene("Title", LoadSceneMode.Single);
+        Reset();
     }
 
 }
@@ -171,11 +159,9 @@ public enum StatSelector { Strength, Agility, Presence, Toughness, Defense, Weap
 public enum Stat { Strength, Agility, Presence, Toughness, Defense };
 
 [System.Serializable]
-public struct CharacterRollingPackage
-{
+public struct CharacterRollingPackage {
     public CharacterRollingPackage(int strength, int agility, int presence, int toughness, int hpDieSize,
-        int powers, int omens, int silverDieCount, int silverDieSize, int food)
-    {
+        int powers, int omens, int silverDieCount, int silverDieSize, int food) {
         this.strength = strength;
         this.agility = agility;
         this.presence = presence;
