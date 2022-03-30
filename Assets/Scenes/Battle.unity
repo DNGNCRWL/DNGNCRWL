@@ -1610,7 +1610,7 @@ MonoBehaviour:
   - {fileID: 2044261854}
   - {fileID: 1617667108}
   - {fileID: 82296777}
-  initiativeRate: -1
+  initiativeRate: 3
   charactersYetToAct: []
   currentPhase: 0
 --- !u!4 &349719984
