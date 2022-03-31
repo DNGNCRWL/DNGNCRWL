@@ -168,9 +168,10 @@ MonoBehaviour:
   sneak: {fileID: 11400000, guid: fb465c051a54d4845ba184fdef529413, type: 2}
   fight: {fileID: 11400000, guid: dbdf578bb48116e4c81170b543b5ca09, type: 2}
   artificialIntelligence: {fileID: 0}
-  characterName: Unnamed
+  characterName: Rat King
   description: 'Nothing is known. '
   characterClass: Classless
+  level: 0
   hitPoints: 4
   maxHitPoints: 4
   strength: 3
@@ -180,8 +181,9 @@ MonoBehaviour:
   powers: 0
   omens: 0
   silver: 5
-  experience: 3
   food: 0
+  experience: 3
+  totalExperience: 0
   waterskin: 0
   naturalResistances:
     bludgeon: 0
@@ -237,6 +239,12 @@ MonoBehaviour:
     magic: 0
     pierce: 0
     spirit: 0
+  inventory:
+    itemList: []
+    storage: {fileID: 0}
+    armor: {fileID: 0}
+    mainHand: {fileID: 0}
+    offHand: {fileID: 0}
 --- !u!114 &4575246128239112670
 MonoBehaviour:
   m_ObjectHideFlags: 0

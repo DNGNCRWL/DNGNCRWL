@@ -17,5 +17,7 @@ MonoBehaviour:
   - {fileID: 5893216134413778258, guid: 38b10aae7e1464e45aafd192cb533e03, type: 3}
   - {fileID: 5893216134413778258, guid: 38b10aae7e1464e45aafd192cb533e03, type: 3}
   - {fileID: 5893216134413778258, guid: 38b10aae7e1464e45aafd192cb533e03, type: 3}
-  lootRate: 0
-  loot: []
+  lootRate: 0.6
+  loot:
+  - {fileID: 11400000, guid: 8ad4c6470d37a9a4faf75a926ac1bca8, type: 2}
+  - {fileID: 11400000, guid: 49add9fa3f2edca4dbe8ea789b16c26a, type: 2}

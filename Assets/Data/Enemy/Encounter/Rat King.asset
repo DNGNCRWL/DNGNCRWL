@@ -18,3 +18,11 @@ MonoBehaviour:
   - {fileID: 3689827403824109842, guid: 8e46b05d78b868d4c9001bc5cc49aa92, type: 3}
   - {fileID: 3689827403824109842, guid: 8e46b05d78b868d4c9001bc5cc49aa92, type: 3}
   - {fileID: 4575246128239112673, guid: c49c3490fa1fa9e4b8561c762988374d, type: 3}
+  lootRate: 0.8
+  loot:
+  - {fileID: 11400000, guid: 9236a3d95fdafc94ca928f206d3ec411, type: 2}
+  - {fileID: 11400000, guid: 8ad4c6470d37a9a4faf75a926ac1bca8, type: 2}
+  - {fileID: 11400000, guid: 1d1582a551128aa46b04aaa8b877562b, type: 2}
+  - {fileID: 11400000, guid: 33cf8ee10c316374eb9a7392ef812b56, type: 2}
+  - {fileID: 11400000, guid: 33cf8ee10c316374eb9a7392ef812b56, type: 2}
+  - {fileID: 11400000, guid: 33cf8ee10c316374eb9a7392ef812b56, type: 2}
