@@ -9,17 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 184aec5129def42449da03fa5b693483, type: 3}
-  m_Name: Rope
+  m_Script: {fileID: 11500000, guid: 730087284eaaaf345bcf1009c6b546bd, type: 3}
+  m_Name: Weapon 1
   m_EditorClassIdentifier: 
-  itemName: Rope
+  itemName: 
   description: 
   broken: 0
-  value: 4
+  value: 0
   actions: []
-  inventoryActions:
-  - {fileID: 11400000, guid: ca1b5b577e256334abcc00fce757009e, type: 2}
-  - {fileID: 11400000, guid: 99b4da20d506f6f4385c71c4b557b030, type: 2}
-  sprite: {fileID: 21300000, guid: 3e32654e1db582b49a8fe7bd23abef07, type: 3}
+  inventoryActions: []
+  sprite: {fileID: 0}
   stackLimit: 1
   amount: 1
+  damage:
+    dieCount: 0
+    dieSize: 0
+    modifier: 0
+    damageType: 0
+  twoHanded: 0
+  abilityToUse: 0
+  effectAnimation: {fileID: 0}
