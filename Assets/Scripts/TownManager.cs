@@ -497,7 +497,7 @@ public class TownManager : MonoBehaviour
             ErrorMessage("Nothing to buy!");
         } else if(GetPayment(cost)) {
             for (int i = 0; i < cartItems.Count; ++i) {
-                charToBuyFor[i].GetInventory().AddItem(cartItems[i]);
+            charToBuyFor[i].GetInventory().AddItem(cartItems[i]);
             }
 
             cartItems.Clear();
