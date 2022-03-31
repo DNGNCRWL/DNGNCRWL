@@ -154,6 +154,7 @@ public class Navigation : MonoBehaviour
         if(steps == 0)
         {
             StartEncounter(enemy_encounters[Random.Range(0,enemy_encounters.Length)]);
+            SetRandomSteps();
         }
         GetInputTaps();
         GetInputHolds();
