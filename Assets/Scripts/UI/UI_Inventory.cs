@@ -23,6 +23,8 @@ public class UI_Inventory : MonoBehaviour
     private Transform mainhandSlotContainer;
 
     private Transform offhandSlotContainer;
+    private Transform charName;
+    private Transform slotLimit;
 
 
     void Awake() {
@@ -38,6 +40,8 @@ public class UI_Inventory : MonoBehaviour
         bagSlotContainer = transform.Find("CharacterContainer").Find("bagSlotContainer");
         mainhandSlotContainer = transform.Find("CharacterContainer").Find("mainhandSlotContainer");
         offhandSlotContainer = transform.Find("CharacterContainer").Find("offhandSlotContainer");
+        charName = transform.Find("CharacterContainer").Find("charName");
+        slotLimit = transform.Find("CharacterContainer").Find("slotLimit");
         CloseInventoryUI();
         //Debug.Log(itemSlotContainer);
     }
@@ -136,6 +140,9 @@ public class UI_Inventory : MonoBehaviour
             } while (countShown<count);
 
         }
+        string slotLimText = string.Format(inventory.GetSlotsUsed() + " / " + inventory.GetSlotsLimit() + " Slots Used");
+        slotLimit.GetComponent<TextMeshProUGUI>().SetText(slotLimText);
+
 
         RefreshCharacterUI();
     }
@@ -174,7 +181,9 @@ public class UI_Inventory : MonoBehaviour
             SetSlotBlank(offhandSlot);
         }
         //Debug.Log("Refresh Inventory Char UI");
-
+        if (targetCharacter != null) {
+            charName.GetComponent<TextMeshProUGUI>().SetText(targetCharacter.characterName);
+        }
     }
 
     private void SetSlotItem(RectTransform itemSlot, Item item) {

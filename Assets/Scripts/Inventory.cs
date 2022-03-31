@@ -22,7 +22,9 @@ public class Inventory
     public Weapon mainHand = null;
     public Weapon offHand = null;
 
+    [SerializeField]
     private int slotsLimit = 10;
+    [SerializeField]
     private int slotsUsed = 0;
 
     public Inventory() {
@@ -33,7 +35,9 @@ public class Inventory
 
     public void ReplaceInventory (List<Item> newInv) {
         itemList = newInv;
+        UpdateSlotsUsed();
         OnItemListChanged?.Invoke(this, EventArgs.Empty);
+        
     }
 
     public void AddItem(Item item, int qty = 1) {
@@ -72,6 +76,8 @@ public class Inventory
         return itemList;
     }
 
+    public int GetSlotsLimit() { return slotsLimit; }
+    public int GetSlotsUsed() { return slotsUsed; }
     public bool RemoveItem(Item item, int amount = 1) {
         foreach (Item i in itemList) {
             if (i.itemName == item.itemName) {
@@ -100,7 +106,9 @@ public class Inventory
             if (i.itemName == ammoName)
             {
                 ammo = (Ammo)i;
-                ammo.Consume();
+                if(!RemoveItem(ammo , 1)) {
+                    return false;
+                }
 
             }
         }
@@ -163,7 +171,7 @@ public class Inventory
         storage = bag;
     }
 
-    public Bag GetStorage(Bag bag) {
+    public Bag GetStorage() {
         return storage;
     }
 
@@ -181,7 +189,7 @@ public class Inventory
         armor = newArmor;
     }
 
-    public Armor GetArmor(Armor newArmor) {
+    public Armor GetArmor() {
         return armor;
     }
 
@@ -192,7 +200,7 @@ public class Inventory
     public void SetMainHand(Weapon wep) {
         mainHand = wep;
     }
-    public Weapon GetMainHand(Weapon wep) {
+    public Weapon GetMainHand() {
         return mainHand;
     }
 
@@ -203,7 +211,7 @@ public class Inventory
     public void SetOffHand(Weapon wep) {
         offHand = wep;
     }
-    public Weapon GetOffHand(Weapon wep) {
+    public Weapon GetOffHand() {
         return offHand;
     }
 
@@ -213,6 +221,7 @@ public class Inventory
     }
 
     private void UpdateSlotsUsed() {
+        Debug.Log("Updated slots used");
         int usedSlots = 0;
         foreach (Item item in itemList) {
             int count = item.amount;
@@ -238,6 +247,7 @@ public class Inventory
                 usedSlots++;
             } while (counted < count);
         }
+        slotsUsed = usedSlots;
     }
 
     private bool CheckHasSpace (Item item, int qty = 1) {

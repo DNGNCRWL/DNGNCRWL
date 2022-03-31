@@ -116,14 +116,14 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     //On with the show
     public void MakeItemCopies(){
 
-        if(mainhand != null)
-            mainhand = (Weapon) mainhand.Copy();
-        if(offhand != null)
-            offhand = (Weapon) offhand.Copy();
+        if(inventory.mainHand != null)
+            inventory.SetMainHand((Weapon) inventory.mainHand.Copy());
+        if(inventory.offHand != null)
+            inventory.SetOffHand((Weapon) inventory.offHand.Copy());
         if(unequippedWeapon != null)
             unequippedWeapon = (Weapon) unequippedWeapon.Copy();
-        if(armor != null)
-            armor = (Armor) unequippedArmor.Copy();
+        if(inventory.armor != null)
+            inventory.SetArmor((Armor) inventory.armor.Copy());
         if(unequippedArmor !=null)
             unequippedArmor = (Armor) unequippedArmor.Copy();
 
@@ -140,9 +140,9 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         powers = omens = silver = experience = food = 0;
         waterskin = false;
 
-        mainhand = offhand = null;
+        //mainhand = offhand = null;
         //bag = null;
-        armor = null;
+        //armor = null;
         //oldInventory = new List<Item>();
         if (inventory == null)
             inventory = new Inventory();
@@ -239,8 +239,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         bool isMagical = ItemManager.IsMagical(inventory.GetItemList());
 
         EquipMainhand((Weapon) (ItemManager.RANDOM_ITEM(ItemManager.STARTING_WEAPONS).Copy()));
-        if (ItemManager.STARTING_WEAPON_PAIRS.ContainsKey(mainhand.itemName))
-            PickupItem(ItemManager.STARTING_WEAPON_PAIRS[mainhand.itemName].Copy());
+        if (ItemManager.STARTING_WEAPON_PAIRS.ContainsKey(inventory.mainHand.itemName))
+            PickupItem(ItemManager.STARTING_WEAPON_PAIRS[inventory.mainHand.itemName].Copy());
 
         EquipOffhand(null);
 
@@ -293,8 +293,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     }
     string OffhandToString()
     {
-        if (mainhand.twoHanded) return "None";
-        else return ((offhand != null) ? offhand.GetExplicitString() : "d2 Fist");
+        if (inventory.mainHand.twoHanded) return "None";
+        else return ((inventory.offHand != null) ? inventory.offHand.GetExplicitString() : "d2 Fist");
     }
     string DebugString()
     {
@@ -345,9 +345,9 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
             "Silver:      " + silver + lb +
             "Food:        " + food + lb +
             "Waterskin:   " + waterskin + lb +
-            "Mainhand:    " + ((mainhand != null) ? mainhand.GetExplicitString() : "d2 Fist") + lb +
+            "Mainhand:    " + ((inventory.mainHand != null) ? inventory.mainHand.GetExplicitString() : "d2 Fist") + lb +
             "Offhand:     " + OffhandToString() + lb +
-            "Armor:       " + ((armor != null) ? armor.GetExplicitString() : "Tier 0/0 Naked") + lb +
+            "Armor:       " + ((inventory.armor != null) ? inventory.armor.GetExplicitString() : "Tier 0/0 Naked") + lb +
             "Bag:         " + BagToString() + lb;
 
         if (inventory.GetItemList().Count == 0) toReturn += "Equipment:   No Equipment";
@@ -359,6 +359,32 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
         return toReturn;
 
+    }
+
+    //INVENTORY/ITEM USE
+
+    public bool UseConsumable(Item consumable) {
+        if (consumable is Consumable) {
+            return inventory.UseConsumable((Consumable)consumable);
+        } else {
+            return false;
+        }
+    }
+    
+    public bool UseConsumableOn(CharacterSheet targetChar, Item consumable) {
+        if (consumable is Consumable) {
+            return inventory.UseConsumable((Consumable)consumable);
+        } else {
+            return false;
+        }
+    }
+
+    public bool ShootWeapon(Weapon wep) {
+        if(wep is ProjectileWeapon) {
+            return inventory.UseAmmo((ProjectileWeapon) wep);
+        } else {
+            return false;
+        }
     }
 
 
@@ -402,8 +428,9 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
             return EquipTwohanded(newWeapon);
         }
 
-        Weapon oldWeapon = mainhand;
-        mainhand = newWeapon;
+        Weapon oldWeapon = inventory.GetMainHand();
+        //inventory.mainHand = newWeapon;
+        inventory.SetMainHand(newWeapon);
         if (oldWeapon == null) return false;
         return PickupItem(oldWeapon);
     }
@@ -415,8 +442,9 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
             return EquipTwohanded(newWeapon);
         }
 
-        Weapon oldWeapon = offhand;
-        offhand = newWeapon;
+        Weapon oldWeapon = inventory.GetOffHand();
+       // offhand = newWeapon;
+        inventory.SetOffHand(newWeapon);
         if (oldWeapon == null) return false;
         return PickupItem(oldWeapon);
     }
@@ -424,13 +452,15 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     {
         EquipMainhand(null);
         EquipOffhand(null);
-        mainhand = newWeapon;
+        //mainhand = newWeapon;
+        inventory.SetMainHand(newWeapon);
         return true;//?? unsure if this is correct
     }
     bool EquipArmor(Armor newArmor)
     {
-        Armor oldArmor = armor;
-        armor = newArmor;
+        Armor oldArmor = inventory.GetArmor();
+        //armor = newArmor;
+        inventory.SetArmor(newArmor);
         if (oldArmor == null) return false;
         return PickupItem(oldArmor);
     }
@@ -539,12 +569,12 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
     public Weapon GetWeapon()
     {
-        if (mainhand != null) return mainhand;
+        if (inventory.mainHand != null) return inventory.mainHand;
         else return unequippedWeapon;
     }
     public Armor GetArmor()
     {
-        if (armor != null) return armor;
+        if (inventory.armor != null) return inventory.armor;
         else return unequippedArmor;
     }
     public Weapon GetUnequippedWeapon()

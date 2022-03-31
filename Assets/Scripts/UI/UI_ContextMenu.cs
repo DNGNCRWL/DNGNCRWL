@@ -190,7 +190,7 @@ public class UI_ContextMenu : MonoBehaviour
     private void DoAction(CharacterAction action) {
         Debug.Log("Action: " + action.actionName);
         if (action.actionName == "Use On Self") {
-            targetInventory.UseConsumable((Consumable)targetItem);
+            targetCharacter.UseConsumable((Consumable)targetItem);
         } else if (action.actionName == "Discard") {
             Debug.Log("Discard");
             Debug.Log(targetInventory.RemoveItem(targetItem));
@@ -200,7 +200,7 @@ public class UI_ContextMenu : MonoBehaviour
 
     private void DoTargetedAction(CharacterAction action, CharacterSheet target) {
         if (action.actionName == "Use On") {
-            targetInventory.UseConsumable((Consumable)targetItem);
+            targetCharacter.UseConsumableOn(target, (Consumable)targetItem);
         } else if (action.actionName == "Transfer") {
             target.inventory.AddItem(targetItem.Copy());
             targetInventory.RemoveItem(targetItem);
