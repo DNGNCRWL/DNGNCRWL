@@ -33,6 +33,8 @@ public class Navigation : MonoBehaviour
     static Vector3Int SAVE_POSITION = new Vector3Int(0,1,0);
     static int SAVE_ROTATION_Y;
 
+    private static GameObject instance;
+
     public EnemyEncounter[] enemy_encounters;
 
     public Color fog;
@@ -45,7 +47,18 @@ public class Navigation : MonoBehaviour
 
     private void Awake()
     {
-        transform.position = SAVE_POSITION;
+        Debug.Log("awoken!");
+        DontDestroyOnLoad(this.gameObject);
+        if(instance == null)
+        {
+            instance = gameObject;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        //transform.position = SAVE_POSITION;
+        transform.position = new Vector3Int(0, 1, 0);
         //Debug.Log("Wheres save"+ SAVE_POSITION);
         transform.eulerAngles = new Vector3Int(0, SAVE_ROTATION_Y, 0);
         SetRandomSteps();

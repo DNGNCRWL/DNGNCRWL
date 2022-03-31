@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class DungeonGenerator : MonoBehaviour
 {
@@ -80,6 +81,9 @@ public class DungeonGenerator : MonoBehaviour
             Debug.Log("new level");
             EndTrigger.COLLIDE = false;
             MazeGenerator();
+            SAVED_DUNGEON = gameObject;
+            DontDestroyOnLoad(SAVED_DUNGEON);
+            SceneManager.LoadScene("Town");
         }
     }
 
@@ -172,8 +176,10 @@ public class DungeonGenerator : MonoBehaviour
                 Cell currentCell = board[(i + j * size.x)];
                 if (currentCell.visited)
                 {
-                    int randomRoom = Random.Range(0, rooms.Length);
+                    //int randomRoom = Random.Range(0, rooms.Length);
+                    int randomRoom = 0;
                     List<int> availableRooms = new List<int>();
+                    Debug.Log(rooms.Length);
                     for (int k = 0; k < rooms.Length; k++)
                     {
                         int p = rooms[k].ProbabilityOfSpawning(i, j);
@@ -201,15 +207,21 @@ public class DungeonGenerator : MonoBehaviour
                         }
                     }
 
-
-                    var newRoom = Instantiate(rooms[randomRoom].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
-                    newRoom.UpdateRoom(currentCell.status);
-                    newRoom.name += " " + i + "-" + j;
-                    if (i+1 == size.x && j+1 == size.y)
+                    if (i + 1 == size.x && j + 1 == size.y)
                     {
+                        var newRoom = Instantiate(rooms[1].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
+                        newRoom.UpdateRoom(currentCell.status);
+                        newRoom.name += " " + i + "-" + j;
                         BuildMesh();
                         GameObject spider = Instantiate(enemy, new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, newRoom.transform.position.z), Quaternion.identity, GENtransform);
                         //FindObjectOfType<EndTrigger>().gameHasEnded = false;
+
+                    }
+                    else
+                    {
+                        var newRoom = Instantiate(rooms[randomRoom].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
+                        newRoom.UpdateRoom(currentCell.status);
+                        newRoom.name += " " + i + "-" + j;
                     }
                 }
             }

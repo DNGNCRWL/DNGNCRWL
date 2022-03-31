@@ -104,7 +104,7 @@ MonoBehaviour:
   zmove: 0
   walkPoint: {x: 0, y: 0, z: 0}
   walkPointRange: 0
-  sightRange: 20
+  sightRange: 0
   isInRange: 0
 --- !u!114 &2185970573839322597
 MonoBehaviour:
@@ -121,6 +121,9 @@ MonoBehaviour:
   gameHasEnded: 0
   dungeonGenerationDelay: 1
   gameManager: {fileID: 6523248009475443555, guid: c0992dccf8503624b8229d117c60dedc, type: 3}
+  boss_encounters:
+  - {fileID: 11400000, guid: f8a02dcd754be7041b690ac617c182ae, type: 2}
+  spider: {fileID: 1425353541870137400}
 --- !u!195 &6673438407026022523
 NavMeshAgent:
   m_ObjectHideFlags: 0
