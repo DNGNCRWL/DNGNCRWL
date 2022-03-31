@@ -72,6 +72,7 @@ public class DungeonGenerator : MonoBehaviour
                 Debug.Log("saved Dungeon");
                 
                 SAVED_DUNGEON.SetActive(true);
+                //Navigation.INSTANCE.SetActive(true);
                 Destroy(gameObject);
                 //MazeGenerator(); 
             }

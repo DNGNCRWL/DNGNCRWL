@@ -33,7 +33,7 @@ public class Navigation : MonoBehaviour
     static Vector3Int SAVE_POSITION = new Vector3Int(0,1,0);
     static int SAVE_ROTATION_Y;
 
-    private static GameObject instance;
+    public static GameObject INSTANCE;
 
     public EnemyEncounter[] enemy_encounters;
 
@@ -49,9 +49,9 @@ public class Navigation : MonoBehaviour
     {
         Debug.Log("awoken!");
         DontDestroyOnLoad(this.gameObject);
-        if(instance == null)
+        if(INSTANCE == null)
         {
-            instance = gameObject;
+            INSTANCE = gameObject;
         }
         else
         {
