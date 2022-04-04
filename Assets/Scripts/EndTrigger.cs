@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.AddressableAssets;
-
+using System.Collections;
 public class EndTrigger : MonoBehaviour
 {
     public bool gameHasEnded = false;
@@ -11,20 +11,23 @@ public class EndTrigger : MonoBehaviour
     public static bool COLLIDE;
     public Navigation player;
     public GameObject spider;
-    public void OnTriggerEnter (Collider collider)
+    public static bool STAIRCOLLISION;
+    //private float delay = 10f;
+    //private float timeElapsed;
+    public void OnTriggerEnter(Collider collider)
     {
         Debug.Log(gameObject.name + " has triggered end by " + collider.gameObject.name);
-         if(gameHasEnded == false)
+        if (gameHasEnded == false)
         {
-            //           GetComponent<Collider>().attachedRigidbody.useGravity = false;
-            //Debug.Log("player steps!!! " + player.steps);
-            if (gameObject.name.Equals("stairwell") && player.steps !=1)
+            if (gameObject.name.Equals("stairwell"))
             {
-
+                STAIRCOLLISION = true;
+                FindObjectOfType<Navigation>().respawn();
                 Debug.Log("stair!");
                 SceneManager.LoadScene("Town");
+
                 //Navigation.INSTANCE.SetActive(false);
-                Invoke("RestartGenerateDungeon",0.1f);
+                Invoke("RestartGenerateDungeon", .1f);
 
                 return;
             }
@@ -32,20 +35,20 @@ public class EndTrigger : MonoBehaviour
             {
                 EnemyEncounter boss_encounter = boss_encounters[Random.Range(0, boss_encounters.Length)];
                 BattleManager.SetENEMY_ENCOUNTER(boss_encounter);
-                DungeonGenerator.SAVED_DUNGEON.SetActive(false);
-                //Navigation.INSTANCE.SetActive(false);
-                SceneManager.LoadScene("Battle");
-                Destroy(spider);
+
+                StartCoroutine(WaitForSceneLoad());
+
+                Debug.Log("passed if");
                 return;
             }
-//            gameHasEnded = true;
-//            COLLIDE = true;
- //           //gameManager.CompleteLevel();
-  //          Debug.Log("endtrigger!");
-  //          GameManager.GM.CompleteLevel();
-  //          Invoke("RestartGenerateDungeon", dungeonGenerationDelay);
-  //          gameHasEnded = false;
-            
+            //            gameHasEnded = true;
+            //            COLLIDE = true;
+            //           //gameManager.CompleteLevel();
+            //          Debug.Log("endtrigger!");
+            //          GameManager.GM.CompleteLevel();
+            //          Invoke("RestartGenerateDungeon", dungeonGenerationDelay);
+            //          gameHasEnded = false;
+
         }
 
     }
@@ -53,11 +56,22 @@ public class EndTrigger : MonoBehaviour
     {
         //SceneManager.LoadScene("Town");
         //DungeonGenerator.SAVED_DUNGEON = null;
-        FindObjectOfType<DungeonGenerator>().Restarter();
+        FindObjectOfType<DungeonGenerator>().DestroyAll();
         DungeonGenerator.genNewMesh = true;
-        FindObjectOfType<Navigation>().respawn();
-        FindObjectOfType<DungeonGenerator>().Start();
+        Navigation.INSTANCE.SetActive(false);
+        Destroy(DungeonGenerator.SAVED_DUNGEON);
+        //FindObjectOfType<DungeonGenerator>().Start();
 
+
+    }
+
+    private IEnumerator WaitForSceneLoad()
+    {
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene("Battle");
+        Destroy(spider);
+        Navigation.INSTANCE.SetActive(false);
+        DungeonGenerator.SAVED_DUNGEON.SetActive(false);
     }
 
 }

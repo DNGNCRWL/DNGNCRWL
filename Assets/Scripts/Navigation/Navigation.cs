@@ -33,6 +33,8 @@ public class Navigation : MonoBehaviour
     static Vector3Int SAVE_POSITION = new Vector3Int(0,1,0);
     static int SAVE_ROTATION_Y;
 
+    private Vector3 testPos;
+
     public static GameObject INSTANCE;
 
     public EnemyEncounter[] enemy_encounters;
@@ -48,6 +50,7 @@ public class Navigation : MonoBehaviour
     private void Awake()
     {
         Debug.Log("awoken!");
+        state = State.Idle;
         DontDestroyOnLoad(this.gameObject);
         if(INSTANCE == null)
         {
@@ -57,10 +60,28 @@ public class Navigation : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        //transform.position = SAVE_POSITION;
-        transform.position = new Vector3Int(0, 1, 0);
-        //Debug.Log("Wheres save"+ SAVE_POSITION);
-        transform.eulerAngles = new Vector3Int(0, SAVE_ROTATION_Y, 0);
+        if(transform.position.x % blockSize != 0 || transform.position.z % blockSize != 0)
+        {
+            Debug.Log("invalid Pos");
+            transform.position = testPos;
+            Snap();
+        }
+        if (EndTrigger.STAIRCOLLISION)
+        {
+            transform.position = new Vector3Int(0, 1, 0);
+            transform.eulerAngles = new Vector3Int(0, 180, 0);
+            EndTrigger.STAIRCOLLISION = false;
+        }
+        else
+        {
+            transform.position = SAVE_POSITION;
+            transform.eulerAngles = new Vector3Int(0, SAVE_ROTATION_Y, 0);
+        }
+
+        Debug.Log(transform.position);
+        //transform.position = new Vector3Int(0, 1, 0);
+        Debug.Log(SAVE_POSITION);
+
         SetRandomSteps();
         CalculateSpeeds();
         actionQueue = new List<NavAction>();
@@ -155,7 +176,8 @@ public class Navigation : MonoBehaviour
         {
             StartEncounter(enemy_encounters[Random.Range(0,enemy_encounters.Length)]);
             SetRandomSteps();
-        }
+            //set inactive
+        } 
         GetInputTaps();
         GetInputHolds();
         GetInputBooleans();
@@ -201,13 +223,15 @@ public class Navigation : MonoBehaviour
         //transform.DOMove(transform.position + move, moveTime);
 
         Vector3 finalPos = transform.position + move;
+        SAVE_POSITION = Vector3Int.FloorToInt(finalPos);
+        Debug.Log(SAVE_POSITION);
         //Vector3Int finalPos = new Vector3Int(Mathf.RoundToInt(transform.position.x) + move.x, Mathf.RoundToInt(transform.position.y) + move.y, Mathf.RoundToInt(transform.position.z) + move.z);
         Vector3 toMove = move;
 
         while (toMove != Vector3Int.zero)
         {
             Vector3 toMoveThisFrame = Time.deltaTime * moveSpeed * toMove.normalized;
-
+            Debug.Log(toMove);
             if (toMove.sqrMagnitude > toMoveThisFrame.sqrMagnitude)
             {
                 transform.position += toMoveThisFrame;
@@ -222,7 +246,7 @@ public class Navigation : MonoBehaviour
 
             yield return null;
         }
-
+        Debug.Log("EndMove");
         state = State.Idle;
 
         Snap();
@@ -230,6 +254,7 @@ public class Navigation : MonoBehaviour
 
     void Snap()
     {
+        Debug.Log("Snap!");
         int x = Mathf.RoundToInt(transform.position.x);
         int y = Mathf.RoundToInt(transform.position.y);
         int z = Mathf.RoundToInt(transform.position.z);
@@ -299,6 +324,7 @@ public class Navigation : MonoBehaviour
         Debug.Log("encounter started");
         BattleManager.SetENEMY_ENCOUNTER(enemyencounter);
         DungeonGenerator.SAVED_DUNGEON.SetActive(false);
+        //set inactive
         SceneManager.LoadScene("Battle");
     }
 

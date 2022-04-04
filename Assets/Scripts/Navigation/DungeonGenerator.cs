@@ -58,6 +58,7 @@ public class DungeonGenerator : MonoBehaviour
     
     public void Start()
     {
+        //Navigation.INSTANCE.SetActive(true);
         if (!EndTrigger.COLLIDE) //new level, boss collision
         {
             if (!SAVED_DUNGEON)
@@ -65,6 +66,7 @@ public class DungeonGenerator : MonoBehaviour
                 Debug.Log("No saved Dunegon, now save");
                 MazeGenerator();
                 SAVED_DUNGEON = gameObject;
+                Navigation.INSTANCE.SetActive(true);
                 DontDestroyOnLoad(SAVED_DUNGEON);
             }
             else
@@ -99,6 +101,7 @@ public class DungeonGenerator : MonoBehaviour
     }
     public void Update()
     {
+
         if (genNewMesh)
         {
             for (int i = 0; i < surfaces.Length; i++)
@@ -366,7 +369,7 @@ public class DungeonGenerator : MonoBehaviour
         return neighbors;
     }
 
-    public void Restarter()
+    public void DestroyAll()
     {
         GameObject.Destroy(GameObject.FindWithTag("Spider"));
         foreach (Transform child in transform) 
@@ -378,5 +381,4 @@ public class DungeonGenerator : MonoBehaviour
         //GameObject.Destroy(spider.gameObject);
         //GameObject.Destroy(GameObject.FindWithTag("Spider").transform);
     }
-    
 }

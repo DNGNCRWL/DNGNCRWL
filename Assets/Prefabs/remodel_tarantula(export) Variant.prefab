@@ -123,6 +123,7 @@ MonoBehaviour:
   gameManager: {fileID: 6523248009475443555, guid: c0992dccf8503624b8229d117c60dedc, type: 3}
   boss_encounters:
   - {fileID: 11400000, guid: f8a02dcd754be7041b690ac617c182ae, type: 2}
+  player: {fileID: 0}
   spider: {fileID: 1425353541870137400}
 --- !u!195 &6673438407026022523
 NavMeshAgent:
