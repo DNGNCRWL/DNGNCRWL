@@ -60,12 +60,6 @@ public class Navigation : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        if(transform.position.x % blockSize != 0 || transform.position.z % blockSize != 0)
-        {
-            Debug.Log("invalid Pos");
-            transform.position = testPos;
-            Snap();
-        }
         if (EndTrigger.STAIRCOLLISION)
         {
             transform.position = new Vector3Int(0, 1, 0);
@@ -176,6 +170,7 @@ public class Navigation : MonoBehaviour
         {
             StartEncounter(enemy_encounters[Random.Range(0,enemy_encounters.Length)]);
             SetRandomSteps();
+            INSTANCE.SetActive(false);
             //set inactive
         } 
         GetInputTaps();
