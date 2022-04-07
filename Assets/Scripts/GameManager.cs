@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour {
 
     public static CharacterSheet testC;
 
+
     private void Awake() {
         if (GM == null) GM = this;
         else { Destroy(gameObject); return; }
@@ -43,7 +44,6 @@ public class GameManager : MonoBehaviour {
             if (inventoryMenu != null)
                 inventoryMenu.OpenInventoryUI();
         }
-
         //Debug.Log("GM");
     }
 

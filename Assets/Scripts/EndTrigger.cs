@@ -11,7 +11,8 @@ public class EndTrigger : MonoBehaviour
     public static bool COLLIDE;
     public Navigation player;
     public GameObject spider;
-    public static bool STAIRCOLLISION;
+    public static bool UPSTAIRCOLLISION;
+    public static bool DOWNSTAIRCOLLISION;
     //private float delay = 10f;
     //private float timeElapsed;
     public void OnTriggerEnter(Collider collider)
@@ -21,14 +22,42 @@ public class EndTrigger : MonoBehaviour
         {
             if (gameObject.name.Equals("stairwell"))
             {
-                STAIRCOLLISION = true;
                 FindObjectOfType<Navigation>().respawn();
+                UPSTAIRCOLLISION = true;
+                //FindObjectOfType<Navigation>().respawn();
                 Debug.Log("stair!");
-                SceneManager.LoadScene("Town");
+                //SceneManager.LoadScene("Town");
+                DungeonGenerator.LEVEL++;
+                // FindObjectOfType<DungeonGenerator>().DestroyAll();
+                //Invoke("ResetPlayer", .1f);
+                
+                //WaitForTownLoad();
+                //FindObjectOfType<DungeonGenerator>().Start();
+                Invoke("ResetPlayer", .1f);
+                //FindObjectOfType<DungeonGenerator>().DestroyAll();
+                
+                //StartCoroutine(WaitForTownLoad());
+                //Invoke("RestartGenerateDungeon", .1f);
 
-                //Navigation.INSTANCE.SetActive(false);
-                Invoke("RestartGenerateDungeon", .1f);
-
+                return;
+            }
+            if (gameObject.name.Equals("downstairwell"))
+            {
+                Debug.Log("downstairwell!");
+                DOWNSTAIRCOLLISION = true;
+                Debug.Log(DungeonGenerator.LEVEL);
+                //Invoke("RestartGenerateDungeon", .1f);
+                if(DungeonGenerator.LEVEL == 0){
+                    SceneManager.LoadScene("Town");
+                }else{
+                    DungeonGenerator.LEVEL--;
+                    Invoke("ResetPlayer", .1f);
+                }
+                //WaitForTownLoad();
+                
+                //WaitForTownLoad();
+                
+                Debug.Log("passed it!!");
                 return;
             }
             if (gameObject.name.Equals("remodel_tarantula(export) Variant(Clone)"))
@@ -56,11 +85,12 @@ public class EndTrigger : MonoBehaviour
     {
         //SceneManager.LoadScene("Town");
         //DungeonGenerator.SAVED_DUNGEON = null;
-        FindObjectOfType<DungeonGenerator>().DestroyAll();
+        Debug.Log("restarting dungeon!");
+        //FindObjectOfType<DungeonGenerator>().DestroyAll();
         DungeonGenerator.genNewMesh = true;
-        Navigation.INSTANCE.SetActive(false);
+        //Navigation.INSTANCE.SetActive(false);
         Destroy(DungeonGenerator.SAVED_DUNGEON);
-        //FindObjectOfType<DungeonGenerator>().Start();
+        FindObjectOfType<DungeonGenerator>().Start();
 
 
     }
@@ -73,5 +103,21 @@ public class EndTrigger : MonoBehaviour
         Navigation.INSTANCE.SetActive(false);
         DungeonGenerator.SAVED_DUNGEON.SetActive(false);
     }
+    private IEnumerator WaitForTownLoad()
+    {
+        Debug.Log("HERE???");
+        yield return new WaitForSeconds(1);
+            Debug.Log("BRO???");
+            FindObjectOfType<DungeonGenerator>().Start();
+    }
 
+    private void ResetPlayer(){
+        Debug.Log("HERE???");
+        FindObjectOfType<DungeonGenerator>().DestroyAll();
+        FindObjectOfType<DungeonGenerator>().Start();
+        //Navigation.INSTANCE.SetActive(false);
+        //FindObjectOfType<DungeonGenerator>().DestroyAll();
+        //Navigation.INSTANCE.SetActive(false);
+        //FindObjectOfType<DungeonGenerator>().Start();
+    }
 }

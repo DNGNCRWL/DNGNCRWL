@@ -49,7 +49,6 @@ public class Navigation : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("awoken!");
         state = State.Idle;
         DontDestroyOnLoad(this.gameObject);
         if(INSTANCE == null)
@@ -60,21 +59,23 @@ public class Navigation : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        if (EndTrigger.STAIRCOLLISION)
-        {
-            transform.position = new Vector3Int(0, 1, 0);
-            transform.eulerAngles = new Vector3Int(0, 180, 0);
-            EndTrigger.STAIRCOLLISION = false;
-        }
-        else
+        //INSTANCE.SetActive(true);
+        // if (EndTrigger.UPSTAIRCOLLISION)
+        // {
+        //     Debug.Log("going back to 010");
+        //     transform.position = new Vector3Int(0, 1, 0);
+        //     //SAVE_POSITION = new Vector3Int(0,1,0);
+        //     Debug.Log(transform.position);
+        //     //respawn();
+        //     transform.eulerAngles = new Vector3Int(0, 180, 0);
+        // }
+        if(!EndTrigger.UPSTAIRCOLLISION || !EndTrigger.DOWNSTAIRCOLLISION)
         {
             transform.position = SAVE_POSITION;
             transform.eulerAngles = new Vector3Int(0, SAVE_ROTATION_Y, 0);
         }
-
-        Debug.Log(transform.position);
+        //EndTrigger.STAIRCOLLISION = false;
         //transform.position = new Vector3Int(0, 1, 0);
-        Debug.Log(SAVE_POSITION);
 
         SetRandomSteps();
         CalculateSpeeds();
@@ -219,14 +220,12 @@ public class Navigation : MonoBehaviour
 
         Vector3 finalPos = transform.position + move;
         SAVE_POSITION = Vector3Int.FloorToInt(finalPos);
-        Debug.Log(SAVE_POSITION);
         //Vector3Int finalPos = new Vector3Int(Mathf.RoundToInt(transform.position.x) + move.x, Mathf.RoundToInt(transform.position.y) + move.y, Mathf.RoundToInt(transform.position.z) + move.z);
         Vector3 toMove = move;
 
         while (toMove != Vector3Int.zero)
         {
             Vector3 toMoveThisFrame = Time.deltaTime * moveSpeed * toMove.normalized;
-            Debug.Log(toMove);
             if (toMove.sqrMagnitude > toMoveThisFrame.sqrMagnitude)
             {
                 transform.position += toMoveThisFrame;
@@ -241,7 +240,6 @@ public class Navigation : MonoBehaviour
 
             yield return null;
         }
-        Debug.Log("EndMove");
         state = State.Idle;
 
         Snap();
@@ -249,7 +247,6 @@ public class Navigation : MonoBehaviour
 
     void Snap()
     {
-        Debug.Log("Snap!");
         int x = Mathf.RoundToInt(transform.position.x);
         int y = Mathf.RoundToInt(transform.position.y);
         int z = Mathf.RoundToInt(transform.position.z);
@@ -316,9 +313,8 @@ public class Navigation : MonoBehaviour
 
     void StartEncounter(EnemyEncounter enemyencounter)
     {
-        Debug.Log("encounter started");
         BattleManager.SetENEMY_ENCOUNTER(enemyencounter);
-        DungeonGenerator.SAVED_DUNGEON.SetActive(false);
+        //DungeonGenerator.SAVED_DUNGEON.SetActive(false);
         //set inactive
         SceneManager.LoadScene("Battle");
     }

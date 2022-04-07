@@ -101,6 +101,7 @@ public class enemy_AI : MonoBehaviour
         agent.SetDestination(player.position);
         //Navigation.isMoving = false;
     }
+    
 
 }
 

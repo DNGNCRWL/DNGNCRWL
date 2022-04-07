@@ -816,7 +816,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GENtransform: {fileID: 1896285818}
   spider: {fileID: 1425353541870137400, guid: 89460ed69b79d604a8b970c84641b270, type: 3}
-  size: {x: 2, y: 2}
+  size: {x: 10, y: 10}
   startPos: 0
   rooms:
   - room: {fileID: 6000146285170854076, guid: 8932cb772760a374d8bdf614a4be0d4f, type: 3}
