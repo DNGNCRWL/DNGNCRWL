@@ -74,7 +74,7 @@ public class DungeonGenerator : MonoBehaviour
             //SAVED_DUNGEON = gameObject;
             Navigation.INSTANCE.SetActive(true);
             Debug.Log("NAV?? " + Navigation.INSTANCE);
-            //Navigation.INSTANCE.transform.position = new Vector3(0,1,0);
+            Navigation.INSTANCE.transform.position = new Vector3(0,1,0);
             //DontDestroyOnLoad(SAVED_DUNGEON);
             EndTrigger.UPSTAIRCOLLISION = false;
             MazeGenerator();
