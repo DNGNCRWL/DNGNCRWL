@@ -47,7 +47,8 @@ public class UI_Inventory : MonoBehaviour
     }
 
     private void OnDestroy() {
-        inventory.OnItemListChanged -= Inventory_OnItemListChanged;
+        if (inventory!=null)
+            inventory.OnItemListChanged -= Inventory_OnItemListChanged;
     }
 
     public void SetCharacterTarget (CharacterSheet character){

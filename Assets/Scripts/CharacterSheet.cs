@@ -419,21 +419,25 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
 
     //INVENTORY/ITEM USE
 
-    public bool UseConsumable(Item consumable) {
-        if (consumable is Consumable) {
-            return inventory.UseConsumable((Consumable)consumable);
-        } else {
-            return false;
+    public bool UseConsumable(Consumable consumable) {
+        if (inventory.UseConsumable((Consumable)consumable)) {
+            Heal(consumable.healingAmount);
+            return true;
         }
+        return false;
     }
-    
-    public bool UseConsumableOn(CharacterSheet targetChar, Item consumable) {
-        if (consumable is Consumable) {
-            return inventory.UseConsumable((Consumable)consumable);
-        } else {
-            return false;
+
+    public bool UseConsumable(Item consumable) { return false; } // non consumable
+
+    public bool UseConsumableOn(CharacterSheet targetChar, Consumable consumable) {
+        if (inventory.UseConsumable((Consumable)consumable)) {
+            targetChar.Heal(consumable.healingAmount);
+            return true;
         }
+        return false;
     }
+
+    public bool UseConsumableOn(CharacterSheet targetChar, Item consumable) { return false; }//non consumable
 
     public bool ShootWeapon(Weapon wep) {
         if(wep is ProjectileWeapon) {
@@ -522,7 +526,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         //     return GameManager.Error("Already carrying " + item.itemName + ".");
 
         //ITEMPACK??
-        if (item is ItemPack) {
+        /*if (item is ItemPack) {
             //Debug.Log("Found a " + item.itemName);
             ItemPack ip = (ItemPack)item;
             bool pickedUpEverything = true;
@@ -531,14 +535,14 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
             if (pickedUpEverything)
                 //Debug.Log("Successfully picked up " + item.GetExplicitString());
                 return pickedUpEverything;
-        }
+        }*/
 
-        inventory.AddItem(item, item.amount);
+        return inventory.AddIfHasSpace(item, item.amount);
 
         //inventory.GetItemList().Add(item);
 
 
-        return true;
+        //return true;
     }
 
 
@@ -704,6 +708,14 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         }
 
         return new DamageReturn(0, hurt, killerBlow);
+    }
+
+    public void Heal (int healAmount) {
+        if((healAmount + hitPoints) > maxHitPoints) {
+            hitPoints = maxHitPoints;
+        } else {
+            hitPoints += healAmount;
+        }
     }
 
     //??
