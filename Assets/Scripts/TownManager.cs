@@ -89,6 +89,10 @@ public class TownManager : MonoBehaviour
         }
     }
 
+    public void toggleInteractable(Button target) {
+        target.interactable = !target.interactable;
+    }
+
     //Pops up error message window with given message
     public void ErrorMessage(string message) {
         errorMessageWindow.transform.GetChild(0).transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
@@ -273,7 +277,7 @@ public class TownManager : MonoBehaviour
             }
             HideItemInfo();
         }
-        for (int i = 0; i < 30; ++i) {
+        for (int i = 0; i < buyingTiles.Count; ++i) {
             if (i < cartItems.Count) {
                 buyingTiles[i].SetActive(true);
                 buyingTiles[i].GetComponent<Image>().sprite = cartItems[i].GetSprite();
