@@ -15,6 +15,8 @@ public class Item : ScriptableObject
     public List<CharacterAction> inventoryActions;
     public Sprite sprite;
     public int stackLimit = 1;
+    
+    [HideInInspector]
     public int amount = 1;
 
     public Sprite GetSprite() {
