@@ -420,14 +420,21 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     //INVENTORY/ITEM USE
 
     public bool UseConsumable(Consumable consumable) {
-        hitPoints += consumable.healingAmount;
-        return inventory.UseConsumable((Consumable)consumable);
+        if (inventory.UseConsumable((Consumable)consumable)) {
+            Heal(consumable.healingAmount);
+            return true;
+        }
+        return false;
     }
 
     public bool UseConsumable(Item consumable) { return false; } // non consumable
 
     public bool UseConsumableOn(CharacterSheet targetChar, Consumable consumable) {
-        return inventory.UseConsumable((Consumable)consumable);
+        if (inventory.UseConsumable((Consumable)consumable)) {
+            targetChar.Heal(consumable.healingAmount);
+            return true;
+        }
+        return false;
     }
 
     public bool UseConsumableOn(CharacterSheet targetChar, Item consumable) { return false; }//non consumable
@@ -701,6 +708,14 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         }
 
         return new DamageReturn(0, hurt, killerBlow);
+    }
+
+    public void Heal (int healAmount) {
+        if((healAmount + hitPoints) > maxHitPoints) {
+            hitPoints = maxHitPoints;
+        } else {
+            hitPoints += healAmount;
+        }
     }
 
     //??
