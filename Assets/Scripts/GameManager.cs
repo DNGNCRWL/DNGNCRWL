@@ -150,6 +150,13 @@ public class GameManager : MonoBehaviour {
         Reset();
     }
 
+    public bool PickupLoot (Item loot) {
+        foreach (CharacterSheet character in playerCharacters) {
+            if(character.PickupItem(loot)) return true;
+        }
+        return false;
+    }
+
 }
 
 [System.Serializable]

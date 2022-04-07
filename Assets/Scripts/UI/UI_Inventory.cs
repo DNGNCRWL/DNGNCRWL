@@ -27,7 +27,7 @@ public class UI_Inventory : MonoBehaviour
     private Transform slotLimit;
 
 
-    void Awake() {
+    private void Awake() {
         if (UI_INVENTORY == null)
         {
             UI_INVENTORY = this;
@@ -44,6 +44,11 @@ public class UI_Inventory : MonoBehaviour
         slotLimit = transform.Find("CharacterContainer").Find("slotLimit");
         CloseInventoryUI();
         //Debug.Log(itemSlotContainer);
+    }
+
+    private void OnDestroy() {
+        if (inventory!=null)
+            inventory.OnItemListChanged -= Inventory_OnItemListChanged;
     }
 
     public void SetCharacterTarget (CharacterSheet character){
@@ -69,7 +74,8 @@ public class UI_Inventory : MonoBehaviour
 
     private void Inventory_OnItemListChanged (object sender, System.EventArgs e) {
         Debug.Log("Inventory Refreshed");
-        RefreshInventoryItems();
+        if(GetComponent<RectTransform>())
+            RefreshInventoryItems();
     }
 
     private void RefreshInventoryItems() {
