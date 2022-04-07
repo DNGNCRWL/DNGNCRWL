@@ -20,9 +20,10 @@ public class EndTrigger : MonoBehaviour
         Debug.Log(gameObject.name + " has triggered end by " + collider.gameObject.name);
         if (gameHasEnded == false)
         {
-            if (gameObject.name.Equals("stairwell"))
+            if (gameObject.name.Equals("stairwell") && !collider.isTrigger)
             {
-                FindObjectOfType<Navigation>().respawn();
+                collider.isTrigger=false;
+                //FindObjectOfType<Navigation>().respawn();
                 UPSTAIRCOLLISION = true;
                 //FindObjectOfType<Navigation>().respawn();
                 Debug.Log("stair!");
@@ -34,6 +35,7 @@ public class EndTrigger : MonoBehaviour
                 //WaitForTownLoad();
                 //FindObjectOfType<DungeonGenerator>().Start();
                 Invoke("ResetPlayer", .1f);
+                //ResetPlayer();
                 //FindObjectOfType<DungeonGenerator>().DestroyAll();
                 
                 //StartCoroutine(WaitForTownLoad());
@@ -114,6 +116,7 @@ public class EndTrigger : MonoBehaviour
     private void ResetPlayer(){
         Debug.Log("HERE???");
         FindObjectOfType<DungeonGenerator>().DestroyAll();
+        //Navigation.INSTANCE.SetActive(false);
         FindObjectOfType<DungeonGenerator>().Start();
         //Navigation.INSTANCE.SetActive(false);
         //FindObjectOfType<DungeonGenerator>().DestroyAll();
