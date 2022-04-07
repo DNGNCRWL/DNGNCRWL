@@ -5,6 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Consumable", menuName = "Item/Consumable", order = 1)]
 public class Consumable : Item
 {
+    public int healingAmount = 0;
+    public bool clearsPoison = false;
+
+
     public override string GetExplicitString()
     {
         if (broken) return base.GetExplicitString();
