@@ -214,11 +214,7 @@ public class DungeonGenerator : MonoBehaviour
                 Debug.Log(tBoard[0] == (i + j * size.x));
                 if (currentCell.visited)
                 {
-                    if(tBoard.Contains(i + j * size.x) && !(i + 1 == size.x && j + 1 == size.y)){
-                        var newRoom = Instantiate(rooms[1].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
-                        newRoom.UpdateRoom(currentCell.status);
-                        newRoom.name += " " + i + "-" + j;
-                    }
+
                     //int randomRoom = Random.Range(0, rooms.Length);
                     int randomRoom = 0;
                     List<int> availableRooms = new List<int>();
@@ -248,7 +244,11 @@ public class DungeonGenerator : MonoBehaviour
                             randomRoom = 0;
                         }
                     }
-                    if (i + 1 == size.x && j + 1 == size.y)
+                    if(tBoard.Contains(i + j * size.x) && !(i + 1 == size.x && j + 1 == size.y)){
+                        var newRoom = Instantiate(rooms[1].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
+                        newRoom.UpdateRoom(currentCell.status);
+                        newRoom.name += " " + i + "-" + j;
+                    }else if (i + 1 == size.x && j + 1 == size.y)
                     {
                         var newRoom = Instantiate(rooms[2].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
                         newRoom.UpdateRoom(currentCell.status);
