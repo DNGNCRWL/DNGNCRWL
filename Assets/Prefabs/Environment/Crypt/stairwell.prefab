@@ -97,6 +97,9 @@ MonoBehaviour:
   gameHasEnded: 0
   dungeonGenerationDelay: 4
   gameManager: {fileID: 6523248009475443555, guid: c0992dccf8503624b8229d117c60dedc, type: 3}
+  boss_encounters: []
+  player: {fileID: 0}
+  spider: {fileID: 0}
 --- !u!1 &8606137336247430153
 GameObject:
   m_ObjectHideFlags: 0
@@ -145,6 +148,9 @@ MonoBehaviour:
   gameHasEnded: 0
   dungeonGenerationDelay: 4
   gameManager: {fileID: 6523248009475443555, guid: c0992dccf8503624b8229d117c60dedc, type: 3}
+  boss_encounters: []
+  player: {fileID: 3819049138370474020, guid: 6248399d9fc64534aa2e2a6e7bf7464d, type: 3}
+  spider: {fileID: 0}
 --- !u!65 &237020518677164907
 BoxCollider:
   m_ObjectHideFlags: 0

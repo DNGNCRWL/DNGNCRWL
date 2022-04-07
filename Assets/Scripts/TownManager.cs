@@ -15,6 +15,7 @@ public class TownManager : MonoBehaviour
     //Player Characters
     public List<CharacterSheet> playerCharacters;
     public List<CharacterSheet> reserveCharacters;
+    public List<CharacterSheet> deadCharacters;
 
     //Recruitable Characters
     public List<CharacterSheet> recruitableCharacters;
@@ -36,6 +37,8 @@ public class TownManager : MonoBehaviour
     public List<Item> storeItems;
     public List<GameObject> storeTiles;
     public List<GameObject> buyingTiles;
+    public List<GameObject> playerItemTiles;
+    public List<GameObject> sellingTiles;
     public GameObject itemInfo;
     public GameObject silverInfo;
     public GameObject buyForMenu;
@@ -44,6 +47,7 @@ public class TownManager : MonoBehaviour
     public List<Item> cartItems;
     public List<CharacterSheet> charToBuyFor;
     public int cost = 0;
+    public GameObject sellFromList;
 
     public GameObject errorMessageWindow;
     public int silver;
@@ -66,6 +70,12 @@ public class TownManager : MonoBehaviour
     {
         playerCharacters = GM.playerCharacters;
         reserveCharacters = GM.reserveCharacters;
+        foreach(CharacterSheet character in playerCharacters) {
+            if (!character.GetCanBeHit()) {
+                deadCharacters.Add(character);
+                playerCharacters.Remove(character);
+            }
+        }
         setRecCharInfo();
         setCharInfo();
         setReserveCharInfo();
@@ -89,6 +99,13 @@ public class TownManager : MonoBehaviour
         }
     }
 
+    public void turnOffInteractable(Button target) {
+        target.interactable = false;
+    }
+    public void turnOnInteractable(Button target) {
+        target.interactable = true;
+    }
+
     //Pops up error message window with given message
     public void ErrorMessage(string message) {
         errorMessageWindow.transform.GetChild(0).transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
@@ -97,7 +114,9 @@ public class TownManager : MonoBehaviour
 
     //ensures party is not empty and enters the rest of the dungeon
     public void enterDungeon() {
+        Debug.Log("hello");
         if (playerCharacters.Count > 0) {
+            //FindObjectOfType<DungeonGenerator>().Start();
             SceneManager.LoadScene("DungeonGeneration", LoadSceneMode.Single);
             GameManager.PartySetActive(false);
         } else {
@@ -273,7 +292,7 @@ public class TownManager : MonoBehaviour
             }
             HideItemInfo();
         }
-        for (int i = 0; i < 30; ++i) {
+        for (int i = 0; i < buyingTiles.Count; ++i) {
             if (i < cartItems.Count) {
                 buyingTiles[i].SetActive(true);
                 buyingTiles[i].GetComponent<Image>().sprite = cartItems[i].GetSprite();
@@ -281,6 +300,8 @@ public class TownManager : MonoBehaviour
                 buyingTiles[i].SetActive(false);
             }
         }
+
+        SetCharacterSellList();
         
         silverInfo.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "" + silver;
         silverInfo.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = "" + cost;
@@ -527,6 +548,17 @@ public class TownManager : MonoBehaviour
         } else {
             ErrorMessage("Not enough silver!");
             return false;
+        }
+    }
+
+    public void SetCharacterSellList() {
+        for(int i = 0; i < 4; ++i) {
+            if (i < playerCharacters.Count) {
+                sellFromList.transform.GetChild(i).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = playerCharacters[i].GetCharacterName();
+                sellFromList.transform.GetChild(i).gameObject.SetActive(true);
+            } else {
+                sellFromList.transform.GetChild(i).gameObject.SetActive(false);
+            }
         }
     }
 }
