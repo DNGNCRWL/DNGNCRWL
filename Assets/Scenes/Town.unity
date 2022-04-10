@@ -1658,7 +1658,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: OpenBuyForMenu
+        m_MethodName: AddItemToSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1970,7 +1970,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: OpenBuyForMenu
+        m_MethodName: AddItemToSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2282,7 +2282,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: RemoveItemFromCart
+        m_MethodName: RemoveItemFromSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2950,7 +2950,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: RemoveItemFromCart
+        m_MethodName: RemoveItemFromSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4013,7 +4013,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: OpenBuyForMenu
+        m_MethodName: AddItemToSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4325,7 +4325,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: RemoveItemFromCart
+        m_MethodName: RemoveItemFromSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4681,7 +4681,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: OpenBuyForMenu
+        m_MethodName: AddItemToSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5526,7 +5526,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: OpenBuyForMenu
+        m_MethodName: AddItemToSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5873,7 +5873,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: OpenBuyForMenu
+        m_MethodName: AddItemToSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6366,7 +6366,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: RemoveItemFromCart
+        m_MethodName: RemoveItemFromSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6544,7 +6544,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: RemoveItemFromCart
+        m_MethodName: RemoveItemFromSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6722,7 +6722,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: RemoveItemFromCart
+        m_MethodName: RemoveItemFromSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7716,7 +7716,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: RemoveItemFromCart
+        m_MethodName: RemoveItemFromSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8072,7 +8072,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: OpenBuyForMenu
+        m_MethodName: AddItemToSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8518,7 +8518,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: OpenBuyForMenu
+        m_MethodName: AddItemToSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10797,7 +10797,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: RemoveItemFromCart
+        m_MethodName: RemoveItemFromSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11402,7 +11402,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: OpenBuyForMenu
+        m_MethodName: AddItemToSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11982,7 +11982,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: OpenBuyForMenu
+        m_MethodName: AddItemToSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14936,7 +14936,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: RemoveItemFromCart
+        m_MethodName: RemoveItemFromSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15114,7 +15114,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: RemoveItemFromCart
+        m_MethodName: RemoveItemFromSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15375,7 +15375,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: OpenBuyForMenu
+        m_MethodName: AddItemToSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15553,7 +15553,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: RemoveItemFromCart
+        m_MethodName: RemoveItemFromSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16977,7 +16977,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: OpenBuyForMenu
+        m_MethodName: AddItemToSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18546,7 +18546,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: RemoveItemFromCart
+        m_MethodName: RemoveItemFromSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19779,6 +19779,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1709150566}
+        m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
+        m_MethodName: CancelTransaction
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1202689819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20842,7 +20854,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: RemoveItemFromCart
+        m_MethodName: RemoveItemFromSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -22795,7 +22807,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: RemoveItemFromCart
+        m_MethodName: RemoveItemFromSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -23755,7 +23767,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: OpenBuyForMenu
+        m_MethodName: AddItemToSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -24008,7 +24020,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: OpenBuyForMenu
+        m_MethodName: AddItemToSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -25253,7 +25265,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: RemoveItemFromCart
+        m_MethodName: RemoveItemFromSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -25879,7 +25891,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: RemoveItemFromCart
+        m_MethodName: RemoveItemFromSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -25984,7 +25996,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Purchase
+  m_text: Confirm
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9063fbb18178af34f9f0d202bb3f31f0, type: 2}
   m_sharedMaterial: {fileID: 5738050820562297703, guid: 9063fbb18178af34f9f0d202bb3f31f0, type: 2}
@@ -27874,7 +27886,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: RemoveItemFromCart
+        m_MethodName: RemoveItemFromSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -28186,7 +28198,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: OpenBuyForMenu
+        m_MethodName: AddItemToSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -28381,7 +28393,10 @@ MonoBehaviour:
   charToBuyFor: []
   cost: 0
   sellFromList: {fileID: 1967468570}
-  sellFromCharacter: []
+  sellableItems: []
+  sellFromCharacter: {fileID: 0}
+  previousSellLocations: 
+  charToSellFrom: []
   errorMessageWindow: {fileID: 1291497627}
   silver: 0
 --- !u!4 &1709150567
@@ -29527,7 +29542,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: OpenBuyForMenu
+        m_MethodName: AddItemToSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -30122,7 +30137,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: RemoveItemFromCart
+        m_MethodName: RemoveItemFromSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -30791,7 +30806,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: OpenBuyForMenu
+        m_MethodName: AddItemToSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -30969,7 +30984,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: RemoveItemFromCart
+        m_MethodName: RemoveItemFromSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -31415,7 +31430,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: OpenBuyForMenu
+        m_MethodName: AddItemToSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -32535,7 +32550,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: OpenBuyForMenu
+        m_MethodName: AddItemToSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -33159,7 +33174,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: OpenBuyForMenu
+        m_MethodName: AddItemToSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -34229,7 +34244,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: RemoveItemFromCart
+        m_MethodName: RemoveItemFromSellCart
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

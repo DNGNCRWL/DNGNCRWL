@@ -49,7 +49,10 @@ public class TownManager : MonoBehaviour
     public List<CharacterSheet> charToBuyFor;
     public int cost = 0;
     public GameObject sellFromList;
-    public List<Item> sellFromCharacter;
+    public List<Item> sellableItems;
+    public CharacterSheet sellFromCharacter;
+    public List<int> previousSellLocations;
+    public List<CharacterSheet> charToSellFrom;
 
     public GameObject errorMessageWindow;
     public int silver;
@@ -291,7 +294,7 @@ public class TownManager : MonoBehaviour
     public void SetStoreInfo() {
         SetStoreTiles(storeTiles, storeItems, true);
         SetStoreTiles(buyingTiles, cartItems, false);
-        SetStoreTiles(playerItemTiles, sellFromCharacter, false);
+        SetStoreTiles(playerItemTiles, sellableItems, false);
         SetStoreTiles(sellingTiles, sellingItems, false);
 
         SetCharacterSellList();
@@ -350,32 +353,32 @@ public class TownManager : MonoBehaviour
     public void SetBuyableInfo(GameObject button) {
         int index = storeTiles.IndexOf(button);
         Item item = storeItems[index];
-        DisplayItemInfo(item, -1);
+        DisplayItemInfo(item, -1, true);
     }
 
     //Set the item info for an item in the cart
     public void SetCartItemInfo(GameObject button) {
         int index = buyingTiles.IndexOf(button);
         Item item = cartItems[index];
-        DisplayItemInfo(item, index);
+        DisplayItemInfo(item, index, true);
     }
 
     //Set the item info for a sellable item
     public void SetSellableInfo(GameObject button) {
         int index = playerItemTiles.IndexOf(button);
-        Item item = sellFromCharacter[index];
-        DisplayItemInfo(item, -1);
+        Item item = sellableItems[index];
+        DisplayItemInfo(item, -1, false);
     }
 
     //Set the item info for an item in the sell item cart
     public void SetItemToSellInfo(GameObject button) {
         int index = sellingTiles.IndexOf(button);
         Item item = sellingItems[index];
-        DisplayItemInfo(item, -1);
+        DisplayItemInfo(item, index, false);
     }
 
     //Set item info
-    public void DisplayItemInfo(Item item, int cartNum) {
+    public void DisplayItemInfo(Item item, int cartNum, bool buying) {
         string type = "";
         string wielding = "";
         string extras = "";
@@ -426,8 +429,10 @@ public class TownManager : MonoBehaviour
         itemInfo.transform.GetChild(6).GetComponent<TextMeshProUGUI>().text = item.value + " silver";
         if (cartNum == -1) {
             itemInfo.transform.GetChild(7).GetComponent<TextMeshProUGUI>().text = "";
-        } else {
+        } else if (buying) {
             itemInfo.transform.GetChild(7).GetComponent<TextMeshProUGUI>().text = "Buying for: " + charToBuyFor[cartNum].GetCharacterName();
+        } else {
+            itemInfo.transform.GetChild(7).GetComponent<TextMeshProUGUI>().text = "Selling from: " + charToSellFrom[cartNum].GetCharacterName();
         }
 
         itemInfo.SetActive(true);
@@ -533,8 +538,8 @@ public class TownManager : MonoBehaviour
 
     //Move items from cart to respective character inventories, and remove silver cost from all characters equally
     public void PurchaseItems() {
-        if (cartItems.Count == 0) {
-            ErrorMessage("Nothing to buy!");
+        if (cartItems.Count == 0 && sellingItems.Count == 0) {
+            ErrorMessage("Nothing to buy/sell!");
         } else if(GetPayment(cost)) {
             for (int i = 0; i < cartItems.Count; ++i) {
             charToBuyFor[i].GetInventory().AddItem(cartItems[i]);
@@ -543,6 +548,8 @@ public class TownManager : MonoBehaviour
             cartItems.Clear();
             previousLocations.Clear();
             charToBuyFor.Clear();
+            sellingItems.Clear();
+            charToSellFrom.Clear();
             cost = 0;
         }
         SetStoreInfo();
@@ -556,10 +563,16 @@ public class TownManager : MonoBehaviour
             reserveCharacters.CopyTo(characters, playerCharacters.Count);
             int j = 0;
             while (charge != 0) {
-                if (characters[j % totalChars].GetSilver() > 0)
-                    characters[j % totalChars].MakePayment(1);
-                    --charge;
-                ++j;
+                if (charge > 0) {
+                    if (characters[j % totalChars].GetSilver() > 0)
+                        characters[j % totalChars].MakePayment(1);
+                        --charge;
+                    ++j;
+                } else {
+                    characters[j % totalChars].MakePayment(-1);
+                    ++charge;
+                    ++j;
+                }
             }
             silver = CalculateSilver();
             SetStoreInfo();
@@ -583,10 +596,51 @@ public class TownManager : MonoBehaviour
 
     public void SelectSellFromCharacter(int target) {
         if(playerCharacters.Count <= target) {
-            sellFromCharacter = new List<Item>();
+            sellableItems = new List<Item>();
+            sellFromCharacter = null;
         } else {
-            sellFromCharacter = playerCharacters[target].inventory.itemList;
+            sellFromCharacter = playerCharacters[target];
+            sellableItems = sellFromCharacter.inventory.itemList;
+
         }
         SetStoreInfo();
+    }
+    
+    public void AddItemToSellCart(int item) {
+        Item temp = sellableItems[item];
+        sellableItems.Remove(temp);
+
+        sellingItems.Add(temp);
+        charToSellFrom.Add(sellFromCharacter);
+        cost -= temp.value;
+        SetStoreInfo();
+    }
+
+    public void RemoveItemFromSellCart(int index) {
+        Item temp = sellingItems[index];
+        sellableItems.Add(temp);
+        cost += temp.value;
+        sellingItems.RemoveAt(index);
+        charToSellFrom.RemoveAt(index);
+        SetStoreInfo();
+    }
+
+    public void CancelTransaction() {
+        RemoveAllFromCart();
+        RemoveAllFromSellCart();
+    }
+
+    public void RemoveAllFromCart() {
+        int numCartItems = cartItems.Count;
+        for (int i = 0; i < numCartItems; ++i) {
+            RemoveItemFromCart(0);
+        }
+    }
+
+    public void RemoveAllFromSellCart() {
+        int numSellingItems = sellingItems.Count;
+        for (int i = 0; i < numSellingItems; ++i) {
+            RemoveItemFromSellCart(0);
+        }
     }
 }
