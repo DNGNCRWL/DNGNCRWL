@@ -1586,7 +1586,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetBuyableInfo
+          m_MethodName: SetSellableInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 109523536}
@@ -1898,7 +1898,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetBuyableInfo
+          m_MethodName: SetSellableInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 129206311}
@@ -2210,7 +2210,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetCartItemInfo
+          m_MethodName: SetItemToSellInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 162450024}
@@ -2878,7 +2878,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetCartItemInfo
+          m_MethodName: SetItemToSellInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 199971990}
@@ -3941,7 +3941,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetBuyableInfo
+          m_MethodName: SetSellableInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 243618516}
@@ -4253,7 +4253,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetCartItemInfo
+          m_MethodName: SetItemToSellInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 253663379}
@@ -4609,7 +4609,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetBuyableInfo
+          m_MethodName: SetSellableInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 268645418}
@@ -5128,6 +5128,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1709150566}
+        m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
+        m_MethodName: SelectSellFromCharacter
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &287346472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5442,7 +5454,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetBuyableInfo
+          m_MethodName: SetSellableInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 328212588}
@@ -5789,7 +5801,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetBuyableInfo
+          m_MethodName: SetSellableInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 347095085}
@@ -6040,6 +6052,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1709150566}
+        m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
+        m_MethodName: SelectSellFromCharacter
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &364051484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6270,7 +6294,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetCartItemInfo
+          m_MethodName: SetItemToSellInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 418040820}
@@ -6448,7 +6472,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetCartItemInfo
+          m_MethodName: SetItemToSellInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 421327866}
@@ -6626,7 +6650,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetCartItemInfo
+          m_MethodName: SetItemToSellInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 423316655}
@@ -7620,7 +7644,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetCartItemInfo
+          m_MethodName: SetItemToSellInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 441581286}
@@ -7976,7 +8000,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetBuyableInfo
+          m_MethodName: SetSellableInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 442800163}
@@ -8422,7 +8446,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetBuyableInfo
+          m_MethodName: SetSellableInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 480661728}
@@ -10701,7 +10725,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetCartItemInfo
+          m_MethodName: SetItemToSellInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 613749026}
@@ -11306,7 +11330,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetBuyableInfo
+          m_MethodName: SetSellableInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 642212036}
@@ -11886,7 +11910,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetBuyableInfo
+          m_MethodName: SetSellableInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 656075291}
@@ -13613,6 +13637,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1709150566}
+        m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
+        m_MethodName: SetStoreInfo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &826057577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14828,7 +14864,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetCartItemInfo
+          m_MethodName: SetItemToSellInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 909279009}
@@ -15006,7 +15042,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetCartItemInfo
+          m_MethodName: SetItemToSellInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 925718373}
@@ -15267,7 +15303,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetBuyableInfo
+          m_MethodName: SetSellableInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 930870280}
@@ -15445,7 +15481,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetCartItemInfo
+          m_MethodName: SetItemToSellInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 931926214}
@@ -16869,7 +16905,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetBuyableInfo
+          m_MethodName: SetSellableInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1036043134}
@@ -18330,6 +18366,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1709150566}
+        m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
+        m_MethodName: SelectSellFromCharacter
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1131538391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18426,7 +18474,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetCartItemInfo
+          m_MethodName: SetItemToSellInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1147045116}
@@ -20614,6 +20662,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1709150566}
+        m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
+        m_MethodName: SelectSellFromCharacter
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1235404713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20710,7 +20770,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetCartItemInfo
+          m_MethodName: SetItemToSellInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1248073577}
@@ -22663,7 +22723,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetCartItemInfo
+          m_MethodName: SetItemToSellInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1408797390}
@@ -23623,7 +23683,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetBuyableInfo
+          m_MethodName: SetSellableInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1475238287}
@@ -23876,7 +23936,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetBuyableInfo
+          m_MethodName: SetSellableInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1483719730}
@@ -25121,7 +25181,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetCartItemInfo
+          m_MethodName: SetItemToSellInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1567810550}
@@ -25747,7 +25807,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetCartItemInfo
+          m_MethodName: SetItemToSellInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1602111075}
@@ -27742,7 +27802,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetCartItemInfo
+          m_MethodName: SetItemToSellInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1677626311}
@@ -28054,7 +28114,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetBuyableInfo
+          m_MethodName: SetSellableInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1684212784}
@@ -28317,9 +28377,11 @@ MonoBehaviour:
   itemSelected: 0
   previousLocations: 
   cartItems: []
+  sellingItems: []
   charToBuyFor: []
   cost: 0
   sellFromList: {fileID: 1967468570}
+  sellFromCharacter: []
   errorMessageWindow: {fileID: 1291497627}
   silver: 0
 --- !u!4 &1709150567
@@ -29393,7 +29455,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetBuyableInfo
+          m_MethodName: SetSellableInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1770939272}
@@ -29988,7 +30050,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetCartItemInfo
+          m_MethodName: SetItemToSellInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1864212689}
@@ -30657,7 +30719,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetBuyableInfo
+          m_MethodName: SetSellableInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1924894593}
@@ -30835,7 +30897,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetCartItemInfo
+          m_MethodName: SetItemToSellInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1930425060}
@@ -31281,7 +31343,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetBuyableInfo
+          m_MethodName: SetSellableInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1951814503}
@@ -32401,7 +32463,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetBuyableInfo
+          m_MethodName: SetSellableInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1970259382}
@@ -33025,7 +33087,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetBuyableInfo
+          m_MethodName: SetSellableInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1994376948}
@@ -34095,7 +34157,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: SetCartItemInfo
+          m_MethodName: SetItemToSellInfo
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 2056535083}
