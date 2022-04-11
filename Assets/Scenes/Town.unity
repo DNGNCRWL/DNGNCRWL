@@ -28279,6 +28279,12 @@ MonoBehaviour:
   GM: {fileID: 0}
   GMTransform: {fileID: 0}
   characterPrefab: {fileID: 6109479508851026818, guid: 325db5399faf4c84e943b7c9ec553684, type: 3}
+  clickableBuildings:
+  - {fileID: 833674082}
+  - {fileID: 1523255301}
+  - {fileID: 1089718544}
+  - {fileID: 1953157014}
+  - {fileID: 638902584}
   playerCharacters: []
   reserveCharacters: []
   deadCharacters: []

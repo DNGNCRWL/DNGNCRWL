@@ -12,6 +12,8 @@ public class TownManager : MonoBehaviour
     public Transform GMTransform;
     public GameObject characterPrefab;
 
+    public List<Image> clickableBuildings;
+
     //Player Characters
     public List<CharacterSheet> playerCharacters;
     public List<CharacterSheet> reserveCharacters;
@@ -68,6 +70,9 @@ public class TownManager : MonoBehaviour
         GMTransform = GameManager.GM.transform;
         generateRandomChar();
         StoreGen();
+        foreach (Image pic in clickableBuildings) {
+            pic.alphaHitTestMinimumThreshold = 0.01f;
+        }
     }
 
     // Start is called before the first frame update
