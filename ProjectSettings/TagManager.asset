@@ -10,6 +10,7 @@ TagManager:
   - Spider
   - Navigator 1
   - test
+  - EndRoom
   layers:
   - Default
   - TransparentFX
