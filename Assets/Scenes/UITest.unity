@@ -209,35 +209,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &622949731 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 566731114245543761, guid: 5bd3499fe4807d241871b2869f64af4c, type: 3}
-  m_PrefabInstance: {fileID: 566731114269526673}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &622949732
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 622949731}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55c2a23d483fec84991b04a1f772fd39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lootInventory:
-    itemList:
-    - {fileID: 11400000, guid: 6c15ed894875c5e42927e067e23bec0d, type: 2}
-    - {fileID: 11400000, guid: c11a8fb603148854ea27d520d0001baf, type: 2}
-    storage: {fileID: 0}
-    armor: {fileID: 0}
-    mainHand: {fileID: 0}
-    offHand: {fileID: 0}
-    slotsLimit: 10
-    slotsUsed: 0
-  itemSlotTemplate: {fileID: 7734990798954990171, guid: 6596211147c656f4997a02a91eac3f15, type: 3}
-  itemSmallSlotTemplate: {fileID: 0}
 --- !u!1001 &697929412
 PrefabInstance:
   m_ObjectHideFlags: 0

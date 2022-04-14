@@ -159,6 +159,10 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         return currentState != State.Dead;
     }
 
+    public bool IsDead() {
+        return currentState == State.Dead;
+    }
+
     public int GetBattleOrder() { return battleOrder; }
 
     public string GetBattleOrderString() {

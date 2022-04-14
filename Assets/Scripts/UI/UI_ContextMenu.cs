@@ -162,6 +162,8 @@ public class UI_ContextMenu : MonoBehaviour
             float btnWidth = 0;
             float btnheight = 0;
             foreach (CharacterSheet p  in GameManager.GM.playerCharacters) {
+                if(p.IsDead()) continue;
+                
                 GameObject newBtn = Instantiate(button, optionContainer);
                 
                 RectTransform newBtnRectTransform = newBtn.GetComponent<RectTransform>();

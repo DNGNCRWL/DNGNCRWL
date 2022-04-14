@@ -43,6 +43,7 @@ public class UI_LootMenu : MonoBehaviour
         Inv1Container = transform.Find("Inv1Container");
         Inv2Container = transform.Find("Inv2Container");
         Inv3Container = transform.Find("Inv3Container");
+        Inv4Container = transform.Find("Inv4Container");
         CharName1 = transform.Find("CharName1");
         SlotLimit1 = transform.Find("SlotLimit1");
         CharName2 = transform.Find("CharName2");
@@ -68,12 +69,19 @@ public class UI_LootMenu : MonoBehaviour
             RefreshCharInventories();
         }
     }
+    
+    private void CharInventory_OnItemListChanged(object sender, System.EventArgs e) {
+        Debug.Log("Char Inventory Refreshed");
+        if (GetComponent<RectTransform>()) {
+            RefreshCharInventories();
+        }
+    }
 
 
     private void RefreshLootInventoryItems () {
 
         foreach (Transform child in LootContainer) {
-            if (child != itemSlotTemplate) continue;
+            if (child.name == "bg") continue;
             Destroy(child.gameObject);
         }
 
@@ -147,16 +155,19 @@ public class UI_LootMenu : MonoBehaviour
         if (charCount>=3) {
             RefreshChar3Inventory(GameManager.GM.playerCharacters[2]);
         }
-        if (charCount>=4) {
+        if (charCount==4) {
+            Debug.Log(GameManager.GM.playerCharacters[3]);
             RefreshChar4Inventory(GameManager.GM.playerCharacters[3]);
         }
     }
 
-    private void RefreshChar1Inventory(CharacterSheet character) {
+    private void RefreshChar1Inventory(CharacterSheet character = null) {
+        if (character == null) return;
         foreach (Transform child in Inv1Container) {
-            if (child != itemSmallSlotTemplate) continue;
+            if (child.name == "bg") continue;
             Destroy(child.gameObject);
         }
+
 
         CharName1.GetComponent<TextMeshProUGUI>().SetText(character.characterName);
 
@@ -190,7 +201,7 @@ public class UI_LootMenu : MonoBehaviour
                 //Debug.Log("Name: " + item.itemName + " Stackable: " + item.IsStackable().ToString()+ " StackLimit: " + item.stackLimit +  "\n  amount: " + item.amount+ " remaining: " + remaining);
 
                 handler.item = item;
-                handler.inventory = lootInventory;
+                handler.inventory = character.inventory;
 
                 if (item.amount > 1 && item.IsStackable()) {
                     if (remaining > item.stackLimit) {
@@ -216,9 +227,10 @@ public class UI_LootMenu : MonoBehaviour
         }
     }
 
-    private void RefreshChar2Inventory(CharacterSheet character) {
+    private void RefreshChar2Inventory(CharacterSheet character = null) {
+        if (character == null) return;
         foreach (Transform child in Inv2Container) {
-            if (child != itemSmallSlotTemplate) continue;
+            if (child.name == "bg") continue;
             Destroy(child.gameObject);
         }
 
@@ -254,7 +266,7 @@ public class UI_LootMenu : MonoBehaviour
                 //Debug.Log("Name: " + item.itemName + " Stackable: " + item.IsStackable().ToString()+ " StackLimit: " + item.stackLimit +  "\n  amount: " + item.amount+ " remaining: " + remaining);
 
                 handler.item = item;
-                handler.inventory = lootInventory;
+                handler.inventory = character.inventory;
 
                 if (item.amount > 1 && item.IsStackable()) {
                     if (remaining > item.stackLimit) {
@@ -280,9 +292,10 @@ public class UI_LootMenu : MonoBehaviour
         }
     }
 
-    private void RefreshChar3Inventory(CharacterSheet character) {
+    private void RefreshChar3Inventory(CharacterSheet character = null) {
+        if (character == null) return;
         foreach (Transform child in Inv3Container) {
-            if (child != itemSmallSlotTemplate) continue;
+            if (child.name == "bg") continue;
             Destroy(child.gameObject);
         }
 
@@ -318,7 +331,7 @@ public class UI_LootMenu : MonoBehaviour
                 //Debug.Log("Name: " + item.itemName + " Stackable: " + item.IsStackable().ToString()+ " StackLimit: " + item.stackLimit +  "\n  amount: " + item.amount+ " remaining: " + remaining);
 
                 handler.item = item;
-                handler.inventory = lootInventory;
+                handler.inventory = character.inventory;
 
                 if (item.amount > 1 && item.IsStackable()) {
                     if (remaining > item.stackLimit) {
@@ -344,9 +357,10 @@ public class UI_LootMenu : MonoBehaviour
         }
     }
 
-    private void RefreshChar4Inventory(CharacterSheet character) {
+    private void RefreshChar4Inventory(CharacterSheet character = null) {
+        if (character == null) return;
         foreach (Transform child in Inv4Container) {
-            if (child != itemSmallSlotTemplate) continue;
+            if (child.name == "bg") continue;
             Destroy(child.gameObject);
         }
 
@@ -382,7 +396,7 @@ public class UI_LootMenu : MonoBehaviour
                 //Debug.Log("Name: " + item.itemName + " Stackable: " + item.IsStackable().ToString()+ " StackLimit: " + item.stackLimit +  "\n  amount: " + item.amount+ " remaining: " + remaining);
 
                 handler.item = item;
-                handler.inventory = lootInventory;
+                handler.inventory = character.inventory;
 
                 if (item.amount > 1 && item.IsStackable()) {
                     if (remaining > item.stackLimit) {
@@ -417,18 +431,25 @@ public class UI_LootMenu : MonoBehaviour
         inventory.OnItemListChanged += LootInventory_OnItemListChanged;
 
         RefreshLootInventoryItems();
-        RefreshCharInventories();
         Debug.Log("SetInv");
 
     }
-    
+
 
     public void OpenLootUI() {
         gameObject.SetActive(true);
         RefreshLootInventoryItems();
         RefreshCharInventories();
+
+        foreach(CharacterSheet c in GameManager.GM.playerCharacters) {
+            c.inventory.OnItemListChanged += CharInventory_OnItemListChanged;
+        }
     }
     public void CloseLootUI() {
+        foreach (CharacterSheet c in GameManager.GM.playerCharacters) {
+            c.inventory.OnItemListChanged -= CharInventory_OnItemListChanged;
+        }
+
         gameObject.SetActive(false);
 
         if (UI_ContextMenu.UI_CONTEXTMENU != null) {

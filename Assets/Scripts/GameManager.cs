@@ -136,12 +136,55 @@ public class GameManager : MonoBehaviour {
         return "Untyped";
     }
 
+    public  List<CharacterSheet> GetDeadCharacters () {
+        List<CharacterSheet> output = new List<CharacterSheet>();
+
+        foreach (CharacterSheet character in playerCharacters) {
+            if (character.IsDead()) output.Add(character);
+        }
+
+        return output;
+    }
+
+    public void CheckLoadLootMenu() {
+        Debug.Log(BattleManager.BATTLE_LOOT);
+        //loot menu
+        if (BattleManager.BATTLE_LOOT != null) {
+            Debug.Log("LootPresent");
+            Inventory tempLootInv = new Inventory();
+            tempLootInv.AddItem(BattleManager.BATTLE_LOOT, BattleManager.BATTLE_LOOT.amount);
+            List<CharacterSheet> deadChars = GameManager.GM.GetDeadCharacters();
+            foreach (CharacterSheet c in deadChars) {
+                tempLootInv.AddItemsFromList(c.inventory.GetItemList());
+                c.inventory.ClearInventory();
+            }
+
+            BattleManager.BATTLE_LOOT = null;
+
+            //init menu
+            if (UI_LootMenu.UI_LOOTMENU == null) {
+                UI_LootMenu lootMenu = null;
+                var canvases = Resources.FindObjectsOfTypeAll<UI_LootMenu>();
+                if (canvases.Length > 0)
+                    lootMenu = canvases[0];
+
+                if (lootMenu != null)
+                    lootMenu.OpenLootUI();
+            }
+
+            UI_LootMenu.UI_LOOTMENU.SetInventory(tempLootInv);
+            UI_LootMenu.UI_LOOTMENU.OpenLootUI();
+        }
+    }
+    
+
     //SCENE NAVIGATION
     public static void GoToDungeonNavigation() {
         SceneManager.LoadScene("DungeonGeneration");
         PartySetActive(false);
-
+        Debug.Log("Load DungeonGeneration");
     }
+
     public static void PartySetActive(bool b){
         foreach(CharacterSheet charSheet in GM.playerCharacters)
             charSheet.gameObject.SetActive(b);

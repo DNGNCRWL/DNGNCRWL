@@ -72,6 +72,12 @@ public class Inventory
             return false;
     }
 
+    public void AddItemsFromList(List<Item> items) {
+        foreach (Item i in items) {
+            AddItem(i, i.amount);
+        }
+    } 
+
     public List<Item> GetItemList() {
         return itemList;
     }
@@ -95,6 +101,10 @@ public class Inventory
             }
         }
         return false;
+    }
+    
+    public void ClearInventory () {
+        itemList.Clear();
     }
     public bool UseAmmo(ProjectileWeapon weapon) {
 
