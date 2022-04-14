@@ -12,13 +12,20 @@ public class TownManager : MonoBehaviour
     public Transform GMTransform;
     public GameObject characterPrefab;
 
+    public List<Image> clickableBuildings;
+
     //Player Characters
     public List<CharacterSheet> playerCharacters;
     public List<CharacterSheet> reserveCharacters;
     public List<CharacterSheet> deadCharacters;
+    private List<CharacterSheet> injuredCharsInParty;
 
     //Recruitable Characters
     public List<CharacterSheet> recruitableCharacters;
+
+    //Rest Menu
+    public List<GameObject> restTiles;
+    public List<GameObject> resurrectTiles;
 
     //Swap Party Menu ------------------------------------------------------------
     //Current Party Character Names
@@ -45,9 +52,14 @@ public class TownManager : MonoBehaviour
     public int itemSelected;
     public List<int> previousLocations;
     public List<Item> cartItems;
+    public List<Item> sellingItems;
     public List<CharacterSheet> charToBuyFor;
     public int cost = 0;
     public GameObject sellFromList;
+    public List<Item> sellableItems;
+    public CharacterSheet sellFromCharacter;
+    public List<int> previousSellLocations;
+    public List<CharacterSheet> charToSellFrom;
 
     public GameObject errorMessageWindow;
     public int silver;
@@ -63,6 +75,9 @@ public class TownManager : MonoBehaviour
         GMTransform = GameManager.GM.transform;
         generateRandomChar();
         StoreGen();
+        foreach (Image pic in clickableBuildings) {
+            pic.alphaHitTestMinimumThreshold = 0.01f;
+        }
     }
 
     // Start is called before the first frame update
@@ -81,6 +96,8 @@ public class TownManager : MonoBehaviour
         setReserveCharInfo();
         SetStoreInfo();
         SetBuyForMenu();
+        SelectSellFromCharacter(0);
+        UpdateInjured();
         silver = CalculateSilver();
     }
 
@@ -124,12 +141,43 @@ public class TownManager : MonoBehaviour
         }
     }
 
-    //Reset player health
-    public void rest() {
-        GetPayment(3);
+    //
+    //
+    //---------------------------------------------------------------------------RESTING AND RESURRECTING METHODS----------------------------------------------------------------------------------
+    //
+    //
+
+    private void UpdateInjured() {
+        injuredCharsInParty = new List<CharacterSheet>();
         foreach (CharacterSheet character in playerCharacters) {
-            character.RecoverDamage(new Damage(50, 20, 10, DamageType.Untyped));
+            if (character.GetHitPoints() < character.GetMaxHitPoints()) {
+                injuredCharsInParty.Add(character);
+            }
         }
+
+        UpdateRestInfo();
+    }
+
+    private void UpdateRestInfo() {
+        for (int i = 0; i < restTiles.Count; ++i) {
+            if (i < injuredCharsInParty.Count) {
+                restTiles[i].SetActive(true);
+                restTiles[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = injuredCharsInParty[i].GetCharacterName();
+                restTiles[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Hit Points: " + injuredCharsInParty[i].GetHitPoints().ToString();
+                restTiles[i].transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Max HP: " + injuredCharsInParty[i].GetMaxHitPoints().ToString();
+            } else {
+                restTiles[i].SetActive(false);
+            }
+        }
+    }
+
+    //Reset player health
+    public void Rest(int target) {
+        GetPayment(3);
+        CharacterSheet character = injuredCharsInParty[target];
+        character.RecoverDamage(new Damage(50, 20, 10, DamageType.Untyped));
+        injuredCharsInParty.Remove(character);
+        UpdateRestInfo();
     }
 
     
@@ -216,6 +264,7 @@ public class TownManager : MonoBehaviour
         recruitableCharacters.Remove(charSheet);
         if (playerCharacters.Count < 4) {
             playerCharacters.Add(charSheet);
+            SelectSellFromCharacter(0);
         } else {
             reserveCharacters.Add(charSheet);
         }
@@ -225,6 +274,7 @@ public class TownManager : MonoBehaviour
         setRecCharInfo();
         SetBuyForMenu();
         SetStoreInfo();
+        UpdateInjured();
     }
 
     //Swap the char at the index from the player party to reserve characters
@@ -235,6 +285,8 @@ public class TownManager : MonoBehaviour
         setCharInfo();
         setReserveCharInfo();
         SetBuyForMenu();
+        SelectSellFromCharacter(0);
+        UpdateInjured();
     }
 
     //Swap the char at the index from reserve characters to the player party
@@ -246,6 +298,8 @@ public class TownManager : MonoBehaviour
             setCharInfo();
             setReserveCharInfo();
             SetBuyForMenu();
+            SelectSellFromCharacter(0);
+            UpdateInjured();
         } else {
             ErrorMessage("There can only be four characters in the party");
         }
@@ -283,28 +337,27 @@ public class TownManager : MonoBehaviour
 
     //Set info about both buyable items and items in the store cart within the store menu
     public void SetStoreInfo() {
-        for (int i = 0; i < storeTiles.Count; ++i) {
-            if (storeItems[i] != null) {
-                storeTiles[i].SetActive(true);
-                storeTiles[i].GetComponent<Image>().sprite = storeItems[i].GetSprite();
-            } else {
-                storeTiles[i].SetActive(false);
-            }
-            HideItemInfo();
-        }
-        for (int i = 0; i < buyingTiles.Count; ++i) {
-            if (i < cartItems.Count) {
-                buyingTiles[i].SetActive(true);
-                buyingTiles[i].GetComponent<Image>().sprite = cartItems[i].GetSprite();
-            } else {
-                buyingTiles[i].SetActive(false);
-            }
-        }
+        SetStoreTiles(storeTiles, storeItems, true);
+        SetStoreTiles(buyingTiles, cartItems, false);
+        SetStoreTiles(playerItemTiles, sellableItems, false);
+        SetStoreTiles(sellingTiles, sellingItems, false);
 
         SetCharacterSellList();
         
         silverInfo.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "" + silver;
         silverInfo.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = "" + cost;
+    }
+
+    public void SetStoreTiles(List<GameObject> tiles, List<Item> items, bool specific) {
+        for (int i = 0; i < tiles.Count; ++i) {
+            if (!specific && i < items.Count || specific && items[i] != null) {
+                tiles[i].SetActive(true);
+                tiles[i].GetComponent<Image>().sprite = items[i].GetSprite();
+            } else {
+                tiles[i].SetActive(false);
+            }
+            HideItemInfo();
+        }
     }
 
     //Generates random items for the store to sell
@@ -345,18 +398,32 @@ public class TownManager : MonoBehaviour
     public void SetBuyableInfo(GameObject button) {
         int index = storeTiles.IndexOf(button);
         Item item = storeItems[index];
-        DisplayItemInfo(item, -1);
+        DisplayItemInfo(item, -1, true);
     }
 
     //Set the item info for an item in the cart
     public void SetCartItemInfo(GameObject button) {
         int index = buyingTiles.IndexOf(button);
         Item item = cartItems[index];
-        DisplayItemInfo(item, index);
+        DisplayItemInfo(item, index, true);
+    }
+
+    //Set the item info for a sellable item
+    public void SetSellableInfo(GameObject button) {
+        int index = playerItemTiles.IndexOf(button);
+        Item item = sellableItems[index];
+        DisplayItemInfo(item, -1, false);
+    }
+
+    //Set the item info for an item in the sell item cart
+    public void SetItemToSellInfo(GameObject button) {
+        int index = sellingTiles.IndexOf(button);
+        Item item = sellingItems[index];
+        DisplayItemInfo(item, index, false);
     }
 
     //Set item info
-    public void DisplayItemInfo(Item item, int cartNum) {
+    public void DisplayItemInfo(Item item, int cartNum, bool buying) {
         string type = "";
         string wielding = "";
         string extras = "";
@@ -407,8 +474,10 @@ public class TownManager : MonoBehaviour
         itemInfo.transform.GetChild(6).GetComponent<TextMeshProUGUI>().text = item.value + " silver";
         if (cartNum == -1) {
             itemInfo.transform.GetChild(7).GetComponent<TextMeshProUGUI>().text = "";
-        } else {
+        } else if (buying) {
             itemInfo.transform.GetChild(7).GetComponent<TextMeshProUGUI>().text = "Buying for: " + charToBuyFor[cartNum].GetCharacterName();
+        } else {
+            itemInfo.transform.GetChild(7).GetComponent<TextMeshProUGUI>().text = "Selling from: " + charToSellFrom[cartNum].GetCharacterName();
         }
 
         itemInfo.SetActive(true);
@@ -514,8 +583,8 @@ public class TownManager : MonoBehaviour
 
     //Move items from cart to respective character inventories, and remove silver cost from all characters equally
     public void PurchaseItems() {
-        if (cartItems.Count == 0) {
-            ErrorMessage("Nothing to buy!");
+        if (cartItems.Count == 0 && sellingItems.Count == 0) {
+            ErrorMessage("Nothing to buy/sell!");
         } else if(GetPayment(cost)) {
             for (int i = 0; i < cartItems.Count; ++i) {
             charToBuyFor[i].GetInventory().AddItem(cartItems[i]);
@@ -524,6 +593,8 @@ public class TownManager : MonoBehaviour
             cartItems.Clear();
             previousLocations.Clear();
             charToBuyFor.Clear();
+            sellingItems.Clear();
+            charToSellFrom.Clear();
             cost = 0;
         }
         SetStoreInfo();
@@ -537,10 +608,16 @@ public class TownManager : MonoBehaviour
             reserveCharacters.CopyTo(characters, playerCharacters.Count);
             int j = 0;
             while (charge != 0) {
-                if (characters[j % totalChars].GetSilver() > 0)
-                    characters[j % totalChars].MakePayment(1);
-                    --charge;
-                ++j;
+                if (charge > 0) {
+                    if (characters[j % totalChars].GetSilver() > 0)
+                        characters[j % totalChars].MakePayment(1);
+                        --charge;
+                    ++j;
+                } else {
+                    characters[j % totalChars].MakePayment(-1);
+                    ++charge;
+                    ++j;
+                }
             }
             silver = CalculateSilver();
             SetStoreInfo();
@@ -559,6 +636,56 @@ public class TownManager : MonoBehaviour
             } else {
                 sellFromList.transform.GetChild(i).gameObject.SetActive(false);
             }
+        }
+    }
+
+    public void SelectSellFromCharacter(int target) {
+        if(playerCharacters.Count <= target) {
+            sellableItems = new List<Item>();
+            sellFromCharacter = null;
+        } else {
+            sellFromCharacter = playerCharacters[target];
+            sellableItems = sellFromCharacter.inventory.itemList;
+
+        }
+        SetStoreInfo();
+    }
+    
+    public void AddItemToSellCart(int item) {
+        Item temp = sellableItems[item];
+        sellableItems.Remove(temp);
+
+        sellingItems.Add(temp);
+        charToSellFrom.Add(sellFromCharacter);
+        cost -= temp.value;
+        SetStoreInfo();
+    }
+
+    public void RemoveItemFromSellCart(int index) {
+        Item temp = sellingItems[index];
+        sellableItems.Add(temp);
+        cost += temp.value;
+        sellingItems.RemoveAt(index);
+        charToSellFrom.RemoveAt(index);
+        SetStoreInfo();
+    }
+
+    public void CancelTransaction() {
+        RemoveAllFromCart();
+        RemoveAllFromSellCart();
+    }
+
+    public void RemoveAllFromCart() {
+        int numCartItems = cartItems.Count;
+        for (int i = 0; i < numCartItems; ++i) {
+            RemoveItemFromCart(0);
+        }
+    }
+
+    public void RemoveAllFromSellCart() {
+        int numSellingItems = sellingItems.Count;
+        for (int i = 0; i < numSellingItems; ++i) {
+            RemoveItemFromSellCart(0);
         }
     }
 }
