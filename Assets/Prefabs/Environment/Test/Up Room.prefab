@@ -2627,8 +2627,8 @@ GameObject:
   - component: {fileID: 8990983683994324757}
   - component: {fileID: 8990983683994324754}
   m_Layer: 0
-  m_Name: Room 2
-  m_TagString: test
+  m_Name: Up Room
+  m_TagString: EndRoom
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
