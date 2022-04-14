@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d84758b2e1b9126438b8800806130ab1, type: 3}
+  m_Name: Broken Bodies
+  m_EditorClassIdentifier: 
+  value:
+  - Staring manic gaze
+  - Covered in (for some) blasphemous tattoos
+  - Rotting face. Wears a mask
+  - Lost three toes, limps
+  - 'Starved: gaunt and pale'
+  - One hand replaced with rusting hook (d6 damage)
+  - Decaying teeth
+  - Hauntingly beautiful, unnervingly clean
+  - Hands caked with sores
+  - Cataract slowly but surely spreading in both eyes
+  - Long tangled hair, at least one cockroach in residence
+  - Broken, crushed ears
+  - Juddering and suttering from nerve damage or stress
+  - Corpulent, ravenous, drooling
+  - One hand lacks thumb and index finger, grips like a lobster
+  - Red, swollen alcoholic's nose
+  - Resting maniac face, making friends is hard
+  - Chronic athlete's foot. Stinks
+  - Recently slashed and stinking eye covered with a patch
+  - Nails cracked and black, maybe about to drop off

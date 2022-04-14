@@ -23,6 +23,15 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     [SerializeField] string description, characterClass;
     [SerializeField]
     int
+        terribleTraitA, terribleTraitB, brokenBody, badHabit, troublingTale;
+    [SerializeField]
+    StringArrayVariable
+        terribleTraits, brokenBodies, badHabits, troublingTales;
+    [SerializeField] SpriteArrayVariable spriteBank;
+    int spriteBankIndex;
+    Sprite sprite;
+    [SerializeField]
+    int
         level,
         hitPoints, maxHitPoints,
         strength, agility, presence, toughness,
@@ -91,6 +100,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     public int GetSilver() { return silver; }
     public void AddSilver(int silver) { this.silver += silver; }
     public float GetExperience() { return experience; }
+    public Sprite GetSprite(){return sprite;}
     public bool AddExperience(float gained) {
         experience += gained;
         totalExperience += gained;
@@ -326,6 +336,35 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
             EquipArmor((Armor)(ItemManager.RANDOM_ITEM(ItemManager.STARTING_ARMORS).Copy()));
 
         characterName = Fun.RandomFromArray(Fun.names);
+
+        if(terribleTraits != null){
+            terribleTraitA = Random.Range(0, terribleTraits.value.Length);
+            terribleTraitB = Random.Range(0, terribleTraits.value.Length);
+
+            if(terribleTraitA == terribleTraitB)
+                description = "Very " + terribleTraits.value[terribleTraitA];
+            else{
+                description = terribleTraits.value[terribleTraitA] + " and " + terribleTraits.value[terribleTraitB];
+            }
+        }
+        if(brokenBodies != null){
+            brokenBody = Random.Range(0, brokenBodies.value.Length);
+            description += ". " + brokenBodies.value[brokenBody];
+        }
+        if(badHabits != null){
+            badHabit = Random.Range(0, badHabits.value.Length);
+            description += ". " + badHabits.value[badHabit];
+        }
+        if(troublingTales != null){
+            troublingTale = Random.Range(0, troublingTales.value.Length);
+            description += ". " + troublingTales.value[troublingTale] + ".";
+        }
+
+        if(spriteBank != null){
+            spriteBankIndex = Random.Range(0, spriteBank.value.Length);
+            sprite = spriteBank.value[spriteBankIndex];
+            GetComponentInChildren<SpriteRenderer>().sprite = GetSprite();
+        }
 
         UpdateBattleHUD();
 
