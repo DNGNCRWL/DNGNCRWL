@@ -27,6 +27,7 @@ public class UI_Tooltip : MonoBehaviour
 
     }
     public void ShowTooltip(string tooltipString) {
+        Debug.Log("Tooltip Shown");
         if (tooltipString == "") return;
         gameObject.SetActive(true);
         tooltipText.text = tooltipString;

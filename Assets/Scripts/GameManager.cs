@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour {
 
     public static CharacterSheet testC;
 
+
     private void Awake() {
         if (GM == null) GM = this;
         else { Destroy(gameObject); return; }
@@ -43,7 +44,6 @@ public class GameManager : MonoBehaviour {
             if (inventoryMenu != null)
                 inventoryMenu.OpenInventoryUI();
         }
-
         //Debug.Log("GM");
     }
 
@@ -148,6 +148,13 @@ public class GameManager : MonoBehaviour {
     public static void GameOver() {
         SceneManager.LoadScene("Title", LoadSceneMode.Single);
         Reset();
+    }
+
+    public bool PickupLoot (Item loot) {
+        foreach (CharacterSheet character in playerCharacters) {
+            if(character.PickupItem(loot)) return true;
+        }
+        return false;
     }
 
 }

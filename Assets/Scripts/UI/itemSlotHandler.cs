@@ -8,7 +8,9 @@ public class itemSlotHandler : MonoBehaviour, IPointerEnterHandler, IPointerExit
 {
     //UI_Tooltip tooltip = GameObject.Find("UI_Tooltip").GetComponent<UI_Tooltip>();
 
+    [SerializeField]
     private UI_Tooltip tooltip;
+    [SerializeField]
     private UI_ContextMenu contextMenu;
 
     public string text;
@@ -20,6 +22,8 @@ public class itemSlotHandler : MonoBehaviour, IPointerEnterHandler, IPointerExit
     private bool mouseIsHovering;
     private float mouseHoverTime;
     private RectTransform rectTransform;
+
+    private bool toolTipShown = false;
 
     private void Awake() {
         rectTransform = GetComponent<RectTransform>();
@@ -83,10 +87,10 @@ public class itemSlotHandler : MonoBehaviour, IPointerEnterHandler, IPointerExit
             HideTooltip();
         }
 
-        if (mouseIsHovering)
+        if (mouseIsHovering && !toolTipShown)
         {
             mouseHoverTime += Time.unscaledDeltaTime;
-            if (mouseHoverTime >= delay)
+            if (mouseHoverTime >= delay )
                 ShowTooltip();
         }
 
@@ -95,14 +99,19 @@ public class itemSlotHandler : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     private void ShowTooltip()
     {
-        if (tooltip != null)
-            tooltip.ShowTooltip(text);
+        if (tooltip != null) {
+            tooltip.ShowTooltip(item.description);
+            toolTipShown = true;
+        }
+
     }
 
     private void HideTooltip()
     {
-        if (tooltip != null)
+        if (tooltip != null) {
             tooltip.HideTooltip();
+            toolTipShown = false;
+        }
     }
 
     private void ShowContextMenu() 
