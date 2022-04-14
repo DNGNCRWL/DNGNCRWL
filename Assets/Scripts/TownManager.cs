@@ -18,9 +18,14 @@ public class TownManager : MonoBehaviour
     public List<CharacterSheet> playerCharacters;
     public List<CharacterSheet> reserveCharacters;
     public List<CharacterSheet> deadCharacters;
+    private List<CharacterSheet> injuredCharsInParty;
 
     //Recruitable Characters
     public List<CharacterSheet> recruitableCharacters;
+
+    //Rest Menu
+    public List<GameObject> restTiles;
+    public List<GameObject> resurrectTiles;
 
     //Swap Party Menu ------------------------------------------------------------
     //Current Party Character Names
@@ -92,6 +97,7 @@ public class TownManager : MonoBehaviour
         SetStoreInfo();
         SetBuyForMenu();
         SelectSellFromCharacter(0);
+        UpdateInjured();
         silver = CalculateSilver();
     }
 
@@ -135,12 +141,43 @@ public class TownManager : MonoBehaviour
         }
     }
 
-    //Reset player health
-    public void rest() {
-        GetPayment(3);
+    //
+    //
+    //---------------------------------------------------------------------------RESTING AND RESURRECTING METHODS----------------------------------------------------------------------------------
+    //
+    //
+
+    private void UpdateInjured() {
+        injuredCharsInParty = new List<CharacterSheet>();
         foreach (CharacterSheet character in playerCharacters) {
-            character.RecoverDamage(new Damage(50, 20, 10, DamageType.Untyped));
+            if (character.GetHitPoints() < character.GetMaxHitPoints()) {
+                injuredCharsInParty.Add(character);
+            }
         }
+
+        UpdateRestInfo();
+    }
+
+    private void UpdateRestInfo() {
+        for (int i = 0; i < restTiles.Count; ++i) {
+            if (i < injuredCharsInParty.Count) {
+                restTiles[i].SetActive(true);
+                restTiles[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = injuredCharsInParty[i].GetCharacterName();
+                restTiles[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Hit Points: " + injuredCharsInParty[i].GetHitPoints().ToString();
+                restTiles[i].transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Max HP: " + injuredCharsInParty[i].GetMaxHitPoints().ToString();
+            } else {
+                restTiles[i].SetActive(false);
+            }
+        }
+    }
+
+    //Reset player health
+    public void Rest(int target) {
+        GetPayment(3);
+        CharacterSheet character = injuredCharsInParty[target];
+        character.RecoverDamage(new Damage(50, 20, 10, DamageType.Untyped));
+        injuredCharsInParty.Remove(character);
+        UpdateRestInfo();
     }
 
     
@@ -237,6 +274,7 @@ public class TownManager : MonoBehaviour
         setRecCharInfo();
         SetBuyForMenu();
         SetStoreInfo();
+        UpdateInjured();
     }
 
     //Swap the char at the index from the player party to reserve characters
@@ -248,6 +286,7 @@ public class TownManager : MonoBehaviour
         setReserveCharInfo();
         SetBuyForMenu();
         SelectSellFromCharacter(0);
+        UpdateInjured();
     }
 
     //Swap the char at the index from reserve characters to the player party
@@ -260,6 +299,7 @@ public class TownManager : MonoBehaviour
             setReserveCharInfo();
             SetBuyForMenu();
             SelectSellFromCharacter(0);
+            UpdateInjured();
         } else {
             ErrorMessage("There can only be four characters in the party");
         }
