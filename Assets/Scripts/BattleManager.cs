@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 
 public class BattleManager : MonoBehaviour {
+    public static Item BATTLE_LOOT;
     public static BattleManager BM;
     static EnemyEncounter ENEMY_ENCOUNTER;
     public EnemyEncounter defaultEnemyEncounter;
@@ -139,10 +140,11 @@ public class BattleManager : MonoBehaviour {
             if (item != null) {
                 GameManager.GM.AddText("And they found " + item.GetExplicitString());
                 bool pickedup = false;
-                for (int i = 0; i < GameManager.GM.playerCharacters.Count; i++) {
-                    if (!pickedup)
-                        GameManager.GM.playerCharacters[i].PickupItem(item);
-                }
+                // for (int i = 0; i < GameManager.GM.playerCharacters.Count; i++) {
+                //     if (!pickedup)
+                //         GameManager.GM.playerCharacters[i].PickupItem(item);
+                // }
+                BATTLE_LOOT = item;
                 yield return new WaitForSeconds(1);
             }
 
