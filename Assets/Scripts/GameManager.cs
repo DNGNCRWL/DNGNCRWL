@@ -140,6 +140,7 @@ public class GameManager : MonoBehaviour {
     public static void GoToDungeonNavigation() {
         SceneManager.LoadScene("DungeonGeneration");
         PartySetActive(false);
+
     }
     public static void PartySetActive(bool b){
         foreach(CharacterSheet charSheet in GM.playerCharacters)

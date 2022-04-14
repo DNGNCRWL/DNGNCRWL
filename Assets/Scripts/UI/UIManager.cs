@@ -30,12 +30,39 @@ public class UIManager : MonoBehaviour
             if (inventoryMenu != null)
                 inventoryMenu.OpenInventoryUI();
         }
+        
+        if (UI_LootMenu.UI_LOOTMENU == null) {
+            UI_LootMenu lootMenu = null;
+            var canvases = Resources.FindObjectsOfTypeAll<UI_LootMenu>();
+            if (canvases.Length > 0)
+                lootMenu = canvases[0];
+
+            if (lootMenu != null)
+                lootMenu.OpenLootUI();
+        }
         Debug.Log("UI Manager start");
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            if (UI_LootMenu.UI_LOOTMENU == null) {
+                UI_LootMenu lootMenu = null;
+                var canvases = Resources.FindObjectsOfTypeAll<UI_LootMenu>();
+                if (canvases.Length > 0)
+                    lootMenu = canvases[0];
+
+                if (lootMenu != null)
+                    lootMenu.OpenLootUI();
+            }
+
+            Debug.Log("Loot Menu Key Pressed");
+            if (UI_LootMenu.UI_LOOTMENU != null)
+                UI_LootMenu.UI_LOOTMENU.OpenLootUI();
+        }
+        
         if (Input.GetKeyDown(KeyCode.P))
         {
             if (UI_PartyMenu.UI_PARTYMENU == null) {
@@ -54,6 +81,7 @@ public class UIManager : MonoBehaviour
             if (UI_PartyMenu.UI_PARTYMENU != null)
                 UI_PartyMenu.UI_PARTYMENU.OpenPartyUI();
         }
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log("Exit Key Pressed");
