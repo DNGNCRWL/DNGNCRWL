@@ -472,7 +472,5 @@ public class DungeonGenerator : MonoBehaviour
     //         }
     //     }
     // }
-    public void Clear(){
-        SceneManager.LoadScene(SceneManager.GetActiveScene);
-    }
+
 }
