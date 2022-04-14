@@ -110,6 +110,8 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         int multiplier = Mathf.Min(level, MAX_LEVEL);
         return Mathf.Max(1, LEVELUP_EXP_MULTIPLIER * multiplier * multiplier);
     }
+
+    public int GetLevel() { return level; }
     void LevelUp() {
         level++;
         int hpRollCount = GameManager.RollDice(10, 6);

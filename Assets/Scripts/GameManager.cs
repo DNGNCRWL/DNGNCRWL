@@ -146,6 +146,12 @@ public class GameManager : MonoBehaviour {
         return output;
     }
 
+    public void MoveCharToFront(CharacterSheet character) {
+        Debug.Log("Move Char to Front");
+        playerCharacters.Remove(character);
+        playerCharacters.Insert(0, character);
+    }
+
     public void CheckLoadLootMenu() {
         Debug.Log(BattleManager.BATTLE_LOOT);
         //loot menu
