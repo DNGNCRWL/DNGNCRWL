@@ -17,6 +17,7 @@ public class DungeonGenerator : MonoBehaviour
     public class Rule
     {
         public GameObject room;
+        // public GameObject[] endRooms;
         public Vector2Int minPosition;
         public Vector2Int maxPosition;
 
@@ -33,7 +34,7 @@ public class DungeonGenerator : MonoBehaviour
 
             return 0;
         }
-
+    
     }
     public Transform GENtransform;
     public GameObject spider;
@@ -146,63 +147,63 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
-    void GenerateSavedDungeon(Rule[] saved, GameObject enemy)
-    {
-        for (int i = 0; i < surfaces.Length; i++)
-        {
-            surfaces[i].BuildNavMesh();
-        }
-        for (int i = 0; i < size.x; i++)
-        {
-            for (int j = 0; j < size.y; j++)
-            {
-                Cell currentCell = board[(i + j * size.x)];
-                if (currentCell.visited)
-                {
-                    int randomRoom = -1;
-                    List<int> availableRooms = new List<int>();
+    // void GenerateSavedDungeon(Rule[] saved, GameObject enemy)
+    // {
+    //     for (int i = 0; i < surfaces.Length; i++)
+    //     {
+    //         surfaces[i].BuildNavMesh();
+    //     }
+    //     for (int i = 0; i < size.x; i++)
+    //     {
+    //         for (int j = 0; j < size.y; j++)
+    //         {
+    //             Cell currentCell = board[(i + j * size.x)];
+    //             if (currentCell.visited)
+    //             {
+    //                 int randomRoom = -1;
+    //                 List<int> availableRooms = new List<int>();
 
-                    for (int k = 0; k < saved.Length; k++)
-                    {
-                        int p = rooms[k].ProbabilityOfSpawning(i, j);
+    //                 for (int k = 0; k < saved.Length; k++)
+    //                 {
+    //                     int p = rooms[k].ProbabilityOfSpawning(i, j);
 
-                        if (p == 2)
-                        {
-                            randomRoom = k;
-                            break;
-                        }
-                        else if (p == 1)
-                        {
-                            availableRooms.Add(k);
-                        }
-                    }
+    //                     if (p == 2)
+    //                     {
+    //                         randomRoom = k;
+    //                         break;
+    //                     }
+    //                     else if (p == 1)
+    //                     {
+    //                         availableRooms.Add(k);
+    //                     }
+    //                 }
 
-                    if (randomRoom == -1)
-                    {
-                        if (availableRooms.Count > 0)
-                        {
-                            randomRoom = availableRooms[Random.Range(0, availableRooms.Count)];
-                        }
-                        else
-                        {
-                            randomRoom = 0;
-                        }
-                    }
+    //                 if (randomRoom == -1)
+    //                 {
+    //                     if (availableRooms.Count > 0)
+    //                     {
+    //                         randomRoom = availableRooms[Random.Range(0, availableRooms.Count)];
+    //                     }
+    //                     else
+    //                     {
+    //                         randomRoom = 0;
+    //                     }
+    //                 }
 
 
-                    var newRoom = Instantiate(saved[randomRoom].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
-                    newRoom.UpdateRoom(currentCell.status);
-                    newRoom.name += " " + i + "-" + j;
-                    if (i + 1 == size.x && j + 1 == size.y)
-                    {
-                        BuildMesh();
-                        GameObject spider = Instantiate(enemy, new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, newRoom.transform.position.z), Quaternion.identity);
-                        //FindObjectOfType<EndTrigger>().gameHasEnded = false;
-                    }
-                }
-            }
-        }
-    }
+    //                 var newRoom = Instantiate(saved[randomRoom].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
+    //                 newRoom.UpdateRoom(currentCell.status);
+    //                 newRoom.name += " " + i + "-" + j;
+    //                 if (i + 1 == size.x && j + 1 == size.y)
+    //                 {
+    //                     BuildMesh();
+    //                     GameObject spider = Instantiate(enemy, new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, newRoom.transform.position.z), Quaternion.identity);
+    //                     //FindObjectOfType<EndTrigger>().gameHasEnded = false;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
         Rule[] GenerateDungeon(GameObject enemy)
     {
@@ -215,7 +216,7 @@ public class DungeonGenerator : MonoBehaviour
                 if (currentCell.visited)
                 {
 
-                    //int randomRoom = Random.Range(0, rooms.Length);
+                    // int randomRoom = Random.Range(0, rooms.Length);
                     int randomRoom = 0;
                     List<int> availableRooms = new List<int>();
                     for (int k = 0; k < rooms.Length; k++)
@@ -245,6 +246,7 @@ public class DungeonGenerator : MonoBehaviour
                         }
                     }
                     if(tBoard.Contains(i + j * size.x) && !(i + 1 == size.x && j + 1 == size.y)){
+                       
                         var newRoom = Instantiate(rooms[1].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
                         newRoom.UpdateRoom(currentCell.status);
                         newRoom.name += " " + i + "-" + j;
@@ -271,7 +273,7 @@ public class DungeonGenerator : MonoBehaviour
 
     }
 
-    void MazeGenerator()
+    async void MazeGenerator()
     {
         //key = key.Copy();
         //seeds = new List<int>();
@@ -285,7 +287,7 @@ public class DungeonGenerator : MonoBehaviour
             // LEVEL.Add(tmp);
         }
         else if(LEVEL < SEEDS.Count){
-            Random.state = SEEDS[LEVEL];
+            Random.state = SEEDS[LEVEL-1];
         }
         else{ //new level
             Debug.Log("seed count > 0");
@@ -397,19 +399,19 @@ public class DungeonGenerator : MonoBehaviour
 
         }
         //saved = GenerateDungeon(spider);
-        if (genSaved)
-        {
-            GenerateSavedDungeon(saved, spider);
-        }
-        else if(wantSaved)
-        {
-            saved = GenerateDungeon(spider);
-        }
-        else
-        {
-            GenerateDungeon(spider);
-        }
-
+        // if (genSaved)
+        // {
+        //     GenerateSavedDungeon(saved, spider);
+        // }
+        // else if(wantSaved)
+        // {
+        //     saved = GenerateDungeon(spider);
+        // }
+        // else
+        // {
+        //     GenerateDungeon(spider);
+        // }
+        GenerateDungeon(spider);
       //  saved = GenerateDungeon(spider);
     }
 
@@ -455,5 +457,18 @@ public class DungeonGenerator : MonoBehaviour
 
         //GameObject.Destroy(spider.gameObject);
         //GameObject.Destroy(GameObject.FindWithTag("Spider").transform);
+    }
+    //     public void GenEnd()
+    // {
+    //      for (int i = 0; i < rooms.Length; i++)
+    //     {
+    //         if (rooms[i].endRooms == null)
+    //         {
+    //             rooms[i].endRooms = GameObject.FindGameObjectsWithTag("endroom");
+    //         }
+    //     }
+    // }
+    public void Clear(){
+        SceneManager.LoadScene(SceneManager.GetActiveScene);
     }
 }
