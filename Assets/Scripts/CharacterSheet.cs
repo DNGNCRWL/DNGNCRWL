@@ -27,6 +27,9 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     [SerializeField]
     StringArrayVariable
         terribleTraits, brokenBodies, badHabits, troublingTales;
+    [SerializeField] SpriteArrayVariable spriteBank;
+    int spriteBankIndex;
+    Sprite sprite;
     [SerializeField]
     int
         level,
@@ -97,6 +100,7 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
     public int GetSilver() { return silver; }
     public void AddSilver(int silver) { this.silver += silver; }
     public float GetExperience() { return experience; }
+    public Sprite GetSprite(){return sprite;}
     public bool AddExperience(float gained) {
         experience += gained;
         totalExperience += gained;
@@ -348,6 +352,12 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         if(troublingTales != null){
             troublingTale = Random.Range(0, troublingTales.value.Length);
             description += ". " + troublingTales.value[troublingTale] + ".";
+        }
+
+        if(spriteBank != null){
+            spriteBankIndex = Random.Range(0, spriteBank.value.Length);
+            sprite = spriteBank.value[spriteBankIndex];
+            GetComponentInChildren<SpriteRenderer>().sprite = GetSprite();
         }
 
         UpdateBattleHUD();
