@@ -93,6 +93,10 @@ public class DungeonGenerator : MonoBehaviour
             SAVED_DUNGEON = gameObject;
             MazeGenerator();
         }
+
+        GameManager.GM.CheckLoadLootMenu();
+
+
         //Navigation.INSTANCE.SetActive(true);
         // if (!EndTrigger.COLLIDE) //new level, boss collision
         // {
@@ -123,7 +127,7 @@ public class DungeonGenerator : MonoBehaviour
         //     DontDestroyOnLoad(SAVED_DUNGEON);
         //     SceneManager.LoadScene("Town");
         // }
-     }
+    }
 
     public void BuildMesh()
     {

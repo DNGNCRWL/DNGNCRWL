@@ -88,8 +88,12 @@ public class UI_PartyMenu : MonoBehaviour
             Button invButton = charSlotRectTransform.Find("inventoryButton").GetComponent<Button>();
             invButton.onClick.AddListener(delegate { OpenCharInv(character); });
 
+            Button moveFrontButton = charSlotRectTransform.Find("moveFrontButton").GetComponent<Button>();
+            moveFrontButton.onClick.AddListener(delegate { MoveCharToFront(character); });
+
             string InfoText = "";
             InfoText += "Class: " + character.GetCharacterClass();
+            InfoText += "\nLevel: " + character.GetLevel();
             InfoText += "\nHealth: " + character.GetHitPoints().ToString()+  " / "+ character.GetMaxHitPoints().ToString();
             InfoText += "\nStrength: " + character.GetStrength().ToString();
             InfoText += "\nAgility: " + character.GetAgility().ToString();
@@ -100,16 +104,29 @@ public class UI_PartyMenu : MonoBehaviour
             TextMeshProUGUI infoUI = charSlotRectTransform.Find("text").GetComponent<TextMeshProUGUI>();
             infoUI.SetText(InfoText);
 
+            Image progBar = charSlotRectTransform.Find("xpBar").Find("Fill").gameObject.GetComponent<Image>();
+            progBar.fillAmount = character.GetExperience() / character.CalcExperienceForNextLevel();
+
+            TextMeshProUGUI progBarXP = charSlotRectTransform.Find("xpBar").Find("text").gameObject.GetComponent<TextMeshProUGUI>();
+            progBarXP.SetText("XP: " + character.GetExperience() + " / " + character.CalcExperienceForNextLevel());
+
+
             x++;
         }
     }
 
     private void OpenCharInv (CharacterSheet character) {
-        Debug.Log(character);
+        //Debug.Log(character);
         if (UI_Inventory.UI_INVENTORY == null) return;
 
         UI_Inventory.UI_INVENTORY.SetCharacterTarget(character);
         UI_Inventory.UI_INVENTORY.OpenInventoryUI();
+    }
+
+    private void MoveCharToFront(CharacterSheet character) {
+        //Debug.Log(character);
+        GameManager.GM.MoveCharToFront(character);
+        RefreshPartyList();
     }
 
     public void OpenPartyUI()
