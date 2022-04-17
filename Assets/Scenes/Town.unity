@@ -10963,7 +10963,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: generateRandomChar
+        m_MethodName: GenerateRandomChar
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16842,7 +16842,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: toggleActive
+        m_MethodName: ToggleActive
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1761337299}
@@ -16854,7 +16854,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: toggleActive
+        m_MethodName: ToggleActive
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 565684817}
@@ -19736,7 +19736,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: addCharToPlayerChars
+        m_MethodName: AddCharToPlayerChars
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19803,7 +19803,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: toggleActive
+          m_MethodName: ToggleOn
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1786058699}
@@ -19819,7 +19819,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: toggleActive
+          m_MethodName: ToggleOff
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1786058699}
@@ -20538,7 +20538,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: addCharToPlayerChars
+        m_MethodName: AddCharToPlayerChars
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -20605,7 +20605,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: toggleActive
+          m_MethodName: ToggleOn
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1401157349}
@@ -20621,7 +20621,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: toggleActive
+          m_MethodName: ToggleOff
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1401157349}
@@ -22431,7 +22431,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: addCharToPlayerChars
+        m_MethodName: AddCharToPlayerChars
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -22498,7 +22498,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: toggleActive
+          m_MethodName: ToggleOn
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 777880792}
@@ -22514,7 +22514,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: toggleActive
+          m_MethodName: ToggleOff
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 777880792}
@@ -24553,7 +24553,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: ToggleOn
+          m_MethodName: ToggleOff
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1714779812}
@@ -24609,7 +24609,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: RemoveItemFromCart
+        m_MethodName: RemoveCharFromParty
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -27807,7 +27807,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: addCharToPlayerChars
+        m_MethodName: AddCharToPlayerChars
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -27874,7 +27874,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: toggleActive
+          m_MethodName: ToggleOn
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1368052563}
@@ -27890,7 +27890,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: toggleActive
+          m_MethodName: ToggleOff
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1368052563}
