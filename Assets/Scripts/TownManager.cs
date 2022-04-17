@@ -73,7 +73,7 @@ public class TownManager : MonoBehaviour
     void Awake() {
         GM = GameManager.GM;
         GMTransform = GameManager.GM.transform;
-        generateRandomChar();
+        GenerateRandomChar();
         StoreGen();
         foreach (Image pic in clickableBuildings) {
             pic.alphaHitTestMinimumThreshold = 0.01f;
@@ -91,9 +91,9 @@ public class TownManager : MonoBehaviour
                 playerCharacters.Remove(character);
             }
         }
-        setRecCharInfo();
-        setCharInfo();
-        setReserveCharInfo();
+        SetRecCharInfo();
+        SetCharInfo();
+        SetReserveCharInfo();
         SetStoreInfo();
         SetBuyForMenu();
         SelectSellFromCharacter(0);
@@ -108,18 +108,22 @@ public class TownManager : MonoBehaviour
     }
     
     //Changes whether an object is active or not
-    public void toggleActive(GameObject target) {
-        if (target.activeSelf) {
-            target.SetActive(false);
-        } else {
-            target.SetActive(true);
-        }
+    public void ToggleActive(GameObject target) {
+        target.SetActive(!target.activeSelf);
     }
 
-    public void turnOffInteractable(Button target) {
+    public void ToggleOn(GameObject target) {
+        target.SetActive(true);
+    }
+
+    public void ToggleOff(GameObject target) {
+        target.SetActive(false);
+    }
+
+    public void TurnOffInteractable(Button target) {
         target.interactable = false;
     }
-    public void turnOnInteractable(Button target) {
+    public void TurnOnInteractable(Button target) {
         target.interactable = true;
     }
 
@@ -130,7 +134,7 @@ public class TownManager : MonoBehaviour
     }
 
     //ensures party is not empty and enters the rest of the dungeon
-    public void enterDungeon() {
+    public void EnterDungeon() {
         Debug.Log("hello");
         if (playerCharacters.Count > 0) {
             //FindObjectOfType<DungeonGenerator>().Start();
@@ -188,12 +192,14 @@ public class TownManager : MonoBehaviour
     //
 
     //Set info about characters in player party, if there are more spaces than characters deactivate unused spaces
-    public void setCharInfo() {
+    public void SetCharInfo() {
         //Set each tile with character info
         for (int i = 0; i < 4; ++i) {
+            GameObject button = charMenuTiles[i].transform.GetChild(0).gameObject;
             if (i < playerCharacters.Count) {
+                SetImage(button, playerCharacters[i]);
                 charMenuTiles[i].SetActive(true);
-                setInfo(charMenuTiles, i, playerCharacters, i);
+                SetInfo(charMenuTiles[i].transform.GetChild(1).gameObject, playerCharacters[i]);
             } else {
                 charMenuTiles[i].SetActive(false);
             }
@@ -201,7 +207,7 @@ public class TownManager : MonoBehaviour
     }
 
     //Set info about characters in player party, if there are more spaces than characters deactivate unused spaces
-    public void setReserveCharInfo() {
+    public void SetReserveCharInfo() {
         //if the current page is beyond the amount of reserve characters, go back a page
         if ((pageNumber + 1) * 2 > reserveCharacters.Count + 1 && pageNumber != 0) {
             --pageNumber;
@@ -223,41 +229,51 @@ public class TownManager : MonoBehaviour
 
         //Set each tile with character info
         for (int i = 0; i < 2; ++i) {
+            GameObject button = reserveCharMenuTiles[i].transform.GetChild(0).gameObject;
             if (i + (pageNumber * 2) < reserveCharacters.Count) {
-                reserveCharMenuTiles[i].SetActive(true);
-                setInfo(reserveCharMenuTiles, i, reserveCharacters, i + pageNumber * 2);
+                SetImage(button, reserveCharacters[i + pageNumber * 2]);
+                button.SetActive(true);
+                SetInfo(reserveCharMenuTiles[i].transform.GetChild(1).gameObject, reserveCharacters[i + pageNumber * 2]);
             } else {
-                reserveCharMenuTiles[i].SetActive(false);
+                button.SetActive(false);
             }
         }
     }
 
     //Set info about recruitable characters, if there are more spaces than characters deactivate unused spaces
-    public void setRecCharInfo() {
+    public void SetRecCharInfo() {
         for (int i = 0; i < 4; ++i) {
+            GameObject button = recruitMenuTiles[i].transform.GetChild(0).gameObject;
             if (i < recruitableCharacters.Count) {
-                recruitMenuTiles[i].SetActive(true);
-                setInfo(recruitMenuTiles, i, recruitableCharacters, i);
+                SetImage(button, recruitableCharacters[i]);
+                button.SetActive(true);
+                SetInfo(recruitMenuTiles[i].transform.GetChild(1).gameObject, recruitableCharacters[i]);
                 
             } else {
-                recruitMenuTiles[i].SetActive(false);
+                button.SetActive(false);
             }
         }
     }
 
+    public void SetImage(GameObject button, CharacterSheet character) {
+        Image buttonImage = button.GetComponent<Image>();
+        buttonImage.sprite = character.GetSprite();
+        buttonImage.SetNativeSize();
+    }
+
     //Takes tile list, index of tile list, character list, and index of character list, and sets tile info to character info
-    public void setInfo(List<GameObject> tiles, int tIndex, List<CharacterSheet> characters, int cIndex) {
-        tiles[tIndex].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = characters[cIndex].GetCharacterName();
-        tiles[tIndex].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Max HP: " + characters[cIndex].GetMaxHitPoints().ToString();
-        tiles[tIndex].transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Strength: " + characters[cIndex].GetStrength().ToString();
-        tiles[tIndex].transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = "Agility: " + characters[cIndex].GetAgility().ToString();
-        tiles[tIndex].transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = "Presence: " + characters[cIndex].GetPresence().ToString();
-        tiles[tIndex].transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = "Toughness: " + characters[cIndex].GetToughness().ToString();
+    public void SetInfo(GameObject tile, CharacterSheet character) {
+        tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = character.GetCharacterName();
+        tile.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Max HP: " + character.GetMaxHitPoints().ToString();
+        tile.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Strength: " + character.GetStrength().ToString();
+        tile.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = "Agility: " + character.GetAgility().ToString();
+        tile.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = "Presence: " + character.GetPresence().ToString();
+        tile.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = "Toughness: " + character.GetToughness().ToString();
     }
     
 
     //Swap a character from the recruitable character under TownManager to player characters under GameManager
-    public void addCharToPlayerChars(int index) {
+    public void AddCharToPlayerChars(int index) {
         GameObject character = recruitableCharacters[index].transform.gameObject;
         CharacterSheet charSheet = character.GetComponent<CharacterSheet>();
         character.transform.parent = GMTransform;
@@ -269,34 +285,34 @@ public class TownManager : MonoBehaviour
             reserveCharacters.Add(charSheet);
         }
         silver = CalculateSilver();
-        setCharInfo();
-        setReserveCharInfo();
-        setRecCharInfo();
+        SetCharInfo();
+        SetReserveCharInfo();
+        SetRecCharInfo();
         SetBuyForMenu();
         SetStoreInfo();
         UpdateInjured();
     }
 
     //Swap the char at the index from the player party to reserve characters
-    public void removeCharFromParty(int index) {
+    public void RemoveCharFromParty(int index) {
         CharacterSheet charSheet = playerCharacters[index];
         playerCharacters.Remove(charSheet);
         reserveCharacters.Add(charSheet);
-        setCharInfo();
-        setReserveCharInfo();
+        SetCharInfo();
+        SetReserveCharInfo();
         SetBuyForMenu();
         SelectSellFromCharacter(0);
         UpdateInjured();
     }
 
     //Swap the char at the index from reserve characters to the player party
-    public void addCharToParty(int index) {
+    public void AddCharToParty(int index) {
         if (playerCharacters.Count < 4) {
             CharacterSheet charSheet = reserveCharacters[index + (pageNumber * 2)];
             playerCharacters.Add(charSheet);
             reserveCharacters.Remove(charSheet);
-            setCharInfo();
-            setReserveCharInfo();
+            SetCharInfo();
+            SetReserveCharInfo();
             SetBuyForMenu();
             SelectSellFromCharacter(0);
             UpdateInjured();
@@ -306,7 +322,7 @@ public class TownManager : MonoBehaviour
     }
 
     //Generates random recruitable characters
-    public void generateRandomChar() {
+    public void GenerateRandomChar() {
         for (int i = 0; i < 4; ++i) {
             GameObject temp = Instantiate(characterPrefab, TMTransform);
             recruitableCharacters.Add(temp.GetComponent<CharacterSheet>());
@@ -314,19 +330,19 @@ public class TownManager : MonoBehaviour
         for (int i = 0; i < recruitableCharacters.Count; ++i) {
             recruitableCharacters[i].InitializeRandomClassless();
         }
-        setRecCharInfo();
+        SetRecCharInfo();
     }
 
     //Increases page number and reloads reserve characters
-    public void incrementPageNumber() {
+    public void IncrementPageNumber() {
         ++pageNumber;
-        setReserveCharInfo();
+        SetReserveCharInfo();
     }
 
     //Decreases page number and reloads reserve characters
-    public void decrementPageNumber() {
+    public void DecrementPageNumber() {
         --pageNumber;
-        setReserveCharInfo();
+        SetReserveCharInfo();
     }
 
     //
