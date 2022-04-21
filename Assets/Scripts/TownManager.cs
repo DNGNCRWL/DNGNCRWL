@@ -88,10 +88,7 @@ public class TownManager : MonoBehaviour
         reserveCharacters = GM.reserveCharacters;
         foreach(CharacterSheet character in playerCharacters) {
             if (!character.GetCanBeHit()) {
-
-                deadCharacters.Add(character);
-                playerCharacters.Remove(character);
-                //SetDead(character);
+                SetDead(character);
             }
         }
         SetRecCharInfo();
@@ -208,7 +205,8 @@ public class TownManager : MonoBehaviour
 
     //
     public void SetDead(CharacterSheet character) {
-
+            deadCharacters.Add(character);
+            playerCharacters.Remove(character);
     }
 
     //
