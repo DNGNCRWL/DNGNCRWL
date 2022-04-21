@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Crowbar
   m_EditorClassIdentifier: 
   itemName: Crowbar
-  description: 
+  description: A metal bar used for leverage
   broken: 0
   value: 8
   actions: []
@@ -31,4 +31,3 @@ MonoBehaviour:
   twoHanded: 0
   abilityToUse: 0
   effectAnimation: {fileID: 0}
-  criticalEffectAnimation: {fileID: 0}

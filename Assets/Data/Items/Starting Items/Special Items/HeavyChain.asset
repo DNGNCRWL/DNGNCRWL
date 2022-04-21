@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: HeavyChain
   m_EditorClassIdentifier: 
   itemName: Heavy Chain
-  description: 
+  description: Metal links about 15 feet long
   broken: 0
   value: 10
   actions: []
@@ -31,4 +31,3 @@ MonoBehaviour:
   twoHanded: 1
   abilityToUse: 0
   effectAnimation: {fileID: 0}
-  criticalEffectAnimation: {fileID: 0}

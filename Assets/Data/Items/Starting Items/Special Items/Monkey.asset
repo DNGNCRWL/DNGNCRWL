@@ -9,15 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e06c0768d80cde741a0693385f4ad72d, type: 3}
+  m_Script: {fileID: 11500000, guid: 872987c653755ce4f81116342f30c129, type: 3}
   m_Name: Monkey
   m_EditorClassIdentifier: 
-  itemName: Pair Of Monkeys
-  description: 
+  itemName: Monkey
+  description: But is it loyal?
   broken: 0
   value: 0
   actions: []
+  inventoryActions: []
   sprite: {fileID: 21300000, guid: f9704c0f6a591de46995cf4401129835, type: 3}
   stackLimit: 1
-  amount: 2
-  unit: Monkey
+  amount: 1
+  healingAmount: 0
+  clearsPoison: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Dungeon Key
   m_EditorClassIdentifier: 
   itemName: Royal Key
-  description: 
+  description: Useful for locks
   broken: 0
   value: 0
   actions:

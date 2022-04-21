@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Animal Flesh
   m_EditorClassIdentifier: 
   itemName: Animal Flesh
-  description: 
+  description: Edible flesh of a dungeon beast
   broken: 0
   value: 1
   actions: []

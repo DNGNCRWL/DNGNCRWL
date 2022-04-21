@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GrapplingHook
   m_EditorClassIdentifier: 
   itemName: Grappling Hook
-  description: 
+  description: Heavy metal prongs attached to a rope
   broken: 0
   value: 12
   actions: []
