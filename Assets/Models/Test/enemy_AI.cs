@@ -7,6 +7,7 @@ public class enemy_AI : MonoBehaviour
 {
     public NavMeshAgent agent;
     public Transform player;
+    
     public LayerMask whatIsGround, whatIsPlayer;
     public Vector3 currentLoc;
     Animator animator;
