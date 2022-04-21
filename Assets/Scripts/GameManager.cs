@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
     public static GameManager GM;
+    public static DungeonGenerator DG;
+    public static Navigation NAV;
     public List<CharacterSheet> playerCharacters;
     public List<CharacterSheet> reserveCharacters;
 
@@ -51,6 +53,7 @@ public class GameManager : MonoBehaviour {
 
     }
     public static void Reset() {
+        Navigation.Respawn();
         GM.playerCharacters.Clear();
         GM.reserveCharacters.Clear();
     }
