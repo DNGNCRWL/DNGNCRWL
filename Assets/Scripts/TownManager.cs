@@ -12,7 +12,7 @@ public class TownManager : MonoBehaviour
     public Transform GMTransform;
     public GameObject characterPrefab;
 
-    public List<Image> clickableBuildings;
+    public List<Image> clickableImages;
 
     //Player Characters
     public List<CharacterSheet> playerCharacters;
@@ -70,25 +70,28 @@ public class TownManager : MonoBehaviour
     //
     //
 
+    //Set the GameManager references, generates recruitable characters and store items, and sets buttons alpha to non-clickable
     void Awake() {
         GM = GameManager.GM;
         GMTransform = GameManager.GM.transform;
         GenerateRandomChar();
         StoreGen();
-        foreach (Image pic in clickableBuildings) {
+        foreach (Image pic in clickableImages) {
             pic.alphaHitTestMinimumThreshold = 0.01f;
         }
     }
 
-    // Start is called before the first frame update
+    // Sets character lists and all menu info, as well as checks for dead characters
     void Start()
     {
         playerCharacters = GM.playerCharacters;
         reserveCharacters = GM.reserveCharacters;
         foreach(CharacterSheet character in playerCharacters) {
             if (!character.GetCanBeHit()) {
+
                 deadCharacters.Add(character);
                 playerCharacters.Remove(character);
+                //SetDead(character);
             }
         }
         SetRecCharInfo();
@@ -101,30 +104,36 @@ public class TownManager : MonoBehaviour
         silver = CalculateSilver();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-    
     //Changes whether an object is active or not
     public void ToggleActive(GameObject target) {
         target.SetActive(!target.activeSelf);
     }
 
+    //Makes given object active
     public void ToggleOn(GameObject target) {
         target.SetActive(true);
     }
 
+    //Makes given object not active
     public void ToggleOff(GameObject target) {
         target.SetActive(false);
     }
 
+    //Makes given button not interactable
     public void TurnOffInteractable(Button target) {
         target.interactable = false;
     }
+
+    //Makes given button interactable
     public void TurnOnInteractable(Button target) {
         target.interactable = true;
+    }
+
+    //Turns off object if parent is inactive (specific for character button usage)
+    public void TurnOffIfLast(GameObject above) {
+        if (!above.activeSelf) {
+            above.transform.GetChild(1).gameObject.SetActive(false);
+        }
     }
 
     //Pops up error message window with given message
@@ -133,7 +142,7 @@ public class TownManager : MonoBehaviour
         errorMessageWindow.SetActive(true);
     }
 
-    //ensures party is not empty and enters the rest of the dungeon
+    //Ensures party is not empty and enters the rest of the dungeon
     public void EnterDungeon() {
         Debug.Log("hello");
         if (playerCharacters.Count > 0) {
@@ -145,12 +154,33 @@ public class TownManager : MonoBehaviour
         }
     }
 
+    //General method to set any character button in town menu
+    private void SetCharacterButtons(List<GameObject> tiles, List<CharacterSheet> characters, bool reserveInfo, bool restInfo) {
+        for (int i = 0; i < tiles.Count; ++i) {
+            if (reserveInfo && (i + (pageNumber * 2) < characters.Count) || !reserveInfo && (i < characters.Count)) {
+                SetImage(tiles[i].transform.GetChild(0).gameObject, characters[i]);
+                tiles[i].SetActive(true);
+                if (restInfo) {
+                GameObject infoTile = tiles[i].transform.GetChild(1).gameObject;
+                infoTile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = characters[i].GetCharacterName();
+                infoTile.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Hit Points: " + characters[i].GetHitPoints().ToString();
+                infoTile.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Max HP: " + characters[i].GetMaxHitPoints().ToString();
+                } else {
+                    SetInfo(tiles[i].transform.GetChild(1).gameObject, characters[i]);
+                }
+            } else {
+            tiles[i].SetActive(false);
+            }
+        } 
+    }
+
     //
     //
     //---------------------------------------------------------------------------RESTING AND RESURRECTING METHODS----------------------------------------------------------------------------------
     //
     //
 
+    //checks for injured characters in party
     private void UpdateInjured() {
         injuredCharsInParty = new List<CharacterSheet>();
         foreach (CharacterSheet character in playerCharacters) {
@@ -162,17 +192,9 @@ public class TownManager : MonoBehaviour
         UpdateRestInfo();
     }
 
+    //sets tile info for characters that can be rested
     private void UpdateRestInfo() {
-        for (int i = 0; i < restTiles.Count; ++i) {
-            if (i < injuredCharsInParty.Count) {
-                restTiles[i].SetActive(true);
-                restTiles[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = injuredCharsInParty[i].GetCharacterName();
-                restTiles[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Hit Points: " + injuredCharsInParty[i].GetHitPoints().ToString();
-                restTiles[i].transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Max HP: " + injuredCharsInParty[i].GetMaxHitPoints().ToString();
-            } else {
-                restTiles[i].SetActive(false);
-            }
-        }
+        SetCharacterButtons(restTiles, injuredCharsInParty, false, true);
     }
 
     //Reset player health
@@ -182,6 +204,32 @@ public class TownManager : MonoBehaviour
         character.RecoverDamage(new Damage(50, 20, 10, DamageType.Untyped));
         injuredCharsInParty.Remove(character);
         UpdateRestInfo();
+    }
+
+    //
+    public void SetDead(CharacterSheet character) {
+
+    }
+
+    //
+    public void ResurrectChar(int index) {
+        GameObject character = deadCharacters[index].transform.gameObject;
+        CharacterSheet charSheet = character.GetComponent<CharacterSheet>();
+        character.transform.parent = GMTransform;
+        recruitableCharacters.Remove(charSheet);
+        if (playerCharacters.Count < 4) {
+            playerCharacters.Add(charSheet);
+            SelectSellFromCharacter(0);
+        } else {
+            reserveCharacters.Add(charSheet);
+        }
+        silver = CalculateSilver();
+        SetCharInfo();
+        SetReserveCharInfo();
+        SetRecCharInfo();
+        SetBuyForMenu();
+        SetStoreInfo();
+        UpdateInjured();
     }
 
     
@@ -194,16 +242,7 @@ public class TownManager : MonoBehaviour
     //Set info about characters in player party, if there are more spaces than characters deactivate unused spaces
     public void SetCharInfo() {
         //Set each tile with character info
-        for (int i = 0; i < 4; ++i) {
-            GameObject button = charMenuTiles[i].transform.GetChild(0).gameObject;
-            if (i < playerCharacters.Count) {
-                SetImage(button, playerCharacters[i]);
-                charMenuTiles[i].SetActive(true);
-                SetInfo(charMenuTiles[i].transform.GetChild(1).gameObject, playerCharacters[i]);
-            } else {
-                charMenuTiles[i].SetActive(false);
-            }
-        }
+        SetCharacterButtons(charMenuTiles, playerCharacters, false, false);
     }
 
     //Set info about characters in player party, if there are more spaces than characters deactivate unused spaces
@@ -228,33 +267,15 @@ public class TownManager : MonoBehaviour
         }
 
         //Set each tile with character info
-        for (int i = 0; i < 2; ++i) {
-            GameObject button = reserveCharMenuTiles[i].transform.GetChild(0).gameObject;
-            if (i + (pageNumber * 2) < reserveCharacters.Count) {
-                SetImage(button, reserveCharacters[i + pageNumber * 2]);
-                button.SetActive(true);
-                SetInfo(reserveCharMenuTiles[i].transform.GetChild(1).gameObject, reserveCharacters[i + pageNumber * 2]);
-            } else {
-                button.SetActive(false);
-            }
-        }
+        SetCharacterButtons(reserveCharMenuTiles, reserveCharacters, true, false);
     }
 
     //Set info about recruitable characters, if there are more spaces than characters deactivate unused spaces
     public void SetRecCharInfo() {
-        for (int i = 0; i < 4; ++i) {
-            GameObject button = recruitMenuTiles[i].transform.GetChild(0).gameObject;
-            if (i < recruitableCharacters.Count) {
-                SetImage(button, recruitableCharacters[i]);
-                button.SetActive(true);
-                SetInfo(recruitMenuTiles[i].transform.GetChild(1).gameObject, recruitableCharacters[i]);
-                
-            } else {
-                button.SetActive(false);
-            }
-        }
+        SetCharacterButtons(recruitMenuTiles, recruitableCharacters, false, false);
     }
 
+    //Sets the image of the button to the given character's sprite
     public void SetImage(GameObject button, CharacterSheet character) {
         Image buttonImage = button.GetComponent<Image>();
         buttonImage.sprite = character.GetSprite();
@@ -364,6 +385,7 @@ public class TownManager : MonoBehaviour
         silverInfo.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = "" + cost;
     }
 
+    //Set info about both sellable items and items in the selling cart within the store menu
     public void SetStoreTiles(List<GameObject> tiles, List<Item> items, bool specific) {
         for (int i = 0; i < tiles.Count; ++i) {
             if (!specific && i < items.Count || specific && items[i] != null) {
@@ -412,33 +434,33 @@ public class TownManager : MonoBehaviour
 
     //Set the item info for a buyable item
     public void SetBuyableInfo(GameObject button) {
-        int index = storeTiles.IndexOf(button);
-        Item item = storeItems[index];
-        DisplayItemInfo(item, -1, true);
+        SetStoreItemInfo(button, storeTiles, storeItems, false, true);
     }
 
     //Set the item info for an item in the cart
     public void SetCartItemInfo(GameObject button) {
-        int index = buyingTiles.IndexOf(button);
-        Item item = cartItems[index];
-        DisplayItemInfo(item, index, true);
+        SetStoreItemInfo(button, buyingTiles, cartItems, true, true);
     }
 
     //Set the item info for a sellable item
     public void SetSellableInfo(GameObject button) {
-        int index = playerItemTiles.IndexOf(button);
-        Item item = sellableItems[index];
-        DisplayItemInfo(item, -1, false);
+        SetStoreItemInfo(button, playerItemTiles, sellableItems, false, false);
     }
 
     //Set the item info for an item in the sell item cart
     public void SetItemToSellInfo(GameObject button) {
-        int index = sellingTiles.IndexOf(button);
-        Item item = sellingItems[index];
-        DisplayItemInfo(item, index, false);
+        SetStoreItemInfo(button, sellingTiles, sellingItems, true, false);
     }
 
-    //Set item info
+    //Sets the item info for a given item from a given list
+    private void SetStoreItemInfo(GameObject button, List<GameObject> tiles, List<Item> items, bool cart, bool buying) {
+        int index = tiles.IndexOf(button);
+        Item item = items[index];
+        if (cart) DisplayItemInfo(item, index, buying);
+        else DisplayItemInfo(item, -1, buying);
+    }
+
+    //Set item info in store menu display
     public void DisplayItemInfo(Item item, int cartNum, bool buying) {
         string type = "";
         string wielding = "";
@@ -616,6 +638,7 @@ public class TownManager : MonoBehaviour
         SetStoreInfo();
     }
 
+    //Pulls an equal amount of silver from each player owned character
     public bool GetPayment(int charge) {
         if (silver >= charge) {
             int totalChars = playerCharacters.Count + reserveCharacters.Count;
@@ -644,6 +667,7 @@ public class TownManager : MonoBehaviour
         }
     }
 
+    //Sets the characters to sell from to characters currently in party
     public void SetCharacterSellList() {
         for(int i = 0; i < 4; ++i) {
             if (i < playerCharacters.Count) {
@@ -655,6 +679,7 @@ public class TownManager : MonoBehaviour
         }
     }
 
+    //Change sellable items depending on which character is selected
     public void SelectSellFromCharacter(int target) {
         if(playerCharacters.Count <= target) {
             sellableItems = new List<Item>();
@@ -667,6 +692,7 @@ public class TownManager : MonoBehaviour
         SetStoreInfo();
     }
     
+    //adds a single item to selling cart, links what character the item came from, and reduces the cost relevant to the value of item
     public void AddItemToSellCart(int item) {
         Item temp = sellableItems[item];
         sellableItems.Remove(temp);
@@ -677,6 +703,7 @@ public class TownManager : MonoBehaviour
         SetStoreInfo();
     }
 
+    //removes a single item from selling cart
     public void RemoveItemFromSellCart(int index) {
         Item temp = sellingItems[index];
         sellableItems.Add(temp);
@@ -686,11 +713,13 @@ public class TownManager : MonoBehaviour
         SetStoreInfo();
     }
 
+    //removes all items from both buy and sell carts
     public void CancelTransaction() {
         RemoveAllFromCart();
         RemoveAllFromSellCart();
     }
 
+    //removes all items from buying cart
     public void RemoveAllFromCart() {
         int numCartItems = cartItems.Count;
         for (int i = 0; i < numCartItems; ++i) {
@@ -698,6 +727,7 @@ public class TownManager : MonoBehaviour
         }
     }
 
+    //removes all items from selling cart
     public void RemoveAllFromSellCart() {
         int numSellingItems = sellingItems.Count;
         for (int i = 0; i < numSellingItems; ++i) {
