@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Bomb
   m_EditorClassIdentifier: 
   itemName: Bomb
-  description: 
+  description: 'A highly explosive '
   broken: 0
   value: 10
   actions: []

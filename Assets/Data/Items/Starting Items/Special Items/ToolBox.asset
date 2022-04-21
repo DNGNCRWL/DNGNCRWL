@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ToolBox
   m_EditorClassIdentifier: 
   itemName: Tool Box
-  description: 
+  description: Necessary for any workshop
   broken: 0
   value: 20
   actions: []

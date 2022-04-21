@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Bow
   m_EditorClassIdentifier: 
   itemName: Bow
-  description: 
+  description: Flexible wood and taught string
   broken: 0
   value: 25
   actions: []
@@ -31,6 +31,4 @@ MonoBehaviour:
   twoHanded: 1
   abilityToUse: 2
   effectAnimation: {fileID: 7400000, guid: 3ade489db09dbc345a7a5b8fda59523f, type: 2}
-  criticalEffectAnimation: {fileID: 7400000, guid: 953363ceb1337fb4bbf401d361dc5bf4,
-    type: 2}
   ammoName: Arrow

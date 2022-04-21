@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: HeavyCarapace
   m_EditorClassIdentifier: 
   itemName: Heavy Carapace
-  description: 
+  description: A hard animal shell
   broken: 0
   value: 200
   actions: []

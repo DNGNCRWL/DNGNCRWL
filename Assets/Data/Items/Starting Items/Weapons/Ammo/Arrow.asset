@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Arrow
   m_EditorClassIdentifier: 
   itemName: Arrow
-  description: 
+  description: For use with bows
   broken: 0
   value: 1
   actions: []

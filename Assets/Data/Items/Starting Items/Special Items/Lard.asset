@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Lard
   m_EditorClassIdentifier: 
   itemName: Lard
-  description: 
+  description: Useful as food, lubrication
   broken: 0
   value: 5
   actions: []
