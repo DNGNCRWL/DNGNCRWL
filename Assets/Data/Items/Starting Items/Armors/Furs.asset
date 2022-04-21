@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Furs
   m_EditorClassIdentifier: 
   itemName: Furs
-  description: 
+  description: A collage of warm furs
   broken: 0
   value: 20
   actions: []

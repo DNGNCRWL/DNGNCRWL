@@ -324,8 +324,15 @@ public class Navigation : MonoBehaviour
         steps = Random.Range(steps_min, steps_max + 1);
     }
 
-    public void respawn()
+    public static void Respawn()
     {
-        transform.position = new Vector3(0, 1, 0);
+        Navigation.INSTANCE.SetActive(true);
+        Navigation.INSTANCE.transform.position = new Vector3(0,1,0);
+        Navigation.INSTANCE.SetActive(false);
     }
+
+    // public void Clear()
+    // {
+    //     Destroy(GameObject);
+    // }
 }
