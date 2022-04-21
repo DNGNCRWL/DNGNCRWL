@@ -31,6 +31,10 @@ public class MainMenu : MonoBehaviour
             GM.playerCharacters[i].InitializeRandomClassless();
         }
 
+        //this assigns sprites
+        foreach(CharacterSheet charSheet in GM.playerCharacters)
+            charSheet.gameObject.GetComponentInChildren<SpriteRenderer>().sprite = charSheet.GetSprite();
+
         SceneManager.LoadScene("Town", LoadSceneMode.Single);
     }
 

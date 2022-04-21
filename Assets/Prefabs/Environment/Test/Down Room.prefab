@@ -2493,7 +2493,7 @@ GameObject:
   - component: {fileID: 8093598025998096757}
   m_Layer: 0
   m_Name: Down Room
-  m_TagString: test
+  m_TagString: EndRoom
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -55,6 +55,17 @@ MonoBehaviour:
   characterName: Unnamed
   description: 'Nothing is known. '
   characterClass: Classless
+  terribleTraitA: 0
+  terribleTraitB: 0
+  brokenBody: 0
+  badHabit: 0
+  troublingTale: 0
+  terribleTraits: {fileID: 11400000, guid: 22ecdcb83ed2dd2449184b00d5466701, type: 2}
+  brokenBodies: {fileID: 11400000, guid: a34c60496a9b43d4992e266eb31bbecd, type: 2}
+  badHabits: {fileID: 11400000, guid: b20de3b788cc5cf45819ea0a980bcd48, type: 2}
+  troublingTales: {fileID: 11400000, guid: 04731279f8be9cd4e903c25ce8af153d, type: 2}
+  spriteBank: {fileID: 11400000, guid: 43eb6ccaf89094645ac50de894839e54, type: 2}
+  level: 0
   hitPoints: 10
   maxHitPoints: 1
   strength: -3
@@ -64,8 +75,9 @@ MonoBehaviour:
   powers: 0
   omens: 0
   silver: 0
-  experience: 0
   food: 0
+  experience: 0
+  totalExperience: 0
   waterskin: 0
   naturalResistances:
     bludgeon: 0
@@ -127,6 +139,8 @@ MonoBehaviour:
     armor: {fileID: 0}
     mainHand: {fileID: 0}
     offHand: {fileID: 0}
+    slotsLimit: 10
+    slotsUsed: 0
 --- !u!1 &7519617101036752088
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,7 +216,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 5922816741404586159, guid: af609e5eeb92d2d448752564a1c77ee4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1.49, y: 2.73}

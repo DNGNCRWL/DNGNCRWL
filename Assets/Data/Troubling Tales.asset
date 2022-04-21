@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d84758b2e1b9126438b8800806130ab1, type: 3}
+  m_Name: Troubling Tales
+  m_EditorClassIdentifier: 
+  value:
+  - Pursued for manslaughter. There is a bounty
+  - In massive debt. The debt is being traded to successively more ruthless groups
+  - Have a rare, sought after item
+  - Have a cursed never-healing wound
+  - Had an illegal, immoral, and secret affair with a memberof the royal family.
+    Has proof
+  - Escaped cult member. Terrified and paranoid. Other cultists are everywhere
+  - An identity thief who recently killed and replaced this person
+  - Banished and disowned for unspecified deeds. Can never go home
+  - Deserted military after witnessing a massacre, bounty on head. Hunted by former
+    friends
+  - Very recently murdered a close relative. *Very recently*
+  - A puzzle cube has been calibrated incorrectl (or has it?), awakening a slumbering
+    abomination
+  - Evil creatures love the scent of your spoor and are drawn to it, bringing disaster
+    in your wake
+  - A battle would left a shard of metal slowly inching closer to your heart. Every
+    day there is a 2% chance it reaches it
+  - Violence forced you into the wilderness. You think waving trees are whispering.
+    You talk to, scream at, attack trees
+  - Cursed to share the nightmares of others, you sleep far, far away
+  - At permanent war with all corvids. No contact without some violence. You carry
+    a sling
+  - After dreaming of an underground temple to a forgotten god you understand the
+    songs of insects and worms
+  - Being tracked and observed by a golem after an agreement which you know has been
+    wiped from your mind
+  - '"Burn or be burned" is the fate you accept'
+  - Your flesh heals twice as fast, but your companions twice as slow. You see a
+    many-eyed "guardian angel"
