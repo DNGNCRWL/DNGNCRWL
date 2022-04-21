@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 872987c653755ce4f81116342f30c129, type: 3}
   m_Name: ExquisitePerfume 1
   m_EditorClassIdentifier: 
-  itemName: 
-  description: 
+  itemName: Exquisite Perfume
+  description: Useful as a distraction
   broken: 0
   value: 0
   actions: []
@@ -21,3 +21,5 @@ MonoBehaviour:
   sprite: {fileID: 0}
   stackLimit: 1
   amount: 1
+  healingAmount: 0
+  clearsPoison: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Poison Darts
   m_EditorClassIdentifier: 
   itemName: Poison Darts
-  description: 
+  description: Poisonous throwable darts
   broken: 0
   value: 0
   actions:

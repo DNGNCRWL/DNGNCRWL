@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Femur
   m_EditorClassIdentifier: 
   itemName: Femur
-  description: 
+  description: A large hard bone
   broken: 0
   value: 0
   actions: []
@@ -31,5 +31,3 @@ MonoBehaviour:
   twoHanded: 0
   abilityToUse: 0
   effectAnimation: {fileID: 7400000, guid: 12ae1c8ceb079b8409a99365bef4ca48, type: 2}
-  criticalEffectAnimation: {fileID: 7400000, guid: 71c65056b1f05a94f861558974f535aa,
-    type: 2}

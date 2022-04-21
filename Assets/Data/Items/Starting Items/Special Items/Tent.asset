@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Tent
   m_EditorClassIdentifier: 
   itemName: Tent
-  description: 
+  description: Useful for camping
   broken: 0
   value: 12
   actions: []

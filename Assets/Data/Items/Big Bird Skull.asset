@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Big Bird Skull
   m_EditorClassIdentifier: 
   itemName: Big Bird Skull
-  description: 
+  description: The skull of a large bird from the dungeon
   broken: 0
   value: 10
   actions: []

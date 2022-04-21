@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Bolt
   m_EditorClassIdentifier: 
   itemName: Bolt
-  description: 
+  description: For use with crossbows
   broken: 0
   value: 1
   actions: []
