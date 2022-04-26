@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RandomSacredScroll
   m_EditorClassIdentifier: 
   itemName: Random Sacred Scroll
-  description: 
+  description: A magic scroll
   broken: 0
   value: 50
   actions: []

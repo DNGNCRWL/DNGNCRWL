@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Rat King Crown
   m_EditorClassIdentifier: 
   itemName: Rat King Crown
-  description: 
+  description: A collection of tails from a rat king
   broken: 0
   value: 15
   actions: []

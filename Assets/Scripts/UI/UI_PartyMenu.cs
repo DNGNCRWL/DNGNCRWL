@@ -13,7 +13,7 @@ public class UI_PartyMenu : MonoBehaviour
     [SerializeField]
     private Transform charSlotContainer;
     public GameObject charSlotTemplate;
-    private bool shownState = true;
+    //private bool shownState = true;
 
 
     private void Awake()
@@ -70,11 +70,25 @@ public class UI_PartyMenu : MonoBehaviour
             Destroy(child.gameObject);
         }
 
+        List<CharacterSheet> deadCharList = new List<CharacterSheet>();
+        foreach (CharacterSheet character in party) {
+            if (character.IsDead()) {
+                deadCharList.Add(character);
+            }
+        }
+        
+        foreach (CharacterSheet character in deadCharList) {
+            if (character.IsDead()) {
+                party.Remove(character);
+                party.Add(character);
+            }
+        }
+
         int x = 0;
         //int y = 0;
         //float charSlotCellSizeY = 90f;
-        float charSlotCellSizeX = 300f;
-        float charSlotCellBufferX = 10f;
+        float charSlotCellSizeX = 450f;
+        float charSlotCellBufferX = 15f;
         foreach (CharacterSheet character in party)
         {
             Debug.Log(character);
@@ -82,14 +96,26 @@ public class UI_PartyMenu : MonoBehaviour
             charSlotRectTransform.gameObject.SetActive(true);
             charSlotRectTransform.anchoredPosition = new Vector2(x * charSlotCellSizeX + x*charSlotCellBufferX, 0);
 
+            bool dead = false;
+
+            if(character.IsDead()) dead = true;
+
             TextMeshProUGUI nameUI = charSlotRectTransform.Find("name").GetComponent<TextMeshProUGUI>();
-            nameUI.SetText(character.characterName);
+            string nameText = character.characterName;
+            if (dead) nameText += "(Dead)";
+            nameUI.SetText(nameText);
 
-            Button invButton = charSlotRectTransform.Find("inventoryButton").GetComponent<Button>();
-            invButton.onClick.AddListener(delegate { OpenCharInv(character); });
+            if (!dead) {
+                Button invButton = charSlotRectTransform.Find("inventoryButton").GetComponent<Button>();
+                invButton.onClick.AddListener(delegate { OpenCharInv(character); });
 
-            Button moveFrontButton = charSlotRectTransform.Find("moveFrontButton").GetComponent<Button>();
-            moveFrontButton.onClick.AddListener(delegate { MoveCharToFront(character); });
+
+                Button moveFrontButton = charSlotRectTransform.Find("moveFrontButton").GetComponent<Button>();
+                moveFrontButton.onClick.AddListener(delegate { MoveCharToFront(character); });
+            } else {
+                charSlotRectTransform.Find("inventoryButton").gameObject.SetActive(false);
+                charSlotRectTransform.Find("moveFrontButton").gameObject.SetActive(false);
+            }
 
             string InfoText = "";
             InfoText += "Class: " + character.GetCharacterClass();
@@ -103,6 +129,11 @@ public class UI_PartyMenu : MonoBehaviour
 
             TextMeshProUGUI infoUI = charSlotRectTransform.Find("text").GetComponent<TextMeshProUGUI>();
             infoUI.SetText(InfoText);
+
+            Image charImage = charSlotRectTransform.Find("image").gameObject.GetComponent<Image>();
+            charImage.sprite = character.GetSprite();
+            charImage.preserveAspect = true;
+            if (dead) charImage.color = Color.red;
 
             Image progBar = charSlotRectTransform.Find("xpBar").Find("Fill").gameObject.GetComponent<Image>();
             progBar.fillAmount = character.GetExperience() / character.CalcExperienceForNextLevel();
@@ -135,13 +166,13 @@ public class UI_PartyMenu : MonoBehaviour
             party = GameManager.GM.playerCharacters;
         gameObject.SetActive(true);
         RefreshPartyList();
-        shownState = true;
+        //shownState = true;
         //Debug.Log("Open Party Menu");
     }
     public void ClosePartyUI()
     {
         gameObject.SetActive(false);
-        shownState = false;
+        //shownState = false;
         //Debug.Log("Close Party Menu");
     }
 }

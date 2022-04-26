@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BearTrap
   m_EditorClassIdentifier: 
   itemName: Bear Trap
-  description: 
+  description: A trap for bears
   broken: 0
   value: 20
   actions: []

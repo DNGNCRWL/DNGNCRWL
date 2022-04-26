@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Knife
   m_EditorClassIdentifier: 
   itemName: Knife
-  description: 
+  description: A common tool for violence
   broken: 0
   value: 10
   actions: []
@@ -31,5 +31,3 @@ MonoBehaviour:
   twoHanded: 0
   abilityToUse: 1
   effectAnimation: {fileID: 7400000, guid: f0cf3365a77ae94478d43dc169885720, type: 2}
-  criticalEffectAnimation: {fileID: 7400000, guid: 0c4ce51e6f761bf4fa65994b8f0beb80,
-    type: 2}

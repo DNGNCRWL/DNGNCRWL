@@ -466,6 +466,14 @@ public class DungeonGenerator : MonoBehaviour
         //GameObject.Destroy(spider.gameObject);
         //GameObject.Destroy(GameObject.FindWithTag("Spider").transform);
     }
+        public void Reset()
+    {
+        board.Clear();
+        tBoard.Clear();
+
+        //GameObject.Destroy(spider.gameObject);
+        //GameObject.Destroy(GameObject.FindWithTag("Spider").transform);
+    }
     //     public void GenEnd()
     // {
     //      for (int i = 0; i < rooms.Length; i++)

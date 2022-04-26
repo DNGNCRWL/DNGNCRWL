@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DirtyClothes
   m_EditorClassIdentifier: 
   itemName: Dirty Clothes
-  description: 
+  description: Peasant clothes covered in dirt and mud
   broken: 0
   value: 0
   actions: []
