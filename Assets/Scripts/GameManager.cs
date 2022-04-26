@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour {
 
     }
     public static void Reset() {
-        Navigation.Respawn();
+        Navigation.Clear();
         GM.playerCharacters.Clear();
         GM.reserveCharacters.Clear();
     }
@@ -189,6 +189,8 @@ public class GameManager : MonoBehaviour {
 
     //SCENE NAVIGATION
     public static void GoToDungeonNavigation() {
+        FindObjectOfType<Navigation>().SetState();
+        Navigation.INSTANCE.SetActive(true);
         SceneManager.LoadScene("DungeonGeneration");
         PartySetActive(false);
         Debug.Log("Load DungeonGeneration");
@@ -199,6 +201,7 @@ public class GameManager : MonoBehaviour {
             charSheet.gameObject.SetActive(b);
     }
     public static void GameOver() {
+        Navigation.INSTANCE.transform.position = new Vector3(0,1,0);
         SceneManager.LoadScene("Title", LoadSceneMode.Single);
         Reset();
     }

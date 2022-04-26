@@ -28,7 +28,10 @@ public class EndTrigger : MonoBehaviour
                 //FindObjectOfType<Navigation>().respawn();
                 Debug.Log("stair!");
                 //SceneManager.LoadScene("Town");
-                DungeonGenerator.LEVEL++;
+                // DungeonGenerator.LevelIncreased();
+                DungeonGenerator.LEVEL++ ;
+                FindObjectOfType<DungeonGenerator>().getLevel();
+                DungeonGenerator.isSpider = false;
                 // FindObjectOfType<DungeonGenerator>().DestroyAll();
                 //Invoke("ResetPlayer", .1f);
                 
@@ -50,8 +53,11 @@ public class EndTrigger : MonoBehaviour
                 Debug.Log(DungeonGenerator.LEVEL);
                 //Invoke("RestartGenerateDungeon", .1f);
                 if(DungeonGenerator.LEVEL == 0){
+                    Navigation.INSTANCE.SetActive(false);
                     SceneManager.LoadScene("Town");
+
                 }else{
+                    FindObjectOfType<DungeonGenerator>().getLevel();
                     DungeonGenerator.LEVEL--;
                     Invoke("ResetPlayer", .1f);
                 }
@@ -103,7 +109,7 @@ public class EndTrigger : MonoBehaviour
         SceneManager.LoadScene("Battle");
         Destroy(spider);
         Navigation.INSTANCE.SetActive(false);
-        DungeonGenerator.SAVED_DUNGEON.SetActive(false);
+        // DungeonGenerator.SAVED_DUNGEON.SetActive(false);
     }
     private IEnumerator WaitForTownLoad()
     {

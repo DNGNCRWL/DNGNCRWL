@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using Random=UnityEngine.Random;
+using TMPro;
 public class DungeonGenerator : MonoBehaviour
 {
     public class Cell
@@ -40,6 +41,8 @@ public class DungeonGenerator : MonoBehaviour
     public GameObject spider;
     public Vector2Int size;
     public int startPos = 0;
+
+    public GameObject levelMessageWindow;
     public Rule[] rooms;
     public Rule[] saved;
     public Vector2 offset;
@@ -57,6 +60,7 @@ public class DungeonGenerator : MonoBehaviour
 
     public static int LEVEL = 0;
     public static List<Random.State> SEEDS = new List<Random.State>();
+    public static bool isSpider = true;
 
     //public Item key;
 
@@ -220,7 +224,7 @@ public class DungeonGenerator : MonoBehaviour
                 if (currentCell.visited)
                 {
 
-                    // int randomRoom = Random.Range(0, rooms.Length);
+                    int ran = Random.Range(0, rooms.Length);
                     int randomRoom = 0;
                     List<int> availableRooms = new List<int>();
                     for (int k = 0; k < rooms.Length; k++)
@@ -254,13 +258,16 @@ public class DungeonGenerator : MonoBehaviour
                         var newRoom = Instantiate(rooms[1].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
                         newRoom.UpdateRoom(currentCell.status);
                         newRoom.name += " " + i + "-" + j;
+                        if(isSpider){
+                            BuildMesh();
+                            GameObject spider = Instantiate(enemy, new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, newRoom.transform.position.z), Quaternion.identity, GENtransform);
+                            isSpider = false;
+                        }
                     }else if (i + 1 == size.x && j + 1 == size.y)
                     {
                         var newRoom = Instantiate(rooms[2].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
                         newRoom.UpdateRoom(currentCell.status);
                         newRoom.name += " " + i + "-" + j;
-                        BuildMesh();
-                        GameObject spider = Instantiate(enemy, new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, newRoom.transform.position.z), Quaternion.identity, GENtransform);
                         //FindObjectOfType<EndTrigger>().gameHasEnded = false;
 
                     }
@@ -470,6 +477,27 @@ public class DungeonGenerator : MonoBehaviour
         //GameObject.Destroy(spider.gameObject);
         //GameObject.Destroy(GameObject.FindWithTag("Spider").transform);
     }
+    public void LevelMessage(string message) {
+        levelMessageWindow.transform.GetChild(0).transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
+        // levelMessageWindow.SetActive(true);
+        // StartCoroutine(waiter());
+        // Debug.Log("hi");
+        // levelMessageWindow.SetActive(false);
+    }
+    public void getLevel() {
+        LevelMessage("Level "+ LEVEL.ToString());
+        StartCoroutine(waiter());
+        // this.levelMessage(LEVEL.ToString());
+    }
+
+  IEnumerator waiter()
+{
+
+    //Wait for 4 seconds
+    levelMessageWindow.SetActive(true);
+    yield return new WaitForSeconds(2f);
+    levelMessageWindow.SetActive(false);
+}
     //     public void GenEnd()
     // {
     //      for (int i = 0; i < rooms.Length; i++)
