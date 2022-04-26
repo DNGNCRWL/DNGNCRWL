@@ -141,7 +141,6 @@ public class TownManager : MonoBehaviour
 
     //Ensures party is not empty and enters the rest of the dungeon
     public void EnterDungeon() {
-        Debug.Log("hello");
         if (playerCharacters.Count > 0) {
             //FindObjectOfType<DungeonGenerator>().Start();
             SceneManager.LoadScene("DungeonGeneration", LoadSceneMode.Single);
