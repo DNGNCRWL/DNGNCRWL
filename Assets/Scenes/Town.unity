@@ -836,7 +836,7 @@ MonoBehaviour:
           m_MethodName: ToggleOff
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 142126921}
+            m_ObjectArgument: {fileID: 655266097}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -848,7 +848,7 @@ MonoBehaviour:
           m_MethodName: ToggleOff
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 547601465}
+            m_ObjectArgument: {fileID: 474835934}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -876,7 +876,7 @@ MonoBehaviour:
           m_MethodName: ToggleOn
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 142126921}
+            m_ObjectArgument: {fileID: 655266097}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -888,7 +888,7 @@ MonoBehaviour:
           m_MethodName: ToggleOn
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 547601465}
+            m_ObjectArgument: {fileID: 474835934}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -941,7 +941,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: Rest
+        m_MethodName: ResurrectChar
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14909,7 +14909,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -200.2, y: 109.2}
+  m_AnchoredPosition: {x: -356.8, y: 109.2}
   m_SizeDelta: {x: 249.99994, y: 51.67688}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &675614056
@@ -31615,7 +31615,7 @@ MonoBehaviour:
           m_MethodName: ToggleOff
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 1601390688}
+            m_ObjectArgument: {fileID: 462088636}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -31627,7 +31627,7 @@ MonoBehaviour:
           m_MethodName: ToggleOff
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 2117647783}
+            m_ObjectArgument: {fileID: 1266222015}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -31655,7 +31655,7 @@ MonoBehaviour:
           m_MethodName: ToggleOn
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 1601390688}
+            m_ObjectArgument: {fileID: 462088636}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -31667,7 +31667,7 @@ MonoBehaviour:
           m_MethodName: ToggleOn
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 2117647783}
+            m_ObjectArgument: {fileID: 1266222015}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -31720,7 +31720,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: Rest
+        m_MethodName: ResurrectChar
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -33476,7 +33476,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -200.2, y: -125.100006}
+  m_AnchoredPosition: {x: -356.8, y: -125.100006}
   m_SizeDelta: {x: 249.99994, y: 51.67688}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1568391851
@@ -35240,7 +35240,7 @@ MonoBehaviour:
           m_MethodName: ToggleOff
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 142126921}
+            m_ObjectArgument: {fileID: 655266097}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -35252,7 +35252,7 @@ MonoBehaviour:
           m_MethodName: ToggleOff
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 547601465}
+            m_ObjectArgument: {fileID: 474835934}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -35280,7 +35280,7 @@ MonoBehaviour:
           m_MethodName: ToggleOn
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 142126921}
+            m_ObjectArgument: {fileID: 655266097}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -35292,7 +35292,7 @@ MonoBehaviour:
           m_MethodName: ToggleOn
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 547601465}
+            m_ObjectArgument: {fileID: 474835934}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -35345,7 +35345,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: Rest
+        m_MethodName: ResurrectChar
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -37308,13 +37308,18 @@ MonoBehaviour:
   playerCharacters: []
   reserveCharacters: []
   deadCharacters: []
+  injuredCharsInParty: []
   recruitableCharacters: []
   restTiles:
   - {fileID: 1601390688}
   - {fileID: 2117647783}
   - {fileID: 142126921}
   - {fileID: 547601465}
-  resurrectTiles: []
+  resurrectTiles:
+  - {fileID: 462088636}
+  - {fileID: 1266222015}
+  - {fileID: 655266097}
+  - {fileID: 474835934}
   charMenuTiles:
   - {fileID: 173209503}
   - {fileID: 1282711566}
@@ -37677,7 +37682,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1716110360
 RectTransform:
   m_ObjectHideFlags: 0
@@ -38213,7 +38218,7 @@ MonoBehaviour:
           m_MethodName: ToggleOff
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 1601390688}
+            m_ObjectArgument: {fileID: 462088636}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -38225,7 +38230,7 @@ MonoBehaviour:
           m_MethodName: ToggleOff
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 2117647783}
+            m_ObjectArgument: {fileID: 1266222015}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -38253,7 +38258,7 @@ MonoBehaviour:
           m_MethodName: ToggleOn
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 1601390688}
+            m_ObjectArgument: {fileID: 462088636}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -38265,7 +38270,7 @@ MonoBehaviour:
           m_MethodName: ToggleOn
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 2117647783}
+            m_ObjectArgument: {fileID: 1266222015}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -38318,7 +38323,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1709150566}
         m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-        m_MethodName: Rest
+        m_MethodName: ResurrectChar
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

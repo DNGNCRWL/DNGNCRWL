@@ -98,6 +98,7 @@ public class TownManager : MonoBehaviour
         SetBuyForMenu();
         SelectSellFromCharacter(0);
         UpdateInjured();
+        UpdateRezInfo();
         silver = CalculateSilver();
     }
 
