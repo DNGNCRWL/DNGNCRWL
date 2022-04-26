@@ -18,7 +18,7 @@ public class TownManager : MonoBehaviour
     public List<CharacterSheet> playerCharacters;
     public List<CharacterSheet> reserveCharacters;
     public List<CharacterSheet> deadCharacters;
-    private List<CharacterSheet> injuredCharsInParty;
+    public List<CharacterSheet> injuredCharsInParty;
 
     //Recruitable Characters
     public List<CharacterSheet> recruitableCharacters;
@@ -171,7 +171,7 @@ public class TownManager : MonoBehaviour
                     SetInfo(tiles[i].transform.GetChild(1).gameObject, characters[i + pageNumber * 2]);
                 }
             } else {
-            tiles[i].SetActive(false);
+                tiles[i].SetActive(false);
             }
         } 
     }
@@ -212,27 +212,33 @@ public class TownManager : MonoBehaviour
     public void SetDead(CharacterSheet character) {
             deadCharacters.Add(character);
             playerCharacters.Remove(character);
+            UpdateRezInfo();
+    }
+
+    //
+    public void UpdateRezInfo() {
+        SetCharacterButtons(resurrectTiles, deadCharacters, false, true);
     }
 
     //
     public void ResurrectChar(int index) {
-        GameObject character = deadCharacters[index].transform.gameObject;
-        CharacterSheet charSheet = character.GetComponent<CharacterSheet>();
-        character.transform.parent = GMTransform;
-        recruitableCharacters.Remove(charSheet);
-        if (playerCharacters.Count < 4) {
-            playerCharacters.Add(charSheet);
-            SelectSellFromCharacter(0);
-        } else {
-            reserveCharacters.Add(charSheet);
-        }
-        silver = CalculateSilver();
-        SetCharInfo();
-        SetReserveCharInfo();
-        SetRecCharInfo();
-        SetBuyForMenu();
-        SetStoreInfo();
-        UpdateInjured();
+        // GameObject character = deadCharacters[index].transform.gameObject;
+        // CharacterSheet charSheet = character.GetComponent<CharacterSheet>();
+        // character.transform.parent = GMTransform;
+        // recruitableCharacters.Remove(charSheet);
+        // if (playerCharacters.Count < 4) {
+        //     playerCharacters.Add(charSheet);
+        //     SelectSellFromCharacter(0);
+        // } else {
+        //     reserveCharacters.Add(charSheet);
+        // }
+        // silver = CalculateSilver();
+        // SetCharInfo();
+        // SetReserveCharInfo();
+        // SetRecCharInfo();
+        // SetBuyForMenu();
+        // SetStoreInfo();
+        // UpdateInjured();
     }
 
     
