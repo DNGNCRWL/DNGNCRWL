@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class UI_Chest : MonoBehaviour
 {
 
     public static UI_Chest UI_CHEST;
 
-    private Transform charSlotContainer;
+    private Transform itemSlotContainer;
+    public GameObject itemSlotTemplate;
+    private List<Item> chestItems = new List<Item>();
 
     private bool shownState = false;
 
@@ -22,10 +25,6 @@ public class UI_Chest : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        charSlotContainer = transform.Find("CharSlotContainer");
-        CloseChestUI();
-        //Debug.Log("UI_PartyMenuAwake");
     }
     private void Start() {
         
@@ -33,13 +32,12 @@ public class UI_Chest : MonoBehaviour
 
     public void OpenChestUI()
     {
-        // Debug.Log("setting Active!");
         gameObject.SetActive(true);
         shownState = true;
-        //Debug.Log("Open Party Menu");
     }
     public void CloseChestUI(){
         gameObject.SetActive(false);
         shownState = false;
     }
+
 }

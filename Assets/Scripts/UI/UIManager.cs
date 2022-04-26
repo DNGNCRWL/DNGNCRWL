@@ -87,5 +87,21 @@ public class UIManager : MonoBehaviour
             Debug.Log("Exit Key Pressed");
             SceneManager.LoadScene("Town", LoadSceneMode.Additive);
         }
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            //FindObjectOfType<UI_ChestDisplay>().OpenChestDisplayUI();
+                // if (UI_ChestDisplay.UI_CHESTDISPLAY == null) {
+                //     Debug.Log("NULL!");
+                //     UI_ChestDisplay chestdisp = null;
+                // var canvases = Resources.FindObjectsOfTypeAll<UI_ChestDisplay>();
+                // if (canvases.Length > 0)
+                //     chestdisp = canvases[0];
+
+                // if (chestdisp != null){
+                //     Debug.Log("OPENEEEEEEUP!");
+                //     chestdisp.OpenChestDisplayUI();
+                // }
+                // }
+        }
     }
 }

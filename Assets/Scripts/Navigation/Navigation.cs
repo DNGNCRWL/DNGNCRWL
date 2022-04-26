@@ -184,8 +184,21 @@ public class Navigation : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.F))
                 {
                     Debug.Log("OPEN DA CHEST!~");
-                    // Chest.CHEST.fillChest();
+                    //Chest.CHEST.fillChest();
                     FindObjectOfType<Chest>().fillChest();
+                    //FindObjectOfType<UI_ChestDisplay>().OpenChestDisplayUI();
+                    if (UI_ChestDisplay.UI_CHESTDISPLAY == null) {
+                        Debug.Log("NULL!");
+                        UI_ChestDisplay chestdisp = null;
+                        var canvases = Resources.FindObjectsOfTypeAll<UI_ChestDisplay>();
+                        if (canvases.Length > 0)
+                            chestdisp = canvases[0];
+
+                        if (chestdisp != null){
+                            Debug.Log("OPENEEEEEEUP!");
+                            chestdisp.OpenChestDisplayUI();
+                        }
+                    }
 
                     // if (UI_Chest.UI_CHEST == null) {
                     //     UI_Chest chest = null;
