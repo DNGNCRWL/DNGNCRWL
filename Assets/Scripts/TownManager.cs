@@ -211,9 +211,18 @@ public class TownManager : MonoBehaviour
 
     //
     public void SetDead(CharacterSheet character) {
-            deadCharacters.Add(character);
-            playerCharacters.Remove(character);
-            UpdateRezInfo();
+            if (playerCharacters.Remove(character)) {
+                deadCharacters.Add(character);
+                character.transform.parent = TMTransform;
+                SetCharInfo();
+                SetReserveCharInfo();
+                SetRecCharInfo();
+                SetBuyForMenu();
+                SetStoreInfo();
+                UpdateInjured();
+                UpdateRezInfo();
+                silver = CalculateSilver();
+            }
     }
 
     //
@@ -223,23 +232,24 @@ public class TownManager : MonoBehaviour
 
     //
     public void ResurrectChar(int index) {
-        // GameObject character = deadCharacters[index].transform.gameObject;
-        // CharacterSheet charSheet = character.GetComponent<CharacterSheet>();
-        // character.transform.parent = GMTransform;
-        // recruitableCharacters.Remove(charSheet);
-        // if (playerCharacters.Count < 4) {
-        //     playerCharacters.Add(charSheet);
-        //     SelectSellFromCharacter(0);
-        // } else {
-        //     reserveCharacters.Add(charSheet);
-        // }
-        // silver = CalculateSilver();
-        // SetCharInfo();
-        // SetReserveCharInfo();
-        // SetRecCharInfo();
-        // SetBuyForMenu();
-        // SetStoreInfo();
-        // UpdateInjured();
+        GameObject character = deadCharacters[index].transform.gameObject;
+        CharacterSheet charSheet = character.GetComponent<CharacterSheet>();
+        character.transform.parent = GMTransform;
+        deadCharacters.Remove(charSheet);
+        if (playerCharacters.Count < 4) {
+            playerCharacters.Add(charSheet);
+            SelectSellFromCharacter(0);
+        } else {
+            reserveCharacters.Add(charSheet);
+        }
+        silver = CalculateSilver();
+        SetCharInfo();
+        SetReserveCharInfo();
+        SetRecCharInfo();
+        SetBuyForMenu();
+        SetStoreInfo();
+        UpdateInjured();
+        UpdateRezInfo();
     }
 
     
