@@ -154,6 +154,9 @@ public class TownManager : MonoBehaviour
     //General method to set any character button in town menu
     private void SetCharacterButtons(List<GameObject> tiles, List<CharacterSheet> characters, bool reserveInfo, bool restInfo) {
         for (int i = 0; i < tiles.Count; ++i) {
+            int index;
+            if (reserveInfo) index = i + (pageNumber * 2);
+            else index = i;
             if (reserveInfo && (i + (pageNumber * 2) < characters.Count) || !reserveInfo && (i < characters.Count)) {
                 SetImage(tiles[i].transform.GetChild(0).gameObject, characters[i]);
                 tiles[i].SetActive(true);
@@ -162,8 +165,11 @@ public class TownManager : MonoBehaviour
                 infoTile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = characters[i].GetCharacterName();
                 infoTile.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Hit Points: " + characters[i].GetHitPoints().ToString();
                 infoTile.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Max HP: " + characters[i].GetMaxHitPoints().ToString();
-                } else {
+                } else if (!reserveInfo){
                     SetInfo(tiles[i].transform.GetChild(1).gameObject, characters[i]);
+                } else {
+                    SetImage(tiles[i].transform.GetChild(0).gameObject, characters[i + pageNumber * 2]);
+                    SetInfo(tiles[i].transform.GetChild(1).gameObject, characters[i + pageNumber * 2]);
                 }
             } else {
             tiles[i].SetActive(false);

@@ -7,7 +7,9 @@ using DG.Tweening;
 public class Navigation : MonoBehaviour
 {
     static readonly int blockSize = 4;
-
+    public float sightRange;
+    public bool isInRange;
+    public LayerMask whatIsChest;
     public float moveTime;
     public float rotateTime;
     public bool calculateSpeeds;
@@ -39,6 +41,8 @@ public class Navigation : MonoBehaviour
     public static GameObject INSTANCE;
 
     public EnemyEncounter[] enemy_encounters;
+
+    public GameObject chestHud;
 
     public Color fog;
 
@@ -76,7 +80,7 @@ public class Navigation : MonoBehaviour
             transform.eulerAngles = new Vector3Int(0, SAVE_ROTATION_Y, 0);
         }
         //EndTrigger.STAIRCOLLISION = false;
-        //transform.position = new Vector3Int(0, 1, 0);
+        transform.position = new Vector3Int(0, 1, 0);
 
         SetRandomSteps();
         CalculateSpeeds();
@@ -175,7 +179,45 @@ public class Navigation : MonoBehaviour
             SetRandomSteps();
             INSTANCE.SetActive(false);
             //set inactive
-        } 
+        }
+        isInRange = Physics.CheckSphere(transform.position, sightRange, whatIsChest);
+        if(isInRange){
+            UI_Chest.UI_CHEST.OpenChestUI();
+            if (Input.GetKeyDown(KeyCode.F))
+                {
+                    Debug.Log("OPEN DA CHEST!~");
+                    //Chest.CHEST.fillChest();
+                    FindObjectOfType<Chest>().fillChest();
+                    //FindObjectOfType<UI_ChestDisplay>().OpenChestDisplayUI();
+                    if (UI_ChestDisplay.UI_CHESTDISPLAY == null) {
+                        Debug.Log("NULL!");
+                        UI_ChestDisplay chestdisp = null;
+                        var canvases = Resources.FindObjectsOfTypeAll<UI_ChestDisplay>();
+                        if (canvases.Length > 0)
+                            chestdisp = canvases[0];
+
+                        if (chestdisp != null){
+                            Debug.Log("OPENEEEEEEUP!");
+                            chestdisp.OpenChestDisplayUI();
+                        }
+                    }
+
+                    // if (UI_Chest.UI_CHEST == null) {
+                    //     UI_Chest chest = null;
+                    //     var canvases = Resources.FindObjectsOfTypeAll<UI_Chest>();
+                    //     if (canvases.Length > 0)
+                    //         chest = canvases[0];
+
+                    //     if (chest != null) {
+                    //         FindObjectOfType<UI_Chest>().OpenChestUI();
+                    //     }
+                    //}
+                }
+            //FindObjectOfType<Chest>().fillChest();
+        }else{
+            UI_Chest.UI_CHEST.CloseChestUI();
+        }
+
         GetInputTaps();
         GetInputHolds();
         GetInputBooleans();

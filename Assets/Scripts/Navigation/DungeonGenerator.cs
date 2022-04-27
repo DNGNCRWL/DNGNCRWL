@@ -74,6 +74,7 @@ public class DungeonGenerator : MonoBehaviour
     {
         Debug.Log("back to start! LEVEL = " + LEVEL);
         //Navigation.INSTANCE.SetActive(false);
+        
         if(EndTrigger.UPSTAIRCOLLISION){
             Debug.Log("upstair!");
             //SAVED_DUNGEON = gameObject;
@@ -224,7 +225,8 @@ public class DungeonGenerator : MonoBehaviour
                 if (currentCell.visited)
                 {
 
-                    int ran = Random.Range(0, rooms.Length);
+                    int ran = Random.Range(2, rooms.Length);
+                    int ranSpider = Random.Range(0, tBoard.Count);
                     int randomRoom = 0;
                     List<int> availableRooms = new List<int>();
                     for (int k = 0; k < rooms.Length; k++)
@@ -253,19 +255,25 @@ public class DungeonGenerator : MonoBehaviour
                             randomRoom = 0;
                         }
                     }
-                    if(tBoard.Contains(i + j * size.x) && !(i + 1 == size.x && j + 1 == size.y)){
-                       
-                        var newRoom = Instantiate(rooms[1].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
+
+                    if(i==0 && j==0){
+                        var newRoom = Instantiate(rooms[0].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
                         newRoom.UpdateRoom(currentCell.status);
                         newRoom.name += " " + i + "-" + j;
-                        if(isSpider){
+                    }else if(tBoard.Contains(i + j * size.x) && !(i + 1 == size.x && j + 1 == size.y)){
+                        var newRoom = Instantiate(rooms[ran].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
+                        newRoom.UpdateRoom(currentCell.status);
+                        newRoom.name += " " + i + "-" + j;
+                        ranSpider--;
+                        if(isSpider && ranSpider == 0){
+                            Debug.Log("tboard test");
                             BuildMesh();
                             GameObject spider = Instantiate(enemy, new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, newRoom.transform.position.z), Quaternion.identity, GENtransform);
                             isSpider = false;
                         }
                     }else if (i + 1 == size.x && j + 1 == size.y)
                     {
-                        var newRoom = Instantiate(rooms[2].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
+                        var newRoom = Instantiate(rooms[3].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
                         newRoom.UpdateRoom(currentCell.status);
                         newRoom.name += " " + i + "-" + j;
                         //FindObjectOfType<EndTrigger>().gameHasEnded = false;
@@ -273,7 +281,7 @@ public class DungeonGenerator : MonoBehaviour
                     }
                     else
                     {
-                        var newRoom = Instantiate(rooms[randomRoom].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
+                        var newRoom = Instantiate(rooms[1].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
                         newRoom.UpdateRoom(currentCell.status);
                         newRoom.name += " " + i + "-" + j;
                     }
@@ -487,6 +495,17 @@ public class DungeonGenerator : MonoBehaviour
     public void getLevel() {
         LevelMessage("Level "+ LEVEL.ToString());
         StartCoroutine(waiter());
+        // this.levelMessage(LEVEL.ToString());
+    }
+    public void setSizeUp() {
+        size.x = size.x + 2;
+        size.y = size.y + 2;
+        // this.levelMessage(LEVEL.ToString());
+    }
+
+        public void setSizeDown() {
+        size.x = size.x - 2;
+        size.y = size.y - 2;
         // this.levelMessage(LEVEL.ToString());
     }
 
