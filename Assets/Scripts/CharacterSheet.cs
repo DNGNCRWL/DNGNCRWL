@@ -201,6 +201,10 @@ public class CharacterSheet : MonoBehaviour //can probably remove this as a mono
         sneaking = false;
     }
 
+    public void ResetStateFromDead() {
+        if (this.IsDead()) currentState = State.Active;
+    }
+
     //On with the show
     public void MakeItemCopies(){
 

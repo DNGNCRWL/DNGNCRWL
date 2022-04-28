@@ -110,6 +110,8 @@ public class TownManager : MonoBehaviour
     //Makes given object active
     public void ToggleOn(GameObject target) {
         target.SetActive(true);
+        UpdateInjured();
+        UpdateRezInfo();
     }
 
     //Makes given object not active
@@ -209,7 +211,7 @@ public class TownManager : MonoBehaviour
         UpdateRestInfo();
     }
 
-    //
+    //sets a given character to being dead (transfers them to dead list, and GameObject to townmanager to be removed on load)
     public void SetDead(CharacterSheet character) {
             if (playerCharacters.Remove(character)) {
                 deadCharacters.Add(character);
@@ -225,15 +227,16 @@ public class TownManager : MonoBehaviour
             }
     }
 
-    //
+    //Updates tiles within the resurrect menu
     public void UpdateRezInfo() {
         SetCharacterButtons(resurrectTiles, deadCharacters, false, true);
     }
 
-    //
+    //resurrects a character(transfers them to available spot in char list, and GameObject back to GM)
     public void ResurrectChar(int index) {
         GameObject character = deadCharacters[index].transform.gameObject;
         CharacterSheet charSheet = character.GetComponent<CharacterSheet>();
+        GetPayment(100);
         character.transform.parent = GMTransform;
         deadCharacters.Remove(charSheet);
         if (playerCharacters.Count < 4) {
@@ -242,6 +245,8 @@ public class TownManager : MonoBehaviour
         } else {
             reserveCharacters.Add(charSheet);
         }
+        charSheet.RecoverDamage(new Damage(50, 20, 10, DamageType.Untyped));
+        charSheet.ResetStateFromDead();
         silver = CalculateSilver();
         SetCharInfo();
         SetReserveCharInfo();
