@@ -13,6 +13,8 @@ public class EndTrigger : MonoBehaviour
     public GameObject spider;
     public static bool UPSTAIRCOLLISION;
     public static bool DOWNSTAIRCOLLISION;
+
+    public static bool BOSSBOOL;
     //private float delay = 10f;
     //private float timeElapsed;
     public void OnTriggerEnter(Collider collider)
@@ -122,4 +124,5 @@ public class EndTrigger : MonoBehaviour
         Navigation.INSTANCE.SetActive(false); 
         Debug.Log("setting inactive");
     }
+    
 }

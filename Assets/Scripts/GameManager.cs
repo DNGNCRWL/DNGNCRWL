@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour {
 
     }
     public static void Reset() {
-        Navigation.Clear();
+        // Navigation.Clear();
         GM.playerCharacters.Clear();
         GM.reserveCharacters.Clear();
     }
@@ -199,7 +199,10 @@ public class GameManager : MonoBehaviour {
             charSheet.gameObject.SetActive(b);
     }
     public static void GameOver() {
-        Navigation.INSTANCE.transform.position = new Vector3(0,1,0);
+        // Navigation.INSTANCE.transform.position = new Vector3(0,1,0);
+        DungeonGenerator.isSpider = true;
+        GameObject gameOverMenu = GameObject.FindWithTag("GameOver").transform.GetChild(0).gameObject;
+        gameOverMenu.SetActive(true);
         SceneManager.LoadScene("Title", LoadSceneMode.Single);
         Reset();
     }
