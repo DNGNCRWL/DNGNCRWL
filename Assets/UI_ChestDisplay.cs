@@ -21,6 +21,7 @@ public class UI_ChestDisplay : MonoBehaviour
         if (UI_CHESTDISPLAY == null) {
             UI_CHESTDISPLAY= this;
         } else {
+            Debug.Log("destroying!");
             Destroy(gameObject);
         }
 

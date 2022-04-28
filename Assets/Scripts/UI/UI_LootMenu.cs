@@ -32,6 +32,8 @@ public class UI_LootMenu : MonoBehaviour
     private Transform CharName4;
     private Transform SlotLimit4;
 
+
+
     private void Awake() {
         if (UI_LOOTMENU == null) {
             UI_LOOTMENU = this;
@@ -132,7 +134,7 @@ public class UI_LootMenu : MonoBehaviour
 
 
                 x++;
-                if (x > 6) {
+                if (x > 4) {
                     x = 0;
                     y++;
                 }
@@ -446,12 +448,12 @@ public class UI_LootMenu : MonoBehaviour
         }
     }
     public void CloseLootUI() {
+        
         foreach (CharacterSheet c in GameManager.GM.playerCharacters) {
             c.inventory.OnItemListChanged -= CharInventory_OnItemListChanged;
         }
 
         gameObject.SetActive(false);
-
         if (UI_ContextMenu.UI_CONTEXTMENU != null) {
             UI_ContextMenu.UI_CONTEXTMENU.HideContextMenu();
         }

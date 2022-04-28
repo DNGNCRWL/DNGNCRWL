@@ -16,7 +16,6 @@ public class UI_Chest : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("CHEST WOKE");
         if (UI_CHEST == null)
         {
             UI_CHEST = this;
