@@ -1156,6 +1156,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Menu Button (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 8913313971565300784, guid: c18e98ff08e5a754797d71c43cc8f3db, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8913313971565300790, guid: c18e98ff08e5a754797d71c43cc8f3db, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -6770,6 +6774,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Menu Button (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8913313971565300784, guid: c18e98ff08e5a754797d71c43cc8f3db, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8913313971565300790, guid: c18e98ff08e5a754797d71c43cc8f3db, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -10249,6 +10257,10 @@ PrefabInstance:
     - target: {fileID: 8913313971565300784, guid: c18e98ff08e5a754797d71c43cc8f3db, type: 3}
       propertyPath: m_Name
       value: Menu Button (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8913313971565300784, guid: c18e98ff08e5a754797d71c43cc8f3db, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8913313971565300790, guid: c18e98ff08e5a754797d71c43cc8f3db, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
