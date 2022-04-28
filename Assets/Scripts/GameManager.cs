@@ -189,8 +189,6 @@ public class GameManager : MonoBehaviour {
 
     //SCENE NAVIGATION
     public static void GoToDungeonNavigation() {
-        FindObjectOfType<Navigation>().SetState();
-        Navigation.INSTANCE.SetActive(true);
         SceneManager.LoadScene("DungeonGeneration");
         PartySetActive(false);
         Debug.Log("Load DungeonGeneration");

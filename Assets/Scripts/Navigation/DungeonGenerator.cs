@@ -216,6 +216,7 @@ public class DungeonGenerator : MonoBehaviour
 
         Rule[] GenerateDungeon(GameObject enemy)
     {
+        int ranSpider = Random.Range(0, tBoard.Count);
         for (int i = 0; i < size.x; i++)
         {
             for (int j = 0; j < size.y; j++)
@@ -226,7 +227,6 @@ public class DungeonGenerator : MonoBehaviour
                 {
 
                     int ran = Random.Range(2, rooms.Length);
-                    int ranSpider = Random.Range(0, tBoard.Count);
                     int randomRoom = 0;
                     List<int> availableRooms = new List<int>();
                     for (int k = 0; k < rooms.Length; k++)
@@ -264,13 +264,15 @@ public class DungeonGenerator : MonoBehaviour
                         var newRoom = Instantiate(rooms[ran].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
                         newRoom.UpdateRoom(currentCell.status);
                         newRoom.name += " " + i + "-" + j;
-                        ranSpider--;
+                        Debug.Log("ran spider" + ranSpider);
+                        Debug.Log("t board" + tBoard.Count);
                         if(isSpider && ranSpider == 0){
                             Debug.Log("tboard test");
                             BuildMesh();
                             GameObject spider = Instantiate(enemy, new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, newRoom.transform.position.z), Quaternion.identity, GENtransform);
                             isSpider = false;
                         }
+                        ranSpider--;
                     }else if (i + 1 == size.x && j + 1 == size.y)
                     {
                         var newRoom = Instantiate(rooms[3].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
