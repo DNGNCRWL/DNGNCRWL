@@ -14,6 +14,7 @@ public class EndTrigger : MonoBehaviour
     public static bool UPSTAIRCOLLISION;
     public static bool DOWNSTAIRCOLLISION;
 
+    public static bool BOSSBOOL;
     public static bool TEAMWIN;
     //private float delay = 10f;
     //private float timeElapsed;
@@ -30,6 +31,9 @@ public class EndTrigger : MonoBehaviour
             if (gameObject.name.Equals("stairwell") && !collider.isTrigger)
             {
                 if(DungeonGenerator.keys[DungeonGenerator.LEVEL]){
+                    
+                    FindObjectOfType<DungeonGenerator>().setSizeUp();
+                    FindObjectOfType<DungeonGenerator>().getLevel();
                     collider.isTrigger=false;
                     UPSTAIRCOLLISION = true;
                     Debug.Log("stair!");
@@ -46,9 +50,14 @@ public class EndTrigger : MonoBehaviour
                 DOWNSTAIRCOLLISION = true;
 
                 if(DungeonGenerator.LEVEL == 0){
+                    Navigation.INSTANCE.SetActive(false);
                     SceneManager.LoadScene("Town");
+
                 }else{
+                    FindObjectOfType<DungeonGenerator>().getLevel();
+                    FindObjectOfType<DungeonGenerator>().setSizeDown();
                     DungeonGenerator.LEVEL--;
+                    // FindObjectOfType<DungeonGenerator>().setSizeDown();
                     Invoke("ResetPlayer", .1f);
                 }
 
@@ -90,7 +99,7 @@ public class EndTrigger : MonoBehaviour
         SceneManager.LoadScene("Battle");
         Destroy(spider);
         Navigation.INSTANCE.SetActive(false);
-        DungeonGenerator.SAVED_DUNGEON.SetActive(false);
+        // DungeonGenerator.SAVED_DUNGEON.SetActive(false);
     }
     private IEnumerator WaitForTownLoad()
     {
@@ -114,4 +123,5 @@ public class EndTrigger : MonoBehaviour
         Navigation.INSTANCE.SetActive(false); 
         Debug.Log("setting inactive");
     }
+    
 }

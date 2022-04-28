@@ -33,6 +33,7 @@ public class Navigation : MonoBehaviour
     public bool useFog;
 
     static Vector3Int SAVE_POSITION = new Vector3Int(0,1,0);
+    Vector3 lastPos;
     static int SAVE_ROTATION_Y;
 
     private Vector3 testPos;
@@ -54,7 +55,7 @@ public class Navigation : MonoBehaviour
     private void Awake()
     {
         state = State.Idle;
-        DontDestroyOnLoad(this.gameObject);
+        // DontDestroyOnLoad(this.gameObject);
         if(INSTANCE == null)
         {
             INSTANCE = gameObject;
@@ -171,6 +172,7 @@ public class Navigation : MonoBehaviour
 
     void Update()
     {
+        lastPos = transform.position;
         if(steps == 0)
         {
             StartEncounter(enemy_encounters[Random.Range(0,enemy_encounters.Length)]);
@@ -237,7 +239,7 @@ public class Navigation : MonoBehaviour
 
     IEnumerator Move(Vector3Int move)//float distance)
     {
-        steps--;
+         
         actionQueue.RemoveAt(0);
 
         bool blocked = Physics.Raycast(transform.position, move, blockSize);
@@ -246,6 +248,7 @@ public class Navigation : MonoBehaviour
             yield break;
 
         state = State.Moving;
+        steps--;
 
         //transform.DOMove(transform.position + move, moveTime);
 
@@ -355,15 +358,19 @@ public class Navigation : MonoBehaviour
         steps = Random.Range(steps_min, steps_max + 1);
     }
 
-    public static void Respawn()
+    public void respawn()
     {
-        Navigation.INSTANCE.SetActive(true);
-        Navigation.INSTANCE.transform.position = new Vector3(0,1,0);
-        Navigation.INSTANCE.SetActive(false);
+        transform.position = new Vector3(0, 1, 0);
     }
 
-    // public void Clear()
-    // {
-    //     Destroy(GameObject);
-    // }
+    public static void Clear()
+    {
+        // Navigation.INSTANCE.SetActive(true);
+        Navigation.INSTANCE.transform.position = new Vector3(0,1,0);
+        // Navigation.INSTANCE.SetActive(false);
+    }
+    public void SetState()
+    {
+        state = State.Idle;
+    }
 }

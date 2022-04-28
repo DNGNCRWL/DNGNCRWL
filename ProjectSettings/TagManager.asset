@@ -12,6 +12,7 @@ TagManager:
   - test
   - EndRoom
   - Chest
+  - GameOver
   layers:
   - Default
   - TransparentFX
