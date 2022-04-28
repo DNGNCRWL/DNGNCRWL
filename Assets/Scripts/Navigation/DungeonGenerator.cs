@@ -56,6 +56,8 @@ public class DungeonGenerator : MonoBehaviour
     const int initialSeed = 1234;
 
     public static int LEVEL = 0;
+
+    public static List<bool> keys = new List<bool>(){false};
     public static List<Random.State> SEEDS = new List<Random.State>();
 
     //public Item key;
@@ -249,8 +251,12 @@ public class DungeonGenerator : MonoBehaviour
                             randomRoom = 0;
                         }
                     }
-                    if(tBoard.Contains(i + j * size.x) && !(i + 1 == size.x && j + 1 == size.y)){
-                       
+
+                    if(i==0 && j==0){
+                        var newRoom = Instantiate(rooms[2].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
+                        newRoom.UpdateRoom(currentCell.status);
+                        newRoom.name += " " + i + "-" + j;
+                    }else if(tBoard.Contains(i + j * size.x) && !(i + 1 == size.x && j + 1 == size.y)){
                         var newRoom = Instantiate(rooms[1].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
                         newRoom.UpdateRoom(currentCell.status);
                         newRoom.name += " " + i + "-" + j;
