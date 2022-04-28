@@ -50,8 +50,15 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start() {
-
+        
     }
+
+    private void Update() {
+        if(Input.GetKeyDown("escape")) {
+            ToggleEscapeMenu();
+        }
+    }
+
     public static void Reset() {
         // Navigation.Clear();
         GM.playerCharacters.Clear();
@@ -212,6 +219,16 @@ public class GameManager : MonoBehaviour {
             if(character.PickupItem(loot)) return true;
         }
         return false;
+    }
+
+    public static void ToggleEscapeMenu() {
+        GameObject escapeMenu = GameObject.FindWithTag("EscapeMenu").transform.GetChild(0).gameObject;
+        escapeMenu.SetActive(!escapeMenu.activeSelf);
+
+    }
+
+    public static void QuitGame() {
+        Application.Quit();
     }
 
 }
