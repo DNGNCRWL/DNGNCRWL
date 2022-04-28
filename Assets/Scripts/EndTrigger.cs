@@ -32,12 +32,12 @@ public class EndTrigger : MonoBehaviour
             {
                 if(DungeonGenerator.keys[DungeonGenerator.LEVEL]){
                     DungeonGenerator.isSpider = true;
+                    DungeonGenerator.LEVEL++;
                     FindObjectOfType<DungeonGenerator>().setSizeUp();
                     FindObjectOfType<DungeonGenerator>().getLevel();
                     collider.isTrigger=false;
                     UPSTAIRCOLLISION = true;
                     Debug.Log("stair!");
-                    DungeonGenerator.LEVEL++;
                     Invoke("ResetPlayer", .1f);
                     return;
                 }else{
@@ -54,9 +54,10 @@ public class EndTrigger : MonoBehaviour
                     SceneManager.LoadScene("Town");
 
                 }else{
+                    DungeonGenerator.LEVEL--;
                     FindObjectOfType<DungeonGenerator>().getLevel();
                     FindObjectOfType<DungeonGenerator>().setSizeDown();
-                    DungeonGenerator.LEVEL--;
+                    
                     // FindObjectOfType<DungeonGenerator>().setSizeDown();
                     Invoke("ResetPlayer", .1f);
                 }
