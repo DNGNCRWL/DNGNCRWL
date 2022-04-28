@@ -13,6 +13,8 @@ public class EndTrigger : MonoBehaviour
     public GameObject spider;
     public static bool UPSTAIRCOLLISION;
     public static bool DOWNSTAIRCOLLISION;
+
+    public static bool TEAMWIN;
     //private float delay = 10f;
     //private float timeElapsed;
     public void OnTriggerEnter(Collider collider)
@@ -27,12 +29,16 @@ public class EndTrigger : MonoBehaviour
             // }
             if (gameObject.name.Equals("stairwell") && !collider.isTrigger)
             {
-                collider.isTrigger=false;
-                UPSTAIRCOLLISION = true;
-                Debug.Log("stair!");
-                DungeonGenerator.LEVEL++;
-                Invoke("ResetPlayer", .1f);
-
+                if(DungeonGenerator.keys[DungeonGenerator.LEVEL]){
+                    collider.isTrigger=false;
+                    UPSTAIRCOLLISION = true;
+                    Debug.Log("stair!");
+                    DungeonGenerator.LEVEL++;
+                    Invoke("ResetPlayer", .1f);
+                    return;
+                }else{
+                    Debug.Log("YOU DONT HAVE THE KEY!");
+                }
                 return;
             }
             if (gameObject.name.Equals("downstairwell"))
@@ -51,9 +57,10 @@ public class EndTrigger : MonoBehaviour
             }
             if (gameObject.name.Equals("remodel_tarantula(export) Variant(Clone)"))
             {
+                DungeonGenerator.keys[DungeonGenerator.LEVEL] = true;
+                DungeonGenerator.keys.Add(false);
                 EnemyEncounter boss_encounter = boss_encounters[Random.Range(0, boss_encounters.Length)];
                 BattleManager.SetENEMY_ENCOUNTER(boss_encounter);
-
                 StartCoroutine(WaitForSceneLoad());
 
                 Debug.Log("passed if");

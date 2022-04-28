@@ -56,6 +56,8 @@ public class DungeonGenerator : MonoBehaviour
     const int initialSeed = 1234;
 
     public static int LEVEL = 0;
+
+    public static List<bool> keys = new List<bool>(){false};
     public static List<Random.State> SEEDS = new List<Random.State>();
 
     //public Item key;
