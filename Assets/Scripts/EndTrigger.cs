@@ -31,7 +31,7 @@ public class EndTrigger : MonoBehaviour
             if (gameObject.name.Equals("stairwell") && !collider.isTrigger)
             {
                 if(DungeonGenerator.keys[DungeonGenerator.LEVEL]){
-                    
+                    DungeonGenerator.isSpider = true;
                     FindObjectOfType<DungeonGenerator>().setSizeUp();
                     FindObjectOfType<DungeonGenerator>().getLevel();
                     collider.isTrigger=false;
