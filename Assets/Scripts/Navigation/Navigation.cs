@@ -183,35 +183,24 @@ public class Navigation : MonoBehaviour
             UI_Chest.UI_CHEST.OpenChestUI();
             if (Input.GetKeyDown(KeyCode.F))
                 {
+                    UI_Chest.UI_CHEST.CloseChestUI();
                     Debug.Log("OPEN DA CHEST!~");
-                    //Chest.CHEST.fillChest();
                     FindObjectOfType<Chest>().fillChest();
-                    //FindObjectOfType<UI_ChestDisplay>().OpenChestDisplayUI();
-                    if (UI_ChestDisplay.UI_CHESTDISPLAY == null) {
-                        Debug.Log("NULL!");
-                        UI_ChestDisplay chestdisp = null;
-                        var canvases = Resources.FindObjectsOfTypeAll<UI_ChestDisplay>();
+
+                    if (UI_LootMenu.UI_LOOTMENU == null) {
+                        UI_LootMenu lootMenu = null;
+                        var canvases = Resources.FindObjectsOfTypeAll<UI_LootMenu>();
                         if (canvases.Length > 0)
-                            chestdisp = canvases[0];
+                        lootMenu = canvases[0];
 
-                        if (chestdisp != null){
-                            Debug.Log("OPENEEEEEEUP!");
-                            chestdisp.OpenChestDisplayUI();
-                        }
+                        if (lootMenu != null)
+                        lootMenu.OpenLootUI();
                     }
+                    Inventory tmp = FindObjectOfType<Chest>().getChestInventory(Navigation.INSTANCE.transform.position);
+                    UI_LootMenu.UI_LOOTMENU.SetInventory(tmp);
+                    UI_LootMenu.UI_LOOTMENU.OpenLootUI();
 
-                    // if (UI_Chest.UI_CHEST == null) {
-                    //     UI_Chest chest = null;
-                    //     var canvases = Resources.FindObjectsOfTypeAll<UI_Chest>();
-                    //     if (canvases.Length > 0)
-                    //         chest = canvases[0];
-
-                    //     if (chest != null) {
-                    //         FindObjectOfType<UI_Chest>().OpenChestUI();
-                    //     }
-                    //}
                 }
-            //FindObjectOfType<Chest>().fillChest();
         }else{
             UI_Chest.UI_CHEST.CloseChestUI();
         }
