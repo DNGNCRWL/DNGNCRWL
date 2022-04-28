@@ -1293,11 +1293,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3819049138370474020, guid: 6248399d9fc64534aa2e2a6e7bf7464d, type: 3}
       propertyPath: steps_max
-      value: 2222
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 3819049138370474020, guid: 6248399d9fc64534aa2e2a6e7bf7464d, type: 3}
       propertyPath: steps_min
-      value: 111
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 3819049138370474020, guid: 6248399d9fc64534aa2e2a6e7bf7464d, type: 3}
       propertyPath: enemy_encounters.Array.size
