@@ -11,6 +11,8 @@ TagManager:
   - Navigator 1
   - test
   - EndRoom
+  - Chest
+  - GameOver
   - EscapeMenu
   layers:
   - Default
@@ -19,7 +21,7 @@ TagManager:
   - whatIsPlayer
   - Water
   - UI
-  - 
+  - whatIsChest
   - 
   - 
   - 
