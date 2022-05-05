@@ -76,11 +76,12 @@ public class DungeonGenerator : MonoBehaviour
     {
         Debug.Log("back to start! LEVEL = " + LEVEL);
         //Navigation.INSTANCE.SetActive(false);
-        
+        Navigation.INSTANCE.SetActive(true);
+        SceneManager.MoveGameObjectToScene(Navigation.INSTANCE, SceneManager.GetActiveScene());
         if(EndTrigger.UPSTAIRCOLLISION){
             Debug.Log("upstair!");
             //SAVED_DUNGEON = gameObject;
-            Navigation.INSTANCE.SetActive(true);
+            // Navigation.INSTANCE.SetActive(true);
             Debug.Log("NAV?? " + Navigation.INSTANCE);
             Navigation.INSTANCE.transform.position = new Vector3(0,1,0);
             //DontDestroyOnLoad(SAVED_DUNGEON);
@@ -90,7 +91,7 @@ public class DungeonGenerator : MonoBehaviour
         else if(EndTrigger.DOWNSTAIRCOLLISION){
             Debug.Log("saved Dungeon");
             //SAVED_DUNGEON.SetActive(true);
-            Navigation.INSTANCE.SetActive(true);
+            // Navigation.INSTANCE.SetActive(true);
             Navigation.INSTANCE.transform.position = new Vector3(0,1,0);
             //Destroy(gameObject);
             EndTrigger.DOWNSTAIRCOLLISION = false;
@@ -271,8 +272,7 @@ public class DungeonGenerator : MonoBehaviour
                         if(isSpider && ranSpider == 0){
                             Debug.Log("tboard test");
                             BuildMesh();
-                            GameObject spider = Instantiate(enemy, new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, newRoom.transform.position.z), Quaternion.identity, GENtransform);
-                            isSpider = false;
+                            GameObject spiderObject = Instantiate(enemy, new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, newRoom.transform.position.z), Quaternion.identity, GENtransform);
                         }
                         ranSpider--;
                     }else if (i + 1 == size.x && j + 1 == size.y)
@@ -512,6 +512,7 @@ public class DungeonGenerator : MonoBehaviour
         size.y = size.y - 2;
         // this.levelMessage(LEVEL.ToString());
     }
+    
 
   IEnumerator waiter()
 {

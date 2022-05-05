@@ -55,7 +55,6 @@ public class Navigation : MonoBehaviour
     private void Awake()
     {
         state = State.Idle;
-        // DontDestroyOnLoad(this.gameObject);
         if(INSTANCE == null)
         {
             INSTANCE = gameObject;
@@ -175,6 +174,10 @@ public class Navigation : MonoBehaviour
         lastPos = transform.position;
         if(steps == 0)
         {
+            state = State.Moving;
+            DontDestroyOnLoad(this.gameObject);
+            // DontDestroyOnLoad(DungeonGenerator.spider);
+            state = State.Idle;
             StartEncounter(enemy_encounters[Random.Range(0,enemy_encounters.Length)]);
             SetRandomSteps();
             INSTANCE.SetActive(false);
@@ -372,5 +375,9 @@ public class Navigation : MonoBehaviour
     public void SetState()
     {
         state = State.Idle;
+    }
+    public void getSavePosition()
+    {
+        INSTANCE.transform.position = SAVE_POSITION;
     }
 }

@@ -48,7 +48,6 @@ public class EndTrigger : MonoBehaviour
             if (gameObject.name.Equals("downstairwell"))
             {
                 DOWNSTAIRCOLLISION = true;
-
                 if(DungeonGenerator.LEVEL == 0){
                     Navigation.INSTANCE.SetActive(false);
                     SceneManager.LoadScene("Town");
@@ -67,6 +66,10 @@ public class EndTrigger : MonoBehaviour
             }
             if (gameObject.name.Equals("remodel_tarantula(export) Variant(Clone)"))
             {
+                DungeonGenerator.isSpider = false;
+
+                DontDestroyOnLoad(Navigation.INSTANCE);
+
                 DungeonGenerator.keys[DungeonGenerator.LEVEL] = true;
                 DungeonGenerator.keys.Add(false);
                 EnemyEncounter boss_encounter = boss_encounters[Random.Range(0, boss_encounters.Length)];
