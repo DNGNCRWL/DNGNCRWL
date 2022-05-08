@@ -39,7 +39,7 @@ public class DungeonGenerator : MonoBehaviour
     }
     public Transform GENtransform;
     public GameObject spider;
-    public Vector2Int size;
+    public static Vector2Int SIZE = new Vector2Int(3,3);
     public int startPos = 0;
 
     public GameObject levelMessageWindow;
@@ -165,11 +165,11 @@ public class DungeonGenerator : MonoBehaviour
     //     {
     //         surfaces[i].BuildNavMesh();
     //     }
-    //     for (int i = 0; i < size.x; i++)
+    //     for (int i = 0; i < SIZE.x; i++)
     //     {
-    //         for (int j = 0; j < size.y; j++)
+    //         for (int j = 0; j < SIZE.y; j++)
     //         {
-    //             Cell currentCell = board[(i + j * size.x)];
+    //             Cell currentCell = board[(i + j * SIZE.x)];
     //             if (currentCell.visited)
     //             {
     //                 int randomRoom = -1;
@@ -206,7 +206,7 @@ public class DungeonGenerator : MonoBehaviour
     //                 var newRoom = Instantiate(saved[randomRoom].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
     //                 newRoom.UpdateRoom(currentCell.status);
     //                 newRoom.name += " " + i + "-" + j;
-    //                 if (i + 1 == size.x && j + 1 == size.y)
+    //                 if (i + 1 == SIZE.x && j + 1 == SIZE.y)
     //                 {
     //                     BuildMesh();
     //                     GameObject spider = Instantiate(enemy, new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, newRoom.transform.position.z), Quaternion.identity);
@@ -220,12 +220,12 @@ public class DungeonGenerator : MonoBehaviour
         Rule[] GenerateDungeon(GameObject enemy)
     {
         int ranSpider = Random.Range(0, tBoard.Count);
-        for (int i = 0; i < size.x; i++)
+        for (int i = 0; i < SIZE.x; i++)
         {
-            for (int j = 0; j < size.y; j++)
+            for (int j = 0; j < SIZE.y; j++)
             {
-                Cell currentCell = board[(i + j * size.x)];
-                Debug.Log(tBoard[0] == (i + j * size.x));
+                Cell currentCell = board[(i + j * SIZE.x)];
+                Debug.Log(tBoard[0] == (i + j * SIZE.x));
                 if (currentCell.visited)
                 {
 
@@ -263,7 +263,7 @@ public class DungeonGenerator : MonoBehaviour
                         var newRoom = Instantiate(rooms[0].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
                         newRoom.UpdateRoom(currentCell.status);
                         newRoom.name += " " + i + "-" + j;
-                    }else if(tBoard.Contains(i + j * size.x) && !(i + 1 == size.x && j + 1 == size.y)){
+                    }else if(tBoard.Contains(i + j * SIZE.x) && !(i + 1 == SIZE.x && j + 1 == SIZE.y)){
                         var newRoom = Instantiate(rooms[ran].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
                         newRoom.UpdateRoom(currentCell.status);
                         newRoom.name += " " + i + "-" + j;
@@ -275,7 +275,7 @@ public class DungeonGenerator : MonoBehaviour
                             GameObject spiderObject = Instantiate(enemy, new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, newRoom.transform.position.z), Quaternion.identity, GENtransform);
                         }
                         ranSpider--;
-                    }else if (i + 1 == size.x && j + 1 == size.y)
+                    }else if (i + 1 == SIZE.x && j + 1 == SIZE.y)
                     {
                         var newRoom = Instantiate(rooms[3].room, new Vector3(i * offset.x, 0, -j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
                         newRoom.UpdateRoom(currentCell.status);
@@ -292,6 +292,7 @@ public class DungeonGenerator : MonoBehaviour
                 }
             }
         }
+        BuildMesh();
         return rooms;
 
     }
@@ -301,31 +302,33 @@ public class DungeonGenerator : MonoBehaviour
         //key = key.Copy();
         //seeds = new List<int>();
         //seeds[0] = initialSeed;
-        Debug.Log("SEED COUNT!!!" + SEEDS.Count);
+        Debug.Log("AA SEED COUNT!!!" + SEEDS.Count);
+        Debug.Log("AA Level" + LEVEL);
         if(LEVEL==0){ //load previous
-            Debug.Log("seed count 0");
+            Debug.Log("AA seed count 0");
             Random.InitState(initialSeed);
             //load second seed instantly (TRY SWITCHING FROM ENDTRIGGER)
             // Random.State tmp = Random.state;
             // LEVEL.Add(tmp);
         }
-        else if(LEVEL < SEEDS.Count){
+        else if(LEVEL <= SEEDS.Count){
+            Debug.Log("AA here we are!");
             Random.state = SEEDS[LEVEL-1];
         }
         else{ //new level
-            Debug.Log("seed count > 0");
+            Debug.Log("AA seed count > 0");
             Random.State tmp = Random.state;
             SEEDS.Add(tmp);
             Random.state = tmp;
         }
-        Debug.Log("passed seed check!");
+        Debug.Log("AA passed seed check!");
 
         board = new List<Cell>();
         tBoard = new List<int>();
 
-        for (int i = 0; i < size.x; i++)
+        for (int i = 0; i < SIZE.x; i++)
         {
-            for (int j = 0; j < size.y; j++)
+            for (int j = 0; j < SIZE.y; j++)
             {
                 board.Add(new Cell());
             }
@@ -443,25 +446,25 @@ public class DungeonGenerator : MonoBehaviour
         List<int> neighbors = new List<int>();
 
         //check up neighbor
-        if (cell - size.x >= 0 && !board[(cell - size.x)].visited)
+        if (cell - SIZE.x >= 0 && !board[(cell - SIZE.x)].visited)
         {
-            neighbors.Add((cell - size.x));
+            neighbors.Add((cell - SIZE.x));
         }
 
         //check down neighbor
-        if (cell + size.x < board.Count && !board[(cell + size.x)].visited)
+        if (cell + SIZE.x < board.Count && !board[(cell + SIZE.x)].visited)
         {
-            neighbors.Add((cell + size.x));
+            neighbors.Add((cell + SIZE.x));
         }
 
         //check right neighbor
-        if ((cell + 1) % size.x != 0 && !board[(cell + 1)].visited)
+        if ((cell + 1) % SIZE.x != 0 && !board[(cell + 1)].visited)
         {
             neighbors.Add((cell + 1));
         }
 
         //check left neighbor
-        if (cell % size.x != 0 && !board[(cell - 1)].visited)
+        if (cell % SIZE.x != 0 && !board[(cell - 1)].visited)
         {
             neighbors.Add((cell - 1));
         }
@@ -496,31 +499,37 @@ public class DungeonGenerator : MonoBehaviour
         // Debug.Log("hi");
         // levelMessageWindow.SetActive(false);
     }
-    public void getLevel() {
-        LevelMessage("Level "+ LEVEL.ToString());
-        StartCoroutine(waiter());
+
+     public void getBoss() {
+        LevelMessage("Defeat The Spider");
+        StartCoroutine(waiter(levelMessageWindow));
         // this.levelMessage(LEVEL.ToString());
     }
-    public void setSizeUp() {
-        size.x = size.x + 2;
-        size.y = size.y + 2;
+    public void getLevel() {
+        LevelMessage("Level "+ LEVEL.ToString());
+        StartCoroutine(waiter(levelMessageWindow));
+        // this.levelMessage(LEVEL.ToString());
+    }
+    public void setSIZEUp() {
+        SIZE.x = SIZE.x + 2;
+        SIZE.y = SIZE.y + 2;
         // this.levelMessage(LEVEL.ToString());
     }
 
-        public void setSizeDown() {
-        size.x = size.x - 2;
-        size.y = size.y - 2;
+        public void setSIZEDown() {
+        SIZE.x = SIZE.x - 2;
+        SIZE.y = SIZE.y - 2;
         // this.levelMessage(LEVEL.ToString());
     }
     
 
-  IEnumerator waiter()
+  IEnumerator waiter(GameObject obj)
 {
 
     //Wait for 4 seconds
-    levelMessageWindow.SetActive(true);
+    obj.SetActive(true);
     yield return new WaitForSeconds(2f);
-    levelMessageWindow.SetActive(false);
+    obj.SetActive(false);
 }
     //     public void GenEnd()
     // {

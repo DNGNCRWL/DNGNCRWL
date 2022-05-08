@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 
-public class Navigation : MonoBehaviour
-{
+public class Navigation : MonoBehaviour {
     static readonly int blockSize = 4;
     public float sightRange;
     public bool isInRange;
@@ -32,7 +31,7 @@ public class Navigation : MonoBehaviour
     public bool decreaseLightLevel;
     public bool useFog;
 
-    static Vector3Int SAVE_POSITION = new Vector3Int(0,1,0);
+    static Vector3Int SAVE_POSITION = new Vector3Int(0, 1, 0);
     Vector3 lastPos;
     static int SAVE_ROTATION_Y;
 
@@ -50,17 +49,13 @@ public class Navigation : MonoBehaviour
     public enum State { Idle, Turning, Moving }
 
     [System.Serializable]
-    public enum NavAction { Nothing, Forward, Backward, Left, Right}
+    public enum NavAction { Nothing, Forward, Backward, Left, Right }
 
-    private void Awake()
-    {
+    private void Awake() {
         state = State.Idle;
-        if(INSTANCE == null)
-        {
+        if (INSTANCE == null) {
             INSTANCE = gameObject;
-        }
-        else
-        {
+        } else {
             Destroy(gameObject);
         }
         //INSTANCE.SetActive(true);
@@ -73,8 +68,7 @@ public class Navigation : MonoBehaviour
         //     //respawn();
         //     transform.eulerAngles = new Vector3Int(0, 180, 0);
         // }
-        if(!EndTrigger.UPSTAIRCOLLISION || !EndTrigger.DOWNSTAIRCOLLISION)
-        {
+        if (!EndTrigger.UPSTAIRCOLLISION || !EndTrigger.DOWNSTAIRCOLLISION) {
             transform.position = SAVE_POSITION;
             transform.eulerAngles = new Vector3Int(0, SAVE_ROTATION_Y, 0);
         }
@@ -87,26 +81,24 @@ public class Navigation : MonoBehaviour
         ChangeLightLevel(0);
     }
 
-    private void CalculateSpeeds()
-    {
+    private void CalculateSpeeds() {
         calculateSpeeds = false;
 
-        if(moveTime != 0)
+        if (moveTime != 0)
             moveSpeed = blockSize / moveTime;
         else
             moveSpeed = float.MaxValue;
-        
-        if(rotateTime != 0)
+
+        if (rotateTime != 0)
             rotateSpeed = 90 / rotateTime;
         else
             rotateSpeed = float.MaxValue;
     }
 
-    void GetInputTaps()
-    {
+    void GetInputTaps() {
         if (actionQueue.Count >= actionQueueMaxLength)
             return;
-        
+
         if (Input.GetKeyDown(KeyCode.LeftArrow))
             actionQueue.Add(NavAction.Left);
         if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -117,8 +109,7 @@ public class Navigation : MonoBehaviour
         //    actionQueue.Add(NavAction.Backward);
     }
 
-    void GetInputHolds()
-    {
+    void GetInputHolds() {
         if (state != State.Idle ||
            actionQueue.Count > 0)
             return;
@@ -147,8 +138,7 @@ public class Navigation : MonoBehaviour
             actionQueue.Add(NavAction.Backward);
     }
 
-    void GetInputBooleans()
-    {
+    void GetInputBooleans() {
 
         if (calculateSpeeds)
             CalculateSpeeds();
@@ -169,84 +159,82 @@ public class Navigation : MonoBehaviour
         increaseLightLevel = decreaseLightLevel = false;
     }
 
-    void Update()
-    {
+    void Update() {
         lastPos = transform.position;
-        if(steps == 0)
-        {
-            state = State.Moving;
+        if (steps == 0) {
+            if (state == State.Moving) {
+                state = State.Idle;
+            }
             DontDestroyOnLoad(this.gameObject);
             // DontDestroyOnLoad(DungeonGenerator.spider);
-            state = State.Idle;
-            StartEncounter(enemy_encounters[Random.Range(0,enemy_encounters.Length)]);
+            StartEncounter(enemy_encounters[Random.Range(0, enemy_encounters.Length)]);
             SetRandomSteps();
             INSTANCE.SetActive(false);
             //set inactive
         }
         isInRange = Physics.CheckSphere(transform.position, sightRange, whatIsChest);
-        if(isInRange){
+        if (isInRange) {
             UI_Chest.UI_CHEST.OpenChestUI();
-            if (Input.GetKeyDown(KeyCode.F))
-                {
-                    UI_Chest.UI_CHEST.CloseChestUI();
-                    Debug.Log("OPEN DA CHEST!~");
-                    FindObjectOfType<Chest>().fillChest();
+            if (Input.GetKeyDown(KeyCode.F)) {
+                UI_Chest.UI_CHEST.CloseChestUI();
+                Debug.Log("OPEN DA CHEST!~");
+                FindObjectOfType<Chest>().fillChest();
 
-                    if (UI_LootMenu.UI_LOOTMENU == null) {
-                        UI_LootMenu lootMenu = null;
-                        var canvases = Resources.FindObjectsOfTypeAll<UI_LootMenu>();
-                        if (canvases.Length > 0)
+                if (UI_LootMenu.UI_LOOTMENU == null) {
+                    UI_LootMenu lootMenu = null;
+                    var canvases = Resources.FindObjectsOfTypeAll<UI_LootMenu>();
+                    if (canvases.Length > 0)
                         lootMenu = canvases[0];
 
-                        if (lootMenu != null)
+                    if (lootMenu != null)
                         lootMenu.OpenLootUI();
-                    }
-                    Inventory tmp = FindObjectOfType<Chest>().getChestInventory(Navigation.INSTANCE.transform.position);
-                    UI_LootMenu.UI_LOOTMENU.SetInventory(tmp);
-                    UI_LootMenu.UI_LOOTMENU.OpenLootUI();
-
                 }
-        }else{
+                Inventory tmp = FindObjectOfType<Chest>().getChestInventory(Navigation.INSTANCE.transform.position);
+                UI_LootMenu.UI_LOOTMENU.SetInventory(tmp);
+                UI_LootMenu.UI_LOOTMENU.OpenLootUI();
+
+            }
+        } else {
             UI_Chest.UI_CHEST.CloseChestUI();
         }
 
         GetInputTaps();
         GetInputHolds();
         GetInputBooleans();
-        
+
         if (Input.GetKeyDown(KeyCode.Z))
             increaseLightLevel = true;
         if (Input.GetKeyDown(KeyCode.X))
             decreaseLightLevel = true;
 
-        if (state == State.Idle &&
-            actionQueue.Count > 0)
-        {
-            switch (actionQueue[0])
-            {
-                case NavAction.Forward:
-                    StartCoroutine(Move(Vector3Int.RoundToInt(transform.forward * blockSize)));//blockSize));
-                    break;
-                case NavAction.Backward:
-                    StartCoroutine(Move(Vector3Int.RoundToInt(-transform.forward * blockSize)));// -blockSize));
-                    break;
-                case NavAction.Left:
-                    StartCoroutine(Turn(-90));
-                    break;
-                case NavAction.Right:
-                    StartCoroutine(Turn(90));
-                    break;
+        if (INSTANCE.active) {
+            if (state == State.Idle &&
+            actionQueue.Count > 0) {
+                switch (actionQueue[0]) {
+                    case NavAction.Forward:
+                        StartCoroutine(Move(Vector3Int.RoundToInt(transform.forward * blockSize)));//blockSize));
+                        break;
+                    case NavAction.Backward:
+                        StartCoroutine(Move(Vector3Int.RoundToInt(-transform.forward * blockSize)));// -blockSize));
+                        break;
+                    case NavAction.Left:
+                        StartCoroutine(Turn(-90));
+                        break;
+                    case NavAction.Right:
+                        StartCoroutine(Turn(90));
+                        break;
+                }
             }
         }
     }
 
     IEnumerator Move(Vector3Int move)//float distance)
     {
-         
+
         actionQueue.RemoveAt(0);
 
         bool blocked = Physics.Raycast(transform.position, move, blockSize);
-        
+
         if (blocked)
             yield break;
 
@@ -260,16 +248,12 @@ public class Navigation : MonoBehaviour
         //Vector3Int finalPos = new Vector3Int(Mathf.RoundToInt(transform.position.x) + move.x, Mathf.RoundToInt(transform.position.y) + move.y, Mathf.RoundToInt(transform.position.z) + move.z);
         Vector3 toMove = move;
 
-        while (toMove != Vector3Int.zero)
-        {
+        while (toMove != Vector3Int.zero) {
             Vector3 toMoveThisFrame = Time.deltaTime * moveSpeed * toMove.normalized;
-            if (toMove.sqrMagnitude > toMoveThisFrame.sqrMagnitude)
-            {
+            if (toMove.sqrMagnitude > toMoveThisFrame.sqrMagnitude) {
                 transform.position += toMoveThisFrame;
                 toMove -= toMoveThisFrame;
-            }
-            else
-            {
+            } else {
                 transform.position = finalPos;
                 //transform.position += toMove;
                 toMove = Vector3.zero;
@@ -282,55 +266,47 @@ public class Navigation : MonoBehaviour
         Snap();
     }
 
-    void Snap()
-    {
+    void Snap() {
         int x = Mathf.RoundToInt(transform.position.x);
         int y = Mathf.RoundToInt(transform.position.y);
         int z = Mathf.RoundToInt(transform.position.z);
         int yRotate = Mathf.RoundToInt(transform.eulerAngles.y / 90) * 90;
-        
+
         transform.position = new Vector3(x, y, z);
-        if (x % blockSize == 0 && z % blockSize == 0)
-        {
-            
+        if (x % blockSize == 0 && z % blockSize == 0) {
+
             SAVE_POSITION = new Vector3Int(x, y, z);
             SAVE_ROTATION_Y = yRotate;
         }
     }
-    
-    IEnumerator Turn(float angle)
-    {
+
+    IEnumerator Turn(float angle) {
         actionQueue.RemoveAt(0);
         state = State.Turning;
 
         float toRotate = angle;
         int sign = (angle < 0 ? -1 : 1);
 
-        while (toRotate != 0)
-        {
+        while (toRotate != 0) {
             float toRotateThisFrame = Time.deltaTime * rotateSpeed * sign;
 
             if ((toRotateThisFrame > 0 && toRotate > toRotateThisFrame) ||
                 (toRotateThisFrame < 0 &&
-                toRotate < toRotateThisFrame))
-            {
+                toRotate < toRotateThisFrame)) {
                 transform.Rotate(Vector3Int.up, toRotateThisFrame);
                 toRotate -= toRotateThisFrame;
-            }
-            else
-            {
+            } else {
                 transform.Rotate(Vector3Int.up, toRotate);
                 toRotate = 0;
             }
-            
+
             yield return null;
         }
 
         state = State.Idle;
     }
 
-    void ChangeLightLevel(int i)
-    {
+    void ChangeLightLevel(int i) {
         increaseLightLevel = decreaseLightLevel = false;
 
         lightLevel += i;
@@ -339,8 +315,7 @@ public class Navigation : MonoBehaviour
         torchLight.range = blockSize * lightLevel + minLight;
 
         RenderSettings.fog = useFog;
-        if (useFog)
-        {
+        if (useFog) {
             RenderSettings.fogEndDistance = torchLight.range;
             RenderSettings.fogColor = fog;
             RenderSettings.fogMode = FogMode.Linear;
@@ -348,36 +323,31 @@ public class Navigation : MonoBehaviour
         }
     }
 
-    void StartEncounter(EnemyEncounter enemyencounter)
-    {
+    void StartEncounter(EnemyEncounter enemyencounter) {
         BattleManager.SetENEMY_ENCOUNTER(enemyencounter);
         //DungeonGenerator.SAVED_DUNGEON.SetActive(false);
         //set inactive
         SceneManager.LoadScene("Battle");
     }
 
-    void SetRandomSteps()
-    {
+    void SetRandomSteps() {
         steps = Random.Range(steps_min, steps_max + 1);
     }
 
-    public void respawn()
-    {
+    public void respawn() {
         transform.position = new Vector3(0, 1, 0);
     }
 
-    public static void Clear()
-    {
-        // Navigation.INSTANCE.SetActive(true);
-        Navigation.INSTANCE.transform.position = new Vector3(0,1,0);
+    public static void Clear() {
+        SceneManager.MoveGameObjectToScene(Navigation.INSTANCE, SceneManager.GetActiveScene());
+        Navigation.INSTANCE.SetActive(true);
+        // Navigation.INSTANCE.transform.position = new Vector3(0, 1, 0);
         // Navigation.INSTANCE.SetActive(false);
     }
-    public void SetState()
-    {
+    public void SetState() {
         state = State.Idle;
     }
-    public void getSavePosition()
-    {
+    public void getSavePosition() {
         INSTANCE.transform.position = SAVE_POSITION;
     }
 }

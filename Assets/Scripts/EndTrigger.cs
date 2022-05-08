@@ -31,9 +31,10 @@ public class EndTrigger : MonoBehaviour
             if (gameObject.name.Equals("stairwell") && !collider.isTrigger)
             {
                 if(DungeonGenerator.keys[DungeonGenerator.LEVEL]){
+                    
                     DungeonGenerator.isSpider = true;
                     DungeonGenerator.LEVEL++;
-                    FindObjectOfType<DungeonGenerator>().setSizeUp();
+                    FindObjectOfType<DungeonGenerator>().setSIZEUp();
                     FindObjectOfType<DungeonGenerator>().getLevel();
                     collider.isTrigger=false;
                     UPSTAIRCOLLISION = true;
@@ -41,6 +42,7 @@ public class EndTrigger : MonoBehaviour
                     Invoke("ResetPlayer", .1f);
                     return;
                 }else{
+                    FindObjectOfType<DungeonGenerator>().getBoss();
                     Debug.Log("YOU DONT HAVE THE KEY!");
                 }
                 return;
@@ -53,9 +55,10 @@ public class EndTrigger : MonoBehaviour
                     SceneManager.LoadScene("Town");
 
                 }else{
+                    DungeonGenerator.isSpider = false;
                     DungeonGenerator.LEVEL--;
                     FindObjectOfType<DungeonGenerator>().getLevel();
-                    FindObjectOfType<DungeonGenerator>().setSizeDown();
+                    FindObjectOfType<DungeonGenerator>().setSIZEDown();
                     
                     // FindObjectOfType<DungeonGenerator>().setSizeDown();
                     Invoke("ResetPlayer", .1f);

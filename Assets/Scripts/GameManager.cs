@@ -60,7 +60,8 @@ public class GameManager : MonoBehaviour {
     }
 
     public static void Reset() {
-        // Navigation.Clear();
+        DungeonGenerator.keys = new List<bool>(){false};
+        Navigation.Clear();
         GM.playerCharacters.Clear();
         GM.reserveCharacters.Clear();
     }
