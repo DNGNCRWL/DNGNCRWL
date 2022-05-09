@@ -31,9 +31,10 @@ public class EndTrigger : MonoBehaviour
             if (gameObject.name.Equals("stairwell") && !collider.isTrigger)
             {
                 if(DungeonGenerator.keys[DungeonGenerator.LEVEL]){
+                    
                     DungeonGenerator.isSpider = true;
                     DungeonGenerator.LEVEL++;
-                    FindObjectOfType<DungeonGenerator>().setSizeUp();
+                    FindObjectOfType<DungeonGenerator>().setSIZEUp();
                     FindObjectOfType<DungeonGenerator>().getLevel();
                     collider.isTrigger=false;
                     UPSTAIRCOLLISION = true;
@@ -41,6 +42,7 @@ public class EndTrigger : MonoBehaviour
                     Invoke("ResetPlayer", .1f);
                     return;
                 }else{
+                    FindObjectOfType<DungeonGenerator>().getBoss();
                     Debug.Log("YOU DONT HAVE THE KEY!");
                 }
                 return;
@@ -48,15 +50,15 @@ public class EndTrigger : MonoBehaviour
             if (gameObject.name.Equals("downstairwell"))
             {
                 DOWNSTAIRCOLLISION = true;
-
                 if(DungeonGenerator.LEVEL == 0){
                     Navigation.INSTANCE.SetActive(false);
                     SceneManager.LoadScene("Town");
 
                 }else{
+                    DungeonGenerator.isSpider = false;
                     DungeonGenerator.LEVEL--;
                     FindObjectOfType<DungeonGenerator>().getLevel();
-                    FindObjectOfType<DungeonGenerator>().setSizeDown();
+                    FindObjectOfType<DungeonGenerator>().setSIZEDown();
                     
                     // FindObjectOfType<DungeonGenerator>().setSizeDown();
                     Invoke("ResetPlayer", .1f);
@@ -67,6 +69,10 @@ public class EndTrigger : MonoBehaviour
             }
             if (gameObject.name.Equals("remodel_tarantula(export) Variant(Clone)"))
             {
+                DungeonGenerator.isSpider = false;
+
+                DontDestroyOnLoad(Navigation.INSTANCE);
+
                 DungeonGenerator.keys[DungeonGenerator.LEVEL] = true;
                 DungeonGenerator.keys.Add(false);
                 EnemyEncounter boss_encounter = boss_encounters[Random.Range(0, boss_encounters.Length)];
