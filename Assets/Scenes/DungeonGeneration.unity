@@ -2551,7 +2551,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GENtransform: {fileID: 1896285818}
   spider: {fileID: 1425353541870137400, guid: 89460ed69b79d604a8b970c84641b270, type: 3}
-  size: {x: 3, y: 3}
   startPos: 0
   levelMessageWindow: {fileID: 1053634293}
   rooms:
@@ -2575,7 +2574,6 @@ MonoBehaviour:
     minPosition: {x: 0, y: 0}
     maxPosition: {x: 0, y: 0}
     obligatory: 0
-  saved: []
   offset: {x: 12, y: 12}
   surfaces:
   - {fileID: 1896285819}

@@ -6002,6 +6002,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8990983683994324757}
     m_Modifications:
+    - target: {fileID: 237020518677164907, guid: 771f3105d08d48749a65b70f4fe6fbf8, type: 3}
+      propertyPath: m_Center.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 237020518677164907, guid: 771f3105d08d48749a65b70f4fe6fbf8, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8606137336247430153, guid: 771f3105d08d48749a65b70f4fe6fbf8, type: 3}
       propertyPath: m_Name
       value: stairwell
@@ -6050,7 +6058,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5424181786346483618, guid: 771f3105d08d48749a65b70f4fe6fbf8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 771f3105d08d48749a65b70f4fe6fbf8, type: 3}
 --- !u!4 &6567898429111903286 stripped
 Transform:
