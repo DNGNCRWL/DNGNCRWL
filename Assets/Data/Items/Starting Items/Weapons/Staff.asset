@@ -20,6 +20,8 @@ MonoBehaviour:
   inventoryActions:
   - {fileID: 11400000, guid: ca1b5b577e256334abcc00fce757009e, type: 2}
   - {fileID: 11400000, guid: 99b4da20d506f6f4385c71c4b557b030, type: 2}
+  - {fileID: 11400000, guid: 67b0e59bd7a3d934bba688568a08edf2, type: 2}
+  - {fileID: 11400000, guid: 79dd3ad89108011459f7622fcfa80c17, type: 2}
   sprite: {fileID: 21300000, guid: 62344b15179d7874cb840c3b8cba1c78, type: 3}
   stackLimit: 1
   amount: 1
