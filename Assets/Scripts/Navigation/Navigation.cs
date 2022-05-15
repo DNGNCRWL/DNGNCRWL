@@ -324,6 +324,9 @@ public class Navigation : MonoBehaviour {
     }
 
     void StartEncounter(EnemyEncounter enemyencounter) {
+        if (state == State.Moving || state == State.Turning) {
+                state = State.Idle;
+            }
         BattleManager.SetENEMY_ENCOUNTER(enemyencounter);
         //DungeonGenerator.SAVED_DUNGEON.SetActive(false);
         //set inactive

@@ -5,29 +5,15 @@ using System.Collections;
 public class EndTrigger : MonoBehaviour
 {
     public bool gameHasEnded = false;
-    public float dungeonGenerationDelay = 1f;
-    public GameManager gameManager;
     public EnemyEncounter[] boss_encounters;
-    public static bool COLLIDE;
-    public Navigation player;
     public GameObject spider;
     public static bool UPSTAIRCOLLISION;
     public static bool DOWNSTAIRCOLLISION;
 
-    public static bool BOSSBOOL;
-    public static bool TEAMWIN;
-    //private float delay = 10f;
-    //private float timeElapsed;
     public void OnTriggerEnter(Collider collider)
     {
         Debug.Log(gameObject.name + " has triggered end by " + collider.gameObject.name);
-        if (gameHasEnded == false)
-        {
-            // if(gameObject.name.Equals("box"))
-            // {
-            //     FindObjectOfType<Chest>().fillChest();
-            //     Debug.Log("inside box");
-            // }
+      
             if (gameObject.name.Equals("stairwell") && !collider.isTrigger)
             {
                 if(DungeonGenerator.keys[DungeonGenerator.LEVEL]){
@@ -42,7 +28,7 @@ public class EndTrigger : MonoBehaviour
                     Invoke("ResetPlayer", .1f);
                     return;
                 }else{
-                    FindObjectOfType<DungeonGenerator>().getBoss();
+                    FindObjectOfType<DungeonGenerator>().getBossMessage();
                     Debug.Log("YOU DONT HAVE THE KEY!");
                 }
                 return;
@@ -60,14 +46,13 @@ public class EndTrigger : MonoBehaviour
                     FindObjectOfType<DungeonGenerator>().getLevel();
                     FindObjectOfType<DungeonGenerator>().setSIZEDown();
                     
-                    // FindObjectOfType<DungeonGenerator>().setSizeDown();
                     Invoke("ResetPlayer", .1f);
                 }
 
 
                 return;
             }
-            if (gameObject.name.Equals("remodel_tarantula(export) Variant(Clone)"))
+            if (gameObject.name.Equals("Dungeon Spider(Clone)"))
             {
                 DungeonGenerator.isSpider = false;
 
@@ -83,47 +68,21 @@ public class EndTrigger : MonoBehaviour
                 return;
             }
 
-        }
 
     }
-    public void RestartGenerateDungeon()
-    {
-        //SceneManager.LoadScene("Town");
-        //DungeonGenerator.SAVED_DUNGEON = null;
-        Debug.Log("restarting dungeon!");
-        //FindObjectOfType<DungeonGenerator>().DestroyAll();
-        DungeonGenerator.genNewMesh = true;
-        //Navigation.INSTANCE.SetActive(false);
-        Destroy(DungeonGenerator.SAVED_DUNGEON);
-        FindObjectOfType<DungeonGenerator>().Start();
-
-
-    }
-
+    
     private IEnumerator WaitForSceneLoad()
     {
         yield return new WaitForSeconds(1);
         SceneManager.LoadScene("Battle");
         Destroy(spider);
         Navigation.INSTANCE.SetActive(false);
-        // DungeonGenerator.SAVED_DUNGEON.SetActive(false);
-    }
-    private IEnumerator WaitForTownLoad()
-    {
-        Debug.Log("HERE???");
-        yield return new WaitForSeconds(1);
-        Navigation.INSTANCE.SetActive(false);
     }
 
     private void ResetPlayer(){
         Debug.Log("HERE???");
         FindObjectOfType<DungeonGenerator>().DestroyAll();
-        //Navigation.INSTANCE.SetActive(false);
         FindObjectOfType<DungeonGenerator>().Start();
-        //Navigation.INSTANCE.SetActive(false);
-        //FindObjectOfType<DungeonGenerator>().DestroyAll();
-        //Navigation.INSTANCE.SetActive(false);
-        //FindObjectOfType<DungeonGenerator>().Start();
     }
 
     private void setInactive(){
