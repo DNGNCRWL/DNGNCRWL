@@ -30029,7 +30029,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1709150566}
           m_TargetAssemblyTypeName: TownManager, Assembly-CSharp
-          m_MethodName: toggleActive
+          m_MethodName: ToggleActive
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 1445876949}

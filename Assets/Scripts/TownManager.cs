@@ -91,6 +91,7 @@ public class TownManager : MonoBehaviour
                 SetDead(character);
             }
         }
+        silver = CalculateSilver();
         SetRecCharInfo();
         SetCharInfo();
         SetReserveCharInfo();
@@ -99,7 +100,6 @@ public class TownManager : MonoBehaviour
         SelectSellFromCharacter(0);
         UpdateInjured();
         UpdateRezInfo();
-        silver = CalculateSilver();
     }
 
     //Changes whether an object is active or not
