@@ -196,6 +196,12 @@ public class UI_ContextMenu : MonoBehaviour
         } else if (action.actionName == "Discard") {
             Debug.Log("Discard");
             Debug.Log(targetInventory.RemoveItem(targetItem));
+        } else if (action.actionName == "Equip") {
+            targetInventory.Equip(targetItem);
+        } else if (action.actionName == "Equip Offhand") {
+            targetInventory.Equip(targetItem, 2);
+        }else if (action.actionName == "Equip Mainhand") {
+            targetInventory.Equip(targetItem, 1);
         }
         HideContextMenu();
     }

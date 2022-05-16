@@ -16,6 +16,8 @@ public class BattleManager : MonoBehaviour {
     public BattleHUD[] characterDisplays;
     public int initiativeRate = 3;
     public List<CharacterSheet> charactersYetToAct;
+    public GameObject selectedCharacter;
+    public GameObject fade;
 
     //[System.Serializable]
     // public struct Party
@@ -185,6 +187,13 @@ public class BattleManager : MonoBehaviour {
         yield return null;
     }
 
+    void SetSelectedCharacter(CharacterSheet character) {
+        if (character != null)
+            selectedCharacter = character.gameObject;
+        else
+            selectedCharacter = null;
+    }
+
     IEnumerator PartyTurn(Party party) {
         if (!BothSidesAlive())
             yield break;
@@ -224,6 +233,8 @@ public class BattleManager : MonoBehaviour {
                 } else {
                     currentCharacter = charactersYetToAct[Random.Range(0, charactersYetToAct.Count)];
                 }
+
+                SetSelectedCharacter(currentCharacter);
 
                 bool validCharacter = false;
 
@@ -325,6 +336,7 @@ public class BattleManager : MonoBehaviour {
 
             //remove current character from charactersYetToAct
             if (currentPhase == TurnPhase.Done) {
+
                 while (!ActionManager.EmptyQueue())
                     yield return null;
 
@@ -334,7 +346,7 @@ public class BattleManager : MonoBehaviour {
 
                 currentPhase = TurnPhase.SelectCharacter;
             }
-
+            SetSelectedCharacter(null);
             yield return null;
         }
 
@@ -674,6 +686,13 @@ public class BattleManager : MonoBehaviour {
     void Update() {
         if (battleCompleted && Input.GetMouseButtonDown(0))
             GameManager.GoToDungeonNavigation();
+
+        if (selectedCharacter) {
+            fade.transform.position = selectedCharacter.transform.position + Camera.main.transform.forward;
+            fade.SetActive(true);
+        } else
+            fade.SetActive(false);
+
     }
 }
 

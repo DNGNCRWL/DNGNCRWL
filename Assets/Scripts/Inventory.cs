@@ -284,4 +284,24 @@ public class Inventory
     public bool IsOverencumbered () {
         return slotsUsed > slotsLimit;
     }
+
+    public void Equip (Item item, int slot = -1) {
+        if (item is Weapon) {
+            if (slot == 2) {
+                SwapOffHand((Weapon)item);
+            } else {
+                SwapMainHand((Weapon)item);
+            }
+            RemoveItem(item);
+        } else if (item is Armor) {
+            SwapArmor((Armor)item);
+            RemoveItem(item);
+        }else if (item is Bag) {
+            SwapStorage((Bag)item);
+            RemoveItem(item);
+        }
+
+        UpdateSlotsUsed();
+        OnItemListChanged?.Invoke(this, EventArgs.Empty);
+    }
 }
